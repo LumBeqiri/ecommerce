@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Buyer;
+use App\Models\Seller;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Order extends Model
+{
+    use HasFactory;
+
+    const SHIPPED_ORDER = 'true';
+    const UNSHIPPED_ORDER = 'false';
+    
+
+    protected $fillable =[
+        'buyer_id',
+        'product_id',
+        'quantity',
+        'ship_name',
+        'ship_address',
+        'ship_city',
+        'ship_state',
+        'order_tax',
+        'order_date',
+        'order_shipped',
+        'order_email'
+    ];
+
+    public function user(){
+        return $this->belongsTo(Buyer::class);
+    }
+
+    public function products(){
+        return $this->belongsToMany(Product::class, 'order_product','order_id', 'product_id')
+        ->withTimestamps()
+        ->withPivot([
+            'quantity',
+            'total'
+        ]);
+    }
+
+}
