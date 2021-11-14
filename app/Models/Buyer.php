@@ -6,10 +6,11 @@ use App\Scopes\BuyerScope;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Buyer extends User
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     public $table = "users";
     protected static function boot(){
         parent::boot();

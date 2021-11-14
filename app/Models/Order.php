@@ -7,10 +7,11 @@ use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     const SHIPPED_ORDER = 'true';
     const UNSHIPPED_ORDER = 'false';

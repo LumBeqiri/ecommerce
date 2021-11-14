@@ -6,10 +6,11 @@ use App\Models\User;
 use App\Models\Product;
 use App\Scopes\SellerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Seller extends User
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     public $table = "users";
 
     protected static function boot(){
