@@ -10,6 +10,9 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     * First seed this file
+     * Then seed OrderSeeder
+     * There's no need to seed CategoryProduct
      *
      * @return void
      */

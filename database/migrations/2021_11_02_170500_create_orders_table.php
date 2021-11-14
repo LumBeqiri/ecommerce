@@ -21,12 +21,16 @@ class CreateOrdersTable extends Migration
             $table->string('ship_city');
             $table->string('ship_state');
             $table->float('order_tax');
+            $table->float('total');
             $table->dateTime('order_date');
             $table->string('order_shipped');
             $table->string('order_email');
+            $table->integer('payment_id');
+           
             
             $table->foreign('buyer_id')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -30,7 +30,7 @@ class Order extends Model
         'order_email'
     ];
 
-    public function user(){
+    public function buyer(){
         return $this->belongsTo(Buyer::class);
     }
 

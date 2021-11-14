@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
-use App\Models\{Product,Cart};
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-class ProductController extends ApiController
+class CategoryController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +16,10 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        $products = Product::all();
-        return $this->showAll($products);
+        $categories = Category::all();
+
+        $this->showAll($categories);
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -41,7 +39,15 @@ class ProductController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => 'required|max:255|string',
+            'description' => 'required|max:500|string',
+        ];
+        $this->validate($request,$rules);
+
+        $newCategory = Category::create($request->all());
+
+        return $this->showOne($newCategory, 201);
     }
 
     /**
@@ -50,22 +56,11 @@ class ProductController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Category $category)
     {
-         //$product = Product::find($id);
-         return $this->showOne($product);
+        return $this->showOne($category);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -74,9 +69,26 @@ class ProductController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $rules = [
+            'name' => 'required|max:255|string',
+            'description' => 'required|max:500|string',
+        ];
+        $this->validate($request,$rules);
+
+        $category->fill($request->only([
+            'name',
+            'description'
+        ]));
+
+         if(!$category->isDirty()){
+            return $this->errorResponse("Nothing to update!", 422 );
+        }
+
+        $category->save();
+
+        return $this->showOne($category);
     }
 
     /**

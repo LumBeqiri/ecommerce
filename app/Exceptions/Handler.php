@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
         }
 
         if($exception instanceof ModelNotFoundException){
-            return $this->errorResponse("Does not exists any model  with the speicified indentificator",404);
+            return $this->errorResponse("Does not exists any model  with the speicified identificator",404);
         }
 
         if($exception instanceof AuthenticationException){

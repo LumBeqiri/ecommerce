@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Order;
 use App\Models\Category;
+use App\Models\Currency;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -44,18 +45,32 @@ class Product extends Model
         return $this->belongsTo(Seller::class);
     }
 
+    public function currency(){
+        return $this->belongsTo(Currency::class);
+    }
+
     public function getPriceAttribute($value){
         return $value;
     }
 
     public function orders(){
-        return $this->belongsToMany(Order::class, 'order_product', 'order_id', 'product_id')
+        return $this->belongsToMany(Order::class, 'order_product')
         ->withTimestamps()
         ->withPivot([
             'quantity',
             'total'
         ]);
     }
+
+
+    // public function orders(){
+    //     return $this->belongsToMany(Order::class, 'order_product', 'product_id','order_id')
+    //     ->withTimestamps()
+    //     ->withPivot([
+    //         'quantity',
+    //         'total'
+    //     ]);
+    // }
     
 
 }

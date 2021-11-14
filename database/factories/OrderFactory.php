@@ -30,9 +30,11 @@ class OrderFactory extends Factory
             'ship_city' => $this->faker->city(),
             'ship_state' => $this->faker->country(),
             'order_tax' => $this->faker->numberBetween($min = 1, $max = 100),
+            'total' => $this->faker->numberBetween($min = 1, $max = 100),
             'order_date' => $this->faker->dateTimeBetween($startDate = '-2 years', $endDate = 'now', $timezone = null),
             'order_shipped' => $order_shipped = $this->faker->randomElement([Order::SHIPPED_ORDER,Order::UNSHIPPED_ORDER]),
             'order_email' => $this->faker->unique()->safeEmail(),
+            'payment_id' => $this->faker->randomDigit()
         ];
     }
 }
