@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
 use App\Models\Buyer;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Session;
 
 class BuyerOrderController extends ApiController
 {
@@ -13,4 +15,6 @@ class BuyerOrderController extends ApiController
         $orders = $buyer->orders;
         return $this->showAll($orders);
     }
+
+
 }

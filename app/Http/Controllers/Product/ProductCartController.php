@@ -38,4 +38,15 @@ class ProductCartController extends ApiController
 
         return $this->showOneObject($cart,200);
     }
+
+    public function getCart(Request $request){
+        $oldCart = $request->session()->get('cart');
+        $cart = new Cart($oldCart);
+
+        $product_ids = $cart->products;
+        
+        echo json_encode($product_ids);
+    
+
+    }
 }
