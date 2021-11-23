@@ -4,6 +4,7 @@ namespace App\Traits;
 // use League\Fractal\Manager;
 // use Spatie\Fractal\Fractal;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ trait ApiResponser{
 
        // $collection = $this->filterData($collection, $transformer);
       //  $collection = $this->sortData($collection, $transformer);
-       // $collection = $this->paginate($collection);
+          $collection = $this->paginate($collection);
       //  $collection = $this->transformData($collection, $transformer);
       //  $collection = $this->cacheResponse($collection);	
         
@@ -55,10 +56,10 @@ trait ApiResponser{
     }
 
 
-    protected function filterData(Collection $collection, $transformer)
+    protected function filterData(Collection $collection)
     {
         foreach(request()->query() as $query=> $value){
-            $attribute = $transformer::originalAttribute($query);
+            $attribute = $value;
             
             if(isset($attribute, $value)){
                 $collection = $collection->where($attribute,$value);
@@ -78,31 +79,34 @@ trait ApiResponser{
         return $collection;
     }
 
+
+
     protected function paginate(Collection $collection){
 
         $rules = [
             'per_page' => 'integer|min:2|max:50',
         ];
 
-        Validator::validate(request()->all(), $rules);
-
+       // get current page
         $page = LengthAwarePaginator::resolveCurrentPage();
 
         $perPage = 15;
+        Validator::validate(request()->all(), $rules);
 
         if(request()->has('per_page')){
             $perPage = (int) request()->per_page;
         }
+        
+        $results = $collection->slice(($page - 1) * $perPage, $perPage )->values();
 
-        $results = $collection->slice(($page-1)* $perPage, $perPage)->values();
-
-        $paginated = new LengthAwarePaginator($results, $collection->count(), $perPage, $page,[
-            'path' => LengthAwarePaginator::resolveCurrentPage(),
+        $paginated = new LengthAwarePaginator($results, $collection->count(), $perPage, $page, [
+            'path' =>LengthAwarePaginator::resolveCurrentPath()
         ]);
 
         $paginated->appends(request()->all());
 
         return $paginated;
+        
     }
 
 

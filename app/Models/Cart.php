@@ -8,6 +8,7 @@ class Cart
     public $items=null;
     public $totalQty = 0;
     public $totalPrice =0;
+    //save ID's of products in $products
     public $products = null;
 
     public function __construct($oldCart){

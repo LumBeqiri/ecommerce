@@ -120,13 +120,8 @@ class Handler extends ExceptionHandler
 
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
-        $errors =  $e->validator->errors()->getMessages();
-
-        if($this->isFrontend($request)){
-            return $request->ajax() ? response()->json($errors, 422) : back()
-            ->withInput($request->input())
-            ->withErrors($errors); 
-        }
+        $errors = $e->validator->errors()->getMessages();
+        return $this->errorResponse($errors, 422);
     }
 
     public function isFrontend($request){
