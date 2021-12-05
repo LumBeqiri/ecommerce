@@ -19,9 +19,8 @@ class CategoryController extends ApiController
     {
         $categories = Category::orderBy('id')->get();
 
-        $this->showAll($categories);
+        return $this->showAll($categories);
 
-        return $categories;
     }
 
     /**
