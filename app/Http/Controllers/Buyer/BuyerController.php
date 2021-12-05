@@ -17,9 +17,8 @@ class BuyerController extends ApiController
     }
 
     public function show(Buyer $buyer){
-        echo 'hi';
+        // echo 'hi';
         return $this->showOne($buyer);
     }
-
 
 }

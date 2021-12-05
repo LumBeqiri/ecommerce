@@ -26,28 +26,19 @@ trait ApiResponser{
             return $this->successResponse(['data' => $collection],$code);
         }
 
-       // $transformer = $collection->first()->transformer;
-
-       // $collection = $this->filterData($collection, $transformer);
-      //  $collection = $this->sortData($collection, $transformer);
-          $collection = $this->paginate($collection);
-      //  $collection = $this->transformData($collection, $transformer);
+        $collection = $this->filterData($collection);
+        $collection = $this->sortData($collection);
+        $collection = $this->paginate($collection);
       //  $collection = $this->cacheResponse($collection);	
         
         return $this->successResponse($collection,$code);
     }
 
     protected function showOne(Model $instance, $code = 200){
-       // $transformer = $instance->transformer;
-
-       // $instance = $this->transformData($instance, $transformer);
         return $this->successResponse($instance,$code);
     }
 
     protected function showOneObject(Object $instance, $code = 200){
-       // $transformer = $instance->transformer;
-
-       // $instance = $this->transformData($instance, $transformer);
         return $this->successResponse($instance,$code);
     }
 
@@ -59,7 +50,7 @@ trait ApiResponser{
     protected function filterData(Collection $collection)
     {
         foreach(request()->query() as $query=> $value){
-            $attribute = $value;
+            $attribute = $query;
             
             if(isset($attribute, $value)){
                 $collection = $collection->where($attribute,$value);
@@ -69,10 +60,10 @@ trait ApiResponser{
         return $collection;
     }
 
-    public function sortData(Collection $collection, $transformer){
+    public function sortData(Collection $collection){
         
         if(request()->has('sort_by')){
-            $attribute = $transformer::originalAttribute(request()->sort_by);
+            $attribute = request()->sort_by; 
             $collection = $collection->sortBy->{$attribute}; 
         }
 

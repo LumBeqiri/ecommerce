@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,11 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('id')->get();
 
         $this->showAll($categories);
+
+        return $categories;
     }
 
     /**
@@ -37,15 +40,11 @@ class CategoryController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
-        $rules = [
-            'name' => 'required|max:255|string',
-            'description' => 'required|max:500|string',
-        ];
-        $this->validate($request,$rules);
+        
 
-        $newCategory = Category::create($request->all());
+        $newCategory = Category::create($request->validated());
 
         return $this->showOne($newCategory, 201);
     }
@@ -69,13 +68,8 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CreateCategoryRequest $request, Category $category)
     {
-        $rules = [
-            'name' => 'required|max:255|string',
-            'description' => 'required|max:500|string',
-        ];
-        $this->validate($request,$rules);
 
         $category->fill($request->only([
             'name',
