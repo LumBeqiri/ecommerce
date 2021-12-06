@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Product;
+
 
 class Cart
 {
@@ -25,8 +27,8 @@ class Cart
         $this->products = array_unique($this->products);
     }
 
-    public function add($item, $id){
-        $storedItem = ['item' => $item, 'qty' => 0, 'price' => $item->price];
+    public function add($item, $id){            
+        $storedItem = ['item' => $id, 'qty' => 0, 'price' => $item->price];
         //check if user has items
         if($this->items){
             //if item exists on the cart already, then do nothing
@@ -34,6 +36,7 @@ class Cart
                 $storedItem = $this->items[$id];
             }
         }
+        //save product id's in a array
         $this->addProductId($id);
 
         $storedItem['qty']++;

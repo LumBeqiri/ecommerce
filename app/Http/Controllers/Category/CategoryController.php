@@ -41,8 +41,6 @@ class CategoryController extends ApiController
      */
     public function store(CreateCategoryRequest $request)
     {
-        
-
         $newCategory = Category::create($request->validated());
 
         return $this->showOne($newCategory, 201);

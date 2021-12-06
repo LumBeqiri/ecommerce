@@ -43,10 +43,12 @@ class ProductCartController extends ApiController
         $oldCart = $request->session()->get('cart');
         $cart = new Cart($oldCart);
 
-        $product_ids = $cart->products;
-        
-        echo json_encode($product_ids);
-    
+
+       $product_ids = array_column($cart->items, 'item');
+     
+       echo json_encode($product_ids);
 
     }
+
+
 }
