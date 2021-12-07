@@ -25,8 +25,6 @@ class Product extends Model
         'color',
         'short_desc',
         'long_desc',
-        'image_1',
-        'image_2',
         'seller_id',
         'currency_id',
         'stock',

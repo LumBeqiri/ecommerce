@@ -44,7 +44,7 @@ return [
 
         'images' => [
             'driver' => 'local',
-            'root' => public_path('img'),
+            'root' => 'storage\app\public\img',
             'visibility' => 'public',
         ],
 
