@@ -23,6 +23,7 @@ class StoreProductRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'name' => 'required',
             'sku' => 'required',
@@ -33,7 +34,17 @@ class StoreProductRequest extends FormRequest
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
             'currency_id' => 'integer',
-            'image' => 'required|image'
+            'images' => 'max:2',
+            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+
         ];
     }
+
+    public function messages() {
+        return [
+          'images.*.max' => 'Image size should be less than 2mb',
+          'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
+          'images.max' => 'Only 2 images are allowed'
+        ];
+      }
 }
