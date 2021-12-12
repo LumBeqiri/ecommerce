@@ -74,7 +74,6 @@ Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
 
 //Seller Routes
 
-
 Route::resource('sellers', SellerController::class);
 Route::resource('sellers.products', SellerProductController::class);
 

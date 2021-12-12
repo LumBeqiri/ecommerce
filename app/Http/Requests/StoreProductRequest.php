@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -21,8 +23,11 @@ class StoreProductRequest extends FormRequest
      *
      * @return array
      */
+
+  
     public function rules()
     {
+        $max_images = 5;
 
         return [
             'name' => 'required',
@@ -33,18 +38,20 @@ class StoreProductRequest extends FormRequest
             'short_desc' => 'string|max:256',
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
+            'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'currency_id' => 'integer',
-            'images' => 'max:2',
+            'images' => 'max:' . $max_images,
             'images.*' => 'mimes:jpeg,jpg,png|max:2000'
 
         ];
     }
 
     public function messages() {
+          $max_images = 5;
         return [
           'images.*.max' => 'Image size should be less than 2mb',
           'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
-          'images.max' => 'Only 2 images are allowed'
+          'images.max' => 'Only ' . $max_images . ' images per product are allowed'
         ];
       }
 }
