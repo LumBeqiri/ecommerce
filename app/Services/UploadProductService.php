@@ -2,13 +2,11 @@
 namespace App\Services;
 
 use App\Models\Image;
-use App\Models\Product;
-use App\Traits\ApiResponser;
-use Illuminate\Support\Facades\DB;
 
 class UploadProductService{
 
     public static function upload($newProduct, $images){
+        
         //if there are images
         if($images){
             //for every image:

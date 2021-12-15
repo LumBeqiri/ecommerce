@@ -28,8 +28,9 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         $max_images = 5;
-
-        return [
+        
+        if($this->getMethod()== 'POST'){
+          return [
             'name' => 'required',
             'sku' => 'required',
             'price' => 'required|numeric',
@@ -44,7 +45,26 @@ class StoreProductRequest extends FormRequest
             'images' => 'max:' . $max_images,
             'images.*' => 'mimes:jpeg,jpg,png|max:2000'
 
-        ];
+          ];
+        }else{
+          return [
+            'name' => 'required',
+            'sku' => 'required',
+            'price' => 'required|numeric',
+            'weight' => 'numeric|nullable',
+            'size' => 'string|nullable',
+            'short_desc' => 'string|max:256',
+            'long_desc' => 'string| max:900',
+            'stock' => 'required|integer|min:1',
+            'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
+            'currency_id' => 'integer',
+            'images' => 'max:' . $max_images,
+            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+
+          ];
+        }
+
+
     }
 
     public function messages() {

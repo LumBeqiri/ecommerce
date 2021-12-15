@@ -20,39 +20,43 @@ class SellerProductController extends ApiController
     }
 
     public function update(StoreProductRequest $request, Seller $seller, Product $product){
-        $request_images = count($request->file('images'));
-        $db_images_count = $product->images->count();
-        abort_if($db_images_count + $request_images > 5, 422, 'Can not have more than 5 images per product');
+        $request->validated();
+        $images = null;
+        if($request->has('images')){
+            $images = $request->images;
+            $request_images = count($request->file('images'));
+            $db_images_count = $product->images->count();
+            abort_if($db_images_count + $request_images > 5, 422, 'Can not have more than 5 images per product');
+            UploadProductService::upload($product,$images);
+        }
 
-        $product->fill($request->only([
-            'name',
-            'sku',
-            'price',
-            'weight',
-            'size',
-            'color',
-            'short_desc',
-            'long_desc',
-            'seller_id',
-            'currency_id',
-            'stock',
-            'status'
-        ]));
+        $product->fill($request->except(['categories']));
         $this->checkSeller($seller,$product);
+
+        // if($product->isClean()){
+        //     return $this->errorResponse('You need to specify a different value to update', 422);
+        // }
+
+        $integerIDs = array_map('intval', explode(',', $request->categories));
+        abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
+        $product->categories()->syncWithoutDetaching($integerIDs);
+
+        $product->save();
+
+        return $this->showOne($product);
      
     }
 
     public function store(StoreProductRequest $request, User $seller){
         //validate product details and image details
         $data = $request->validated();
-        $data['status'] = $request->status;
         $data['currency_id'] =$request->currency_id;
         $data['seller_id'] = $seller->id;
         $images = $request->file('images');
         $newProduct = Product::create($data);
         //cast string to array of integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
-        abort_if($integerIDs >5, 422, 'Only 5 categories per product');
+        abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
         $newProduct->categories()->sync($integerIDs);
         //send images to be uploaded
         return UploadProductService::upload($newProduct,$images);

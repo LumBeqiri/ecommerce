@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Http\Request;
+
 
 class ProductCategoryController extends ApiController
 {
@@ -13,5 +13,9 @@ class ProductCategoryController extends ApiController
         $categories = $product->categories()->get();
 
         return $this->showAll($categories);
+    }
+
+    public function deleteCategories(Product $product){
+        $product->categories()->detach();
     }
 }

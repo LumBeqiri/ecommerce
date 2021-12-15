@@ -21,6 +21,7 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,10 +45,12 @@ use App\Http\Controllers\Category\CategoryProductController;
 
 
 //Product Routes
+//Route::post('products/delete_categories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 Route::resource('products', ProductController::class);
-Route::resource('products.buyers', ProductBuyerController::class)->only(['index']);
-Route::resource('products.categories', ProductCategoryController::class)->only(['index']);
-Route::resource('products.orders', ProductOrderController::class)->only(['index']);
+Route::resource('products.buyers', ProductBuyerController::class);
+Route::resource('products.categories', ProductCategoryController::class);
+Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
+Route::resource('products.orders', ProductOrderController::class);
 
 
 
@@ -62,7 +65,7 @@ Route::get('get_cart', [ProductCartController::class, 'getCart']);
 
 Route::resource('buyers', BuyerController::class);
 
-Route::resource('products.buyers', ProductBuyerController::class)->only(['index']);
+//Route::resource('products.buyers', ProductBuyerController::class)->only(['index']);
 
 Route::resource('buyers.products', BuyerProductController::class)->only(['index']);
 
@@ -94,5 +97,9 @@ Route::resource('orders', OrderController::class);
 Route::resource('orders.categories', OrderCategoryController::class);
 Route::resource('orders.sellers', OrderSellerController::class);
 
+
+//User Routes
+
+Route::resource('users', UserController::class);
 
 
