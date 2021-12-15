@@ -36,9 +36,11 @@ class SellerProductController extends ApiController
         // if($product->isClean()){
         //     return $this->errorResponse('You need to specify a different value to update', 422);
         // }
-
+        //get string ids and convert them to integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
+        //no more than 5 images are allowed per product
         abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
+        //update the categories with the requested id's
         $product->categories()->syncWithoutDetaching($integerIDs);
 
         $product->save();
