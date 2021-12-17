@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Mail\UserCreated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
 
@@ -132,5 +134,28 @@ class UserController extends ApiController
          $user->delete();
         
         return $this->showOne($user);
+    }
+
+    public function verify($token){
+        $user = User::where('verification_token', $token)->firstOrFail();
+
+        $user->verified = User::VERIFIED_USER;
+        $user->email_verified_at = now();
+        $user->verification_token = null;
+
+        $user->save();
+
+        return $this->showMessage('Account has been verified!');
+
+    }
+
+    public function resend(User $user){
+        if($user->isVerified()){
+            return $this->errorResponse('This user is already verified', 409);
+        }
+
+        Mail::to($user)->send(new UserCreated($user));
+
+        return $this->showMessage('The verification email has been resent');
     }
 }

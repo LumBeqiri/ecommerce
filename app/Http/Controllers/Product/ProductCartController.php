@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Product;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Session;
 
@@ -42,11 +41,42 @@ class ProductCartController extends ApiController
     public function getCart(Request $request){
         $oldCart = $request->session()->get('cart');
         $cart = new Cart($oldCart);
+        $cart_items = $cart->items;
+
+  
+      //  print_r($cart);
+        // $array = array();
+
+        // if($cart_items){
+        //     foreach($cart_items as $key=>$value){
+        //         $array[$key]['id'] = $value['item'];
+        //         $array[$key]['qty'] = $value['qty'];
+        //     }
+
+        //     foreach($array as $a){
+        //         print_r($a['id']);
+        //     }
+        // }
 
 
-       $product_ids = array_column($cart->items, 'item');
-     
-       echo json_encode($product_ids);
+        
+
+
+        foreach($cart->items as $item){
+            echo json_encode($item);
+            
+        }
+
+        // $array = array();
+
+        // foreach ($cart_items as $key =>$value){
+        //     $array[$key]['id'] = $value['item'];
+        //     $array[$key]['qty'] = $value['qty'];
+        // }
+
+        // print_r($array);
+
+      // return $this->showOneObject($cart);
 
     }
 

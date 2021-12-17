@@ -38,6 +38,7 @@ trait ApiResponser{
         return $this->successResponse($instance,$code);
     }
 
+    // display non eloquent model
     protected function showOneObject(Object $instance, $code = 200){
         return $this->successResponse($instance,$code);
     }

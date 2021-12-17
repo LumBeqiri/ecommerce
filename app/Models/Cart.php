@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Product;
 
 
 class Cart
@@ -29,6 +28,8 @@ class Cart
 
     public function add($item, $id){            
         $storedItem = ['item' => $id, 'qty' => 0, 'price' => $item->price];
+
+
         //check if user has items
         if($this->items){
             //if item exists on the cart already, then do nothing
@@ -40,7 +41,7 @@ class Cart
         $this->addProductId($id);
 
         $storedItem['qty']++;
-        $storedItem['price'] = $item->price * $storedItem['qty']; 
+      //  $storedItem['price'] = $item->price * $storedItem['qty']; //this sets the price of the product as the total sum price of products
         $this->items[$id] = $storedItem;
         $this->totalQty++;
         $this->totalPrice+= $item->price;
@@ -60,12 +61,12 @@ class Cart
                         unset($this->products[$key]);
                     }
                 }
-                else{
-                    $this->items[$id]['qty']--;
-                    $this->items[$id]['price'] = $item->price * $this->items[$id]['qty']; 
-                    $this->totalQty--;
-                    $this->totalPrice-=$item->price;
-                }
+                // else{
+                //     $this->items[$id]['qty']--;
+                //     $this->items[$id]['price'] = $item->price * $this->items[$id]['qty']; 
+                //     $this->totalQty--;
+                //     $this->totalPrice-=$item->price;
+                // }
             }
         }
     }

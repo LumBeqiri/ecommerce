@@ -102,4 +102,9 @@ Route::resource('orders.sellers', OrderSellerController::class);
 
 Route::resource('users', UserController::class);
 
+//Verify account
+
+Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']);
+Route::name('resend')->get('users/{user}/resend', [UserController::class, 'resend']);
+
 
