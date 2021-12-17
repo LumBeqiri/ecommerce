@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Models\Cart;
+use App\Models\SessionCart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
@@ -13,7 +13,7 @@ class ProductCartController extends ApiController
     public function addToCart(Request $request, $id){
         $product = Product::find($id);
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
+        $cart = new SessionCart($oldCart);
         if($request['qty']){
             for($i=0;$i<$request['qty'];$i++){
                  $cart->add($product, $product->id);    
@@ -30,7 +30,7 @@ class ProductCartController extends ApiController
     public function removeFromCart(Request $request, $id){
         $product = Product::find($id);
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
+        $cart = new SessionCart($oldCart);
         $cart->remove($product, $product->id);
 
         $request->session()->put('cart', $cart);
@@ -40,7 +40,7 @@ class ProductCartController extends ApiController
 
     public function getCart(Request $request){
         $oldCart = $request->session()->get('cart');
-        $cart = new Cart($oldCart);
+        $cart = new SessionCart($oldCart);
         $cart_items = $cart->items;
 
   

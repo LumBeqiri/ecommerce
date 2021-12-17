@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Order;
 use App\Models\Category;
@@ -39,7 +40,11 @@ class Product extends Model
     }
 
     public function categories(){
-        return $this->belongsToMany(Category::class)->withTimestamps();;
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
+
+    public function cart(){
+        return $this->belongsTo(Cart::class);
     }
 
     

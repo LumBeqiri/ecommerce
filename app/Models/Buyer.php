@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Scopes\BuyerScope;
+use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Scopes\BuyerScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Buyer extends User
 {
@@ -19,5 +20,9 @@ class Buyer extends User
 
     public function orders(){
         return $this->hasMany(Order::class);
+    }
+
+    public function carts(){
+        return $this->hasMany(Cart::class);
     }
 }
