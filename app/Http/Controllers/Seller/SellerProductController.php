@@ -30,6 +30,7 @@ class SellerProductController extends ApiController
             UploadProductService::upload($product,$images);
         }
         $product->fill($request->except(['categories']));
+        //save price as cents
         $product->price = $request->price *100;
         $this->checkSeller($seller,$product);
         //get string ids and convert them to integer
@@ -52,15 +53,14 @@ class SellerProductController extends ApiController
         $data['currency_id'] =$request->currency_id;
         $data['seller_id'] = $seller->id;
         $images = $request->file('images');
+
         $newProduct = Product::create($data);
         //cast string to array of integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
-        foreach($integerIDs as $id){
-            if($id <=0){
-                abort(422, 'Category cannot be 0');
-            }
-        }
+
+        abort_if(in_array(0,$integerIDs),422, 'Category cannot be 0');
         abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
+
         $newProduct->categories()->sync($integerIDs);
         //send images to be uploaded
         return UploadProductService::upload($newProduct,$images);
