@@ -31,6 +31,7 @@ class Product extends Model
         'long_desc',
         'seller_id',
         'currency_id',
+        'discount_id',
         'stock',
         'status'
     ];
@@ -39,14 +40,23 @@ class Product extends Model
         return $this->status == Product::AVAILABLE_PRODUCT;
     }
 
+    public function getSellingPrice(){
+        echo $this->price;
+        if($this->discount !=null && $this->discount->active){
+            $discount_percent = $this->discount->discount_percent;
+            $price =  $this->price - $this->price*($discount_percent/100);
+            return $price;
+        }
+        return $this->price;
+    }
+
+    public function discount(){
+      return $this->belongsTo(Discount::class);
+    }
+
     public function categories(){
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
-
-    public function cart(){
-        return $this->belongsTo(Cart::class);
-    }
-
     
     public function seller(){
         return $this->belongsTo(Seller::class);
@@ -61,7 +71,7 @@ class Product extends Model
     }
 
     public function getPriceAttribute($value){
-        return $value;
+        return $value/100;
     }
 
     public function orders(){

@@ -12,6 +12,7 @@ class ProductCartController extends ApiController
 {
     public function addToCart(Request $request, $id){
         $product = Product::find($id);
+      
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new SessionCart($oldCart);
         if($request['qty']){
@@ -38,34 +39,18 @@ class ProductCartController extends ApiController
         return $this->showOneObject($cart,200);
     }
 
+    public function checkout(){
+
+    }
+
+
     public function getCart(Request $request){
         $oldCart = $request->session()->get('cart');
         $cart = new SessionCart($oldCart);
         $cart_items = $cart->items;
 
-  
-      //  print_r($cart);
-        // $array = array();
+        print_r($cart->items);
 
-        // if($cart_items){
-        //     foreach($cart_items as $key=>$value){
-        //         $array[$key]['id'] = $value['item'];
-        //         $array[$key]['qty'] = $value['qty'];
-        //     }
-
-        //     foreach($array as $a){
-        //         print_r($a['id']);
-        //     }
-        // }
-
-
-        
-
-
-        foreach($cart->items as $item){
-            echo json_encode($item);
-            
-        }
 
         // $array = array();
 
@@ -75,6 +60,8 @@ class ProductCartController extends ApiController
         // }
 
         // print_r($array);
+        // print_r($cart_items);
+
 
       // return $this->showOneObject($cart);
 

@@ -29,13 +29,9 @@ class SellerProductController extends ApiController
             abort_if($db_images_count + $request_images > 5, 422, 'Can not have more than 5 images per product');
             UploadProductService::upload($product,$images);
         }
-
         $product->fill($request->except(['categories']));
+        $product->price = $request->price *100;
         $this->checkSeller($seller,$product);
-
-        // if($product->isClean()){
-        //     return $this->errorResponse('You need to specify a different value to update', 422);
-        // }
         //get string ids and convert them to integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
         //no more than 5 images are allowed per product
@@ -52,12 +48,18 @@ class SellerProductController extends ApiController
     public function store(StoreProductRequest $request, User $seller){
         //validate product details and image details
         $data = $request->validated();
+        $data['price'] = $request->price * 100;
         $data['currency_id'] =$request->currency_id;
         $data['seller_id'] = $seller->id;
         $images = $request->file('images');
         $newProduct = Product::create($data);
         //cast string to array of integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
+        foreach($integerIDs as $id){
+            if($id <=0){
+                abort(422, 'Category cannot be 0');
+            }
+        }
         abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
         $newProduct->categories()->sync($integerIDs);
         //send images to be uploaded

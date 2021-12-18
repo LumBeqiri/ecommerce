@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Product;
+
 
 
 class SessionCart
@@ -9,15 +11,13 @@ class SessionCart
     public $items=null;
     public $totalQty = 0;
     public $totalPrice =0;
-    //save ID's of products in $products
-    public $products = null;
+
 
     public function __construct($oldCart){
         if($oldCart){
             $this->items = $oldCart->items;
             $this->totalQty = $oldCart->totalQty;
             $this->totalPrice = $oldCart->totalPrice;
-            $this->products = $oldCart->products;
         }
     }
 
@@ -26,10 +26,10 @@ class SessionCart
         $this->products = array_unique($this->products);
     }
 
-    public function add($item, $id){            
-        $storedItem = ['item' => $id, 'qty' => 0, 'price' => $item->price];
-
-
+    public function add($item, $id){ 
+        $price =$item->getSellingPrice();
+        //store this array that represent an item with given attrs
+        $storedItem = ['item' => $id, 'qty' => 0, 'price' => $price] ;
         //check if user has items
         if($this->items){
             //if item exists on the cart already, then do nothing
@@ -37,36 +37,37 @@ class SessionCart
                 $storedItem = $this->items[$id];
             }
         }
-        //save product id's in a array
-        $this->addProductId($id);
 
         $storedItem['qty']++;
-      //  $storedItem['price'] = $item->price * $storedItem['qty']; //this sets the price of the product as the total sum price of products
+        //this sets the total price for product group
+        $storedItem['price'] = number_format($price,2) * $storedItem['qty']; 
         $this->items[$id] = $storedItem;
         $this->totalQty++;
-        $this->totalPrice+= $item->price;
+        $this->totalPrice+= $price;
     }
 
     public function remove($item, $id){
+        $price =$item->getSellingPrice();
         //check if user has items
         if($this->items){
 
             if(array_key_exists($id,$this->items)){
+                //check if there's only one product added
                 $temp = $this->items[$id];
                 if($temp['qty'] == 1){
                     $this->totalQty--;
-                    $this->totalPrice-=$item->price;
+                    $this->totalPrice-=$price;
                     unset($this->items[$id]);
-                    if (($key = array_search($id, $this->products)) !== false) {
-                        unset($this->products[$key]);
-                    }
                 }
-                // else{
-                //     $this->items[$id]['qty']--;
-                //     $this->items[$id]['price'] = $item->price * $this->items[$id]['qty']; 
-                //     $this->totalQty--;
-                //     $this->totalPrice-=$item->price;
-                // }
+                else{
+                    $this->items[$id]['qty']--;
+                    $this->items[$id]['price'] = number_format($price,2) * $this->items[$id]['qty']; 
+                    $this->totalQty--;
+                    $tot = $this->totalPrice;
+                    $tot-=number_format($price,2);
+                    $this->totalPrice = number_format($tot,2);
+                   // $this->totalPrice = (int) $this->totalPrice;
+                }
             }
         }
     }

@@ -55,8 +55,8 @@ Route::resource('products.orders', ProductOrderController::class);
 
 
 //Cart Routes
-Route::post('products/add_to_cart/{id}/{qty?}', [ProductCartController::class, 'addToCart']);
-Route::post('products/remove_from_cart/{id}', [ProductCartController::class, 'removeFromCart']);
+Route::post('products/add_to_cart/{product}/{qty?}', [ProductCartController::class, 'addToCart']);
+Route::post('products/remove_from_cart/{product}', [ProductCartController::class, 'removeFromCart']);
 Route::get('get_cart', [ProductCartController::class, 'getCart']);
 
 

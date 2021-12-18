@@ -4,24 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Cart extends Model
+class Discount extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'qty',
-        'total_price',
-        'user_id'
-
+        'name',
+        'desc',
+        'discount_percent',
+        'active',
     ];
-
-    public function buyer(){
-        return $this->belongsTo(Buyer::class);
-    }
 
     public function product(){
         return $this->hasMany(Product::class);
     }
-
 }
