@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 class ProductCartController extends ApiController
 {
     public function addToCart(Request $request, $id){
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
       
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new SessionCart($oldCart);

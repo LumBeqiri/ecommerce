@@ -28,8 +28,13 @@ class SessionCart
 
     public function add($item, $id){ 
         $price =$item->getSellingPrice();
+     
+        $discount = $item->getDiscountPercent();
+    
+
+        
         //store this array that represent an item with given attrs
-        $storedItem = ['item' => $id, 'qty' => 0, 'price' => $price] ;
+        $storedItem = ['item' => $id, 'qty' => 0, 'price' => $price, 'discount' =>$discount] ;
         //check if user has items
         if($this->items){
             //if item exists on the cart already, then do nothing

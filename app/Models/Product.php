@@ -41,13 +41,20 @@ class Product extends Model
     }
 
     public function getSellingPrice(){
-        echo $this->price;
         if($this->discount !=null && $this->discount->active){
             $discount_percent = $this->discount->discount_percent;
             $price =  $this->price - $this->price*($discount_percent/100);
             return $price;
         }
         return $this->price;
+    }
+
+    public function getDiscountPercent(){
+        if($this->discount){
+            return $this->discount->discount_percent;
+        }
+        return 0;
+        
     }
 
     public function discount(){
