@@ -49,8 +49,9 @@ use App\Http\Controllers\User\UserController;
 Route::resource('products', ProductController::class);
 Route::resource('products.buyers', ProductBuyerController::class);
 Route::resource('products.categories', ProductCategoryController::class);
-Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 Route::resource('products.orders', ProductOrderController::class);
+Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
+
 
 
 

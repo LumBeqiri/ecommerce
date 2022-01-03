@@ -64,11 +64,11 @@ class ProductCartController extends ApiController
             'payment_id' => 43,
         ];
 
-        //  $order = Order::create($data);
+         $order = Order::create($data);
 
-        //  $order->products()->attach($products, ['quantity'=>0]);
+         $order->products()->attach($products, ['quantity'=>0]);
 
-        //  return $order;
+         return $order;
          
     }
 
@@ -77,27 +77,7 @@ class ProductCartController extends ApiController
         $oldCart = $request->session()->get('cart');
         $cart = new SessionCart($oldCart);
         $cart_items = $cart->items;
-
         print_r($cart);
-    //    foreach($cart->items as $item){
-    //     $products []= $item['item'];
-    //    }
-
-
-       
-
-        // $array = array(); 
-
-        // foreach ($cart_items as $key =>$value){
-        //     $array[$key]['id'] = $value['item'];
-        //     $array[$key]['qty'] = $value['qty'];
-        // }
-
-        // print_r($array);
-        // print_r($cart_items);
-
-
-      // return $this->showOneObject($cart);
 
     }
 
