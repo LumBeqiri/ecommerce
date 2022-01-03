@@ -14,8 +14,7 @@ class OrderCategoryController extends ApiController
         $categories = $order->products()->with('categories')
         ->get()
         ->pluck('categories')
-        ->collapse()
-        ;
+        ->collapse();
         
         return $this->showAll($categories);
     }

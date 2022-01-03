@@ -6,6 +6,7 @@ use App\Models\SessionCart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Models\Order;
 use Illuminate\Support\Facades\Session;
 
 class ProductCartController extends ApiController
@@ -39,8 +40,36 @@ class ProductCartController extends ApiController
         return $this->showOneObject($cart,200);
     }
 
-    public function checkout(){
+    public function checkout(Request $request){
+        $oldCart = $request->session()->get('cart');
+        $cart = new SessionCart($oldCart);
+    //   print_r($cart);
+        $products= $cart->product_ids;
 
+       
+        print_r($products);
+
+        $data = [
+            'buyer_id' => 2,
+            'ship_name' => 'Lejla',
+            'ship_address' => 'dalip',
+            'ship_city' => 'gjilan',
+            'ship_state' => 'kosovo',
+            'order_tax' => 18,
+            'order_date' => now(),
+            'total' => $cart->totalPrice,
+            'order_shipped' => Order::SHIPPED_ORDER,
+            'order_email' => 'lejla@test.com',
+            'order_phone' => '+383 44 123 456',
+            'payment_id' => 43,
+        ];
+
+        //  $order = Order::create($data);
+
+        //  $order->products()->attach($products, ['quantity'=>0]);
+
+        //  return $order;
+         
     }
 
 
@@ -49,10 +78,15 @@ class ProductCartController extends ApiController
         $cart = new SessionCart($oldCart);
         $cart_items = $cart->items;
 
-        print_r($cart->items);
+        print_r($cart);
+    //    foreach($cart->items as $item){
+    //     $products []= $item['item'];
+    //    }
 
 
-        // $array = array();
+       
+
+        // $array = array(); 
 
         // foreach ($cart_items as $key =>$value){
         //     $array[$key]['id'] = $value['item'];

@@ -58,6 +58,7 @@ Route::resource('products.orders', ProductOrderController::class);
 Route::post('products/add_to_cart/{product}/{qty?}', [ProductCartController::class, 'addToCart']);
 Route::post('products/remove_from_cart/{product}', [ProductCartController::class, 'removeFromCart']);
 Route::get('get_cart', [ProductCartController::class, 'getCart']);
+Route::get('checkout', [ProductCartController::class, 'checkout']);
 
 
 

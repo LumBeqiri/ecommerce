@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Models\Seller;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\ApiController;
 
 class SellerController extends ApiController

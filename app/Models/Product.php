@@ -40,6 +40,7 @@ class Product extends Model
         return $this->status == Product::AVAILABLE_PRODUCT;
     }
 
+    // the price it's gonna sell for
     public function getSellingPrice(){
         if($this->discount !=null && $this->discount->active){
             $discount_percent = $this->discount->discount_percent;
@@ -49,6 +50,7 @@ class Product extends Model
         return $this->price;
     }
 
+    //discount percentage per product
     public function getDiscountPercent(){
         if($this->discount){
             return $this->discount->discount_percent;

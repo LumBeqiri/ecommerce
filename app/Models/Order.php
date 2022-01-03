@@ -27,8 +27,11 @@ class Order extends Model
         'ship_state',
         'order_tax',
         'order_date',
+        'total',
         'order_shipped',
-        'order_email'
+        'order_email',
+        'order_phone',
+        'payment_id'
     ];
 
     public function buyer(){
@@ -40,7 +43,6 @@ class Order extends Model
         ->withTimestamps()
         ->withPivot([
             'quantity',
-            'total'
         ]);
     }
 
