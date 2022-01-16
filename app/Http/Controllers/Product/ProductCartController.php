@@ -66,7 +66,7 @@ class ProductCartController extends ApiController
 
          $order = Order::create($data);
 
-         $order->products()->attach($products, ['quantity'=>0]);
+         $order->products()->attach($products);
 
          return $order;
          
