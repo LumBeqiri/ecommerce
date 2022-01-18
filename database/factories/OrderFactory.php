@@ -34,6 +34,7 @@ class OrderFactory extends Factory
             'order_date' => $this->faker->dateTimeBetween($startDate = '-2 years', $endDate = 'now', $timezone = null),
             'order_shipped' => $order_shipped = $this->faker->randomElement([Order::SHIPPED_ORDER,Order::UNSHIPPED_ORDER]),
             'order_email' => $this->faker->unique()->safeEmail(),
+            'order_phone' => "044123456",
             'payment_id' => $this->faker->randomDigit()
         ];
     }

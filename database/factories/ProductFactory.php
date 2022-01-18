@@ -26,8 +26,6 @@ class ProductFactory extends Factory
             'size' => 'regular',
             'short_desc' => $this->faker->paragraph(1),
             'long_desc' => $this->faker->paragraph(1),
-            'image_1' => $this->faker->randomElement(['1.jpg','2.jpg','3.jpg']),
-            'image_2' => $this->faker->randomElement(['1.jpg','2.jpg','3.jpg']),
             'seller_id' => User::all()->random()->id,
             'currency_id' => 2,
             'stock' => $this->faker->numberBetween(1,10),

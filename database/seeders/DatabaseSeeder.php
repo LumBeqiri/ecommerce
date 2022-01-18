@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\{User,Category,Product,Order};
+use Faker\Factory as Faker;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,6 +28,7 @@ class DatabaseSeeder extends Seeder
      
         DB::table('category_product')->truncate();
         DB::table('order_product')->truncate();
+        
 
         // in order to not send emails to fake accounts when seeding the db, we call flushEventListenres(); method
         User::flushEventListeners();
@@ -47,8 +50,23 @@ class DatabaseSeeder extends Seeder
             }
         );
 
+        $ordersQuantity = 100;
         Order::factory($ordersQuantity)->create();
-
+        
+        foreach(Product::all() as $product){
+            $faker = Faker::create();
+            $qty = $faker->randomDigit();
+           // echo($qty);
+            $total = $qty * $product->price;
+          //  echo($product->name . "-" . $product->price . " qty = " . $qty . " total = " . $total);
+          //  echo("\n");
+            $orders = Order::inRandomOrder()->take(rand(1,3))->pluck('id');
+            // $product->orders()->attach($orders,
+            // [
+            //     'quantity' =>$qty = $faker->randomDigit(),
+            //     'total' => $qty * $product->price
+            // ]);
+        }
      
                 
 
