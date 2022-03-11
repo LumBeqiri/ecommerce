@@ -12,9 +12,8 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     * First seed this file
-     * Then seed OrderSeeder
-     * There's no need to seed CategoryProduct
+     * Seed this file
+     * There's no need to seed CategoryProduct or OrderSeeder
      *
      * @return void
      */
@@ -35,9 +34,9 @@ class DatabaseSeeder extends Seeder
         Category::flushEventListeners();
         Product::flushEventListeners();
 
-        $usersQuantity = 1000;
+        $usersQuantity = 100;
         $categoriesQuantity = 30;
-        $productsQuantity = 1000;
+        $productsQuantity = 100;
         $ordersQuantity = 100;
         
 
@@ -56,19 +55,11 @@ class DatabaseSeeder extends Seeder
         foreach(Product::all() as $product){
             $faker = Faker::create();
             $qty = $faker->randomDigit();
-           // echo($qty);
-            $total = $qty * $product->price;
-          //  echo($product->name . "-" . $product->price . " qty = " . $qty . " total = " . $total);
-          //  echo("\n");
-            $orders = Order::inRandomOrder()->take(rand(1,3))->pluck('id');
-            // $product->orders()->attach($orders,
-            // [
-            //     'quantity' =>$qty = $faker->randomDigit(),
-            //     'total' => $qty * $product->price
-            // ]);
         }
      
-                
+        $path = public_path('sql/currencySeeder.sql');
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
 
     }
 }
