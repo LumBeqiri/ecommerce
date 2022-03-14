@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\{User,Category,Product,Order};
+use App\Models\{User,Category, Image, Product,Order};
+use Database\Factories\ImageFactory;
 use Faker\Factory as Faker;
 
 
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
         User::truncate();
         Category::truncate();
         Product::truncate();
+        Image::truncate();
      
         DB::table('category_product')->truncate();
         DB::table('order_product')->truncate();
@@ -38,6 +40,7 @@ class DatabaseSeeder extends Seeder
         $categoriesQuantity = 30;
         $productsQuantity = 100;
         $ordersQuantity = 100;
+        $imagesQuantity = 100;
         
 
         User::factory($usersQuantity)->create();
@@ -48,6 +51,8 @@ class DatabaseSeeder extends Seeder
                 $product->categories()->attach($categories);
             }
         );
+        
+        Image::factory($imagesQuantity)->create();
 
         $ordersQuantity = 100;
         Order::factory($ordersQuantity)->create();
