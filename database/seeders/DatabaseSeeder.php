@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\{User,Category, Image, Product,Order};
+use App\Models\{User,Category, Image, Product,Order, SubCategory};
 use Database\Factories\ImageFactory;
 use Faker\Factory as Faker;
 
@@ -38,13 +38,14 @@ class DatabaseSeeder extends Seeder
 
         $usersQuantity = 100;
         $categoriesQuantity = 30;
-        $productsQuantity = 100;
-        $ordersQuantity = 100;
-        $imagesQuantity = 100;
+        $productsQuantity = 50;
+        $ordersQuantity = 50;
+        $imagesQuantity = 50;
         
 
         User::factory($usersQuantity)->create();
         Category::factory($categoriesQuantity)->create();
+    
         Product::factory($productsQuantity)->create()->each(
             function($product){
                 $categories =  Category::all()->random(mt_rand(1, 5))->pluck('id');
