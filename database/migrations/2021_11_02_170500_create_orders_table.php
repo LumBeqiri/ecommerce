@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('order_date');
             $table->string('order_shipped');
             $table->string('order_email');
+            $table->string('order_phone');
             $table->integer('payment_id');
            
             

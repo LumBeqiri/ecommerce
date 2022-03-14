@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use App\Models\Buyer;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
@@ -44,6 +45,10 @@ class Order extends Model
         ->withPivot([
             'quantity',
         ]);
+    }
+
+    public function cart(){
+        return $this->hasOne(Cart::class);
     }
 
 }

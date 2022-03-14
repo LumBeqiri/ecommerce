@@ -18,13 +18,11 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('sku');
-            $table->double('price',10,2);
+            $table->integer('price');
             $table->string('weight');
             $table->string('size');
             $table->string('short_desc');
             $table->string('long_desc');
-            $table->string('image_1');
-            $table->string('image_2');
             $table->integer('seller_id')->unsigned();
             $table->integer('currency_id')->unsigned();
             $table->integer('stock')->unsigned();

@@ -57,6 +57,7 @@ class DatabaseSeeder extends Seeder
             $qty = $faker->randomDigit();
         }
      
+        //seed currencies table from an sql file
         $path = public_path('sql/currencySeeder.sql');
         $sql = file_get_contents($path);
         DB::unprepared($sql);
