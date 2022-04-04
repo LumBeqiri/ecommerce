@@ -14,4 +14,10 @@ class CategoryProductController extends ApiController
 
         return $this->showAll($products);
     }
+
+    public function subcats(Category $category){
+       $subs = $category->subcategory()->get();
+       
+       return $this->showAll($subs);
+    }
 }

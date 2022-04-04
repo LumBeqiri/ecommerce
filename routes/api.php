@@ -89,6 +89,7 @@ Route::resource('sellers.products', SellerProductController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('categories.buyers', CategoryBuyerController::class);
 Route::resource('categories.products', CategoryProductController::class);
+Route::get('categories/{category}/subs', [CategoryProductController::class,'subcats']);
 Route::resource('categories.sellers', CategorySellerController::class);
 Route::resource('categories.orders', CategoryOrderController::class);
 

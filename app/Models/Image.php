@@ -13,11 +13,12 @@ class Image extends Model
 
     protected $fillable = [
         'image',
-        'product_id',
+        'imageable_id',
+        'imageable_type',
         'title'
     ];
 
-    public function product(){
-        return $this->belongsTo(Product::class);
+    public function imageable(){
+        return $this->morphTo();
     }
 }

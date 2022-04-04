@@ -23,17 +23,9 @@ class Product extends Model
     protected $fillable = [
         'name',
         'sku',
-        'price',
-        'weight',
-        'size',
-        'color',
-        'short_desc',
-        'long_desc',
+        'description',
         'seller_id',
         'currency_id',
-        'discount_id',
-        'stock',
-        'status'
     ];
 
     public function isAvaliable(){
@@ -66,6 +58,10 @@ class Product extends Model
     public function categories(){
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
+
+    public function variants(){
+        return $this->hasMany(Variant::class);
+    }
     
     public function seller(){
         return $this->belongsTo(Seller::class);
@@ -76,7 +72,7 @@ class Product extends Model
     }
 
     public function images(){
-        return $this->hasMany(Image::class);
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     public function getPriceAttribute($value){
