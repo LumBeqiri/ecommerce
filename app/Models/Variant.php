@@ -27,4 +27,8 @@ class Variant extends Model
     public function images(){
         return $this->morphMany(Image::class, 'imageable');
     }
+
+    public function attributes(){
+        return $this->belongsToMany(Attribute::class);
+    }
 }

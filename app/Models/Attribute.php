@@ -13,4 +13,8 @@ class Attribute extends Model
         'attribute_type',
         'attribute_value'
     ];
+
+    public function variants(){
+        return $this->belongsToMany(Variant::class);
+    }
 }
