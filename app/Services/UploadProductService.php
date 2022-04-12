@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Image;
+use App\Models\Product;
 
 class UploadProductService{
 
@@ -16,7 +17,8 @@ class UploadProductService{
                 //save the file to image property
                 $imgData['image'] = $path;
                 //attach image to the product
-                $imgData['product_id'] = $newProduct->id;
+                $imgData['imageable_id'] = $newProduct->id;
+                $imgData['imageable_type'] = Product::class;
                 //title of the image is the same as in users' machine
                 $imgData['title'] = $image->getClientOriginalName();
                 // create the image and store the data in the database

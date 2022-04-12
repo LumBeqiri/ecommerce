@@ -49,15 +49,17 @@ class SellerProductController extends ApiController
 
     public function store(StoreProductRequest $request, User $seller){
         //validate product details and image details
-        $variant_data = $request->validated();
+        $variant_data = $request->all();
         $product_data = [];
-        $product_data['name'] = $request->name;
-        $product_data['price'] = $request->price;
-        $product_data['currency_id'] =$request->currency_id;
-        $product_data['seller_id'] = $seller->id;
+        // $product_data['name'] = $request->name;
+        // $product_data['price'] = $request->price;
+        // $product_data['currency_id'] =$request->currency_id;
         // $product_data['desc'] = 'oijo';
         $images = $request->file('images');
 
+        $product_data = $request->only(['name','seller_id','currency_id']);
+        $product_data['description'] = $request->short_description;
+        $product_data['seller_id'] = $seller->id;
         $newProduct = Product::create($product_data);
         //cast string to array of integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
@@ -67,7 +69,9 @@ class SellerProductController extends ApiController
 
         $newProduct->categories()->sync($integerIDs);
 
+
         $variant_data['product_id'] = $newProduct->id;
+
         
         Variant::create($variant_data);
         //send images to be uploaded
