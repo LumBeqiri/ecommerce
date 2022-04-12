@@ -20,16 +20,9 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'sku' => $this->faker->word,
-            'price' => $this->faker->numberBetween($min = 1, $max = 200) ,
-            'weight'=> $this->faker->numberBetween($min = 1, $max = 1000),
-            'size' => 'regular',
-            'short_desc' => $this->faker->paragraph(1),
-            'long_desc' => $this->faker->paragraph(1),
+            'description' => $this->faker->paragraph(1),
             'seller_id' => User::all()->random()->id,
             'currency_id' => 2,
-            'stock' => $this->faker->numberBetween(1,10),
-            'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
         ];
     }
 }

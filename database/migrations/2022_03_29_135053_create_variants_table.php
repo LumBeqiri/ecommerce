@@ -18,6 +18,7 @@ class CreateVariantsTable extends Migration
             $table->increments('id');
             $table->integer('product_id')->references('id')->on('products');
             $table->string('sku');
+            $table->string('variant_name');
             $table->string('short_description');
             $table->text('long_description');
             $table->integer('price');

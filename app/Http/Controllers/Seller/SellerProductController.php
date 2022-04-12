@@ -10,6 +10,7 @@ use App\Services\UploadProductService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
+use App\Models\Variant;
 
 class SellerProductController extends ApiController
 {
@@ -48,13 +49,16 @@ class SellerProductController extends ApiController
 
     public function store(StoreProductRequest $request, User $seller){
         //validate product details and image details
-        $data = $request->validated();
-        $data['price'] = $request->price * 100;
-        $data['currency_id'] =$request->currency_id;
-        $data['seller_id'] = $seller->id;
+        $variant_data = $request->validated();
+        $product_data = [];
+        $product_data['name'] = $request->name;
+        $product_data['price'] = $request->price;
+        $product_data['currency_id'] =$request->currency_id;
+        $product_data['seller_id'] = $seller->id;
+        // $product_data['desc'] = 'oijo';
         $images = $request->file('images');
 
-        $newProduct = Product::create($data);
+        $newProduct = Product::create($product_data);
         //cast string to array of integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
 
@@ -62,6 +66,10 @@ class SellerProductController extends ApiController
         abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
 
         $newProduct->categories()->sync($integerIDs);
+
+        $variant_data['product_id'] = $newProduct->id;
+        
+        Variant::create($variant_data);
         //send images to be uploaded
         return UploadProductService::upload($newProduct,$images);
 
@@ -72,6 +80,10 @@ class SellerProductController extends ApiController
         abort_if($seller->id != $product->seller_id,
         422,
         'The specified seller is not the seller of this product!');
+    }
+
+    protected function getVariantProductData($arr){
+
     }
 
     protected function removeCategories($start_id,$end_id){

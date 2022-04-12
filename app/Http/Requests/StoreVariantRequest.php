@@ -31,34 +31,27 @@ class StoreProductRequest extends FormRequest
         
         if($this->getMethod()== 'POST'){
           return [
-            'name' => 'required',
             'sku' => 'required',
             'price' => 'required|numeric',
             'short_desc' => 'string|max:256',
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
+            'product_id' => 'in:products',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'currency_id' => 'integer|required',
-            'categories' => 'required',
             'images' => 'max:' . $max_images,
             'images.*' => 'mimes:jpeg,jpg,png|max:2000'
-
           ];
         }else{
           return [
-            'name' => 'required',
             'sku' => 'required',
             'price' => 'required|numeric',
-            'weight' => 'numeric|nullable',
-            'size' => 'string|nullable',
             'short_desc' => 'string|max:256',
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
+            'product_id' => 'in:products',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'currency_id' => 'integer',
             'images' => 'max:' . $max_images,
             'images.*' => 'mimes:jpeg,jpg,png|max:2000'
-
           ];
         }
 
@@ -66,7 +59,7 @@ class StoreProductRequest extends FormRequest
     }
 
     public function messages() {
-          $max_images = 5;
+        $max_images = 5;
         return [
           'images.*.max' => 'Image size should be less than 2mb',
           'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
