@@ -6,7 +6,7 @@ use App\Models\Seller;
 use App\Models\Product;
 
 use Illuminate\Foundation\Auth\User;
-use App\Services\UploadProductService;
+use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
@@ -26,9 +26,9 @@ class SellerProductController extends ApiController
         if($request->has('images')){
             $images = $request->images;
             $request_images = count($request->file('images'));
-            $db_images_count = $product->images->count();
-            abort_if($db_images_count + $request_images > 5, 422, 'Can not have more than 5 images per product');
-            UploadProductService::upload($product,$images);
+            $db_images_count = $product->images()->count();
+            abort_if($db_images_count + $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
+            UploadImageService::upload($product,$images, Product::class);
         }
         $product->fill($request->except(['categories']));
         //save price as cents
@@ -76,9 +76,7 @@ class SellerProductController extends ApiController
         $newVariant = Variant::create($variant_data);
 
         //send images to be uploaded
-        return UploadProductService::upload($newVariant,$images, Variant::class);
-
-
+        return UploadImageService::upload($newVariant,$images, Variant::class);
     }
 
     protected function checkSeller(Seller $seller, Product $product){

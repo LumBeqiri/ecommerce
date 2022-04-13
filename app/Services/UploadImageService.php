@@ -4,7 +4,7 @@ namespace App\Services;
 use App\Models\Image;
 use App\Models\Product;
 
-class UploadProductService{
+class UploadImageService{
 
     public static function upload($newProductVariant, $images, $className){
         
