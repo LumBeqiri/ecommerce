@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Variant;
 
@@ -20,26 +21,27 @@ class SellerProductController extends ApiController
         return $this->showAll($products);
     }
 
-    public function update(StoreProductRequest $request, Seller $seller, Product $product){
+    public function update(UpdateProductRequest $request, Seller $seller, Product $product){
         $request->validated();
         $images = null;
         if($request->has('images')){
             $images = $request->images;
             $request_images = count($request->file('images'));
-            $db_images_count = $product->images()->count();
-            abort_if($db_images_count + $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
+            abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
             UploadImageService::upload($product,$images, Product::class);
         }
-        $product->fill($request->except(['categories']));
-        //save price as cents
-        $product->price = $request->price *100;
+        $product->fill($request->except(['categories']));   
         $this->checkSeller($seller,$product);
         //get string ids and convert them to integer
         $integerIDs = array_map('intval', explode(',', $request->categories));
         //no more than 5 images are allowed per product
-        abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
-        //update the categories with the requested id's
-        $product->categories()->syncWithoutDetaching($integerIDs);
+        if($request->has('categories')){
+            abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
+            echo 'here';
+            //update the categories with the requested id's
+            $product->categories()->sync($integerIDs);
+        }
+
 
         $product->save();
 
