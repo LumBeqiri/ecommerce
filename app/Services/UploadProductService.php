@@ -6,7 +6,7 @@ use App\Models\Product;
 
 class UploadProductService{
 
-    public static function upload($newProduct, $images){
+    public static function upload($newProductVariant, $images, $className){
         
         //if there are images
         if($images){
@@ -17,15 +17,15 @@ class UploadProductService{
                 //save the file to image property
                 $imgData['image'] = $path;
                 //attach image to the product
-                $imgData['imageable_id'] = $newProduct->id;
-                $imgData['imageable_type'] = Product::class;
+                $imgData['imageable_id'] = $newProductVariant->id;
+                $imgData['imageable_type'] = $className;
                 //title of the image is the same as in users' machine
                 $imgData['title'] = $image->getClientOriginalName();
                 // create the image and store the data in the database
                 Image::create($imgData);
             }
         }
-        return $newProduct;
+        return $newProductVariant;
 
     }
 }

@@ -25,6 +25,7 @@ class Product extends Model
         'description',
         'seller_id',
         'currency_id',
+        'sku'
     ];
 
     public function isAvaliable(){

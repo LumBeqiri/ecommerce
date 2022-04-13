@@ -32,7 +32,7 @@ class StoreProductRequest extends FormRequest
         if($this->getMethod()== 'POST'){
           return [
             'name' => 'required',
-            'sku' => 'required',
+            'sku' => 'required|unique:variants',
             'price' => 'required|numeric',
             'short_description' => 'string|max:256',
             'long_description' => 'string| max:900',
@@ -48,7 +48,7 @@ class StoreProductRequest extends FormRequest
         }else{
           return [
             'name' => 'required',
-            'sku' => 'required',
+            'sku' => 'required|unique:variants',
             'short_description' => 'string|max:256',
             'long_description' => 'string| max:900',
             'variant_name' => 'string| max:50',
