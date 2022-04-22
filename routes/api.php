@@ -21,6 +21,7 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\Seller\VariantController;
 use App\Http\Controllers\User\UserController;
 
 /*
@@ -52,6 +53,8 @@ Route::resource('products.categories', ProductCategoryController::class);
 Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
+
+Route::get('products/{product}/variants', [VariantController::class, 'index']);
 
 
 
