@@ -11,6 +11,7 @@ use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\StoreVariantRequest;
+use App\Http\Requests\UpdateVariantRequest;
 
 class VariantController extends ApiController
 {
@@ -55,9 +56,9 @@ class VariantController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Variant $variant)
     {
-        //
+        return $this->showOne($variant);
     }
 
 
@@ -68,9 +69,23 @@ class VariantController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(UpdateVariantRequest $request, Product $product){
+        $request->validated();
+        $images = null;
+        if($request->has('images')){
+            $images = $request->images;
+            $request_images = count($request->file('images'));
+            abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
+            UploadImageService::upload($product,$images, Product::class);
+        }
+        $product->fill($request->except(['categories']));   
+        //get string ids and convert them to integer
+
+
+        $product->save();
+
+        return $this->showOne($product);
+     
     }
 
     /**
