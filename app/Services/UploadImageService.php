@@ -3,10 +3,12 @@ namespace App\Services;
 
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\Variant;
 
 class UploadImageService{
 
     public static function upload($newProductVariant, $images, $className){
+     
         
         //if there are images
         if($images){
@@ -23,6 +25,8 @@ class UploadImageService{
                 $imgData['title'] = $image->getClientOriginalName();
                 // create the image and store the data in the database
                 Image::create($imgData);
+                
+
             }
         }
         return $newProductVariant;

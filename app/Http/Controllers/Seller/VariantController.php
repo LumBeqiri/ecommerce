@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Models\User;
+use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
+use GuzzleHttp\Handler\Proxy;
 
 class VariantController extends ApiController
 {
@@ -69,22 +71,28 @@ class VariantController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVariantRequest $request, Product $product){
+    public function update(UpdateVariantRequest $request,Product $product,Variant $variant){
+   
         $request->validated();
+        $seller_id = $request->seller_id;
         $images = null;
+        $images = $request->images;
+    
         if($request->has('images')){
             $images = $request->images;
             $request_images = count($request->file('images'));
-            abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
-            UploadImageService::upload($product,$images, Product::class);
+            abort_if( $request_images > 1, 422, 'Can not have more than 1 image per variant');
+            UploadImageService::upload($variant,$images, Variant::class);
         }
-        $product->fill($request->except(['categories']));   
+        
+        
+        $variant->fill($request->except(['categories']));   
         //get string ids and convert them to integer
+        $this->checkSeller($seller_id,$variant->product_id);
 
+        $variant->save();
 
-        $product->save();
-
-        return $this->showOne($product);
+        return $this->showOne($variant);
      
     }
 
@@ -97,5 +105,14 @@ class VariantController extends ApiController
     public function destroy($id)
     {
         //
+    }
+
+    protected function checkSeller($seller_id, $product_id){
+
+        $product = Product::findOrFail($product_id);
+        $seller = Seller::findOrFail($seller_id);
+        abort_if($seller->id != $product->seller_id,
+        422,
+        'The specified seller is not the seller of this product!');
     }
 }

@@ -56,6 +56,8 @@ Route::delete('products/deleteCategories/{product}', [ProductCategoryController:
 
 Route::get('products/{product}/variants', [VariantController::class, 'index']);
 Route::post('products/{product}/variants', [VariantController::class, 'store']);
+Route::put('products/{product}/variants/{variant}', [VariantController::class, 'update']); 
+
 
 
 
