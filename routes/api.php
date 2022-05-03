@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
@@ -59,7 +60,15 @@ Route::delete('products/deleteCategories/{product}', [ProductCategoryController:
 // Route::put('products/{product}/variants/{variant}', [VariantController::class, 'update']); 
 // Route::delete('products/{product}/variants/{variant}', [VariantController::class, 'destroy']); 
 
+// VARIANT Routes
 Route::resource('products.variants', VariantController::class);
+
+// ATTRIUBTE Routes
+
+Route::get('attributes', [AttributeController::class, 'index']);
+Route::get('attributes/{attribute}', [AttributeController::class, 'show']);
+Route::post('attributes', [AttributeController::class, 'store']);
+Route::put('attributes/{attribute}', [AttributeController::class, 'update']);
 
 //Cart Routes
 Route::post('products/add_to_cart/{product}/{qty?}', [ProductCartController::class, 'addToCart']);
