@@ -54,12 +54,12 @@ Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
 
-Route::get('products/{product}/variants', [VariantController::class, 'index']);
-Route::post('products/{product}/variants', [VariantController::class, 'store']);
-Route::put('products/{product}/variants/{variant}', [VariantController::class, 'update']); 
+// Route::get('products/{product}/variants', [VariantController::class, 'index']);
+// Route::post('products/{product}/variants', [VariantController::class, 'store']);
+// Route::put('products/{product}/variants/{variant}', [VariantController::class, 'update']); 
+// Route::delete('products/{product}/variants/{variant}', [VariantController::class, 'destroy']); 
 
-
-
+Route::resource('products.variants', VariantController::class);
 
 //Cart Routes
 Route::post('products/add_to_cart/{product}/{qty?}', [ProductCartController::class, 'addToCart']);

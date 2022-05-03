@@ -96,21 +96,21 @@ class VariantController extends ApiController
      
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Request $request, Product $product, Variant $variant)
+    {   
+      
+        //ADD seller id of logged user or check if ADMIN role 
+        $seller_id = 4;
+        $this->checkSeller($seller_id, $product->id);
+
+        $variant->delete();
+
+        return $this->showOne($variant);
     }
 
     protected function checkSeller($seller_id, $product_id){
-
         $product = Product::findOrFail($product_id);
-        $seller = Seller::findOrFail($seller_id);
+        $seller = User::findOrFail($seller_id);
         abort_if($seller->id != $product->seller_id,
         422,
         'The specified seller is not the seller of this product!');
