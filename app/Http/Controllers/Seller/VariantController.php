@@ -48,6 +48,11 @@ class VariantController extends ApiController
         
         $newVariant = Variant::create($variant_data);
 
+        // $attr = array_map('intval', explode(',', $request->attrs));
+        $attr = $request->attrs;
+
+        $newVariant->attributes()->sync($attr);
+
         //send images to be uploaded
         return UploadImageService::upload($newVariant,$images, Variant::class);
     }
@@ -89,6 +94,10 @@ class VariantController extends ApiController
         $variant->fill($request->except(['categories']));   
         //get string ids and convert them to integer
         $this->checkSeller($seller_id,$variant->product_id);
+
+        $attr = $request->attrs;
+
+        $variant->attributes()->sync($attr);
 
         $variant->save();
 
