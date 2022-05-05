@@ -34,7 +34,7 @@ class SellerProductController extends ApiController
         $product->fill($request->except(['categories']));   
         $this->checkSeller($seller,$product);
         //get string ids and convert them to integer
-        $integerIDs = array_map('intval', explode(',', $request->categories));
+        $integerIDs =  $request->categories;
         //no more than 5 images are allowed per product
         if($request->has('categories')){
             abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
@@ -64,8 +64,9 @@ class SellerProductController extends ApiController
 
         //getting categories from request
         //cast string to array of integer
-        $integerIDs = array_map('intval', explode(',', $request->categories));
-
+        // $integerIDs = array_map('intval', explode(',', $request->categories));
+        $integerIDs = $request->categories;
+        
         abort_if(in_array(0,$integerIDs),422, 'Category cannot be 0');
         abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
 
