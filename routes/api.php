@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
@@ -45,6 +46,7 @@ use App\Http\Controllers\User\UserController;
 //     'index','update', 'destroy'
 // ]);
 
+Route::post('register', [AuthController::class, 'register']);
 
 //Product Routes
 //Route::post('products/delete_categories/{product}', [ProductCategoryController::class, 'deleteCategories']);

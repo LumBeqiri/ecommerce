@@ -33,6 +33,7 @@ class User extends Authenticatable
         'city',
         'state',
         'zip',
+        'shipping_address',
         'phone',
         'verified',
         'verification_token',
