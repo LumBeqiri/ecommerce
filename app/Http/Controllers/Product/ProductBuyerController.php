@@ -9,8 +9,7 @@ class ProductBuyerController extends ApiController
 {
     public function index(Product $product)
     {
-
-
+    
         $buyers = $product->orders()
         ->with('buyer')
         ->get()

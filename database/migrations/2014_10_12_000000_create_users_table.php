@@ -20,11 +20,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('city');
-            $table->string('state');
-            $table->integer('zip');
-            $table->string('shipping_address');
-            $table->string('phone');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->integer('zip')->nullable();
+            $table->string('shipping_address')->nullable();
+            $table->string('phone')->nullable();
             $table->rememberToken();
             $table->string('verified')->default(User::UNVERIFIED_USER);
             $table->string('verification_token')->nullable();

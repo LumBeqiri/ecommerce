@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\RegisterUserRequest;
 
 class AuthController extends ApiController
 {
     
     public function register(RegisterUserRequest $request){
 
-    
-        $data = $request->validated();
+        $data = $request->all();
         $data['password'] = bcrypt($data['password']);
         $data['verification_token'] = User::generateVerificationCode();
 
@@ -28,6 +28,7 @@ class AuthController extends ApiController
         ];
 
         return $this->showMessage($response, 201);
+
     }
 
 
