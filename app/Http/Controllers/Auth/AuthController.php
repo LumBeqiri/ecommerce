@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\RegisterUserRequest;
 
@@ -29,6 +30,22 @@ class AuthController extends ApiController
 
         return $this->showMessage($response, 201);
 
+    }
+
+    public function login(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'device_name' => 'required',
+         ]);
+   
+         $user = User::where('email', $request->email)->first();
+   
+         if (!$user || !Hash::check($request->password, $user->password)) {
+            return $this->errorResponse('Wrong credentials', 401);
+         }
+   
+         return $user->createToken($request->device_name)->plainTextToken;
     }
 
 

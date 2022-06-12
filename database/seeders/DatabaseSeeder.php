@@ -62,11 +62,18 @@ class DatabaseSeeder extends Seeder
 
         $ordersQuantity = 100;
         Order::factory($ordersQuantity)->create();
+
+        Order::factory($ordersQuantity)->create()->each(
+            function($order){
+                $products = Product::all()->random(mt_rand(1, 5))->pluck('id');
+                $order->products()->attach($products);
+            }
+        );
         
-        foreach(Product::all() as $product){
-            $faker = Faker::create();
-            $qty = $faker->randomDigit();
-        }
+        // foreach(Product::all() as $product){
+        //     $faker = Faker::create();
+        //     $qty = $faker->randomDigit();
+        // }
      
         //seed currencies table from an sql file
         $path = public_path('sql/currencySeeder.sql');

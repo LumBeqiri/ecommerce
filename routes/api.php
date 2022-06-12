@@ -41,6 +41,8 @@ use App\Http\Controllers\User\UserController;
 //     return $request->user();
 // });
 
+Route::post('login', [AuthController::class, 'login']);
+
 
 // Route::resource('products.categories', ProductController::class)->only([
 //     'index','update', 'destroy'
@@ -56,11 +58,6 @@ Route::resource('products.categories', ProductCategoryController::class);
 Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
-
-// Route::get('products/{product}/variants', [VariantController::class, 'index']);
-// Route::post('products/{product}/variants', [VariantController::class, 'store']);
-// Route::put('products/{product}/variants/{variant}', [VariantController::class, 'update']); 
-// Route::delete('products/{product}/variants/{variant}', [VariantController::class, 'destroy']); 
 
 // VARIANT Routes
 Route::resource('products.variants', VariantController::class);
