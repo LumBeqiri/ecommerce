@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\UserPasswordChanged;
+use Mail;
 
 class ChangePasswordController extends ApiController
 {
@@ -28,6 +30,12 @@ class ChangePasswordController extends ApiController
         $user->password= bcrypt($data['new_password']);
 
         $user->save();
+        
+        retry(5, function() use($user){
+            Mail::to($user)->send(new UserPasswordChanged($user));
+        }
+        
+    );
 
         return UserResource::make($user);
     
