@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,7 @@ Route::post('login', LoginController::class);
 // ]);
 
 Route::post('register', [AuthController::class, 'register']);
+Route::put('change_password', ChangePasswordController::class);
 
 //Product Routes
 //Route::post('products/delete_categories/{product}', [ProductCategoryController::class, 'deleteCategories']);
