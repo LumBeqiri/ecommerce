@@ -30,7 +30,7 @@ class RegisterUserRequest extends FormRequest
             // 'state' => 'required',
             // 'zip' => 'required|regex:/\b\d{5}\b/',
             // 'phone' => 'required|string',
-            // 'email'=> 'required|email|unique:users',
+            'email'=> 'required|email|unique:users',
             // 'shipping_address'=> 'string|max:255',
             // 'password' => 'required|min:8|confirmed',
         ];

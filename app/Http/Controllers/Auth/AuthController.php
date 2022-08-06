@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 
 class AuthController extends ApiController
@@ -32,20 +33,16 @@ class AuthController extends ApiController
 
     }
 
-    public function login(Request $request){
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'device_name' => 'required',
-         ]);
-   
-         $user = User::where('email', $request->email)->first();
-   
-         if (!$user || !Hash::check($request->password, $user->password)) {
+    public function login(LoginRequest $request){
+        $data = $request->validated();
+  
+        $user = User::where('email', $data['email'])->first();
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             return $this->errorResponse('Wrong credentials', 401);
-         }
-   
-         return $user->createToken($request->device_name)->plainTextToken;
+        }
+
+        return $user->createToken("secretFORnowToken")->plainTextToken;
     }
 
 
