@@ -32,19 +32,4 @@ class AuthController extends ApiController
         return $this->showMessage($response, 201);
 
     }
-
-    public function login(LoginRequest $request){
-        $data = $request->validated();
-  
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return $this->errorResponse('Wrong credentials', 401);
-        }
-
-        return $user->createToken("secretFORnowToken")->plainTextToken;
-    }
-
-
-
 }

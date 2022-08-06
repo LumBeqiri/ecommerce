@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
@@ -41,7 +42,7 @@ use App\Http\Controllers\User\UserController;
 //     return $request->user();
 // });
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', LoginController::class);
 
 
 // Route::resource('products.categories', ProductController::class)->only([
