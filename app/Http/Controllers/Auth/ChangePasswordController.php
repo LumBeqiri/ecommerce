@@ -33,9 +33,7 @@ class ChangePasswordController extends ApiController
         
         retry(5, function() use($user){
             Mail::to($user)->send(new UserPasswordChanged($user));
-        }
-        
-    );
+        });
 
         return UserResource::make($user);
     
