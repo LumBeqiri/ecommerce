@@ -44,7 +44,7 @@ use App\Http\Controllers\User\UserController;
 //     return $request->user();
 // });
 
-Route::post('login', LoginController::class);
+Route::post('login', LoginController::class)->name('login');
 
 
 // Route::resource('products.categories', ProductController::class)->only([
@@ -56,7 +56,7 @@ Route::post('login', LoginController::class);
 Route::post('register', [AuthController::class, 'register']);
 Route::put('change_password', ChangePasswordController::class);
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link']);
-Route::post('reset_password', [ForgotPasswordController::class, 'reset_password']);
+Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
 
 //Product Routes
 //Route::post('products/delete_categories/{product}', [ProductCategoryController::class, 'deleteCategories']);
