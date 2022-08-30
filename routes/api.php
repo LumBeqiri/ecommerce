@@ -53,8 +53,8 @@ Route::post('login', LoginController::class)->name('login');
 
 //AUTH Routes
 
-Route::post('register', [AuthController::class, 'register']);
-Route::put('change_password', ChangePasswordController::class);
+Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::put('change_password', ChangePasswordController::class)->name('change_password');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link']);
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
 

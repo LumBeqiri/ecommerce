@@ -27,6 +27,8 @@ class LoginController extends ApiController
             'token' => $token
         ];
 
+        return 'test';
+
         return $this->showMessage($response);
     }
 }
