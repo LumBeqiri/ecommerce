@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \App\Models\User */
 class UserResource extends JsonResource
 {
     /**
@@ -23,9 +24,6 @@ class UserResource extends JsonResource
             'zip' => $this->zip,
             'shipping_address' => $this->shipping_address,
             'phone' => $this->phone,
-            'shipping_address' => $this->shipping_address,
-
-            
         ];
     }
 }

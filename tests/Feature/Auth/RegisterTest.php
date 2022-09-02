@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-
 use function Pest\Faker\faker;
 
 it('can register user', function () {
