@@ -28,7 +28,7 @@ class CategoryController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateCategoryRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateCategoryRequest $request)
@@ -41,7 +41,7 @@ class CategoryController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
@@ -53,8 +53,8 @@ class CategoryController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  CreateCategoryRequest $request
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
     public function update(CreateCategoryRequest $request, Category $category)
@@ -77,7 +77,7 @@ class CategoryController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)

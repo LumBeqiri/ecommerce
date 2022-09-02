@@ -15,7 +15,8 @@ class LoginController extends ApiController
   
         $user = User::where('email', $data['email'])->first();
         $user = UserResource::make($user);
-
+        
+        /** @phpstan-ignore-next-line */
         if (!$user || !Hash::check($data['password'], $user->password)) {
             return $this->errorResponse('Wrong credentials', 401);
         }
@@ -26,8 +27,6 @@ class LoginController extends ApiController
             'user' => $user,
             'token' => $token
         ];
-
-        return 'test';
 
         return $this->showMessage($response);
     }

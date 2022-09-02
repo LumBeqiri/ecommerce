@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Models\User;
-use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
-use GuzzleHttp\Handler\Proxy;
 
 class VariantController extends ApiController
 {
@@ -33,7 +29,7 @@ class VariantController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreVariantRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreVariantRequest $request, Product $product){
@@ -60,7 +56,7 @@ class VariantController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Variant $variant
      * @return \Illuminate\Http\Response
      */
     public function show(Variant $variant)
@@ -72,11 +68,11 @@ class VariantController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  UpdateVariantRequest $request
+     * @param  Variant $variant
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVariantRequest $request,Product $product,Variant $variant){
+    public function update(UpdateVariantRequest $request,Variant $variant){
    
         $request->validated();
         $seller_id = $request->seller_id;
@@ -105,7 +101,13 @@ class VariantController extends ApiController
      
     }
 
-    public function destroy(Request $request, Product $product, Variant $variant)
+    /**
+     * @param Product $product
+     * @param Variant $variant
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Product $product, Variant $variant)
     {   
       
         //ADD seller id of logged user or check if ADMIN role 

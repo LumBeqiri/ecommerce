@@ -15,7 +15,7 @@ class ForgotPasswordController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function reset_link(Request $request)
     {

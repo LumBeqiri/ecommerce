@@ -4,8 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use App\Mail\UserCreated;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
@@ -28,7 +26,7 @@ class UserController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreUserRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserRequest $request)
@@ -48,7 +46,7 @@ class UserController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -61,8 +59,8 @@ class UserController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  StoreUserRequest $request
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
     public function update(StoreUserRequest $request, User $user)
@@ -109,7 +107,7 @@ class UserController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
