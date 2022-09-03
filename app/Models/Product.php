@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Order;
 use App\Models\Category;

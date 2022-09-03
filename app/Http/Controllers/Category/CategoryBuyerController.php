@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
 use App\Models\Category;
-use Illuminate\Http\Request;
+
 
 class CategoryBuyerController extends ApiController
 {
+    /**
+     * @param Category $category
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function index(Category $category){
         $buyers = $category->products()->whereHas('orders')
         ->with('orders.buyer')->get()

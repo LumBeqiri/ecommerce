@@ -110,11 +110,19 @@ class User extends Authenticatable
     ];
 
 
-    public function isVerified(){
+    /**
+     * @return bool
+     */
+    public function isVerified() : bool
+    {
         return $this->verified == User::VERIFIED_USER;
     }
 
-    public static function generateVerificationCode(){
+    /**
+     * @return string
+     */
+    public static function generateVerificationCode() : string
+    {
         return Str::random(40);
     }
 }

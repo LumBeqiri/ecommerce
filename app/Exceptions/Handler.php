@@ -5,14 +5,15 @@ namespace App\Exceptions;
 use Exception;
 use Throwable;
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Session\TokenMismatchException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
@@ -125,7 +126,8 @@ class Handler extends ExceptionHandler
         return $this->errorResponse($errors, 422);
     }
 
-    public function isFrontend($request){
+    public function isFrontend(Request $request) : bool
+    {
         return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
     }
 }

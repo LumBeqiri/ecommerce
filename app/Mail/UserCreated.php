@@ -12,6 +12,9 @@ class UserCreated extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    /**
+     * @var User
+     */
     public $user;
     /**
      * Create a new message instance.

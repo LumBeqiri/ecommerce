@@ -10,6 +10,11 @@ use App\Http\Resources\UserResource;
 
 class LoginController extends ApiController
 {
+    /**
+     * @param LoginRequest $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function __invoke(LoginRequest $request){
         $data = $request->validated();
   

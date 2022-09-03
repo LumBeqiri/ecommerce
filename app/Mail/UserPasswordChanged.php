@@ -13,12 +13,15 @@ class UserPasswordChanged extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     /**
+     * @var User
+     */
+    public $user;
+
+    /**
      * Create a new message instance.
      *
      * @return void
      */
-
-    public $user;
 
     public function __construct(User $user)
     {

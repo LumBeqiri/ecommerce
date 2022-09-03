@@ -79,7 +79,9 @@ class SellerProductController extends ApiController
         $newVariant = Variant::create($variant_data);
 
         //send images to be uploaded
-        return UploadImageService::upload($newVariant,$images, Variant::class);
+        UploadImageService::upload($newVariant,$images, Variant::class);
+
+        return $newVariant;
     }
 
     protected function checkSeller(Seller $seller, Product $product){

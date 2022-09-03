@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Seller;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Variant;
-use Illuminate\Http\Request;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreVariantRequest;
@@ -50,7 +49,9 @@ class VariantController extends ApiController
         $newVariant->attributes()->sync($attr);
 
         //send images to be uploaded
-        return UploadImageService::upload($newVariant,$images, Variant::class);
+        UploadImageService::upload($newVariant,$images, Variant::class);
+
+        return $newVariant;
     }
 
     /**

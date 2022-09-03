@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Models\Buyer;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\ApiController;
-use Illuminate\Support\Facades\Session;
+
 
 class BuyerOrderController extends ApiController
 {
+
+    /**
+     * @param Buyer $buyer
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function index(Buyer $buyer){
         $orders = $buyer->orders;
         return $this->showAll($orders);

@@ -30,9 +30,13 @@ class ForgotPasswordController extends ApiController
         : back()->withErrors(['email' => __($status)]);
     }
 
+    /**
+     * @param Request $request
+     * 
+     * @return string
+     */
     public function reset_password(Request $request){
 
-        
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',

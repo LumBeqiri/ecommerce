@@ -8,14 +8,20 @@ use App\Models\Buyer;
 
 class BuyerController extends ApiController
 {
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function index(){
 
         $buyers = Buyer::has('orders')->orderBy('id')->get();
         return $this->showAll($buyers);
     }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function show(Buyer $buyer){
-        // echo 'hi';
+   
         return $this->showOne($buyer);
     }
 

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
+
 
 
 class ApiController extends Controller
 {
     use ApiResponser;
-
+    
+    /** @phpstan-ignore-next-line */
     public $user;
 
     public function __construct()

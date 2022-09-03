@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\ChangePasswordRequest;
@@ -14,6 +12,11 @@ use Mail;
 
 class ChangePasswordController extends ApiController
 {
+    /**
+     * @param ChangePasswordRequest $request
+     * 
+     * @return UserResource
+     */
     public function __invoke(ChangePasswordRequest $request){
         $data = $request->validated();
 

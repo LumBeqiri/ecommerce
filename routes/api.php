@@ -1,21 +1,21 @@
 <?php
-
-use App\Http\Controllers\AttributeController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\ChangePasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Seller\SellerController;
+use App\Http\Controllers\Seller\VariantController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Order\OrderSellerController;
 use App\Http\Controllers\Buyer\BuyerProductController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Product\ProductCartController;
 use App\Http\Controllers\Product\ProductBuyerController;
@@ -26,8 +26,6 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
-use App\Http\Controllers\Seller\VariantController;
-use App\Http\Controllers\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +51,7 @@ Route::post('login', LoginController::class)->name('login');
 
 //AUTH Routes
 
-Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::post('register', [RegisterController::class, 'register'])->name('register');
 Route::put('change_password', ChangePasswordController::class)->name('change_password');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link']);
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
