@@ -15,4 +15,9 @@ trait HasUuid
             $model->uuid = Uuid::uuid4()->toString();
         });
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
 }

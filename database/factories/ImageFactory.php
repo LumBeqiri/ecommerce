@@ -21,6 +21,7 @@ class ImageFactory extends Factory
     {
         $imageable = $this->imageable();
         return [
+            'uuid' => $this->faker->uuid(),
             'image' => $this->faker->image(),
             'imageable_id' => $imageable::factory(),
             'imageable_type' => $imageable,

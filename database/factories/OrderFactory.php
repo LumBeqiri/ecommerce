@@ -24,6 +24,7 @@ class OrderFactory extends Factory
 
     
         return [
+            'uuid' => $this->faker->uuid(),
             'buyer_id' => $buyer->id,
             'ship_name'=> $this->faker->name(),
             'ship_address' => $this->faker->address(),

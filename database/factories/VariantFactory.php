@@ -20,6 +20,7 @@ class VariantFactory extends Factory
     public function definition()
     {
         return [
+            'uuid' => $this->faker->uuid(),
             'product_id' => Product::all()->random()->id,
             'sku' => $this->faker->word,
             'variant_name' => $this->faker->word,
