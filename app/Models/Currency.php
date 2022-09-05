@@ -33,7 +33,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Currency extends Model
 {
     use HasFactory;
-    use HasUuid;
     
     public function products() : HasMany
     {
