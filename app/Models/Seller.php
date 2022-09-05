@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Traits\HasUuid;
 use App\Scopes\SellerScope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Seller
@@ -63,6 +64,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Seller extends User
 {
     use HasFactory, SoftDeletes;
+    use HasUuid;
+
     public $table = "users";
 
     protected static function boot(){

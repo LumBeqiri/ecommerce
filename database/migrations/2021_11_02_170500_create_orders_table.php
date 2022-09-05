@@ -14,8 +14,9 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('buyer_id')->unsigned();
+            $table->id();
+            $table->uuid('uuid');
+            $table->foreignId('buyer_id')->constrained('users');
             $table->string('ship_name');
             $table->string('ship_address');
             $table->string('ship_city');
@@ -28,8 +29,7 @@ class CreateOrdersTable extends Migration
             $table->string('order_phone');
             $table->integer('payment_id');
            
-            
-            $table->foreign('buyer_id')->references('id')->on('users');
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -96,7 +96,7 @@ trait ApiResponser{
        // get current page
         $page = LengthAwarePaginator::resolveCurrentPage();
 
-        $perPage = 15;
+        $perPage = 5;
         Validator::validate(request()->all(), $rules);
 
         if(request()->has('per_page')){

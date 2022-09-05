@@ -15,13 +15,12 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
+            $table->uuid('uuid');
             $table->string('name');
             $table->string('description');
-            $table->integer('seller_id')->unsigned();
-            $table->integer('currency_id')->unsigned();
-            $table->foreign('seller_id')->references('id')->on('users');
-            $table->foreign('currency_id')->references('id')->on('currencies');
+            $table->foreignId('seller_id')->constrained('users');
+            $table->foreignId('currency_id')->constrained('currencies');
 
             $table->timestamps();
             $table->softDeletes();

@@ -15,8 +15,9 @@ class CreateAttributeVariantTable extends Migration
     {
         Schema::create('attribute_variant', function (Blueprint $table) {
             $table->id();
-            $table->integer('variant_id')->references('id')->on('variants');
-            $table->integer('attribute_id')->references('id')->on('attributes');
+            $table->uuid('uuid');
+            $table->foreignId('variant_id')->constrained('variants');
+            $table->foreignId('attribute_id')->constrained('attributes');
             $table->timestamps();
         });
     }

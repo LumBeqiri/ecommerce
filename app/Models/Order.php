@@ -6,12 +6,13 @@ use App\Models\Cart;
 use App\Models\Buyer;
 use App\Models\Seller;
 use App\Models\Product;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Order
@@ -64,6 +65,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
+    use HasUuid;
+
 
     const SHIPPED_ORDER = 'true';
     const UNSHIPPED_ORDER = 'false';

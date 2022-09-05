@@ -14,10 +14,9 @@ class OrderProductTable extends Migration
     public function up()
     {
         Schema::create('order_product', function (Blueprint $table) {
-            $table->integer('order_id')->unsigned();
-            $table->integer('product_id')->unsigned();
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreignId('order_id')->constrained('orders');
+            $table->foreignId('product_id')->constrained('products');
+
             $table->timestamps();
             $table->softDeletes();
         });

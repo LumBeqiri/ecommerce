@@ -4,15 +4,16 @@ namespace App\Models;
 
 use App\Models\Image;
 use App\Models\Order;
+use App\Traits\HasUuid;
 use App\Models\Category;
 use App\Models\Currency;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Product
@@ -57,6 +58,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Product extends Model
 {
     use HasFactory,SoftDeletes;
+    use HasUuid;
+
 
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';

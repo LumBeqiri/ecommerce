@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
+use App\Traits\HasUuid;
 use App\Scopes\BuyerScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Buyer
@@ -66,7 +67,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Buyer extends User
 {
     use HasFactory, SoftDeletes;
+    use HasUuid;
+
     public $table = "users";
+
+    
     protected static function boot(){
         parent::boot();
         static::addGlobalScope(new BuyerScope);

@@ -15,8 +15,9 @@ class CreateVariantsTable extends Migration
     public function up()
     {
         Schema::create('variants', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->id();
+            $table->uuid('uuid');
+            $table->foreignId('product_id')->onDelete('cascade')->constrained('products');
             $table->string('sku');
             $table->string('variant_name');
             $table->string('short_description');
@@ -24,7 +25,7 @@ class CreateVariantsTable extends Migration
             $table->integer('price');
             $table->integer('stock')->unsigned();
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
-            $table->integer('discount_id')->references('id')->on('discounts')->nullable();
+            $table->foreignId('discount_id')->nullable()->constrained('discounts');
             $table->timestamps();
         });
     }
