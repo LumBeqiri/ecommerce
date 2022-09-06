@@ -17,16 +17,14 @@ class LoginController extends ApiController
      */
     public function __invoke(LoginRequest $request){
         $data = $request->validated();
-  
         $user = User::where('email', $data['email'])->first();
-        $user = UserResource::make($user);
         
-        /** @phpstan-ignore-next-line */
         if (!$user || !Hash::check($data['password'], $user->password)) {
             return $this->errorResponse('Wrong credentials', 401);
         }
 
         $token = $user->createToken("secretFORnowToken")->plainTextToken;
+        $user = UserResource::make($user);
         
         $response = [
             'user' => $user,

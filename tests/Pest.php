@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 use Tests\CreatesApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -43,7 +45,16 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+
+function login($user = null)
 {
-    // ..
+    if($user === null) {
+        $user = User::factory()->create();
+    }
+
+
+    Sanctum::actingAs(
+        $user,
+        ['*']
+    );
 }
