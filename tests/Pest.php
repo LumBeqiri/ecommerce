@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Tests\CreatesApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -43,7 +44,13 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function login($user = null)
 {
-    // ..
+    if($user === null) {
+        $user = User::factory()->create();
+    }
+
+    $token = $user->createToken("secretFORnowToken")->plainTextToken;
+
+    test()->withHeaders(['Authorization' => 'Bearer ' . $token]);
 }

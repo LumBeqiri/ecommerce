@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\TryController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\LoginController;
@@ -52,9 +53,16 @@ Route::post('login', LoginController::class)->name('login');
 //AUTH Routes
 
 Route::post('register', [RegisterController::class, 'register'])->name('register');
-Route::put('change_password', ChangePasswordController::class)->name('change_password');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link']);
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
+
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::put('change_password', ChangePasswordController::class)->name('change_password');
+  
+
+    
+});
 
 //Product Routes
 //Route::post('products/delete_categories/{product}', [ProductCategoryController::class, 'deleteCategories']);

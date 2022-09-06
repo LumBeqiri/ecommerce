@@ -20,11 +20,12 @@ class ChangePasswordController extends ApiController
     public function __invoke(ChangePasswordRequest $request){
         $data = $request->validated();
 
-        $user = User::whereEmail($data['email'])->first();
+        $user = User::whereEmail(auth()->user()->email)->first();
 
         if (!$user || !Hash::check($data['old_password'], $user->password)) {
             return $this->errorResponse('Wrong credentials', 401);
         }
+  
 
         if($user->isDirty('password')){
             return $this->errorResponse('cannot change the password', 400);
