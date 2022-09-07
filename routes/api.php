@@ -18,7 +18,6 @@ use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Order\OrderCategoryController;
-use App\Http\Controllers\Product\ProductCartController;
 use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductOrderController;
 use App\Http\Controllers\Seller\SellerProductController;
@@ -39,9 +38,7 @@ use App\Http\Controllers\Category\CategoryProductController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+
 
 Route::post('login', LoginController::class)->name('login');
 
@@ -82,13 +79,6 @@ Route::get('attributes/{attribute}', [AttributeController::class, 'show']);
 Route::post('attributes', [AttributeController::class, 'store']);
 Route::put('attributes/{attribute}', [AttributeController::class, 'update']);
 
-//Cart Routes
-Route::post('products/add_to_cart/{product}/{qty?}', [ProductCartController::class, 'addToCart']);
-Route::post('products/remove_from_cart/{product}', [ProductCartController::class, 'removeFromCart']);
-Route::get('get_cart', [ProductCartController::class, 'getCart']);
-Route::get('checkout', [ProductCartController::class, 'checkout']);
-
-
 
 //Buyer Routes
 
@@ -102,7 +92,7 @@ Route::resource('buyers.sellers', BuyerSellerController::class);
 
 Route::resource('buyers.orders', BuyerOrderController::class);
 
-Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
+// Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
 
 //Seller Routes
 

@@ -1,8 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Mail\UserPasswordChanged;
 
 it('can change password', function () {
+
+    Mail::fake();
 
     $password = '123123123';
     $user = User::factory()->create([
@@ -25,6 +28,10 @@ it('can change password', function () {
     ]);
 
     $new_login_response->assertOk();
+
+
+    Mail::assertQueued(UserPasswordChanged::class);
+    
 
 
 });
