@@ -43,6 +43,8 @@ class ForgotPasswordController extends ApiController
             'password' => 'required|min:8|confirmed',
         ]);
 
+        
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {

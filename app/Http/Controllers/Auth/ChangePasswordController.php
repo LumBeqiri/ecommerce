@@ -39,7 +39,7 @@ class ChangePasswordController extends ApiController
             Mail::to($user)->send(new UserPasswordChanged($user));
         });
 
-        return UserResource::make($user);
+        return new UserResource($user);
     
     }
 }
