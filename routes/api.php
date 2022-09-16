@@ -50,7 +50,7 @@ Route::post('login', LoginController::class)->name('login');
 //AUTH Routes
 
 Route::post('register', [RegisterController::class, 'register'])->name('register');
-Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link']);
+Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
 
 

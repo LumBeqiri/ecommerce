@@ -17,7 +17,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 |
 */
 
-uses(Tests\TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature', 'Unit');
+uses(Tests\TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +51,7 @@ function login($user = null)
     if($user === null) {
         $user = User::factory()->create();
     }
-
-
+    
     Sanctum::actingAs(
         $user,
         ['*']
