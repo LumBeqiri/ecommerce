@@ -14,9 +14,6 @@ class ProductBuyerController extends ApiController
      */
     public function index(Product $product)
     {
-
-        dd($this->user);
-    
         $buyers = $product->orders()
         ->with('buyer')
         ->get()

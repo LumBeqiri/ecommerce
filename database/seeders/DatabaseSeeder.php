@@ -38,6 +38,11 @@ class DatabaseSeeder extends Seeder
         Category::flushEventListeners();
         Product::flushEventListeners();
 
+        //seed currencies table from an sql file
+        $path = public_path('sql/currencySeeder.sql');
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
+
         $usersQuantity = 100;
         $categoriesQuantity = 30;
         $productsQuantity = 50;
@@ -60,25 +65,11 @@ class DatabaseSeeder extends Seeder
         
         Image::factory($imagesQuantity)->create();
 
-        $ordersQuantity = 100;
-        Order::factory($ordersQuantity)->create();
-
         Order::factory($ordersQuantity)->create()->each(
             function($order){
                 $products = Product::all()->random(mt_rand(1, 5))->pluck('id');
                 $order->products()->attach($products);
             }
         );
-        
-        // foreach(Product::all() as $product){
-        //     $faker = Faker::create();
-        //     $qty = $faker->randomDigit();
-        // }
-     
-        //seed currencies table from an sql file
-        $path = public_path('sql/currencySeeder.sql');
-        $sql = file_get_contents($path);
-        DB::unprepared($sql);
-
     }
 }

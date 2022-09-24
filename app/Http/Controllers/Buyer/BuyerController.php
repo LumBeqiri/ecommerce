@@ -13,7 +13,7 @@ class BuyerController extends ApiController
      */
     public function index(){
 
-        $buyers = Buyer::has('orders')->orderBy('id')->get();
+        $buyers = Buyer::has('orders')->get();
         return $this->showAll($buyers);
     }
 

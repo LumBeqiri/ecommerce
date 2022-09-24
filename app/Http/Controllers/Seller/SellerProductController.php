@@ -21,6 +21,42 @@ class SellerProductController extends ApiController
         return $this->showAll($products);
     }
 
+
+    public function store(StoreProductRequest $request, User $seller){
+        //validate product details and image details
+        $variant_data = $request->all();
+        $product_data = [];
+
+        $images = $request->file('images');
+
+        $product_data = $request->only(['name','seller_id','currency_id']);
+        $product_data['description'] = $request->short_description;
+        $product_data['seller_id'] = $seller->id;
+
+        $newProduct = Product::create($product_data);
+
+        //getting categories from request
+        //cast string to array of integer
+        // $integerIDs = array_map('intval', explode(',', $request->categories));
+        $categories = $request->categories;
+        
+        abort_if(in_array(0,$categories),422, 'Category cannot be 0');
+        abort_if(count($categories) >5, 422, 'Only 5 categories per product');
+
+        $newProduct->categories()->sync($categories);
+
+
+        $variant_data['product_id'] = $newProduct->id;
+
+        
+        $newVariant = Variant::create($variant_data);
+
+        //send images to be uploaded
+        UploadImageService::upload($newVariant,$images, Variant::class);
+
+        return $newVariant;
+    }
+
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
         $request->validated();
         $images = null;
@@ -49,40 +85,7 @@ class SellerProductController extends ApiController
      
     }
 
-    public function store(StoreProductRequest $request, User $seller){
-        //validate product details and image details
-        $variant_data = $request->all();
-        $product_data = [];
 
-        $images = $request->file('images');
-
-        $product_data = $request->only(['name','seller_id','currency_id']);
-        $product_data['description'] = $request->short_description;
-        $product_data['seller_id'] = $seller->id;
-
-        $newProduct = Product::create($product_data);
-
-        //getting categories from request
-        //cast string to array of integer
-        // $integerIDs = array_map('intval', explode(',', $request->categories));
-        $integerIDs = $request->categories;
-        
-        abort_if(in_array(0,$integerIDs),422, 'Category cannot be 0');
-        abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
-
-        $newProduct->categories()->sync($integerIDs);
-
-
-        $variant_data['product_id'] = $newProduct->id;
-
-        
-        $newVariant = Variant::create($variant_data);
-
-        //send images to be uploaded
-        UploadImageService::upload($newVariant,$images, Variant::class);
-
-        return $newVariant;
-    }
 
     protected function checkSeller(Seller $seller, Product $product){
         abort_if($seller->id != $product->seller_id,
@@ -90,9 +93,6 @@ class SellerProductController extends ApiController
         'The specified seller is not the seller of this product!');
     }
 
-    protected function getVariantProductData($arr){
-
-    }
 
     protected function removeCategories($start_id,$end_id){
         $products = Product::all();

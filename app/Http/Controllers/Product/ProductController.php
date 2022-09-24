@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
 use App\Models\{Product,Cart};
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+
 
 class ProductController extends ApiController
 {
