@@ -29,7 +29,6 @@ class ProductController extends ApiController
      */
     public function show(Product $product)
     {
-         //$product = Product::find($id);
          return $this->showOne($product);
     }
 
