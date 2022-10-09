@@ -3,6 +3,7 @@
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Tests\CreatesApplication;
+use App\Services\CurrencyService;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 /*

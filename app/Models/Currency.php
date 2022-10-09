@@ -33,7 +33,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Currency extends Model
 {
     use HasFactory;
+
     
+    protected $fillable = [
+        'name',
+        'code',
+        'symbol',
+    ];
+
     public function products() : HasMany
     {
         return $this->hasMany(Product::class);

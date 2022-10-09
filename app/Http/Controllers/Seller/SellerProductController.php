@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Seller;
 use App\Models\Seller;
 use App\Models\Product;
 
-use Illuminate\Foundation\Auth\User;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Variant;
+use Request;
 
 class SellerProductController extends ApiController
 {
@@ -23,6 +24,8 @@ class SellerProductController extends ApiController
 
 
     public function store(StoreProductRequest $request, User $seller){
+
+        
         //validate product details and image details
         $variant_data = $request->all();
         $product_data = [];
@@ -54,7 +57,7 @@ class SellerProductController extends ApiController
         //send images to be uploaded
         UploadImageService::upload($newVariant,$images, Variant::class);
 
-        return $newVariant;
+        return $this->showOne($newVariant,201);
     }
 
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){

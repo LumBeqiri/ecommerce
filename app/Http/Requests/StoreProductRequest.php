@@ -28,7 +28,6 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         $max_images = 5;
-
         if($this->getMethod()== 'POST'){
           return [
             'name' => 'required',
@@ -45,7 +44,8 @@ class StoreProductRequest extends FormRequest
             'images.*' => 'mimes:jpeg,jpg,png|max:2000'
 
           ];
-        }else{
+        }else{ 
+          
           return [
             'name' => 'required',
             'sku' => 'required|unique:variants',
