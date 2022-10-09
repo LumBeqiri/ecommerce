@@ -10,7 +10,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
 
-class VariantController extends ApiController
+class SellerVariantController extends ApiController
 {
     /**
      * Display a listing of the resource.

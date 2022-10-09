@@ -7,7 +7,7 @@ use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Seller\SellerController;
-use App\Http\Controllers\Seller\VariantController;
+use App\Http\Controllers\Seller\SellerVariantController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
@@ -55,6 +55,10 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
+    Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('sellers.products');
+
+
+    // Route::resource('sellers.products', SellerProductController::class);
   
     
 });
@@ -69,7 +73,7 @@ Route::delete('products/deleteCategories/{product}', [ProductCategoryController:
 
 
 // VARIANT Routes
-Route::resource('products.variants', VariantController::class);
+Route::resource('products.variants', SellerVariantController::class);
 
 // ATTRIUBTE Routes
 
@@ -96,7 +100,7 @@ Route::resource('buyers.orders', BuyerOrderController::class);
 //Seller Routes
 
 Route::resource('sellers', SellerController::class);
-Route::resource('sellers.products', SellerProductController::class);
+
 
 
 //Category routes

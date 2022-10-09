@@ -3,7 +3,6 @@
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Tests\CreatesApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 /*
@@ -17,7 +16,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 |
 */
 
-uses(Tests\TestCase::class, CreatesApplication::class, RefreshDatabase::class)->in('Feature');
+uses(Tests\TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

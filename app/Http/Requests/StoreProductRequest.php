@@ -28,7 +28,7 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         $max_images = 5;
-        
+
         if($this->getMethod()== 'POST'){
           return [
             'name' => 'required',
