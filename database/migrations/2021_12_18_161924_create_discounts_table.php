@@ -20,6 +20,7 @@ class CreateDiscountsTable extends Migration
             $table->string('desc');
             $table->integer('discount_percent');
             $table->boolean('active');
+            $table->timestamp('valid_thru');
             $table->timestamps();
             $table->softDeletes();
         });

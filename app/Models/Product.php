@@ -129,10 +129,6 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function getPriceAttribute($value){
-        return $value/100;
-    }
-
     public function orders() : BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'order_product')

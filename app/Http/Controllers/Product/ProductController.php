@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Http\Controllers\ApiController;
 use App\Models\{Product,Cart};
+use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Controllers\ApiController;
 
 
 class ProductController extends ApiController
@@ -27,9 +28,12 @@ class ProductController extends ApiController
      * @param  Product $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
-    {
-         return $this->showOne($product);
+    public function show(Product $product){
+       $product = QueryBuilder::for(Product::class)
+            ->allowedIncludes(['variants', 'seller'])
+            ->where('uuid', $product->uuid)
+            ->first();
+        return ($product);
     }
 
 
