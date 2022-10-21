@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Models\Currency;
 
-class CurrencyService{
+class CurrencySeederService{
     
     public static function create(){
         Currency::create(

@@ -90,6 +90,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Buyer withoutTrashed()
  * @mixin \Eloquent
  * @property string $uuid
+ * @method static \Database\Factories\BuyerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereUuid($value)
  */
 	class Buyer extends \Eloquent {}
@@ -238,7 +239,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Discount withoutTrashed()
  * @mixin \Eloquent
  * @property string $uuid
+ * @property string $valid_thru
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Discount whereValidThru($value)
  */
 	class Discount extends \Eloquent {}
 }
@@ -373,6 +376,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin \Eloquent
  * @property string $uuid
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  */
 	class Product extends \Eloquent {}
@@ -430,6 +434,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Seller withoutTrashed()
  * @mixin \Eloquent
  * @property string $uuid
+ * @method static \Database\Factories\SellerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereUuid($value)
  */
 	class Seller extends \Eloquent {}

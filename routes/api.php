@@ -56,8 +56,9 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('sell_product');
+    Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('update_product');
 
-    Route::resource('sellers.products', SellerProductController::class);
+    // Route::resource('sellers.products', SellerProductController::class);
   
     
 });

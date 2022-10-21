@@ -69,7 +69,6 @@ class SellerProductController extends ApiController
             abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
             UploadImageService::upload($product,$images, Product::class);
         }
-        
         $product->fill($request->except(['categories']));   
         $this->checkSeller($seller,$product);
         //get string ids and convert them to integer
