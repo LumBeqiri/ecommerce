@@ -22,7 +22,6 @@ class MediaFactory extends Factory
         $mediable = $this->mediable();
         return [
             'uuid' => $this->faker->uuid(),
-            'image' => $this->faker->word(),
             'name' => $this->faker->word(),
             'file_name' => $this->faker->word(),
             'mime' => $this->faker->mimeType(),

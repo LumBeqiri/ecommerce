@@ -248,37 +248,46 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Image
+ * App\Models\Media
  *
  * @property int $id
- * @property string $image
- * @property int $imageable_id
- * @property string $imageable_type
- * @property string $title
+ * @property string $uuid
+ * @property int $mediable_id
+ * @property string $mediable_type
+ * @property string $name
+ * @property string $file_name
+ * @property string $mime_type
+ * @property string $path
+ * @property string $disk
+ * @property string|null $collection
+ * @property int $size
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read Model|\Eloquent $imageable
- * @method static \Database\Factories\ImageFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Image newQuery()
- * @method static \Illuminate\Database\Query\Builder|Image onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Image query()
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereImageableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereImageableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Image withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Image withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereUuid($value)
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $mediable
+ * @method static \Database\Factories\MediaFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Media onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Media query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereCollection($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereDisk($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereFileName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereMediableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereMediableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereUuid($value)
+ * @method static \Illuminate\Database\Query\Builder|Media withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Media withoutTrashed()
  */
-	class Image extends \Eloquent {}
+	class Media extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -376,6 +385,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin \Eloquent
  * @property string $uuid
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
+ * @property-read int|null $medias_count
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  */
@@ -501,6 +512,7 @@ namespace App\Models{
  * App\Models\Variant
  *
  * @property int $id
+ * @property string $uuid
  * @property int $product_id
  * @property string $sku
  * @property string $variant_name
@@ -514,8 +526,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attribute[] $attributes
  * @property-read int|null $attributes_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Image[] $images
- * @property-read int|null $images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
+ * @property-read int|null $medias_count
  * @property-read \App\Models\Product $product
  * @method static \Database\Factories\VariantFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant newModelQuery()
@@ -532,10 +544,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereStock($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Variant whereVariantName($value)
- * @mixin \Eloquent
- * @property string $uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereVariantName($value)
  */
 	class Variant extends \Eloquent {}
 }

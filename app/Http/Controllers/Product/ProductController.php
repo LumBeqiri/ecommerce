@@ -30,7 +30,7 @@ class ProductController extends ApiController
      */
     public function show(Product $product){
        $product = QueryBuilder::for(Product::class)
-            ->allowedIncludes(['variants', 'seller'])
+            ->with(['variants.medias'])
             ->where('uuid', $product->uuid)
             ->first();
         return ($product);

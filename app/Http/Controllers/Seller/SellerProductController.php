@@ -25,7 +25,6 @@ class SellerProductController extends ApiController
 
     public function store(StoreProductRequest $request, User $seller){
 
-        
         //validate product details and image details
         $variant_data = $request->all();
         $product_data = [];
@@ -37,7 +36,7 @@ class SellerProductController extends ApiController
         $product_data['seller_id'] = $seller->id;
 
         $newProduct = Product::create($product_data);
-
+        
         //getting categories from request
         //cast string to array of integer
         // $integerIDs = array_map('intval', explode(',', $request->categories));
@@ -50,9 +49,17 @@ class SellerProductController extends ApiController
 
 
         $variant_data['product_id'] = $newProduct->id;
-
         
-        $newVariant = Variant::create($variant_data);
+        $newVariant = Variant::create([
+            'product_id' => $newProduct->id,
+            'sku' => $variant_data['sku'],
+            'variant_name' => $variant_data['variant_name'],
+            'short_description' => $variant_data['short_description'],
+            'long_description' => $variant_data['long_description'],
+            'price' => $variant_data['price'],
+            'stock' => $variant_data['stock'],
+            'status' => $variant_data['status'],
+        ]);
 
         
         //send images to be uploaded
