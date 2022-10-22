@@ -30,7 +30,7 @@ class SellerProductController extends ApiController
         $variant_data = $request->all();
         $product_data = [];
 
-        $images = $request->file('images');
+        $images = $request->file('medias');
 
         $product_data = $request->only(['name','seller_id','currency_id']);
         $product_data['description'] = $request->short_description;
@@ -54,6 +54,7 @@ class SellerProductController extends ApiController
         
         $newVariant = Variant::create($variant_data);
 
+        
         //send images to be uploaded
         UploadImageService::upload($newVariant,$images, Variant::class);
 
@@ -63,10 +64,11 @@ class SellerProductController extends ApiController
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
         $request->validated();
         $images = null;
-        if($request->has('images')){
-            $images = $request->images;
-            $request_images = count($request->file('images'));
+        if($request->has('medias')){
+            $images = $request->file('medias');
+            $request_images = count($request->file('medias'));
             abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
+
             UploadImageService::upload($product,$images, Product::class);
         }
         $product->fill($request->except(['categories']));   

@@ -36,8 +36,8 @@ class UpdateVariantRequest extends FormRequest
             'attrs.*' => 'integer|in:attributes',
             'product_id' => 'in:products',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'images' => 'max:' . $max_images,
-            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+            'medias' => 'max:' . $max_images,
+            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
         ];
     }
 }

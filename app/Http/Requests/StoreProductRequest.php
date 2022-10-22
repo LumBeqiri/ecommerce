@@ -40,8 +40,8 @@ class StoreProductRequest extends FormRequest
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'currency_id' => 'integer|required',
             'categories' => 'required',
-            'images' => 'max:' . $max_images,
-            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+            'medias' => 'max:' . $max_images,
+            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
 
           ];
         }else{ 
@@ -55,8 +55,8 @@ class StoreProductRequest extends FormRequest
             'stock' => 'required|integer|min:1',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'currency_id' => 'integer',
-            'images' => 'max:' . $max_images,
-            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+            'medias' => 'max:' . $max_images,
+            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
 
           ];
         }

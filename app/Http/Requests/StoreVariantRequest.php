@@ -39,8 +39,8 @@ class StoreVariantRequest extends FormRequest
             'attrs.*' => 'integer|in:attributes',
             'product_id' => 'in:products',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'images' => 'max:' . $max_images,
-            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+            'medias' => 'max:' . $max_images,
+            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
           ];
      
 
@@ -50,9 +50,9 @@ class StoreVariantRequest extends FormRequest
     public function messages() {
         $max_images = 5;
         return [
-          'images.*.max' => 'Image size should be less than 2mb',
+          'medias.*.max' => 'media size should be less than 2mb',
           'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
-          'images.max' => 'Only ' . $max_images . ' images per product are allowed'
+          'medias.max' => 'Only ' . $max_images . ' files per product are allowed'
         ];
       }
 }

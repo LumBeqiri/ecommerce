@@ -28,8 +28,8 @@ class UpdateProductRequest extends FormRequest
             'description' => 'string|max:256',
             'currency_id' => 'integer',
             'seller_id' => 'in:users|integer',
-            'images' => 'max:' . 1,
-            'images.*' => 'mimes:jpeg,jpg,png|max:2000'
+            'medias' => 'max:' . 1,
+            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
         ];
     }
 }

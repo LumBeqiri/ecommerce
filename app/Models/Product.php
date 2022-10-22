@@ -128,9 +128,9 @@ class Product extends Model
         return $this->belongsTo(Currency::class);
     }
 
-    public function images() : MorphMany
+    public function medias() : MorphMany
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphMany(Media::class, 'mediable');
     }
 
     public function orders() : BelongsToMany

@@ -38,20 +38,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Query\Builder|Image withoutTrashed()
  * @mixin \Eloquent
  */
-class Image extends Model
+class Media extends Model
 {
     use HasFactory, SoftDeletes;
     use HasUuid;
 
+    protected $table = 'medias';
+    protected $guarded = [];
 
-    protected $fillable = [
-        'image',
-        'imageable_id',
-        'imageable_type',
-        'title'
-    ];
-
-    public function imageable() : MorphTo
+    public function mediable() : MorphTo
     {
         return $this->morphTo();
     }
