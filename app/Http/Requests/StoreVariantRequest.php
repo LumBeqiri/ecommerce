@@ -30,7 +30,7 @@ class StoreVariantRequest extends FormRequest
         $max_images = 5;
     
           return [
-            'sku' => 'required|unique:variants,sku',
+            // 'sku' => 'required|unique:variants,sku',
             'price' => 'required|numeric',
             'short_desc' => 'string|max:256',
             'long_desc' => 'string| max:900',

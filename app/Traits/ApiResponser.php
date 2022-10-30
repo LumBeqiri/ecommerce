@@ -42,7 +42,7 @@ trait ApiResponser{
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function showAll(Collection $collection, $code = 200){
+    protected function showAll($collection, $code = 200){
 
         if($collection->isEmpty()){
             return $this->successResponse(['data' => $collection],$code);
@@ -54,26 +54,11 @@ trait ApiResponser{
         return $this->successResponse($collection,$code);
     }
 
-    /**
-     * @param Model $instance
-     * @param int $code
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function showOne(Model $instance, $code = 200){
+
+    protected function showOne( $instance, $code = 200){
         return $this->successResponse($instance,$code);
     }
 
-    
-    /**
-     * @param Object $instance
-     * @param int $code
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function showOneObject(Object $instance, $code = 200){
-        return $this->successResponse($instance,$code);
-    }
 
     /**
      * @param mixed $message
@@ -87,12 +72,8 @@ trait ApiResponser{
 
 
 
-    /**
-     * @param Collection<int, Model> $collection
-     * 
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-    protected function paginate(Collection $collection){
+
+    protected function paginate($collection){
 
         $rules = [
             'per_page' => 'integer|min:2|max:50',

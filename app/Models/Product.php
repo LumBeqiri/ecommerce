@@ -114,10 +114,10 @@ class Product extends Model
         return $this->hasMany(Variant::class);
     }
     
-    // public function seller() : BelongsTo
-    // {
-    //     return $this->belongsTo(Seller::class);
-    // }
+    public function seller() : BelongsTo
+    {
+        return $this->belongsTo(Seller::class);
+    }
 
     public function user(){
         return $this->belongsTo(User::class);

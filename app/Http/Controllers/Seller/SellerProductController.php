@@ -9,10 +9,10 @@ use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Category;
+use App\Http\Resources\VariantResource;
 use App\Models\User;
 use App\Models\Variant;
-use Request;
+use Exception;
 
 class SellerProductController extends ApiController
 {
@@ -49,7 +49,7 @@ class SellerProductController extends ApiController
 
 
         $variant_data['product_id'] = $newProduct->id;
-        
+
         $newVariant = Variant::create([
             'product_id' => $newProduct->id,
             'sku' => $variant_data['sku'],
@@ -61,11 +61,18 @@ class SellerProductController extends ApiController
             'status' => $variant_data['status'],
         ]);
 
-        
-        //send images to be uploaded
-        UploadImageService::upload($newVariant,$images, Variant::class);
+        try{
+            //send images to be uploaded
+            UploadImageService::upload($newVariant,$images, Variant::class);
+        }catch(Exception $e){
+            Variant::destroy($newVariant->id);
+            Product::destroy($newProduct->id);
+            $newVariant = null;
+            return $this->errorResponse("File(s) could not be uploaded", 500);
+        }
 
-        return $this->showOne($newVariant,201);
+       
+        return $this->showOne(new VariantResource($newVariant),201);
     }
 
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){

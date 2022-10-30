@@ -19,12 +19,8 @@ class CategoryProduct extends Seeder
         $categoriesQuantity = 30;
         $productsQuantity = 1000;
         $ordersQuantity = 100;
-        
-        Product::factory($productsQuantity)->create()->each(
-            function($product){
-                $categories =  Category::all()->random(mt_rand(1, 5))->pluck('id');
-                $product->categories()->attach($categories);
-            }
-        );
+
+        Category::factory()->count(10)->create();
+
     }
 }

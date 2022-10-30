@@ -10,13 +10,14 @@ use Database\Factories\SellerFactory;
 use Illuminate\Http\UploadedFile;
 
 it('can upload a product for sale ', function(){
+    Storage::fake();
     CurrencySeederService::create();
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
 
     login($user);
 
-
+    $file = UploadedFile::fake()->image('avatar.jpg');
 
     $response = $this->postJson(route('sell_product', [$user->uuid]),
         [
@@ -29,13 +30,14 @@ it('can upload a product for sale ', function(){
             'stock' => 4,
             'status' => Product::AVAILABLE_PRODUCT,
             'categories' => [1,2],
-            'price' => 200
+            'price' => 200,
+            'medias' => [$file]
         ]
     );
 
     $response->assertStatus(201);
 
-
+    $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
     $this->assertDatabaseHas(Product::class, ['name' => 'water-bottle']);
 
 });
@@ -78,6 +80,8 @@ it('can update product description', function(){
     
     login($seller);
 
+ 
+
     $response = $this->putJson(route('update_product',['seller' => $seller->uuid,'product' => $product->uuid]),
         [
             'name' => $new_description
@@ -91,31 +95,4 @@ it('can update product description', function(){
 
 });
 
-
-// it('can update product image', function(){
-
-//     Storage::fake('storage');
-
-//     $file = UploadedFile::fake()->image('test.jpg');
-
-//     $seller = Seller::factory()
-//     ->has(Product::factory()->count(1))
-//     ->create();
-
-//     $product = $seller->products()->first();
-    
-//     login($seller);
-
-//     $response = $this->putJson(route('update_product',['seller' => $seller->uuid,'product' => $product->uuid]),
-//         [
-//             'images' => [$file]
-//         ]
-//     );
-
-//     $response->assertStatus(200);
-
-    
-//     Storage::disk('public')->assertExists('test.jpg');
-
-// });
 

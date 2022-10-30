@@ -26,7 +26,7 @@ class UploadImageService implements UploadServiceContract
             foreach($medias as $media){
                 $name = $media->hashName();
  
-                $upload = Storage::disk('local')->putFile("img/",$media);
+                $upload = $media->store('', 'images');
                 //attach image to the product
                 $mediaData['mediable_id'] = $newProductVariant->id;
                 $mediaData['mediable_type'] = $className;
@@ -34,7 +34,7 @@ class UploadImageService implements UploadServiceContract
                 $mediaData['file_name'] = $media->getClientOriginalName();
                 $mediaData['mime_type'] = $media->getClientMimeType();
                 $mediaData['path'] = $upload;
-                $mediaData['disk'] = 'local';
+                $mediaData['disk'] = 'images';
                 $mediaData['size'] = $media->getSize();
                 $mediaData['collection'] = 'products';
 
