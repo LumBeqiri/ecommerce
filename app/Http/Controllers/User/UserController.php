@@ -7,6 +7,7 @@ use App\Mail\UserCreated;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
 
 class UserController extends ApiController
 {
@@ -18,7 +19,7 @@ class UserController extends ApiController
     public function index()
     {
         $users = User::all();
-        return $this->showAll($users);
+        return $this->showAll(UserResource::collection($users));
     }
 
 
@@ -40,7 +41,7 @@ class UserController extends ApiController
 
         $user = User::create($data);
 
-        return $this->showOne($user);
+        return $this->showOne(new UserResource($user));
     }
 
     /**
@@ -51,7 +52,7 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
-        return $this->showOne($user);
+        return $this->showOne(new UserResource($user));
     }
 
 
@@ -101,7 +102,7 @@ class UserController extends ApiController
 
         $user->save();
 
-        return $this->showOne($user);
+        return $this->showOne(new UserResource($user));
     }
 
     /**
@@ -114,7 +115,7 @@ class UserController extends ApiController
     {   
          $user->delete();
         
-        return $this->showOne($user);
+         return $this->showOne(new UserResource($user));
     }
 
     public function verify($token){

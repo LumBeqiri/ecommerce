@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Models\Order;
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\CategoryResource;
 
 class OrderCategoryController extends ApiController
 {
@@ -19,6 +20,6 @@ class OrderCategoryController extends ApiController
         ->pluck('categories')
         ->collapse();
         
-        return $this->showAll($categories);
+        return $this->showAll(CategoryResource::collection($categories));
     }
 }

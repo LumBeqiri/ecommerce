@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\UserResource;
 use App\Models\Order;
 
 class OrderSellerController extends ApiController
@@ -17,6 +18,6 @@ class OrderSellerController extends ApiController
         ->get()
         ->pluck('seller');
 
-        return $this->showAll($sellers);
+        return $this->showAll(UserResource::collection($sellers));
     }
 }

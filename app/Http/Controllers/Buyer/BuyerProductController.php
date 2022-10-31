@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
 use App\Models\Buyer;
 
 
@@ -19,6 +20,6 @@ class BuyerProductController extends ApiController
         ->pluck('products')
         ->collapse();
 
-        return $this->showAll($products);
+        return $this->showAll(ProductResource::collection($products));
     }
 }

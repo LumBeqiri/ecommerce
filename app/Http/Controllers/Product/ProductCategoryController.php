@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\ApiController;
-
+use App\Http\Resources\CategoryResource;
 use App\Models\Product;
 
 
@@ -17,7 +17,7 @@ class ProductCategoryController extends ApiController
     public function index(Product $product){
         $categories = $product->categories()->get();
 
-        return $this->showAll($categories);
+        return $this->showAll(CategoryResource::collection($categories));
     }
 
     /**

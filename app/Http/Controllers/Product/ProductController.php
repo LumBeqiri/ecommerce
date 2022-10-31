@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Models\{Product,Cart};
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
-
+use App\Http\Resources\ProductResource;
 
 class ProductController extends ApiController
 {
@@ -17,7 +17,7 @@ class ProductController extends ApiController
     public function index()
     {
         $products = Product::all();
-        return $this->showAll($products);
+        return $this->showAll(ProductResource::collection($products));
     }
 
 
@@ -33,7 +33,7 @@ class ProductController extends ApiController
             ->with(['variants.medias'])
             ->where('uuid', $product->uuid)
             ->first();
-        return ($product);
+        return (new ProductResource($product));
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\OrderResource;
 use App\Models\Category;
 
 
@@ -19,6 +20,6 @@ class CategoryOrderController extends ApiController
         ->get()
         ->values();
 
-        return $this->showAll($orders);
+        return $this->showAll(OrderResource::collection($orders));
     }
 }

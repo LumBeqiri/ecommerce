@@ -42,13 +42,14 @@ trait ApiResponser{
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function showAll($collection, $code = 200){
+    protected function showAll($collection, $code = 200, $paginate = true){
 
         if($collection->isEmpty()){
             return $this->successResponse(['data' => $collection],$code);
         }
-
-        $collection = $this->paginate($collection);
+        if($paginate){
+            $collection = $this->paginate($collection);
+        }
         // $collection = $this->cacheResponse($collection);	
         
         return $this->successResponse($collection,$code);
@@ -82,7 +83,7 @@ trait ApiResponser{
        // get current page
         $page = LengthAwarePaginator::resolveCurrentPage();
 
-        $perPage = 5;
+        $perPage = 10;
         Validator::validate(request()->all(), $rules);
 
         if(request()->has('per_page')){

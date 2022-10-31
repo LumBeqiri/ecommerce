@@ -9,6 +9,7 @@ use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\VariantResource;
 use App\Models\User;
 use App\Models\Variant;
@@ -19,7 +20,7 @@ class SellerProductController extends ApiController
     public function index(Seller $seller){
         $products = $seller->products;
 
-        return $this->showAll($products);
+        return $this->showAll(ProductResource::collection($products));
     }
 
 
@@ -99,7 +100,7 @@ class SellerProductController extends ApiController
 
         $product->save();
 
-        return $this->showOne($product);
+        return $this->showOne(new ProductResource($product));
      
     }
 

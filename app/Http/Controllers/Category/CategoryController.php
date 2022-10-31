@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends ApiController
 {
@@ -19,7 +18,7 @@ class CategoryController extends ApiController
     {
         $categories = Category::orderBy('id')->get();
 
-        return $this->showAll($categories);
+        return $this->showAll(CategoryResource::collection($categories));
 
     }
 

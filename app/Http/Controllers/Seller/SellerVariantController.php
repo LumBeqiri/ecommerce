@@ -9,6 +9,7 @@ use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
 
 class SellerVariantController extends ApiController
 {
@@ -21,7 +22,7 @@ class SellerVariantController extends ApiController
     {
         $variants = $product->variants()->get();
         
-        return $this->showAll($variants);
+        return $this->showAll(VariantResource::collection($variants));
     }
 
 
@@ -51,7 +52,7 @@ class SellerVariantController extends ApiController
         //send images to be uploaded
         UploadImageService::upload($newVariant,$images, Variant::class);
 
-        return $newVariant;
+        return $this->showOne(new VariantResource($newVariant));
     }
 
     /**
@@ -62,7 +63,7 @@ class SellerVariantController extends ApiController
      */
     public function show(Variant $variant)
     {
-        return $this->showOne($variant);
+        return $this->showOne(new VariantResource($variant));
     }
 
 
@@ -98,7 +99,7 @@ class SellerVariantController extends ApiController
 
         $variant->save();
 
-        return $this->showOne($variant);
+        return $this->showOne(new VariantResource($variant));
      
     }
 
@@ -117,7 +118,7 @@ class SellerVariantController extends ApiController
 
         $variant->delete();
 
-        return $this->showOne($variant);
+        return $this->showOne(new VariantResource($variant));
     }
 
     protected function checkSeller($seller_id, $product_id){

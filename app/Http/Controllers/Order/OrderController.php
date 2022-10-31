@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 
 class OrderController extends ApiController
@@ -12,7 +13,7 @@ class OrderController extends ApiController
      */
     public function index(){
         $orders = Order::all();
-        return $this->showAll($orders);
+        return $this->showAll(OrderResource::collection($orders));
     }
 
     /**
@@ -21,6 +22,6 @@ class OrderController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function show(Order $order){
-        return $this->showOne($order);
+        return $this->showOne(new OrderResource($order));
     }
 }

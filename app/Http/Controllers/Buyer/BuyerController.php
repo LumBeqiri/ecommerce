@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Http\Controllers\ApiController;
 use App\Models\Buyer;
+use App\Http\Resources\UserResource;
+use App\Http\Controllers\ApiController;
 
 
 class BuyerController extends ApiController
@@ -14,15 +15,15 @@ class BuyerController extends ApiController
     public function index(){
 
         $buyers = Buyer::has('orders')->get();
-        return $this->showAll($buyers);
+        return $this->showAll(UserResource::collection($buyers));
     }
 
     /**
      * @return \Illuminate\Http\Response
      */
     public function show(Buyer $buyer){
-   
-        return $this->showOne($buyer);
+        
+        return $this->showOne(new UserResource($buyer));
     }
 
 }

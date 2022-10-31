@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\UserResource;
 use App\Models\Category;
 
 class CategorySellerController extends ApiController
@@ -20,6 +21,6 @@ class CategorySellerController extends ApiController
         ->unique('id')
         ->values();
 
-        return $this->showAll($sellers);
+        return $this->showAll(UserResource::collection($sellers));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Models\Buyer;
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\UserResource;
 
 class BuyerSellerController extends ApiController
 {
@@ -20,6 +21,6 @@ class BuyerSellerController extends ApiController
         ->unique('id')
         ->values();
 
-        return $this->showAll($sellers);
+        return $this->showAll(UserResource::collection($sellers));
     }
 }
