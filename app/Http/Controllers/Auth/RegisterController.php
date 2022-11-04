@@ -16,7 +16,7 @@ class RegisterController extends ApiController
      */
     public function register(RegisterUserRequest $request){
 
-        $data = $request->all();
+        $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
         $data['verification_token'] = User::generateVerificationCode();
 

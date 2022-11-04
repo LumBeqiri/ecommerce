@@ -31,7 +31,7 @@ class StoreProductRequest extends FormRequest
         if($this->getMethod()== 'POST'){
           return [
             'name' => 'required',
-            // 'sku' => 'required|unique:variants',
+            'sku' => 'required|unique:variants',
             'price' => 'required|numeric',
             'short_description' => 'string|max:256',
             'long_description' => 'string| max:900',

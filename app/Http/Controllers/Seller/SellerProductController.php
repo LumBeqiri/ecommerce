@@ -27,7 +27,7 @@ class SellerProductController extends ApiController
     public function store(StoreProductRequest $request, User $seller){
 
         //validate product details and image details
-        $variant_data = $request->all();
+        $variant_data = $request->validated();
         $product_data = [];
 
         $images = $request->file('medias');

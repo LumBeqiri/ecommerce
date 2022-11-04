@@ -34,7 +34,7 @@ class SellerVariantController extends ApiController
      */
     public function store(StoreVariantRequest $request, Product $product){
         //validate variant details and image details
-        $variant_data = $request->all();
+        $variant_data = $request->validated();
 
         $images = $request->file('images');
 
