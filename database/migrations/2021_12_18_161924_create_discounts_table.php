@@ -17,7 +17,7 @@ class CreateDiscountsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('name');
-            $table->string('desc');
+            $table->string('desc')->nullable();
             $table->integer('discount_percent');
             $table->boolean('active');
             $table->timestamp('valid_thru');
