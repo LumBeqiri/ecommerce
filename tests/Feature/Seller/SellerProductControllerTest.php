@@ -19,7 +19,7 @@ it('can upload a product for sale ', function(){
 
     $file = UploadedFile::fake()->image('avatar.jpg');
 
-    $response = $this->postJson(route('sell_product', [$user->uuid]),
+    $response = $this->postJson(route('seller.create.product', [$user->uuid]),
         [
             'name' => 'water-bottle',
             'sku' => 'llllusasew',
@@ -54,7 +54,7 @@ it('can update product name', function(){
     
     login($seller);
 
-    $response = $this->putJson(route('update_product',['seller' => $seller->uuid,'product' => $product->uuid]),
+    $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
         [
             'name' => $new_name
         ]
@@ -82,7 +82,7 @@ it('can update product description', function(){
 
  
 
-    $response = $this->putJson(route('update_product',['seller' => $seller->uuid,'product' => $product->uuid]),
+    $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
         [
             'name' => $new_description
         ]

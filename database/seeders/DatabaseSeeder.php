@@ -8,8 +8,8 @@ use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
 use Database\Factories\MediaFactory;
-use App\Models\{User,Category, Product,Order, Variant};
-
+use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant};
+use Database\Factories\DiscountFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,8 +26,11 @@ class DatabaseSeeder extends Seeder
 
         User::truncate();
         Category::truncate();
+        Cart::truncate();
+        CartItem::truncate();
         Product::truncate();
         Variant::truncate();
+        Discount::truncate();
         // Media::truncate();
      
         DB::table('attribute_variant')->truncate();
@@ -39,6 +42,9 @@ class DatabaseSeeder extends Seeder
         User::flushEventListeners();
         Category::flushEventListeners();
         Product::flushEventListeners();
+        Discount::flushEventListeners();
+        Cart::flushEventListeners();
+        CartItem::flushEventListeners();
 
         //seed currencies table from an sql file
         $path = public_path('sql/currencySeeder.sql');
@@ -50,10 +56,10 @@ class DatabaseSeeder extends Seeder
         $productsQuantity = 50;
         $variantsQuantity = 30;
         $ordersQuantity = 50;
-        $imagesQuantity = 50;
         
 
         User::factory($usersQuantity)->create();
+        Discount::factory(5)->create();
         Category::factory($categoriesQuantity)->create();
     
         Product::factory($productsQuantity)->create()->each(
@@ -73,5 +79,8 @@ class DatabaseSeeder extends Seeder
                 $order->products()->attach($products);
             }
         );
+
+        Cart::factory(10)->create();
+        CartItem::factory(20)->create();
     }
 }

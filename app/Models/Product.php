@@ -15,46 +15,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/**
- * App\Models\Product
- *
- * @property int $id
- * @property string $name
- * @property string $description
- * @property int $seller_id
- * @property int $currency_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $categories
- * @property-read int|null $categories_count
- * @property-read Currency $currency
- * @property-read \App\Models\Discount|null $discount
- * @property-read mixed $price
- * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $images
- * @property-read int|null $images_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Order[] $orders
- * @property-read int|null $orders_count
- * @property-read \App\Models\Seller $seller
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Variant[] $variants
- * @property-read int|null $variants_count
- * @method static \Database\Factories\ProductFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Query\Builder|Product onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereSellerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
- * @mixin \Eloquent
- */
 class Product extends Model
 {
     use HasFactory,SoftDeletes;

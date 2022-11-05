@@ -32,4 +32,9 @@ class Variant extends Model
     {
         return $this->belongsToMany(Attribute::class);
     }
+
+    public function cart_item() : BelongsTo
+    {
+        return $this->belongsTo(CartItem::class);
+    }
 }

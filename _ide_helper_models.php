@@ -15,6 +15,7 @@ namespace App\Models{
  * App\Models\Attribute
  *
  * @property int $id
+ * @property string $uuid
  * @property string $attribute_type
  * @property string $attribute_value
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -29,8 +30,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property string $uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereUuid($value)
  */
 	class Attribute extends \Eloquent {}
@@ -41,6 +40,7 @@ namespace App\Models{
  * App\Models\Buyer
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -57,14 +57,15 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Cart[] $carts
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Order[] $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ * @method static \Database\Factories\BuyerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer newQuery()
  * @method static \Illuminate\Database\Query\Builder|Buyer onlyTrashed()
@@ -83,15 +84,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereShippingAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereVerificationToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereVerified($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereZip($value)
  * @method static \Illuminate\Database\Query\Builder|Buyer withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Buyer withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @method static \Database\Factories\BuyerFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereUuid($value)
  */
 	class Buyer extends \Eloquent {}
 }
@@ -101,21 +99,21 @@ namespace App\Models{
  * App\Models\Cart
  *
  * @property int $id
- * @property int $order_id
+ * @property string $uuid
+ * @property int|null $user_id
  * @property int $total_cart_price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Order $order
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartItem[] $cart_items
+ * @property-read int|null $cart_items_count
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereTotalCartPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property string $uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUuid($value)
  */
 	class Cart extends \Eloquent {}
@@ -126,12 +124,15 @@ namespace App\Models{
  * App\Models\CartItem
  *
  * @property int $id
+ * @property string $uuid
  * @property int $cart_id
- * @property int $product_id
+ * @property int $variant_id
  * @property int $count
  * @property int $total_item_price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Cart $cart
+ * @property-read \App\Models\Variant|null $product
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem query()
@@ -139,12 +140,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereTotalItemPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property string $uuid
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereVariantId($value)
  */
 	class CartItem extends \Eloquent {}
 }
@@ -154,6 +153,7 @@ namespace App\Models{
  * App\Models\Category
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $slug
  * @property string $description
@@ -161,7 +161,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Category|null $parent
- * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $subcategory
  * @property-read int|null $subcategory_count
@@ -176,8 +176,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property string $uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUuid($value)
  */
 	class Category extends \Eloquent {}
@@ -193,7 +191,7 @@ namespace App\Models{
  * @property string $symbol
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
@@ -204,7 +202,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Currency whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Currency whereSymbol($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Currency whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Currency extends \Eloquent {}
 }
@@ -214,15 +211,18 @@ namespace App\Models{
  * App\Models\Discount
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
- * @property string $desc
+ * @property string|null $desc
  * @property int $discount_percent
  * @property int $active
+ * @property string $valid_thru
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $product
  * @property-read int|null $product_count
+ * @method static \Database\Factories\DiscountFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Discount newQuery()
  * @method static \Illuminate\Database\Query\Builder|Discount onlyTrashed()
@@ -235,13 +235,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Discount withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Discount withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @property string $valid_thru
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereValidThru($value)
+ * @method static \Illuminate\Database\Query\Builder|Discount withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Discount withoutTrashed()
  */
 	class Discount extends \Eloquent {}
 }
@@ -295,12 +292,13 @@ namespace App\Models{
  * App\Models\Order
  *
  * @property int $id
+ * @property string $uuid
  * @property int $buyer_id
- * @property string $ship_name
+ * @property string|null $ship_name
  * @property string $ship_address
  * @property string $ship_city
  * @property string $ship_state
- * @property float $order_tax
+ * @property float|null $order_tax
  * @property float $total
  * @property string $order_date
  * @property string $order_shipped
@@ -310,9 +308,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read Buyer $buyer
- * @property-read Cart|null $cart
- * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
+ * @property-read \App\Models\Buyer $buyer
+ * @property-read \App\Models\Cart|null $cart
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
  * @method static \Database\Factories\OrderFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
@@ -335,11 +333,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereShipState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUuid($value)
  * @method static \Illuminate\Database\Query\Builder|Order withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereUuid($value)
  */
 	class Order extends \Eloquent {}
 }
@@ -349,6 +345,7 @@ namespace App\Models{
  * App\Models\Product
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $description
  * @property int $seller_id
@@ -356,16 +353,16 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $categories
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
  * @property-read int|null $categories_count
- * @property-read Currency $currency
+ * @property-read \App\Models\Currency $currency
  * @property-read \App\Models\Discount|null $discount
- * @property-read mixed $price
- * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $images
- * @property-read int|null $images_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Order[] $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
+ * @property-read int|null $medias_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
  * @property-read \App\Models\Seller $seller
+ * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Variant[] $variants
  * @property-read int|null $variants_count
  * @method static \Database\Factories\ProductFactory factory(...$parameters)
@@ -381,14 +378,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
- * @property-read int|null $medias_count
- * @property-read \App\Models\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  */
 	class Product extends \Eloquent {}
 }
@@ -398,6 +390,7 @@ namespace App\Models{
  * App\Models\Seller
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -416,10 +409,11 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ * @method static \Database\Factories\SellerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Seller newQuery()
  * @method static \Illuminate\Database\Query\Builder|Seller onlyTrashed()
@@ -438,15 +432,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereShippingAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Seller whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereVerificationToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereVerified($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereZip($value)
  * @method static \Illuminate\Database\Query\Builder|Seller withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Seller withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @method static \Database\Factories\SellerFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Seller whereUuid($value)
  */
 	class Seller extends \Eloquent {}
 }
@@ -456,6 +447,7 @@ namespace App\Models{
  * App\Models\User
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -495,14 +487,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereShippingAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereVerificationToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereVerified($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereZip($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
- * @mixin \Eloquent
- * @property string $uuid
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
  */
 	class User extends \Eloquent {}
 }
@@ -516,8 +506,8 @@ namespace App\Models{
  * @property int $product_id
  * @property string $sku
  * @property string $variant_name
- * @property string $short_description
- * @property string $long_description
+ * @property string|null $short_description
+ * @property string|null $long_description
  * @property int $price
  * @property int $stock
  * @property string $status
@@ -526,6 +516,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attribute[] $attributes
  * @property-read int|null $attributes_count
+ * @property-read \App\Models\CartItem|null $cart_item
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
  * @property-read int|null $medias_count
  * @property-read \App\Models\Product $product
