@@ -23,7 +23,6 @@ class CartItemFactory extends Factory
             'cart_id' => Cart::factory(),
             'variant_id' => Variant::factory(),
             'count' => $this->faker->numberBetween(3,5),
-            'total_item_price' => $this->faker->numberBetween(20,42),
         ];
     }
 }

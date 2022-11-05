@@ -19,7 +19,6 @@ class CreateCartItemsTable extends Migration
             $table->foreignId('cart_id')->onDelete('cascade')->constrained('carts');
             $table->foreignId('variant_id')->onDelete('cascade')->constrained('variants');
             $table->integer('count');
-            $table->integer('total_item_price');
             $table->timestamps();
 
         });

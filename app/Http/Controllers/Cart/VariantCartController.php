@@ -9,6 +9,7 @@ use App\Http\Requests\CartRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CartItemResource;
 use App\Http\Resources\CartResource;
+use App\Models\Buyer;
 use App\Models\User;
 
 class VariantCartController extends ApiController
@@ -18,9 +19,11 @@ class VariantCartController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index()
     {
-        return $this->showAll(CartItemResource::collection($user->cart()->with('cart_items'))->get());
+        $user = User::where('id', 151)->first();
+
+        return $this->showAll(CartResource::collection($user->carts()->with('cart_items')->get()));
     }
 
 

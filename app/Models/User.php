@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use App\Traits\HasUuid;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -78,5 +80,10 @@ class User extends Authenticatable
     public static function generateVerificationCode() : string
     {
         return Str::random(40);
+    }
+
+    public function carts() : HasMany
+    {
+        return $this->hasMany(Cart::class);
     }
 }

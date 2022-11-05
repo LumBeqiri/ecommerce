@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        Model::preventLazyLoading(!App::environment('production'));
+        // Model::preventLazyLoading(!App::environment('production'));
         // Model::preventSilentlyDiscardingAttributes(!App::environment('production'));
         Model::preventAccessingMissingAttributes(!App::environment('production'));
 

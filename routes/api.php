@@ -52,6 +52,7 @@ Route::post('login', LoginController::class)->name('login');
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
+Route::get('carts', [VariantCartController::class, 'index']);
 Route::post('add_to_cart', [VariantCartController::class, 'store'])->name('add.to.cart');
 
 
