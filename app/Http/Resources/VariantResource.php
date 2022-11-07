@@ -14,6 +14,7 @@ class VariantResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->uuid,
             'product' => new ProductResource($this->product),

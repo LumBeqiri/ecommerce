@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Http\Controllers\ApiController;
 use App\Models\Cart;
+use App\Models\User;
+use App\Models\Buyer;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use App\Http\Requests\CartRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CartItemResource;
 use App\Http\Resources\CartResource;
-use App\Models\Buyer;
-use App\Models\User;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\CartItemResource;
+use Illuminate\Database\Eloquent\Builder;
 
 class VariantCartController extends ApiController
 {
@@ -37,10 +39,16 @@ class VariantCartController extends ApiController
      */
     public function store(CartRequest $request)
     {
-        $data  = $request->validated();
-        $cart = Cart::create();
+        $data = $request->validated();
 
-        $cart->cart_items()->create($data);
+        $cart = auth()->user()->carts()->create();
+
+        // $cart->cart_items()->create([
+        //     'variant_id' => $data['variant_id'],
+        //     'count' => $data['count']
+        // ]);
+
+        
 
     }
 

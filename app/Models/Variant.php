@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Variant extends Model
 {
@@ -33,8 +33,8 @@ class Variant extends Model
         return $this->belongsToMany(Attribute::class);
     }
 
-    public function cart_item() : BelongsTo
+    public function cart_item() : HasOne
     {
-        return $this->belongsTo(CartItem::class);
+        return $this->hasOne(CartItem::class);
     }
 }

@@ -17,7 +17,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->integer('total_cart_price');
+            $table->integer('total_cart_price')->nullable();
             $table->timestamps();
 
 

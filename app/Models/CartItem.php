@@ -14,13 +14,15 @@ class CartItem extends Model
     use HasFactory;
     use HasUuid;
 
+    protected $guarded = [];
+
     public function cart() : BelongsTo
     {
         return $this->belongsTo(Cart::class); 
     }
 
-    public function product() : HasOne
+    public function variant() : BelongsTo
     {
-        return $this->hasOne(Variant::class);
+        return $this->belongsTo(Variant::class);
     }
 }
