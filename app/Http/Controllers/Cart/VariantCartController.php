@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CartItemResource;
+use App\Models\CartItem;
 use Illuminate\Database\Eloquent\Builder;
 
 class VariantCartController extends ApiController
@@ -40,15 +41,20 @@ class VariantCartController extends ApiController
     public function store(CartRequest $request)
     {
         $data = $request->validated();
+        $items = $data['items'];
 
+   
         $cart = auth()->user()->carts()->create();
 
-        // $cart->cart_items()->create([
-        //     'variant_id' => $data['variant_id'],
-        //     'count' => $data['count']
-        // ]);
+        foreach($items as $item){
+            $cart_item = CartItem::create([
+                'cart_id' => $cart->id,
+                'variant_id' => $item['variant_id'],
+                'count' => $item['count']
+            ]);
+        }
 
-        
+        dd($cart->cart_items);
 
     }
 

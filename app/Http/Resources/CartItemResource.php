@@ -18,7 +18,7 @@ class CartItemResource extends JsonResource
         return [
             'id' => $this->uuid,
             'cart' => $this->cart->uuid,
-            'variant' =>new VariantResource($this->variant),
+            'variant' =>new VariantResource($this->whenLoaded('variant')),
             'count' => $this->count,
         ];
     }
