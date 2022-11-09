@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'uuid' => $this->faker->uuid(),
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph(1),
-            'seller_id' => User::factory(),
+            'seller_id' => User::all()->random()->id,
             'currency_id' => 2
         ];
     }

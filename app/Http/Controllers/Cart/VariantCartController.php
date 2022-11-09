@@ -44,17 +44,19 @@ class VariantCartController extends ApiController
         $items = $data['items'];
 
    
-        $cart = auth()->user()->carts()->create();
+        $cart = Cart::updateOrCreate(['user_id' => auth()->id()]);
 
+        $price = 0;
         foreach($items as $item){
-            $cart_item = CartItem::create([
-                'cart_id' => $cart->id,
-                'variant_id' => $item['variant_id'],
-                'count' => $item['count']
-            ]);
+            CartItem::UpdateOrCreate(
+                [
+                    'cart_id' => $cart->id,
+                    'variant_id' => $item['variant_id'],
+                    'count' => $item['count']
+                ]);
         }
 
-        dd($cart->cart_items);
+        return $this->showOne(new CartResource($cart->load('cart_items')));
 
     }
 

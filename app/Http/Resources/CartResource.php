@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\CartItem;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CartResource extends JsonResource
@@ -18,8 +17,8 @@ class CartResource extends JsonResource
         return [
             'id' => $this->uuid,
             'buyer' => new UserResource($this->user),
+            'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
             'total' => $this->total_cart_price,
-            'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items'))
         ];
     }
 }

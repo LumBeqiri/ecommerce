@@ -18,7 +18,7 @@ class OrderFactory extends Factory
     {
 
         $seller = Seller::has('products')->get()->random();
-        
+
         $buyer = User::all()->except($seller->id)->random();
 
 

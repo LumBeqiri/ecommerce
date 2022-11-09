@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
 
-    Route::post('add_to_cart', [VariantCartController::class, 'store'])->name('add.to.cart');
+    Route::post('save_cart', [VariantCartController::class, 'store'])->name('save.cart');
 
 
 });

@@ -51,12 +51,17 @@ class DatabaseSeeder extends Seeder
         $sql = file_get_contents($path);
         DB::unprepared($sql);
 
-        $usersQuantity = 100;
+        $usersQuantity = 50;
         $categoriesQuantity = 30;
         $productsQuantity = 50;
         $variantsQuantity = 30;
         $ordersQuantity = 50;
         
+        User::factory()->create([
+            'name' => 'Lum Beqiri',
+            'email' => 'lum@gmail.com',
+            'password' => bcrypt('123123123')
+        ]);
 
         User::factory($usersQuantity)->create();
         Discount::factory(5)->create();
@@ -79,7 +84,7 @@ class DatabaseSeeder extends Seeder
                 $order->products()->attach($products);
             }
         );
-
+        
         Cart::factory(10)->create();
         CartItem::factory(20)->create();
     }
