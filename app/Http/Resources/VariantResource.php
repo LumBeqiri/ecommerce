@@ -17,7 +17,7 @@ class VariantResource extends JsonResource
 
         return [
             'id' => $this->uuid,
-            'product' => new ProductResource($this->product),
+            'product' => new ProductResource($this->whenLoaded('product')),
             'sku' => $this->sku,
             'variant_name' => $this->variant_name,
             'short_description' => $this->short_description,

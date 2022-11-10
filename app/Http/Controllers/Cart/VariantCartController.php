@@ -13,6 +13,7 @@ use App\Http\Resources\CartResource;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CartItemResource;
 use App\Models\CartItem;
+use App\Services\Productservice;
 use Illuminate\Database\Eloquent\Builder;
 
 class VariantCartController extends ApiController
@@ -48,13 +49,16 @@ class VariantCartController extends ApiController
 
         $price = 0;
         foreach($items as $item){
-            CartItem::UpdateOrCreate(
+            CartItem::create(
                 [
                     'cart_id' => $cart->id,
                     'variant_id' => $item['variant_id'],
                     'count' => $item['count']
                 ]);
         }
+
+       $cart->total_cart_price = Productservice::calculatePrice($items);
+   
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
 
