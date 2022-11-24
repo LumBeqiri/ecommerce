@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Cart;
 
 use App\Models\Cart;
 use App\Models\User;
-use App\Models\Buyer;
 use App\Models\Variant;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
+use App\Services\CartService;
 use App\Http\Requests\CartRequest;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
+use App\Http\Requests\CartItemRequest;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CartItemResource;
-use App\Models\CartItem;
-use App\Services\Productservice;
-use Illuminate\Database\Eloquent\Builder;
 
 class VariantCartController extends ApiController
 {
@@ -25,9 +23,7 @@ class VariantCartController extends ApiController
      */
     public function index()
     {
-        $user = User::where('id', 151)->first();
-
-        return $this->showAll(CartResource::collection($user->carts()->with('cart_items')->get()));
+        return $this->showAll(CartResource::collection(Cart::all()->with('cart_items')->get()));
     }
 
 
@@ -44,25 +40,92 @@ class VariantCartController extends ApiController
         $data = $request->validated();
         $items = $data['items'];
 
-   
         $cart = Cart::updateOrCreate(['user_id' => auth()->id()]);
 
-        $price = 0;
-        foreach($items as $item){
-            CartItem::create(
-                [
+        if($request->hasCookie('cart')){
+            $cookie_cart = $request->cookie('cart');
+            $items = json_decode($cookie_cart, true);
+            $items = $items['items'];
+   
+        }
+        foreach($items as $item ){
+           
+            $variant = Variant::where('uuid', $item['variant_id'])->first();
+
+            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+
+            if($cart_item){
+                $cart_item->count += $item['count'];
+                $cart_item->save();
+            }else{
+                CartItem::create([
                     'cart_id' => $cart->id,
-                    'variant_id' => $item['variant_id'],
+                    'variant_id' => $variant->id,
                     'count' => $item['count']
                 ]);
+            }
+
         }
-
-       $cart->total_cart_price = Productservice::calculatePrice($items);
+             
+        $cart->total_cart_price = CartService::calculatePrice($items);
    
-
         return $this->showOne(new CartResource($cart->load('cart_items')));
 
     }
+
+
+    public function add_to_cart(CartItemRequest $request){
+
+        $data = $request->validated();
+        $cart = Cart::where('user_id', auth()->id())->first();
+
+        $variant = Variant::where('uuid', $data['variant_id'])->first();
+
+        $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+
+
+        if($cart_item){
+            $cart_item->count += $data['count'];
+            $cart_item->save();
+           
+        }else{
+            CartItem::create([
+                'cart_id' => $cart->id,
+                'variant_id' => $variant->id,
+                'count' => $data['count']
+            ]);
+        }
+
+        return $this->showOne(new CartResource($cart->load('cart_items')));
+    }
+
+
+    public function remove_from_cart(CartItemRequest $request){
+
+        $data = $request->validated();
+        $cart = Cart::where('user_id', auth()->id())->first();
+
+        $variant = Variant::where('uuid', $data['variant_id'])->first();
+
+        $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+    
+        if($cart_item){
+            $cart_item->count += $data['count'];
+            $cart_item->save();
+           
+        }else{
+            CartItem::create([
+                'cart_id' => $cart->id,
+                'variant_id' => $variant->id,
+                'count' => $data['count']
+            ]);
+        }
+
+        return $this->showOne(new CartResource($cart->load('cart_items')));
+    }
+
+
+    
 
     /**
      * Display the specified resource.

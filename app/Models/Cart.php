@@ -18,6 +18,7 @@ class Cart extends Model
     protected $guarded = [];
 
 
+
     public function cart_items() : HasMany
     {
         return $this->hasMany(CartItem::class);
