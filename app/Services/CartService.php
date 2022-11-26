@@ -54,6 +54,8 @@ class CartService{
             }
 
         }
+
+        return $cart;
         
     }
 

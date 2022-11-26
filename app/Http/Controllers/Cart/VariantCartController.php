@@ -74,7 +74,8 @@ class VariantCartController extends ApiController
     }
 
 
-    public function add_to_cart(CartItemRequest $request){
+    public function add_to_cart(CartItemRequest $request)
+    {
 
         $data = $request->validated();
         $cart = Cart::where('user_id', auth()->id())->first();
@@ -82,6 +83,16 @@ class VariantCartController extends ApiController
         $variant = Variant::where('uuid', $data['variant_id'])->first();
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+
+
+        if($variant->status == 'unavailable'){
+            return $this->errorResponse('Item is not available', 404);
+        }
+
+        //check if there's enough items in stock
+        if($cart_item->count > $variant->stock){
+            return $this->errorResponse('Item is not available', 404);
+        }
 
 
         if($cart_item){
@@ -103,22 +114,22 @@ class VariantCartController extends ApiController
     public function remove_from_cart(CartItemRequest $request){
 
         $data = $request->validated();
-        $cart = Cart::where('user_id', auth()->id())->first();
 
         $variant = Variant::where('uuid', $data['variant_id'])->first();
-
+        $cart = Cart::where('user_id', auth()->id())->first();
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
-    
-        if($cart_item){
-            $cart_item->count += $data['count'];
+  
+        if($cart_item->count < $data['count']){
+            return $this->errorResponse('You have less than ' . $data['count'] . ' items', 422);
+        }
+
+        $cart_item->count = $cart_item->count - $data['count'];
+
+        if( $cart_item->count == 0 ){
+            $cart_item->delete(); 
+        }
+        else{
             $cart_item->save();
-           
-        }else{
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'variant_id' => $variant->id,
-                'count' => $data['count']
-            ]);
         }
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
@@ -160,4 +171,5 @@ class VariantCartController extends ApiController
     {
         //
     }
+
 }
