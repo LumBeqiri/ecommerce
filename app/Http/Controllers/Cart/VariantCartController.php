@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Models\Cart;
-use App\Models\User;
 use App\Models\Variant;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ use App\Http\Requests\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Http\Requests\CartItemRequest;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\CartItemResource;
 
 class VariantCartController extends ApiController
 {
@@ -89,11 +87,10 @@ class VariantCartController extends ApiController
             return $this->errorResponse('Item is not available', 404);
         }
 
-        //check if there's enough items in stock
-        if($cart_item->count > $variant->stock){
-            return $this->errorResponse('Item is not available', 404);
-        }
 
+        if((optional($cart_item)->count + $data['count']) > $variant->stock){
+            return $this->errorResponse('There are not enough items in stock', 404);
+        }
 
         if($cart_item){
             $cart_item->count += $data['count'];

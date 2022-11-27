@@ -32,7 +32,7 @@ class CartService{
     }
 
 
-    public static function moveCartToDB($items, $user){
+    public static function moveCartFromCookieToDB($items, $user){
         
         $cart = Cart::updateOrCreate(['user_id' => $user->id]);
 
@@ -42,17 +42,13 @@ class CartService{
 
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-            if($cart_item){
-                $cart_item->count += $item['count'];
-                $cart_item->save();
-            }else{
+            if(! $cart_item){
                 CartItem::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $variant->id,
                     'count' => $item['count']
                 ]);
             }
-
         }
 
         return $cart;
