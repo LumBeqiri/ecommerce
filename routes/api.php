@@ -7,6 +7,7 @@ use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Seller\SellerController;
+use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Cart\VariantCartController;
@@ -55,7 +56,6 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 
 
 //Cart
-Route::get('carts', [VariantCartController::class, 'index']);
 
 
 
@@ -65,9 +65,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
 
-    Route::post('store_cart', [VariantCartController::class, 'store'])->name('store.cart');
-    Route::post('add_to_cart', [VariantCartController::class, 'add_to_cart'])->name('add.to.cart');
-    Route::delete('remove_from_cart', [VariantCartController::class, 'remove_from_cart'])->name('remove.from.cart');
+    Route::get('carts', [BuyerCartController::class, 'index']);
+    Route::post('store_cart', [BuyerCartController::class, 'store'])->name('store.cart');
+    Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart'])->name('add.to.cart');
+    Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart'])->name('remove.from.cart');
 
 
 });

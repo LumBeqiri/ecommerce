@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\UserResource;
+use App\Jobs\SaveCookieCartToDB;
 use App\Services\CartService;
 
 class LoginController extends ApiController
@@ -32,7 +33,8 @@ class LoginController extends ApiController
             $items = json_decode($cookie_cart, true);
             $items = $items['items'];
 
-            CartService::moveCartFromCookieToDB($items, $user);
+            SaveCookieCartToDB::dispatch($items, $user);
+
         }
 
         $user = UserResource::make($user);

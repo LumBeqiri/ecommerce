@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Cart;
+namespace App\Http\Controllers\Buyer;
 
 use App\Models\Cart;
 use App\Models\Variant;
@@ -12,7 +12,7 @@ use App\Http\Resources\CartResource;
 use App\Http\Requests\CartItemRequest;
 use App\Http\Controllers\ApiController;
 
-class VariantCartController extends ApiController
+class BuyerCartController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,10 @@ class VariantCartController extends ApiController
      */
     public function index()
     {
-        return $this->showAll(CartResource::collection(Cart::all()->with('cart_items')->get()));
+        $cart = auth()->user()->cart()->with('cart_items')->first();
+        
+
+        return $this->showone(new CartResource($cart));
     }
 
 

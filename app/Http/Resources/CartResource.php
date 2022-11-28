@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\PriceService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CartResource extends JsonResource
@@ -18,7 +19,7 @@ class CartResource extends JsonResource
             'id' => $this->uuid,
             'buyer' => new UserResource($this->user),
             'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
-            'total' => $this->total_cart_price,
+            'total' => PriceService::priceToEuro($this->total_cart_price),
         ];
     }
 }

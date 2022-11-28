@@ -25,15 +25,15 @@ class CartService{
         $total = 0;
 
         foreach($variant_prices as $price) {
-            $total += $price;
+            $total += (int) $price;
         }
 
-        return $total;
+        return PriceService::priceToEuro($total);
     }
 
 
     public static function moveCartFromCookieToDB($items, $user){
-        
+
         $cart = Cart::updateOrCreate(['user_id' => $user->id]);
 
         foreach($items as $item ){
