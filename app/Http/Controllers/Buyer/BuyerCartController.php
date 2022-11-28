@@ -21,7 +21,8 @@ class BuyerCartController extends ApiController
      */
     public function index()
     {
-        $cart = auth()->user()->cart()->with('cart_items')->first();
+
+        $cart = $this->authUser()->cart()->with('cart_items')->first();
         
 
         return $this->showone(new CartResource($cart));
@@ -81,6 +82,10 @@ class BuyerCartController extends ApiController
         $data = $request->validated();
         $cart = Cart::where('user_id', auth()->id())->first();
 
+        if(!$cart){
+            $cart = $this->authUser()->cart()->create();
+        }
+
         $variant = Variant::where('uuid', $data['variant_id'])->first();
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
@@ -117,6 +122,10 @@ class BuyerCartController extends ApiController
 
         $variant = Variant::where('uuid', $data['variant_id'])->first();
         $cart = Cart::where('user_id', auth()->id())->first();
+
+        if(!$cart){
+            return $this->errorResponse('Shopping cart missing', 404);
+        }
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
   
         if($cart_item->count < $data['count']){

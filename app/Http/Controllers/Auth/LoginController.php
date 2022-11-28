@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Services\CartService;
+use App\Jobs\SaveCookieCartToDB;
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\UserResource;
-use App\Jobs\SaveCookieCartToDB;
-use App\Services\CartService;
+use App\Models\Variant;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends ApiController
 {
@@ -31,10 +33,11 @@ class LoginController extends ApiController
         if($request->hasCookie('cart')){
             $cookie_cart = $request->cookie('cart');
             $items = json_decode($cookie_cart, true);
-            $items = $items['items'];
-
-            SaveCookieCartToDB::dispatch($items, $user);
-
+            if(!empty($items) && array_key_exists('items', $items)){
+                $items = $items['items'];
+                // CartService::moveCartFromCookieToDB($items, $user);
+                SaveCookieCartToDB::dispatch($items, $user);
+            }
         }
 
         $user = UserResource::make($user);

@@ -2,11 +2,12 @@
 
 namespace App\Traits;
 
+use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Cache;
 
 trait ApiResponser{
 
@@ -123,6 +124,13 @@ trait ApiResponser{
 			return $data;
 		});
 	}
+
+
+    
+    public function authUser () : User 
+    {
+        return auth()->user();
+    }
 
 
 }
