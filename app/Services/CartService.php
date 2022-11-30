@@ -4,9 +4,10 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\Variant;
 use App\Models\CartItem;
+use App\Models\Product;
 
 class CartService{
-
+    
     /**
      * @param mixed $items
      * 
@@ -44,7 +45,7 @@ class CartService{
 
             // if cart-item doesnt exist and there's enough qty then create 
             if(! $cart_item){
-                if($item['count'] < $variant->stock){
+                if($item['count'] < $variant->stock && $variant->status == Product::AVAILABLE_PRODUCT){
                     CartItem::create([
                         'cart_id' => $cart->id,
                         'variant_id' => $variant->id,
@@ -56,6 +57,35 @@ class CartService{
 
         return $cart;
         
+    }
+
+    public static function moveItemsToDB($items, $cart)
+    {
+        foreach($items as $item){
+            $variant = Variant::where('uuid', $item['variant_id'])->first();
+
+            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+    
+            if($variant->status == 'unavailable'){
+                return response()->json(['error' => 'Product is not available', 'code' => 404], 404);
+            }
+    
+            if((optional($cart_item)->count + $item['count']) > $variant->stock){
+                return response()->json(['error' => 'There are not enough products in stock', 'code' => 404], 404);
+            }
+    
+            if($cart_item){
+                $cart_item->count += $item['count'];
+                $cart_item->save();
+               
+            }else{
+                CartItem::create([
+                    'cart_id' => $cart->id,
+                    'variant_id' => $variant->id,
+                    'count' => $item['count']
+                ]);
+            }
+        }
     }
 
 

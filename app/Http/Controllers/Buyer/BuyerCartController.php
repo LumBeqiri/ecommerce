@@ -44,31 +44,8 @@ class BuyerCartController extends ApiController
 
         $cart = Cart::updateOrCreate(['user_id' => auth()->id()]);
 
-        if($request->hasCookie('cart')){
-            $cookie_cart = $request->cookie('cart');
-            $items = json_decode($cookie_cart, true);
-            $items = $items['items'];
-   
-        }
-        foreach($items as $item ){
+        CartService::moveItemsToDB($items, $cart);
            
-            $variant = Variant::where('uuid', $item['variant_id'])->first();
-
-            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
-
-            if($cart_item){
-                $cart_item->count += $item['count'];
-                $cart_item->save();
-            }else{
-                CartItem::create([
-                    'cart_id' => $cart->id,
-                    'variant_id' => $variant->id,
-                    'count' => $item['count']
-                ]);
-            }
-
-        }
-             
         $cart->total_cart_price = CartService::calculatePrice($items);
    
         return $this->showOne(new CartResource($cart->load('cart_items')));
