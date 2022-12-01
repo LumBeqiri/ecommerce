@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Services\CartService;
 use App\Jobs\SaveCookieCartToDB;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
-use App\Models\Variant;
-use Illuminate\Support\Facades\Validator;
 
 class LoginController extends ApiController
 {
@@ -40,7 +37,7 @@ class LoginController extends ApiController
             }
         }
 
-        $user = UserResource::make($user);
+        $user = new UserResource($user);
 
 
         

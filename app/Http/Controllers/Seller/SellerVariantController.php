@@ -56,18 +56,6 @@ class SellerVariantController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  Variant $variant
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Variant $variant)
-    {
-        return $this->showOne(new VariantResource($variant));
-    }
-
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  UpdateVariantRequest $request

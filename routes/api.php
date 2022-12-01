@@ -10,7 +10,6 @@ use App\Http\Controllers\Seller\SellerController;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
-use App\Http\Controllers\Cart\VariantCartController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Order\OrderSellerController;
@@ -27,6 +26,7 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\Variant\VariantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +83,7 @@ Route::delete('products/deleteCategories/{product}', [ProductCategoryController:
 
 
 // VARIANT Routes
+Route::resource('variants', VariantController::class)->only(['index', 'show']);
 Route::resource('products.variants', SellerVariantController::class);
 
 // ATTRIUBTE Routes
