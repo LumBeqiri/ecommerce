@@ -23,10 +23,18 @@ class CartRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'items' => 'array',
-            'items.*.variant_id' => 'required|exists:variants,uuid',
-            'items.*.count' => 'integer'
-        ];
+        if($this->getMethod() == 'PUT'){
+            return [
+                'is_closed' => 'required|boolean'
+            ];
+        }else{
+            return [
+                'items' => 'array',
+                'items.*.variant_id' => 'required|exists:variants,uuid',
+                'items.*.count' => 'integer'
+            ];
+
+        }
+
     }
 }

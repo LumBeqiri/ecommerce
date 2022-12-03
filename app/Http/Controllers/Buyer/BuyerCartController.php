@@ -11,6 +11,7 @@ use App\Http\Requests\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Http\Requests\CartItemRequest;
 use App\Http\Controllers\ApiController;
+use App\Models\User;
 
 class BuyerCartController extends ApiController
 {
@@ -19,16 +20,12 @@ class BuyerCartController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $buyer)
     {
-
-        $cart = $this->authUser()->cart()->with('cart_items')->first();
+        $cart = $buyer->cart()->with('cart_items')->first();
         
-
-        return $this->showone(new CartResource($cart));
+        return $this->showOne(new CartResource($cart));
     }
-
-
 
     /**
      * Store in storage
@@ -119,43 +116,6 @@ class BuyerCartController extends ApiController
         }
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
-    }
-
-
-    
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
 }

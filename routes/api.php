@@ -16,6 +16,7 @@ use App\Http\Controllers\Order\OrderSellerController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductOrderController;
@@ -65,7 +66,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
 
-    Route::get('carts', [BuyerCartController::class, 'index']);
+    Route::resource('carts', CartController::class);
+
+    Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
     Route::post('store_cart', [BuyerCartController::class, 'store'])->name('store.cart');
     Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart'])->name('add.to.cart');
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart'])->name('remove.from.cart');

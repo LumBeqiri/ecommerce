@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\ApiController;
-use Illuminate\Http\Request;
+use App\Http\Requests\CartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class CartController extends ApiController
 {
@@ -14,19 +17,14 @@ class CartController extends ApiController
      */
     public function index()
     {
-        //
+        $carts = QueryBuilder::for(Cart::class)
+            ->allowedIncludes('user', 'cart_items')
+            ->get();
+
+        return $this->showAll(CartResource::collection($carts));
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -34,9 +32,12 @@ class CartController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cart $cart)
     {
-        //
+        $cartResult = QueryBuilder::for($cart)
+            ->allowedIncludes('user', 'cart_items')
+            ->first();
+        return $this->showOne(new CartResource($cartResult));
     }
 
     /**
@@ -46,9 +47,14 @@ class CartController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CartRequest $request, Cart $cart)
     {
-        //
+        $data = $request->validated();
+
+        $cart->is_closed = $data['is_closed'];
+        $cart->save();
+
+        return $this->showOne(new CartResource($cart));
     }
 
     /**
@@ -57,8 +63,10 @@ class CartController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cart $cart)
     {
-        //
+        $cart->delete();
+
+        return $this->showMessage('Cart deleted Successfully', 200);
     }
 }
