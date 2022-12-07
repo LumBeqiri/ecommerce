@@ -4,14 +4,12 @@ use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Category;
-use function Pest\Faker\faker;
-use App\Services\CurrencySeederService;
-use Database\Factories\SellerFactory;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Http\UploadedFile;
 
 it('can upload a product for sale ', function(){
     Storage::fake();
-    CurrencySeederService::create();
+    $this->seed(CurrencySeeder::class);
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
 

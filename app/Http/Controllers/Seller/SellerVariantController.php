@@ -66,7 +66,6 @@ class SellerVariantController extends ApiController
    
         $request->validated();
         $seller_id = $request->seller_id;
-        $images = null;
         $images = $request->images;
     
         if($request->has('images')){
