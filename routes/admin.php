@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\TestController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function(){
-    echo('Admin routes');
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    //admin routes
 });
+

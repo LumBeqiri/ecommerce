@@ -108,7 +108,7 @@ class BuyerCartController extends ApiController
 
         $cart_item->count = $cart_item->count - $data['count'];
 
-        if( $cart_item->count == 0 ){
+        if($cart_item->count == 0){
             $cart_item->delete(); 
         }
         else{
