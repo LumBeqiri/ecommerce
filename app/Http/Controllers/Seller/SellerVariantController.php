@@ -71,7 +71,7 @@ class SellerVariantController extends ApiController
         if($request->has('images')){
             $images = $request->images;
             $request_images = count($request->file('images'));
-            abort_if( $request_images > 1, 422, 'Can not have more than 1 image per variant');
+            abort_if( $request_images > 1, 422, 'Can not update more than 1 image per variant');
             UploadImageService::upload($variant,$images, Variant::class);
         }
         
