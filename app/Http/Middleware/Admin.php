@@ -20,7 +20,6 @@ class Admin
         if(auth()->user() && auth()->user()->hasRole('admin') ){
             return $next($request);
         }
-        
         return redirect('/');
     }
 }

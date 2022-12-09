@@ -51,7 +51,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'delete-orders']);
 
 
-        $adminRole = Role::create(['name' => 'Admin']);
+        $adminRole = Role::create(['name' => 'admin']);
 
         $adminRole->givePermissionTo([
             'create-users',

@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123123123')
         ]);
 
-        $adminUser->assignRole('Admin');
+        $adminUser->assignRole('admin');
 
         User::factory($usersQuantity)->create();
         Discount::factory(5)->create();

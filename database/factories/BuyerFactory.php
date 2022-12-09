@@ -34,7 +34,6 @@ class BuyerFactory extends Factory
             'remember_token' => Str::random(10),
             'verified' =>  $this->faker->randomElement([User::VERIFIED_USER,User::UNVERIFIED_USER]),
             'verification_token' => User::VERIFIED_USER ? null : User::generateVerificationCode(),
-            'admin' => $this->faker->randomElement([User::ADMIN_USER,User::REGULAR_USER]),
 
         ];
     }

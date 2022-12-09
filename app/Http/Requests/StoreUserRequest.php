@@ -43,7 +43,6 @@ class StoreUserRequest extends FormRequest
                 'zip' => 'regex:/\b\d{5}\b/',
                 // 'email'=> 'required|email|unique:users,email,' . auth()->id(),
                 'password' => 'min:6|confirmed',
-                'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
             ];
 
         }

@@ -32,15 +32,12 @@ class LoginController extends ApiController
             $items = json_decode($cookie_cart, true);
             if(!empty($items) && array_key_exists('items', $items)){
                 $items = $items['items'];
-                // CartService::moveCartFromCookieToDB($items, $user);
                 SaveCookieCartToDB::dispatch($items, $user);
             }
         }
 
         $user = new UserResource($user);
 
-
-        
         $response = [
             'user' => $user,
             'token' => $token

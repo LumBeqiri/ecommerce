@@ -10,6 +10,6 @@ use App\Http\Controllers\ApiController;
 class TestController extends ApiController
 {
     public function index(){
-        return 'you are an admin';
+        
     }
 }
