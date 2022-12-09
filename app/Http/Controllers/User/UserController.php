@@ -37,7 +37,6 @@ class UserController extends ApiController
         $data['password'] = bcrypt($request->password);
         $data['verified'] = User::UNVERIFIED_USER;
         $data['verification_token'] = User::generateVerificationCode();
-        $data['admin'] = User::REGULAR_USER;
 
         $user = User::create($data);
 
