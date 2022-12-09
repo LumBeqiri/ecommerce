@@ -50,9 +50,9 @@ class StoreVariantRequest extends FormRequest
     public function messages() {
         $max_images = 5;
         return [
-          'medias.*.max' => 'media size should be less than 2mb',
-          'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
-          'medias.max' => 'Only ' . $max_images . ' files per product are allowed'
+            'medias.*.max' => 'media size should be less than 2mb',
+            'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
+            'medias.max' => 'Only ' . $max_images . ' files per product are allowed'
         ];
       }
 }

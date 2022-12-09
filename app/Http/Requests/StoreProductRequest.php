@@ -44,9 +44,8 @@ class StoreProductRequest extends FormRequest
             'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
 
           ];
-        }else{ 
-          
-          return [
+        }
+        return [
             'name' => 'required',
             // 'sku' => 'required|unique:variants',
             'short_description' => 'string|max:256',
@@ -60,9 +59,6 @@ class StoreProductRequest extends FormRequest
 
           ];
         }
-
-
-    }
 
     public function messages() {
           $max_images = 5;

@@ -106,7 +106,7 @@ class BuyerCartController extends ApiController
             return $this->errorResponse('You have less than ' . $data['count'] . ' items', 422);
         }
 
-        $cart_item->count = $cart_item->count - $data['count'];
+        $cart_item->count -= $data['count'];
 
         if($cart_item->count == 0){
             $cart_item->delete(); 

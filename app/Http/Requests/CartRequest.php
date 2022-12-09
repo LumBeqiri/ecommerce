@@ -27,14 +27,12 @@ class CartRequest extends FormRequest
             return [
                 'is_closed' => 'required|boolean'
             ];
-        }else{
-            return [
-                'items' => 'array',
-                'items.*.variant_id' => 'required|exists:variants,uuid',
-                'items.*.count' => 'integer'
-            ];
-
         }
+        return [
+            'items' => 'array',
+            'items.*.variant_id' => 'required|exists:variants,uuid',
+            'items.*.count' => 'integer'
+        ];
 
     }
 }

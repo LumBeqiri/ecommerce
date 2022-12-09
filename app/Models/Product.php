@@ -21,8 +21,8 @@ class Product extends Model
     use HasUuid;
 
 
-    const AVAILABLE_PRODUCT = 'available';
-    const UNAVAILABLE_PRODUCT = 'unavailable';
+    public const AVAILABLE_PRODUCT = 'available';
+    public const UNAVAILABLE_PRODUCT = 'unavailable';
 
     protected $hidden = ['pivot'];
 

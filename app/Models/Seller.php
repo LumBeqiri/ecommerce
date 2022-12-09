@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Product;
+use App\Models\{User,Product};
 use App\Traits\HasUuid;
 use App\Scopes\SellerScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +15,7 @@ class Seller extends User
     use HasFactory, SoftDeletes;
     use HasUuid;
 
-    public $table = "users";
+    protected $table = "users";
 
     protected static function boot(){
  

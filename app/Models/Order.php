@@ -21,8 +21,8 @@ class Order extends Model
     use HasUuid;
 
 
-    const SHIPPED_ORDER = 'true';
-    const UNSHIPPED_ORDER = 'false';
+    public const SHIPPED_ORDER = 'true';
+    public const UNSHIPPED_ORDER = 'false';
     
 
     protected $fillable =[

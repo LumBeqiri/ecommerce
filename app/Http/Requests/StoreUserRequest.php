@@ -35,17 +35,15 @@ class StoreUserRequest extends FormRequest
                 'email'=> 'required|email|unique:users',
                 'password' => 'required|min:6|confirmed',
             ];
-        }else{
-            return [
-                'name' => 'string',
-                'city' => 'string',
-                'state' => 'string',
-                'zip' => 'regex:/\b\d{5}\b/',
-                // 'email'=> 'required|email|unique:users,email,' . auth()->id(),
-                'password' => 'min:6|confirmed',
-            ];
-
         }
+        return [
+            'name' => 'string',
+            'city' => 'string',
+            'state' => 'string',
+            'zip' => 'regex:/\b\d{5}\b/',
+            // 'email'=> 'required|email|unique:users,email,' . auth()->id(),
+            'password' => 'min:6|confirmed',
+        ];
 
     }
 }

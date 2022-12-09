@@ -17,7 +17,7 @@ class Buyer extends User
     use HasFactory, SoftDeletes;
     use HasUuid;
 
-    public $table = "users";
+    protected $table = "users";
 
     
     protected static function boot(){

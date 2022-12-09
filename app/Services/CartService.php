@@ -17,7 +17,8 @@ class CartService{
     {
         
         $variant_ids = [];
-        for($i = 0;$i < count($items);$i++){
+        $itemCount = count($items);
+        for($i = 0;$i < $itemCount; $i++){
             $variant_ids[$i] = $items[$i]['variant_id'];
         }
 
@@ -45,7 +46,7 @@ class CartService{
 
             // if item doesnt exist in the cart and there's enough, add to cart 
             if(! $cart_item){
-                if($item['count'] < $variant->stock && $variant->status == Product::AVAILABLE_PRODUCT){
+                if($item['count'] < $variant->stock && $variant->status === Product::AVAILABLE_PRODUCT){
                     CartItem::create([
                         'cart_id' => $cart->id,
                         'variant_id' => $variant->id,
@@ -66,7 +67,7 @@ class CartService{
 
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
     
-            if($variant->status == 'unavailable'){
+            if($variant->status === 'unavailable'){
                 return response()->json(['error' => 'Product is not available', 'code' => 404], 404);
             }
     
