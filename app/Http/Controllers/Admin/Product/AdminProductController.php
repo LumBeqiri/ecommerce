@@ -9,6 +9,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\UpdateProductRequest;
 
+
 class AdminProductController extends ApiController
 {
     /**
@@ -84,28 +85,5 @@ class AdminProductController extends ApiController
         $toRestoreProduct->restore();
 
         return $this->showMessage('Product restored successfully!');
-
-    }
-
-    /**
-     * @param Product $product
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function forceDelete($product)
-    {
-        $toDeleteProduct = Product::where('uuid', $product)->firstOrFail();
-
-        $toDeleteProduct->variants()->each(function($variant){
-            $variant->delete();
-        });
-
-        $toDeleteProduct->categories()->detach();
-
-        $toDeleteProduct->orders()->detach();
-
-        $toDeleteProduct->forceDelete();
-
-        return $this->showMessage('Product deleted forever!');
     }
 }
