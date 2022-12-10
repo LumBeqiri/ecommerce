@@ -96,10 +96,12 @@ class AdminUserController extends ApiController
      */
     public function destroy(User $user)
     {   
-         if($user->id != 1){
-            $user->delete();
+         if($user->id == 1){
+            return $this->showError('This user cannot be deleted');
          }
         
+         $user->delete();
+
          return $this->showMessage('User deleted successfully!');
     }
 }
