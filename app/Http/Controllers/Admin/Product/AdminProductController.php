@@ -75,7 +75,7 @@ class AdminProductController extends ApiController
     public function destroy(Product $product)
     {
         $product->delete();
-
+        
         return $this->showMessage('Product deleted successfully!');
     }
 

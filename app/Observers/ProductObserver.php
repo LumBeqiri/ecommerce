@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use App\Jobs\DeleteProduct;
+use App\Jobs\DeleteProductVariants;
+use App\Models\Media;
 
 class ProductObserver
 {
@@ -36,6 +39,9 @@ class ProductObserver
      */
     public function deleted(Product $product)
     {
+        $product->variants()->each(function($variant){
+            $variant->delete();
+        });
 
     }
 
