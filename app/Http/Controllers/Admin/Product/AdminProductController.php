@@ -68,6 +68,7 @@ class AdminProductController extends ApiController
 
     /**
      * Remove the specified resource from storage.
+     * See ProductObserver
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

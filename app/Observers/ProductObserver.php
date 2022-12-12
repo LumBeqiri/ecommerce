@@ -43,6 +43,8 @@ class ProductObserver
             $variant->delete();
         });
 
+        $product->categories()->detach();
+
     }
 
     /**

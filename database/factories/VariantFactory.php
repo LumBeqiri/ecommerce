@@ -32,4 +32,19 @@ class VariantFactory extends Factory
             'discount_id' => $this->faker->numberBetween($min = 0, $max = 30),
         ];
     }
+
+
+    /**
+     * Indicate that the product is available
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function available()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => Product::AVAILABLE_PRODUCT
+            ];
+        });
+    }
 }
