@@ -55,7 +55,7 @@ class ProductObserver
      */
     public function restored(Product $product)
     {
-        //
+    
     }
 
     /**

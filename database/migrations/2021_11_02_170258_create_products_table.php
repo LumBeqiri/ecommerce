@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->foreignId('seller_id')->constrained('users');
             $table->foreignId('currency_id')->constrained('currencies');
+            $table->foreignId('discount_id')->nullable()->constrained('discounts');
 
             $table->timestamps();
             $table->softDeletes();

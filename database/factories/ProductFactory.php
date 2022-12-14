@@ -28,7 +28,8 @@ class ProductFactory extends Factory
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph(1),
             'seller_id' => User::all()->random()->id,
-            'currency_id' => 2
+            'currency_id' => 2,
+            'discount_id' => $this->faker->numberBetween($min = 0, $max = 30),
         ];
     }
 }
