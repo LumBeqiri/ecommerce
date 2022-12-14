@@ -27,7 +27,6 @@ class CreateVariantsTable extends Migration
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

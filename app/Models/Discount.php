@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Discount extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     use HasUuid;
 
 

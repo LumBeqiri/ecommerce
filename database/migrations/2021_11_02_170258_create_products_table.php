@@ -24,7 +24,6 @@ class CreateProductsTable extends Migration
             $table->foreignId('discount_id')->nullable()->constrained('discounts');
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
