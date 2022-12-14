@@ -36,7 +36,7 @@ class StoreVariantRequest extends FormRequest
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
             'attrs' => 'array',
-            'attrs.*' => 'integer|in:attributes',
+            'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
             'product_id' => 'in:products',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'medias' => 'max:' . $max_images,

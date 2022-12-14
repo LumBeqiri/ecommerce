@@ -79,22 +79,25 @@ class SellerProductController extends ApiController
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
         $request->validated();
         $images = null;
+
         if($request->has('medias')){
             $images = $request->file('medias');
             $request_images = count($request->file('medias'));
+
             abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
 
             UploadImageService::upload($product,$images, Product::class);
         }
+
         $product->fill($request->except(['categories']));   
-        $this->checkSeller($seller,$product);
+
         //get ids integer
-        $integerIDs =  $request->categories;
+        $categories =  $request->categories;
         //no more than 5 images are allowed per product
         if($request->has('categories')){
-            abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
+            abort_if(count($categories) >5, 422, 'Only 5 categories per product');
 
-            $product->categories()->sync($integerIDs);
+            $product->categories()->sync($categories);
         }
 
         $product->save();

@@ -40,8 +40,6 @@ class VariantObserver
     {
         $variant->attributes()->detach();
 
-        CartItem::where('variant_id', $variant->id)->delete();
-        
         Media::where('mediable_id', $variant->id)
             ->where('mediable_type', Variant::class)
             ->delete();

@@ -10,6 +10,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
 use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
 
 class SellerVariantController extends ApiController
 {
@@ -34,20 +35,20 @@ class SellerVariantController extends ApiController
      */
     public function store(StoreVariantRequest $request, Product $product){
         //validate variant details and image details
-        $variant_data = $request->validated();
+        $request->validated();
+        $variant_data = $request->except('attrs');
 
         $images = $request->file('images');
 
-
         $variant_data['product_id'] = $product->id;
 
-        
         $newVariant = Variant::create($variant_data);
 
         // $attr = array_map('intval', explode(',', $request->attrs));
-        $attr = $request->attrs;
 
-        $newVariant->attributes()->sync($attr);
+
+        $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
+        $newVariant->attributes()->sync($attrs);
 
         //send images to be uploaded
         UploadImageService::upload($newVariant,$images, Variant::class);
@@ -98,11 +99,6 @@ class SellerVariantController extends ApiController
      */
     public function destroy(Product $product, Variant $variant)
     {   
-      
-        //ADD seller id of logged user or check if ADMIN role 
-        $seller_id = 4;
-        $this->checkSeller($seller_id, $product->id);
-
         $variant->delete();
 
         return $this->showOne(new VariantResource($variant));

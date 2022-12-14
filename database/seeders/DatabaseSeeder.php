@@ -6,7 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant};
+use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant, VariantAttribute};
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -43,6 +44,7 @@ class DatabaseSeeder extends Seeder
         Cart::flushEventListeners();
         CartItem::flushEventListeners();
 
+        $this->call(AttributeSeeder::class);
         $this->call([CurrencySeeder::class]);
         $this->call([RoleAndPermissionSeeder::class]);
 
@@ -53,6 +55,7 @@ class DatabaseSeeder extends Seeder
         $ordersQuantity = 50;
         
         $adminUser = User::factory()->create([
+            'uuid' => 'f4e367e1-aefe-33de-8e38-5f8b2ef1bead',
             'name' => 'Lum Beqiri',
             'email' => 'lum@gmail.com',
             'password' => bcrypt('123123123')
