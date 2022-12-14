@@ -70,7 +70,7 @@ class AdminProductController extends ApiController
      * Remove the specified resource from storage.
      * See ProductObserver
      *
-     * @param  int  $id
+     * @param  Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
@@ -81,6 +81,11 @@ class AdminProductController extends ApiController
     }
 
 
+    /**
+     * @param string $product
+     * 
+     * @return \Illuminate\Http\Response 
+     */
     public function restore($product){
         $toRestoreProduct = Product::withTrashed()->where('uuid', $product)->firstOrFail();
         $toRestoreProduct->restore();

@@ -27,7 +27,6 @@ class CreateMediasTable extends Migration
             $table->unsignedBigInteger('size');
             
             $table->timestamps();
-            $table->softDeletes();
 
         });
     }
