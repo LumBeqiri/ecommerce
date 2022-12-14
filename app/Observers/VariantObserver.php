@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\CartItem;
 use App\Models\Media;
 use App\Models\Variant;
 
@@ -38,6 +39,9 @@ class VariantObserver
     public function deleted(Variant $variant)
     {
         $variant->attributes()->detach();
+
+        CartItem::where('variant_id', $variant->id)->delete();
+        
         Media::where('mediable_id', $variant->id)
             ->where('mediable_type', Variant::class)
             ->delete();
