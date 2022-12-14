@@ -34,7 +34,7 @@ class VariantFactory extends Factory
 
 
     /**
-     * Indicate that the product is available
+     * Indicate that the variant is available
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */

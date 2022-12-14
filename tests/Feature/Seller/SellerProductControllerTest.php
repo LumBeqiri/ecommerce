@@ -12,6 +12,7 @@ it('can upload a product for sale ', function(){
     $this->seed(CurrencySeeder::class);
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
+    $productName = 'water-bottle';
 
     login($user);
 
@@ -19,7 +20,7 @@ it('can upload a product for sale ', function(){
 
     $response = $this->postJson(route('seller.create.product', [$user->uuid]),
         [
-            'name' => 'water-bottle',
+            'name' => $productName,
             'sku' => 'llllusasew',
             'variant_name' => 'test',
             'short_description' => 'faker()->paragraph(1)',
@@ -36,7 +37,7 @@ it('can upload a product for sale ', function(){
     $response->assertStatus(201);
 
     $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
-    $this->assertDatabaseHas(Product::class, ['name' => 'water-bottle']);
+    $this->assertDatabaseHas(Product::class, ['name' => $productName]);
 
 });
 
@@ -45,7 +46,7 @@ it('can update product name', function(){
     $old_name = 'old_name';
     $new_name = 'new_name';
     $seller = Seller::factory()
-    ->has(Product::factory(['name' => $old_name])->count(1))
+    ->has(Product::factory(['name' => $old_name])->available()->count(1))
     ->create();
 
     $product = $seller->products()->first();
@@ -63,6 +64,8 @@ it('can update product name', function(){
     expect($response->json())
         ->name->toBe($new_name);
 
+    $this->assertDatabaseHas(Product::class, ['name' => $new_name]);
+
 });
 
 
@@ -71,14 +74,12 @@ it('can update product description', function(){
     $old_description = 'old description';
     $new_description = 'new description';
     $seller = Seller::factory()
-    ->has(Product::factory(['description' => $old_description])->count(1))
-    ->create();
+        ->has(Product::factory(['description' => $old_description])->available()->count(1))
+        ->create();
 
     $product = $seller->products()->first();
     
     login($seller);
-
- 
 
     $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
         [
@@ -87,9 +88,12 @@ it('can update product description', function(){
     );
 
     $response->assertStatus(200);
-    
+
     expect($response->json())
         ->name->toBe($new_description);
+
+    $this->assertDatabaseHas(Product::class, ['description' => $new_description]);
+    
 
 });
 

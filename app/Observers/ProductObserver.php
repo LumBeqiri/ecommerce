@@ -39,11 +39,11 @@ class ProductObserver
      */
     public function deleted(Product $product)
     {
-        $product->variants()->each(function($variant){
-            $variant->delete();
-        });
+        // $product->variants()->each(function($variant){
+        //     $variant->delete();
+        // });
 
-        $product->categories()->detach();
+        // $product->categories()->detach();
 
     }
 

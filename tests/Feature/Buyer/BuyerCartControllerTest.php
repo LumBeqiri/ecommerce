@@ -11,7 +11,7 @@ it('can add an item to the cart', function(){
     $seller = User::factory()->create();
     $buyer = User::factory()->create();
 
-    $product = Product::factory()->create(['seller_id' => $seller->id]);
+    $product = Product::factory()->available()->create(['seller_id' => $seller->id]);
     $variant = Variant::factory()->available()->for($product)->create(['stock' => 50]);
     $count = 2;
 
@@ -37,7 +37,7 @@ it('can remove an item to the cart', function(){
     $toRemove = 10;
     $itemsLeft = $inCart - $toRemove;
 
-    $product = Product::factory()->create(['seller_id' => $seller->id]);
+    $product = Product::factory()->available()->create(['seller_id' => $seller->id]);
     $variant = Variant::factory()->available()->for($product)->create(['stock' => $stock]);
 
     login($buyer);

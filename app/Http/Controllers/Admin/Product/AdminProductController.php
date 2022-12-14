@@ -75,21 +75,11 @@ class AdminProductController extends ApiController
      */
     public function destroy(Product $product)
     {
+        $product->categories()->detach();
+        $product->orders()->detach();
         $product->delete();
         
         return $this->showMessage('Product deleted successfully!');
     }
 
-
-    /**
-     * @param string $product
-     * 
-     * @return \Illuminate\Http\Response 
-     */
-    public function restore($product){
-        $toRestoreProduct = Product::withTrashed()->where('uuid', $product)->firstOrFail();
-        $toRestoreProduct->restore();
-
-        return $this->showMessage('Product restored successfully!');
-    }
 }
