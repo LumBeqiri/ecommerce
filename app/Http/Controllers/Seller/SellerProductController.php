@@ -72,8 +72,7 @@ class SellerProductController extends ApiController
             return $this->errorResponse("File(s) could not be uploaded", 500);
         }
 
-       
-        return $this->showOne(new VariantResource($newVariant),201);
+        return $this->showOne(new VariantResource($newVariant->load('product')),201);
     }
 
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
