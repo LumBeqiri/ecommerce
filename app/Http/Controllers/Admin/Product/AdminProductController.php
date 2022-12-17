@@ -52,14 +52,6 @@ class AdminProductController extends ApiController
         }
         $product->fill($request->except(['categories']));   
 
-        $integerIDs =  $request->categories;
-
-        if($request->has('categories')){
-            abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
-
-            $product->categories()->sync($integerIDs);
-        }
-
         $product->save();
 
         return $this->showOne(new ProductResource($product));

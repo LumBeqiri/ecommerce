@@ -11,6 +11,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\VariantResource;
+use App\Models\Category;
 use App\Models\User;
 use App\Models\Variant;
 use Exception;
@@ -46,6 +47,9 @@ class SellerProductController extends ApiController
         abort_if(in_array(0,$categories),422, 'Category cannot be 0');
         abort_if(count($categories) >5, 422, 'Only 5 categories per product');
 
+
+        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+        
         $newProduct->categories()->sync($categories);
 
 

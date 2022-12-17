@@ -34,7 +34,7 @@ class SellerVariantController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function store(StoreVariantRequest $request, Product $product){
-        //validate variant details and image details
+
         $request->validated();
         $variant_data = $request->except('attrs');
 
@@ -44,13 +44,9 @@ class SellerVariantController extends ApiController
 
         $newVariant = Variant::create($variant_data);
 
-        // $attr = array_map('intval', explode(',', $request->attrs));
-
-
         $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
         $newVariant->attributes()->sync($attrs);
 
-        //send images to be uploaded
         UploadImageService::upload($newVariant,$images, Variant::class);
 
         return $this->showOne(new VariantResource($newVariant));
@@ -66,7 +62,6 @@ class SellerVariantController extends ApiController
     public function update(UpdateVariantRequest $request,Variant $variant){
    
         $request->validated();
-        $seller_id = $request->seller_id;
         $images = $request->images;
     
         if($request->has('images')){
@@ -77,13 +72,11 @@ class SellerVariantController extends ApiController
         }
         
         
-        $variant->fill($request->except(['categories']));   
-        //get string ids and convert them to integer
-        $this->checkSeller($seller_id,$variant->product_id);
+        $variant->fill($request->except(['categories', 'attrs']));   
 
-        $attr = $request->attrs;
-
-        $variant->attributes()->sync($attr);
+        $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
+        
+        $variant->attributes()->sync($attrs);
 
         $variant->save();
 
@@ -92,23 +85,14 @@ class SellerVariantController extends ApiController
     }
 
     /**
-     * @param Product $product
      * @param Variant $variant
      * 
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product, Variant $variant)
+    public function destroy(Variant $variant)
     {   
         $variant->delete();
 
         return $this->showOne(new VariantResource($variant));
-    }
-
-    protected function checkSeller($seller_id, $product_id){
-        $product = Product::findOrFail($product_id);
-        $seller = User::findOrFail($seller_id);
-        abort_if($seller->id != $product->seller_id,
-        422,
-        'The specified seller is not the seller of this product!');
     }
 }

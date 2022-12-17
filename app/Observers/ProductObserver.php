@@ -2,10 +2,12 @@
 
 namespace App\Observers;
 
+use App\Models\Media;
 use App\Models\Product;
+use App\Models\Variant;
+use App\Models\Category;
 use App\Jobs\DeleteProduct;
 use App\Jobs\DeleteProductVariants;
-use App\Models\Media;
 
 class ProductObserver
 {
@@ -32,18 +34,19 @@ class ProductObserver
     }
 
     /**
-     * Handle the Product "deleted" event.
+     * Handle the Product "deleting" event.
      *
      * @param  \App\Models\Product  $product
      * @return void
      */
-    public function deleted(Product $product)
+    public function deleting(Product $product)
     {
-        // $product->variants()->each(function($variant){
-        //     $variant->delete();
-        // });
+        $product->variants->each(function($variant){
+            $variant->medias()->delete();
+        });
 
-        // $product->categories()->detach();
+        
+
 
     }
 
