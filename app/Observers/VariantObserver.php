@@ -38,11 +38,11 @@ class VariantObserver
      */
     public function deleted(Variant $variant)
     {
-        // $variant->attributes()->detach();
+        $variant->attributes()->detach();
 
-        // Media::where('mediable_id', $variant->id)
-        //     ->where('mediable_type', Variant::class)
-        //     ->delete();
+        Media::where('mediable_id', $variant->id)
+            ->where('mediable_type', Variant::class)
+            ->delete();
     }
 
     /**

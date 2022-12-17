@@ -83,14 +83,14 @@ it('can update product description', function(){
 
     $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
         [
-            'name' => $new_description
+            'description' => $new_description
         ]
     );
 
     $response->assertStatus(200);
 
     expect($response->json())
-        ->name->toBe($new_description);
+        ->description->toBe($new_description);
 
     $this->assertDatabaseHas(Product::class, ['description' => $new_description]);
     
