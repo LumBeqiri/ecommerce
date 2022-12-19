@@ -21,6 +21,7 @@ class ProductBuyerController extends ApiController
         ->pluck('buyer')
         ->unique('id')
         ->values();
+        
         return $this->showAll(UserResource::collection($buyers));
     
     }

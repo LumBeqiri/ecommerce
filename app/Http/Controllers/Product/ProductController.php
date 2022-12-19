@@ -20,8 +20,6 @@ class ProductController extends ApiController
         return $this->showAll(ProductResource::collection($products));
     }
 
-
-
     /**
      * Display the specified resource.
      *

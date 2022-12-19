@@ -20,6 +20,6 @@ class Admin
         if(auth()->user() && auth()->user()->hasRole('admin') ){
             return $next($request);
         }
-        return redirect('/');
+        return response()->json(['data' =>'You are not authorized to perform this action!'], 403);
     }
 }

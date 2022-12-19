@@ -73,6 +73,9 @@ class SellerProductController extends ApiController
 
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
         $request->validated();
+
+        $this->authorize('update', $product);
+
         $images = null;
 
         if($request->has('medias')){
@@ -83,8 +86,8 @@ class SellerProductController extends ApiController
 
             UploadImageService::upload($product,$images, Product::class);
         }
-
-        $product->fill($request->except(['categories']));   
+    
+        $product->fill($request->except(['categories']));
 
         $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
 
@@ -97,15 +100,6 @@ class SellerProductController extends ApiController
 
         return $this->showOne(new ProductResource($product));
     }
-
-
-
-    protected function checkSeller(Seller $seller, Product $product){
-        abort_if($seller->id != $product->seller_id,
-        422,
-        'The specified seller is not the seller of this product!');
-    }
-
 
     protected function removeCategories($start_id,$end_id){
         $products = Product::all();

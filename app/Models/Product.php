@@ -24,12 +24,7 @@ class Product extends Model
 
     protected $hidden = ['pivot'];
 
-    protected $fillable = [
-        'name',
-        'description',
-        'seller_id',
-        'currency_id',
-    ];
+    protected $guarded = [];
 
     // move isAvailable to variant
     // public function isAvaliable() 
