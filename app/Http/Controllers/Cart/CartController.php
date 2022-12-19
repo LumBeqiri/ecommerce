@@ -10,21 +10,6 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class CartController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $carts = QueryBuilder::for(Cart::class)
-            ->allowedIncludes('user', 'cart_items')
-            ->get();
-
-        return $this->showAll(CartResource::collection($carts));
-
-    }
-
 
     /**
      * Display the specified resource.

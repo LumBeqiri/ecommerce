@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Seller;
 
 use App\Models\Seller;
 use App\Models\Product;
-
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
@@ -27,7 +26,6 @@ class SellerProductController extends ApiController
 
     public function store(StoreProductRequest $request, User $seller){
 
-        //validate product details and image details
         $variant_data = $request->validated();
         $product_data = [];
 
@@ -38,20 +36,15 @@ class SellerProductController extends ApiController
         $product_data['seller_id'] = $seller->id;
 
         $newProduct = Product::create($product_data);
-        
-        //getting categories from request
-        //cast string to array of integer
-        // $integerIDs = array_map('intval', explode(',', $request->categories));
+
         $categories = $request->categories;
         
         abort_if(in_array(0,$categories),422, 'Category cannot be 0');
         abort_if(count($categories) >5, 422, 'Only 5 categories per product');
 
-
         $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
         
         $newProduct->categories()->sync($categories);
-
 
         $variant_data['product_id'] = $newProduct->id;
 
@@ -67,7 +60,6 @@ class SellerProductController extends ApiController
         ]);
 
         try{
-            //send images to be uploaded
             UploadImageService::upload($newVariant,$images, Variant::class);
         }catch(Exception $e){
             Variant::destroy($newVariant->id);
@@ -94,19 +86,16 @@ class SellerProductController extends ApiController
 
         $product->fill($request->except(['categories']));   
 
-        //get ids integer
-        $categories =  $request->categories;
-        //no more than 5 images are allowed per product
+        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+
         if($request->has('categories')){
             abort_if(count($categories) >5, 422, 'Only 5 categories per product');
-
             $product->categories()->sync($categories);
         }
 
         $product->save();
 
         return $this->showOne(new ProductResource($product));
-     
     }
 
 

@@ -8,7 +8,7 @@ use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\UpdateProductRequest;
-
+use App\Models\Category;
 
 class AdminProductController extends ApiController
 {
@@ -74,4 +74,15 @@ class AdminProductController extends ApiController
         return $this->showMessage('Product deleted successfully!');
     }
 
+    /**
+     * Delete category from product
+     * @param Product $product
+     * @param Category $category
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete_product_category(Product $product, Category $category){
+        $product->categories()->detach($category);
+        return $this->showMessage('Category removed successfully!');
+    }
 }
