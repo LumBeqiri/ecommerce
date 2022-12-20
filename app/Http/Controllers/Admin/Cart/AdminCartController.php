@@ -89,6 +89,10 @@ class AdminCartController extends ApiController
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
   
+        if(!$request->has('count')){
+            $cart_item->delete(); 
+            return $this->showOne(new CartResource($cart->load('cart_items')));
+        }
         if($cart_item->count < $data['count']){
             return $this->errorResponse('You have less than ' . $data['count'] . ' items', 422);
         }

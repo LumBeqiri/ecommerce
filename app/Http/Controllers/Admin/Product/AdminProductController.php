@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
+use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
+use App\Models\Category;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Category;
 
 class AdminProductController extends ApiController
 {
@@ -40,7 +41,7 @@ class AdminProductController extends ApiController
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateProductRequest $request, Seller $seller, Product $product){
+    public function update(UpdateProductRequest $request, Product $product){
         $request->validated();
         $images = null;
         if($request->has('medias')){
@@ -50,7 +51,15 @@ class AdminProductController extends ApiController
 
             UploadImageService::upload($product,$images, Product::class);
         }
-        $product->fill($request->except(['categories']));   
+
+        $product->fill($request->except(['categories', 'seller_id']));   
+        if($request->has('seller_id')){
+            $seller = User::where('uuid', $request->seller_id)->first();
+            $product->seller_id = $seller->id;
+        }   
+        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+        
+        $product->categories()->sync($categories);
 
         $product->save();
 

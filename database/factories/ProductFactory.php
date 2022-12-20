@@ -47,4 +47,19 @@ class ProductFactory extends Factory
             ];
         });
     }
+
+
+    /**
+     * Indicate that the product is unavailable
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unavailable()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => Product::UNAVAILABLE_PRODUCT
+            ];
+        });
+    }
 }
