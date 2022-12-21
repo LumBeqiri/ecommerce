@@ -44,10 +44,6 @@ class ProductObserver
         $product->variants->each(function($variant){
             $variant->medias()->delete();
         });
-
-        
-
-
     }
 
     /**

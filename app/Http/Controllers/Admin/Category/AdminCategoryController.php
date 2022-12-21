@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin\Category;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CategoryResource;
 use App\Http\Requests\CreateCategoryRequest;
-use App\Models\Product;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class AdminCategoryController extends ApiController
 {
@@ -55,12 +54,13 @@ class AdminCategoryController extends ApiController
      * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
 
         $category->fill($request->only([
             'name',
-            'description'
+            'description',
+            'slug'
         ]));
 
         if($request->parent){

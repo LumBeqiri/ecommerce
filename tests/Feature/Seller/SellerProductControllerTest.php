@@ -98,3 +98,23 @@ it('can update product description', function(){
 });
 
 
+
+it('can not update other users product', function(){
+    $old_description = 'old description';
+    $new_description = 'new description';
+    $seller = Seller::factory()
+        ->has(Product::factory(['description' => $old_description])->available()->count(1))
+        ->create();
+
+    $product = $seller->products()->first();
+    $unAuthorizedUser = Seller::factory()->create();
+    login($unAuthorizedUser);
+
+    $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
+        [
+            'description' => $new_description
+        ]
+    );
+
+    $response->assertStatus(403);
+});

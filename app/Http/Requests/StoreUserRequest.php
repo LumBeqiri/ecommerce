@@ -27,11 +27,11 @@ class StoreUserRequest extends FormRequest
 
         if($this->getMethod() == "POST"){
             return [
-                'name' => 'required|string',
-                'city' => 'required',
-                'state' => 'required',
+                'name' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'state' => 'required|string|max:255',
                 'zip' => 'required|regex:/\b\d{5}\b/',
-                'phone' => 'required',
+                'phone' => 'required|string|max:255',
                 'email'=> 'required|email|unique:users',
                 'password' => 'required|min:6|confirmed',
             ];

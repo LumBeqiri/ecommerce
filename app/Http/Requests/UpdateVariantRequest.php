@@ -27,8 +27,9 @@ class UpdateVariantRequest extends FormRequest
         $max_images = 5;
 
         return [
-            'sku' => 'sometimes|required',
-            'price' => 'sometimes|required|numeric',
+            'variant_name' => 'sometimes|string|max:255',
+            'sku' => 'sometimes',
+            'price' => 'sometimes|required|numeric|min:1',
             'short_desc' => 'sometimes|string|max:256',
             'long_desc' => 'sometimes|string| max:900',
             'stock' => 'sometimes|required|integer|min:1',
