@@ -23,7 +23,7 @@ trait ApiResponser{
 
     /**
      * @param mixed $message
-     * @param mixed $code
+     * @param int $code
      * 
      * @return \Illuminate\Http\JsonResponse
      */

@@ -20,6 +20,8 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'seller' => new UserResource($this->seller),
             'currency' => $this->currency_id,
+            'images' => $this->medias,
+            'status' => $this->status
         ];
     }
 }

@@ -27,14 +27,15 @@ class UpdateVariantRequest extends FormRequest
         $max_images = 5;
 
         return [
-            'sku' => 'sometimes|required',
-            'price' => 'sometimes|required|numeric',
+            'variant_name' => 'sometimes|string|max:255',
+            'sku' => 'sometimes',
+            'price' => 'sometimes|required|numeric|min:1',
             'short_desc' => 'sometimes|string|max:256',
             'long_desc' => 'sometimes|string| max:900',
             'stock' => 'sometimes|required|integer|min:1',
-            'attrs' => 'sometimes|required|array',
-            'attrs.*' => 'integer|in:attributes',
-            'product_id' => 'in:products',
+            'attrs' => 'array',
+            'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
+            'product_id' => 'exists:products,uuid',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'medias' => 'max:' . $max_images,
             'medias.*' => 'mimes:jpeg,jpg,png|max:2000'

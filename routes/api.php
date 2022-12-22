@@ -73,6 +73,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart'])->name('add.to.cart');
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart'])->name('remove.from.cart');
 
+    Route::post('products/{product}/variants', [SellerVariantController::class, 'store']);
+    Route::put('variants/{variant}', [SellerVariantController::class, 'update']);
+    Route::delete('variants/{variant}', [SellerVariantController::class, 'destroy']);
 
 });
 
@@ -87,7 +90,6 @@ Route::delete('products/deleteCategories/{product}', [ProductCategoryController:
 
 // VARIANT Routes
 Route::resource('variants', VariantController::class)->only(['index', 'show']);
-Route::resource('products.variants', SellerVariantController::class);
 
 // ATTRIUBTE Routes
 
@@ -119,8 +121,6 @@ Route::resource('sellers', SellerController::class);
 
 //Category routes
 
-
-Route::resource('categories', CategoryController::class);
 Route::resource('categories.buyers', CategoryBuyerController::class);
 Route::resource('categories.products', CategoryProductController::class);
 Route::get('categories/{category}/subs', [CategoryProductController::class,'subcats']);

@@ -3,8 +3,9 @@
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Tests\CreatesApplication;
-use App\Services\CurrencyService;
+use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 |
 */
 
-uses(Tests\TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
+uses(TestCase::class,  CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +58,4 @@ function login($user = null)
         ['*']
     );
 }
+

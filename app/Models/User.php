@@ -8,24 +8,19 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
     use HasUuid;
 
 
-    const VERIFIED_USER = '1';
-    const UNVERIFIED_USER = '0';
-
-    const ADMIN_USER = 'true';
-    const REGULAR_USER = 'false';
-    
+    public const VERIFIED_USER = '1';
+    public const UNVERIFIED_USER = '0';
 
     /**
      * The attributes that are mass assignable.
@@ -72,7 +67,7 @@ class User extends Authenticatable
      */
     public function isVerified() : bool
     {
-        return $this->verified == User::VERIFIED_USER;
+        return $this->verified === User::VERIFIED_USER;
     }
 
     /**

@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Seller;
 
 use App\Models\Seller;
 use App\Models\Product;
-
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\VariantResource;
+use App\Models\Category;
 use App\Models\User;
 use App\Models\Variant;
 use Exception;
@@ -26,7 +26,6 @@ class SellerProductController extends ApiController
 
     public function store(StoreProductRequest $request, User $seller){
 
-        //validate product details and image details
         $variant_data = $request->validated();
         $product_data = [];
 
@@ -37,17 +36,15 @@ class SellerProductController extends ApiController
         $product_data['seller_id'] = $seller->id;
 
         $newProduct = Product::create($product_data);
-        
-        //getting categories from request
-        //cast string to array of integer
-        // $integerIDs = array_map('intval', explode(',', $request->categories));
+
         $categories = $request->categories;
         
         abort_if(in_array(0,$categories),422, 'Category cannot be 0');
         abort_if(count($categories) >5, 422, 'Only 5 categories per product');
 
+        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+        
         $newProduct->categories()->sync($categories);
-
 
         $variant_data['product_id'] = $newProduct->id;
 
@@ -63,7 +60,6 @@ class SellerProductController extends ApiController
         ]);
 
         try{
-            //send images to be uploaded
             UploadImageService::upload($newVariant,$images, Variant::class);
         }catch(Exception $e){
             Variant::destroy($newVariant->id);
@@ -72,45 +68,38 @@ class SellerProductController extends ApiController
             return $this->errorResponse("File(s) could not be uploaded", 500);
         }
 
-       
-        return $this->showOne(new VariantResource($newVariant),201);
+        return $this->showOne(new VariantResource($newVariant->load('product')),201);
     }
 
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
         $request->validated();
+
+        $this->authorize('update', $product);
+
         $images = null;
+
         if($request->has('medias')){
             $images = $request->file('medias');
             $request_images = count($request->file('medias'));
+
             abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
 
             UploadImageService::upload($product,$images, Product::class);
         }
-        $product->fill($request->except(['categories']));   
-        $this->checkSeller($seller,$product);
-        //get ids integer
-        $integerIDs =  $request->categories;
-        //no more than 5 images are allowed per product
-        if($request->has('categories')){
-            abort_if(count($integerIDs) >5, 422, 'Only 5 categories per product');
+    
+        $product->fill($request->except(['categories']));
 
-            $product->categories()->sync($integerIDs);
+        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+
+        if($request->has('categories')){
+            abort_if(count($categories) >5, 422, 'Only 5 categories per product');
+            $product->categories()->sync($categories);
         }
 
         $product->save();
 
         return $this->showOne(new ProductResource($product));
-     
     }
-
-
-
-    protected function checkSeller(Seller $seller, Product $product){
-        abort_if($seller->id != $product->seller_id,
-        422,
-        'The specified seller is not the seller of this product!');
-    }
-
 
     protected function removeCategories($start_id,$end_id){
         $products = Product::all();

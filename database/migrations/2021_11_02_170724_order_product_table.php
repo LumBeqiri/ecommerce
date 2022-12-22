@@ -18,7 +18,6 @@ class OrderProductTable extends Migration
             $table->foreignId('product_id')->constrained('products');
 
             $table->timestamps();
-            $table->softDeletes();
         });
 		
     }

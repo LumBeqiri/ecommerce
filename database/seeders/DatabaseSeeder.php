@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Media;
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
-use Database\Factories\MediaFactory;
-use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant};
-use Database\Factories\DiscountFactory;
+use Database\Seeders\CurrencySeeder;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant, VariantAttribute};
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,7 +36,7 @@ class DatabaseSeeder extends Seeder
         DB::table('order_product')->truncate();
         
 
-        // in order to not send emails to fake accounts when seeding the db, we call flushEventListenres(); method
+        // in order to not send emails to fake accounts when seeding the db, we call flushEventListenres() method
         User::flushEventListeners();
         Category::flushEventListeners();
         Product::flushEventListeners();
@@ -46,10 +44,9 @@ class DatabaseSeeder extends Seeder
         Cart::flushEventListeners();
         CartItem::flushEventListeners();
 
-        //seed currencies table from an sql file
-        $path = public_path('sql/currencySeeder.sql');
-        $sql = file_get_contents($path);
-        DB::unprepared($sql);
+        $this->call(AttributeSeeder::class);
+        $this->call([CurrencySeeder::class]);
+        $this->call([RoleAndPermissionSeeder::class]);
 
         $usersQuantity = 50;
         $categoriesQuantity = 30;
@@ -57,11 +54,14 @@ class DatabaseSeeder extends Seeder
         $variantsQuantity = 30;
         $ordersQuantity = 50;
         
-        User::factory()->create([
+        $adminUser = User::factory()->create([
+            'uuid' => 'f4e367e1-aefe-33de-8e38-5f8b2ef1bead',
             'name' => 'Lum Beqiri',
             'email' => 'lum@gmail.com',
             'password' => bcrypt('123123123')
         ]);
+
+        $adminUser->assignRole('admin');
 
         User::factory($usersQuantity)->create();
         Discount::factory(5)->create();

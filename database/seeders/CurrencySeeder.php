@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Currency;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CurrencySeeder extends Seeder
 {
@@ -15,8 +14,27 @@ class CurrencySeeder extends Seeder
      */
     public function run()
     {
-        $path = public_path('sql/currencySeeder.sql');
-        $sql = file_get_contents($path);
-        DB::unprepared($sql);
+        Currency::create(
+            [
+                'name' => 'Leke',
+                'code' => 'ALL',
+                'symbol' => 'Lek'
+            ]
+        );
+        Currency::create(
+            [
+                'name' => 'Dollars',
+                'code' => 'USD',
+                'symbol' => '$'
+            ]
+        );
+
+        Currency::create(
+            [
+                'name' => 'Euro',
+                'code' => 'EUR',
+                'symbol' => '€'
+            ]
+        );
     }
 }

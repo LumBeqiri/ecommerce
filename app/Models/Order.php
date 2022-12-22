@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Cart;
 use App\Models\Buyer;
-use App\Models\Seller;
 use App\Models\Product;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -21,8 +20,8 @@ class Order extends Model
     use HasUuid;
 
 
-    const SHIPPED_ORDER = 'true';
-    const UNSHIPPED_ORDER = 'false';
+    public const SHIPPED_ORDER = 'true';
+    public const UNSHIPPED_ORDER = 'false';
     
 
     protected $fillable =[

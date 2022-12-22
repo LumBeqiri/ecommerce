@@ -19,12 +19,7 @@ class Category extends Model
 
     protected $hidden = ['pivot'];
 
-    protected $fillable = [
-        'name',
-        'description',
-        'slug',
-        'parent_id'
-    ];
+    protected $guarded = [];
 
     public function products() : BelongsToMany
     {
@@ -39,6 +34,6 @@ class Category extends Model
 
     public function parent() : BelongsTo
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(Category::class);
     }
 }

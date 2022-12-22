@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\Admin\Category;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\CreateCategoryRequest;
-use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\CategoryResource;
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
-class CategoryController extends ApiController
+class AdminCategoryController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -22,8 +23,6 @@ class CategoryController extends ApiController
 
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -34,7 +33,7 @@ class CategoryController extends ApiController
     {
         $newCategory = Category::create($request->validated());
 
-        return $this->showOne($newCategory, 201);
+        return $this->showOne(new CategoryResource($newCategory), 201);
     }
 
     /**
@@ -45,9 +44,8 @@ class CategoryController extends ApiController
      */
     public function show(Category $category)
     {
-        return $this->showOne($category);
+        return $this->showOne(new CategoryResource($category));
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -56,13 +54,18 @@ class CategoryController extends ApiController
      * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
 
         $category->fill($request->only([
             'name',
-            'description'
+            'description',
+            'slug'
         ]));
+
+        if($request->parent){
+            $category->parent_id = Category::where('uuid',$request->parent)->first()->id;
+        }
 
          if(!$category->isDirty()){
             return $this->errorResponse("Nothing to update!", 422 );
@@ -70,8 +73,9 @@ class CategoryController extends ApiController
 
         $category->save();
 
-        return $this->showOne($category);
+        return $this->showOne(new CategoryResource($category), 201);
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -20,8 +20,6 @@ class ProductController extends ApiController
         return $this->showAll(ProductResource::collection($products));
     }
 
-
-
     /**
      * Display the specified resource.
      *
@@ -29,11 +27,11 @@ class ProductController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product){
-       $product = QueryBuilder::for(Product::class)
+        $product = QueryBuilder::for(Product::class)
             ->with(['variants.medias'])
             ->where('uuid', $product->uuid)
             ->first();
-        return (new ProductResource($product));
+        return new ProductResource($product);
     }
 
 

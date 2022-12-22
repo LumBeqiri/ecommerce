@@ -28,9 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->rememberToken();
             $table->string('verified')->default(User::UNVERIFIED_USER);
-            $table->string('verification_token')->nullable();
-            $table->string('admin')->default(User::REGULAR_USER);
-            
+            $table->string('verification_token')->nullable(); 
 
             $table->timestamps();
             $table->softDeletes();

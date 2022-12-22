@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Image;
 use App\Models\Order;
 use App\Traits\HasUuid;
 use App\Models\Category;
 use App\Models\Currency;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -17,21 +15,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     use HasUuid;
 
 
-    const AVAILABLE_PRODUCT = 'available';
-    const UNAVAILABLE_PRODUCT = 'unavailable';
+    public const AVAILABLE_PRODUCT = 'available';
+    public const UNAVAILABLE_PRODUCT = 'unavailable';
 
     protected $hidden = ['pivot'];
 
-    protected $fillable = [
-        'name',
-        'description',
-        'seller_id',
-        'currency_id',
-    ];
+    protected $guarded = [];
 
     // move isAvailable to variant
     // public function isAvaliable() 
@@ -79,7 +72,8 @@ class Product extends Model
         return $this->belongsTo(Seller::class);
     }
 
-    public function user(){
+    public function user() : BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 

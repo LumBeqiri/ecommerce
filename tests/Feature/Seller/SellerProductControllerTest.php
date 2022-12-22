@@ -4,16 +4,15 @@ use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Category;
-use function Pest\Faker\faker;
-use App\Services\CurrencySeederService;
-use Database\Factories\SellerFactory;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Http\UploadedFile;
 
 it('can upload a product for sale ', function(){
     Storage::fake();
-    CurrencySeederService::create();
+    $this->seed(CurrencySeeder::class);
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
+    $productName = 'water-bottle';
 
     login($user);
 
@@ -21,7 +20,7 @@ it('can upload a product for sale ', function(){
 
     $response = $this->postJson(route('seller.create.product', [$user->uuid]),
         [
-            'name' => 'water-bottle',
+            'name' => $productName,
             'sku' => 'llllusasew',
             'variant_name' => 'test',
             'short_description' => 'faker()->paragraph(1)',
@@ -38,7 +37,7 @@ it('can upload a product for sale ', function(){
     $response->assertStatus(201);
 
     $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
-    $this->assertDatabaseHas(Product::class, ['name' => 'water-bottle']);
+    $this->assertDatabaseHas(Product::class, ['name' => $productName]);
 
 });
 
@@ -47,7 +46,7 @@ it('can update product name', function(){
     $old_name = 'old_name';
     $new_name = 'new_name';
     $seller = Seller::factory()
-    ->has(Product::factory(['name' => $old_name])->count(1))
+    ->has(Product::factory(['name' => $old_name])->available()->count(1))
     ->create();
 
     $product = $seller->products()->first();
@@ -65,6 +64,8 @@ it('can update product name', function(){
     expect($response->json())
         ->name->toBe($new_name);
 
+    $this->assertDatabaseHas(Product::class, ['name' => $new_name]);
+
 });
 
 
@@ -73,26 +74,47 @@ it('can update product description', function(){
     $old_description = 'old description';
     $new_description = 'new description';
     $seller = Seller::factory()
-    ->has(Product::factory(['description' => $old_description])->count(1))
-    ->create();
+        ->has(Product::factory(['description' => $old_description])->available()->count(1))
+        ->create();
 
     $product = $seller->products()->first();
     
     login($seller);
 
- 
-
     $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
         [
-            'name' => $new_description
+            'description' => $new_description
         ]
     );
 
     $response->assertStatus(200);
-    
+
     expect($response->json())
-        ->name->toBe($new_description);
+        ->description->toBe($new_description);
+
+    $this->assertDatabaseHas(Product::class, ['description' => $new_description]);
+    
 
 });
 
 
+
+it('can not update other users product', function(){
+    $old_description = 'old description';
+    $new_description = 'new description';
+    $seller = Seller::factory()
+        ->has(Product::factory(['description' => $old_description])->available()->count(1))
+        ->create();
+
+    $product = $seller->products()->first();
+    $unAuthorizedUser = Seller::factory()->create();
+    login($unAuthorizedUser);
+
+    $response = $this->putJson(route('seller.update.product',['seller' => $seller->uuid,'product' => $product->uuid]),
+        [
+            'description' => $new_description
+        ]
+    );
+
+    $response->assertStatus(403);
+});

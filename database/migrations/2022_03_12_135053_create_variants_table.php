@@ -25,7 +25,7 @@ class CreateVariantsTable extends Migration
             $table->integer('price');
             $table->integer('stock')->unsigned();
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
-            $table->foreignId('discount_id')->nullable()->constrained('discounts');
+
             $table->timestamps();
         });
     }
