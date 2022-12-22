@@ -30,14 +30,13 @@ class StoreVariantRequest extends FormRequest
         $max_images = 5;
     
           return [
-            // 'sku' => 'required|unique:variants,sku',
+            'sku' => 'string|max:255|required|unique:variants',
             'price' => 'required|numeric',
             'short_desc' => 'string|max:256',
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
             'attrs' => 'array',
             'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
-            'product_id' => 'in:products',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'medias' => 'max:' . $max_images,
             'medias.*' => 'mimes:jpeg,jpg,png|max:2000'

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\User;
+
 use App\Models\Product;
 use App\Models\Variant;
 use App\Services\UploadImageService;
@@ -36,9 +36,9 @@ class SellerVariantController extends ApiController
     public function store(StoreVariantRequest $request, Product $product){
 
         $request->validated();
-        $variant_data = $request->except('attrs');
+        $variant_data = $request->except('attrs','medias');
 
-        $images = $request->file('images');
+        $images = $request->file('medias');
 
         $variant_data['product_id'] = $product->id;
 
@@ -59,20 +59,26 @@ class SellerVariantController extends ApiController
      * @param  Variant $variant
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVariantRequest $request,Variant $variant){
-   
+    public function update(UpdateVariantRequest $request,Variant $variant)
+    {
+        $this->authorize('update', $variant);
         $request->validated();
-        $images = $request->images;
-    
-        if($request->has('images')){
-            $images = $request->images;
-            $request_images = count($request->file('images'));
+        $images = $request->medias;
+        if($request->has('medias')){
+            $images = $request->medias;
+            $request_images = count($request->file('medias'));
             abort_if( $request_images > 1, 422, 'Can not update more than 1 image per variant');
             UploadImageService::upload($variant,$images, Variant::class);
         }
         
         
-        $variant->fill($request->except(['categories', 'attrs']));   
+        $variant->fill($request->except(['categories', 'attrs', 'medias', 'product_id']));   
+
+        if($request->has('product_id')){
+            $product = Product::where('uuid', $request->product_id)->firstOrFail();
+            $variant->product_id = $product->id;
+        }
+
 
         $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
         
@@ -91,6 +97,8 @@ class SellerVariantController extends ApiController
      */
     public function destroy(Variant $variant)
     {   
+        $this->authorize('delete', $variant);
+
         $variant->delete();
 
         return $this->showOne(new VariantResource($variant));

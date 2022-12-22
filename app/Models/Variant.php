@@ -37,4 +37,5 @@ class Variant extends Model
     {
         return $this->hasOne(CartItem::class);
     }
+
 }

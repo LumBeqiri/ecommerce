@@ -22,7 +22,7 @@ class VariantFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'product_id' => Product::all()->random()->id,
-            'sku' => $this->faker->word,
+            'sku' => $this->faker->word(),
             'variant_name' => $this->faker->word,
             'short_description' => $this->faker->paragraph(1),
             'long_description' => $this->faker->paragraph(1),

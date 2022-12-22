@@ -35,7 +35,7 @@ class UpdateVariantRequest extends FormRequest
             'stock' => 'sometimes|required|integer|min:1',
             'attrs' => 'array',
             'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
-            'product_id' => 'in:products',
+            'product_id' => 'exists:products,uuid',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'medias' => 'max:' . $max_images,
             'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
