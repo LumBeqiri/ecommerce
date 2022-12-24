@@ -11,6 +11,7 @@ use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
 use App\Http\Resources\VariantResource;
 use App\Models\Attribute;
+use App\Services\PriceService;
 
 class SellerVariantController extends ApiController
 {
@@ -41,11 +42,14 @@ class SellerVariantController extends ApiController
         $images = $request->file('medias');
 
         $variant_data['product_id'] = $product->id;
+        $variant_data['price'] = PriceService::priceToCents( $variant_data['price']);
 
         $newVariant = Variant::create($variant_data);
 
-        $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
-        $newVariant->attributes()->sync($attrs);
+        if($request->has('attrs')){
+            $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
+            $newVariant->attributes()->sync($attrs);
+        }
 
         UploadImageService::upload($newVariant,$images, Variant::class);
 
@@ -71,7 +75,6 @@ class SellerVariantController extends ApiController
             UploadImageService::upload($variant,$images, Variant::class);
         }
         
-        
         $variant->fill($request->except(['categories', 'attrs', 'medias', 'product_id']));   
 
         if($request->has('product_id')){
@@ -79,10 +82,11 @@ class SellerVariantController extends ApiController
             $variant->product_id = $product->id;
         }
 
+        if($request->has('attrs')){
+            $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
+            $variant->attributes()->sync($attrs);
+        }
 
-        $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
-        
-        $variant->attributes()->sync($attrs);
 
         $variant->save();
 
