@@ -6,7 +6,7 @@ use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\CartItem;
-use App\Models\Currency;
+use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use App\Http\Controllers\Admin\Cart\AdminCartController;
 
@@ -14,9 +14,12 @@ use App\Http\Controllers\Admin\Cart\AdminCartController;
 
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
+    $this->seed(CurrencySeeder::class);
+
 });
 
 it('admin can show carts', function(){
+
     User::factory()->count(20)->create();
     Cart::factory()->count(10)->create();
     $user = User::factory()->create();
@@ -34,6 +37,7 @@ it('admin can show carts', function(){
 
 
 it('admin can show carts with items', function(){
+
     User::factory()->count(20)->create();
     Product::factory()->count(20)->create();
     Variant::factory()->count(10)->create();
@@ -47,7 +51,8 @@ it('admin can show carts with items', function(){
 
     login($user);
 
-    $response = $this->getJson('admin/carts?include=cart_items');
+    $response = $this->getJson(action([AdminCartController::class, 'index'], ['include' => 'cart_items']));
+    // $response = $this->getJson('admin/carts?include=cart_items');
 
     $response->assertOk();
 

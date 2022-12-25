@@ -6,7 +6,11 @@ use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Seller\SellerVariantController;
+use Database\Seeders\CurrencySeeder;
 
+beforeEach(function(){
+    $this->seed(CurrencySeeder::class);
+});
 it('can upload a product variant for sale ', function(){
     Storage::fake();
     User::factory()->count(10)->create();
@@ -25,7 +29,7 @@ it('can upload a product variant for sale ', function(){
 
     $variant_data['medias'] = [$file];
     //need to add sku manually
-    $variant_data['sku'] = 'abc23';
+    $variant_data['sku'] = 'abc23d';
     
     $response = $this->postJson(
             action([SellerVariantController::class, 'store'],

@@ -7,6 +7,10 @@ use App\Models\CartItem;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Models\Cart;
 
+beforeEach(function(){
+    $this->seed(CurrencySeeder::class);
+});
+
 it('can add an item to the cart', function(){
     $seller = User::factory()->create();
     $buyer = User::factory()->create();
@@ -23,7 +27,7 @@ it('can add an item to the cart', function(){
     ]);
 
     $response->assertOk();
-
+    
     $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant->id, 'count' => $count, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['user_id' => $buyer->id]);
 });

@@ -60,6 +60,7 @@ class BuyerCartController extends ApiController
             $cart = $this->authUser()->cart()->create();
         }
 
+
         $variant = Variant::where('uuid', $data['variant_id'])->first();
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
@@ -85,6 +86,8 @@ class BuyerCartController extends ApiController
                 'count' => $data['count']
             ]);
         }
+
+        $cart->total_cart_price = CartService::calculatePrice($cart->cart_items);
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
@@ -114,6 +117,8 @@ class BuyerCartController extends ApiController
         else{
             $cart_item->save();
         }
+
+        $cart->total_cart_price = CartService::calculatePrice($cart->cart_items);
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }

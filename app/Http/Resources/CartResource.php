@@ -15,6 +15,7 @@ class CartResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->uuid,
             'buyer' => new UserResource($this->whenLoaded('user')),

@@ -9,6 +9,8 @@ use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
+    $this->seed(CurrencySeeder::class);
+
 });
 
 it('admin can show products', function(){
@@ -89,9 +91,9 @@ it('admin can update product status', function(){
 
 it('admin can update product currency', function(){
 
-    Currency::factory()->count(1)->create();
+    Currency::factory()->create();
 
-    $currency = Currency::find(1);
+    $currency = Currency::all()->first();
 
     User::factory()->count(10)->create();
     $product = Product::factory()->create(['currency_id' => 1]);
@@ -101,7 +103,6 @@ it('admin can update product currency', function(){
 
 
     login($user);
-
     
     $response = $this->putJson(action([AdminProductController::class, 'update'],$product->uuid),[
         'currency_id' => $currency->id

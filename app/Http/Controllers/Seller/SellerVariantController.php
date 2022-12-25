@@ -42,7 +42,10 @@ class SellerVariantController extends ApiController
         $images = $request->file('medias');
 
         $variant_data['product_id'] = $product->id;
-        $variant_data['price'] = PriceService::priceToCents( $variant_data['price']);
+
+        if($product->currency()->value('code') === 'USD' || $product->currency()->value('code') === 'EUR'){
+            $variant_data['price'] = PriceService::priceToCents( $variant_data['price']);
+        }
 
         $newVariant = Variant::create($variant_data);
 

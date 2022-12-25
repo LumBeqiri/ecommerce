@@ -4,8 +4,14 @@ use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Category;
-use Database\Seeders\CurrencySeeder;
+use App\Models\Currency;
 use Illuminate\Http\UploadedFile;
+use Database\Seeders\CurrencySeeder;
+
+beforeEach(function(){
+    $this->seed(CurrencySeeder::class);
+});
+
 
 it('can upload a product for sale ', function(){
     Storage::fake();
@@ -13,6 +19,7 @@ it('can upload a product for sale ', function(){
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
     $productName = 'water-bottle';
+    $currency = Currency::inRandomOrder()->first();
 
     login($user);
 
@@ -25,7 +32,7 @@ it('can upload a product for sale ', function(){
             'variant_name' => 'test',
             'short_description' => 'faker()->paragraph(1)',
             'long_description' => 'faker()->paragraph(2)',
-            'currency_id' => 2,
+            'currency_id' => $currency->id,
             'stock' => 4,
             'status' => Product::AVAILABLE_PRODUCT,
             'categories' => [1,2],
