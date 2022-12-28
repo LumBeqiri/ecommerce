@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Error;
 use App\Models\User;
-use App\Services\CartService;
 use App\Jobs\SaveCookieCartToDB;
 use App\Http\Controllers\ApiController;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\RegisterUserRequest;
 
 class RegisterController extends ApiController
