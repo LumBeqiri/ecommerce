@@ -13,6 +13,8 @@ use function Pest\Faker\faker;
 
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
+    Notification::fake();
+    Bus::fake();
 });
 
 

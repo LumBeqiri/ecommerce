@@ -2,6 +2,12 @@
 
 use App\Models\User;
 
+beforeEach(function(){
+    Notification::fake();
+    Bus::fake();
+
+});
+
 it('can login user', function () {
     $password = Str::random();
 

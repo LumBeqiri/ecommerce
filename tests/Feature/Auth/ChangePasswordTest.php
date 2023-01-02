@@ -3,6 +3,12 @@
 use App\Models\User;
 use App\Mail\UserPasswordChanged;
 
+beforeEach(function(){
+    Notification::fake();
+    Bus::fake();
+
+});
+
 it('can change password', function () {
 
     Mail::fake();

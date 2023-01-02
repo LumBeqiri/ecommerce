@@ -10,6 +10,8 @@ use Database\Seeders\CurrencySeeder;
 
 beforeEach(function(){
     $this->seed(CurrencySeeder::class);
+    Notification::fake();
+    Bus::fake();
 });
 it('can upload a product variant for sale ', function(){
     Storage::fake();

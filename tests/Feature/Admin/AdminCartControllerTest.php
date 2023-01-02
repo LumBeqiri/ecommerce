@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\Cart\AdminCartController;
 
 
 beforeEach(function(){
+    Notification::fake();
+    Bus::fake();
     $this->seed(RoleAndPermissionSeeder::class);
     $this->seed(CurrencySeeder::class);
 

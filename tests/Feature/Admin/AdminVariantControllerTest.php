@@ -10,6 +10,8 @@ use Database\Seeders\RoleAndPermissionSeeder;
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
     $this->seed(CurrencySeeder::class);
+    Notification::fake();
+    Bus::fake();
 
 });
 

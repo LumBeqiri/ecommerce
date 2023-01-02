@@ -9,6 +9,8 @@ use App\Models\Cart;
 
 beforeEach(function(){
     $this->seed(CurrencySeeder::class);
+    Notification::fake();
+    Bus::fake();
 });
 
 it('can add an item to the cart', function(){

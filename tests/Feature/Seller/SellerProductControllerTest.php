@@ -9,7 +9,9 @@ use Illuminate\Http\UploadedFile;
 use Database\Seeders\CurrencySeeder;
 
 beforeEach(function(){
-    $this->seed(CurrencySeeder::class);
+    $this->seed(CurrencySeeder::class); 
+    Notification::fake();
+    Bus::fake();
 });
 
 

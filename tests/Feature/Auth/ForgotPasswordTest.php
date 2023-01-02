@@ -3,6 +3,13 @@
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 
+beforeEach(function(){
+    Notification::fake();
+    Bus::fake();
+
+});
+
+
 it('can reset password', function () {
     Mail::fake();
     Notification::fake();

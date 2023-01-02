@@ -8,6 +8,8 @@ use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
+    Notification::fake();
+    Bus::fake();
 });
 
 it('admin can show categories', function(){

@@ -2,6 +2,13 @@
 
 use function Pest\Faker\faker;
 
+beforeEach(function(){
+    Notification::fake();
+    Bus::fake();
+
+});
+
+
 it('can register user', function () {
 
     $password = faker()->password(8,12);
