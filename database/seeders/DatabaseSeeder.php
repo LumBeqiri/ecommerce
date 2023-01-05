@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\RegionSeeder;
 use Illuminate\Support\Facades\DB;
+use Database\Seeders\CountrySeeder;
 use Database\Seeders\CurrencySeeder;
+use Database\Seeders\TaxProviderSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant, VariantAttribute};
 
@@ -29,7 +32,7 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         Variant::truncate();
         Discount::truncate();
-        // Media::truncate();
+   
      
         DB::table('attribute_variant')->truncate();
         DB::table('category_product')->truncate();
@@ -47,6 +50,11 @@ class DatabaseSeeder extends Seeder
         $this->call(AttributeSeeder::class);
         $this->call([CurrencySeeder::class]);
         $this->call([RoleAndPermissionSeeder::class]);
+        $this->call([CountrySeeder::class]);
+        // $this->call([TaxProviderSeeder::class]);
+        $this->call([RegionSeeder::class]);
+        
+
 
         $usersQuantity = 50;
         $categoriesQuantity = 30;
