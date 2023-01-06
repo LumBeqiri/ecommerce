@@ -18,8 +18,8 @@ return new class extends Migration
             $table->uuid();
             $table->string('title');
             $table->foreignId('currency_id')->constrained('currencies');
-            $table->integer('tax_rate');
-            $table->string('tax_code');
+            $table->integer('tax_rate')->nullable();
+            $table->string('tax_code')->nullable();
             $table->foreignId('tax_provider_id')->nullable()->constrained('tax_providers');
             $table->timestamps();
         });

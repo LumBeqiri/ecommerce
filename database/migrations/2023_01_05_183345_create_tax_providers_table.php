@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->string('tax_provider');
-            $table->boolean('is_installed');
+            $table->boolean('is_installed')->default(false)->nullable();
             $table->timestamps();
         });
     }

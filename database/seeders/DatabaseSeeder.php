@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
         $this->call([CurrencySeeder::class]);
         $this->call([RoleAndPermissionSeeder::class]);
         $this->call([CountrySeeder::class]);
-        // $this->call([TaxProviderSeeder::class]);
+        $this->call([TaxProviderSeeder::class]);
         $this->call([RegionSeeder::class]);
         
 
