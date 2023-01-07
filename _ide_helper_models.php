@@ -53,24 +53,29 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property string $verified
  * @property string|null $verification_token
- * @property string $admin
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Cart|null $cart
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\BuyerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer newQuery()
  * @method static \Illuminate\Database\Query\Builder|Buyer onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer query()
- * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Buyer whereDeletedAt($value)
@@ -101,16 +106,21 @@ namespace App\Models{
  * @property int $id
  * @property string $uuid
  * @property int|null $user_id
- * @property int $total_cart_price
+ * @property int|null $total_cart_price
+ * @property int $is_closed
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Buyer|null $buyer
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartItem[] $cart_items
  * @property-read int|null $cart_items_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\CartFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereIsClosed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereTotalCartPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
@@ -128,11 +138,11 @@ namespace App\Models{
  * @property int $cart_id
  * @property int $variant_id
  * @property int $count
- * @property int $total_item_price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Cart $cart
- * @property-read \App\Models\Variant|null $product
+ * @property-read \App\Models\Variant $variant
+ * @method static \Database\Factories\CartItemFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem query()
@@ -140,7 +150,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereTotalItemPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereVariantId($value)
@@ -183,6 +192,30 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Country
+ *
+ * @property int $id
+ * @property string $code
+ * @property string $name
+ * @property int|null $region_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Region|null $region
+ * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereUpdatedAt($value)
+ */
+	class Country extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Currency
  *
  * @property int $id
@@ -193,6 +226,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
+ * @method static \Database\Factories\CurrencyFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency query()
@@ -219,13 +253,12 @@ namespace App\Models{
  * @property string $valid_thru
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $product
  * @property-read int|null $product_count
  * @method static \Database\Factories\DiscountFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Discount newQuery()
- * @method static \Illuminate\Database\Query\Builder|Discount onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Discount query()
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereCreatedAt($value)
@@ -237,8 +270,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Discount whereValidThru($value)
- * @method static \Illuminate\Database\Query\Builder|Discount withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Discount withoutTrashed()
  */
 	class Discount extends \Eloquent {}
 }
@@ -260,16 +291,13 @@ namespace App\Models{
  * @property int $size
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $mediable
  * @method static \Database\Factories\MediaFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
- * @method static \Illuminate\Database\Query\Builder|Media onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Media query()
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereCollection($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Media whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereDisk($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereFileName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereId($value)
@@ -281,8 +309,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereUuid($value)
- * @method static \Illuminate\Database\Query\Builder|Media withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Media withoutTrashed()
  */
 	class Media extends \Eloquent {}
 }
@@ -307,7 +333,6 @@ namespace App\Models{
  * @property int $payment_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Buyer $buyer
  * @property-read \App\Models\Cart|null $cart
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
@@ -319,7 +344,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBuyerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereOrderDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereOrderEmail($value)
@@ -350,9 +374,10 @@ namespace App\Models{
  * @property string $description
  * @property int $seller_id
  * @property int $currency_id
+ * @property int|null $discount_id
+ * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Currency $currency
@@ -368,21 +393,52 @@ namespace App\Models{
  * @method static \Database\Factories\ProductFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Query\Builder|Product onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSellerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
- * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  */
 	class Product extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Region
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $title
+ * @property int $currency_id
+ * @property int|null $tax_rate
+ * @property string|null $tax_code
+ * @property int|null $tax_provider_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
+ * @property-read int|null $countries_count
+ * @property-read \App\Models\Currency $currency
+ * @method static \Database\Factories\RegionFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Region newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Region query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereTaxCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereTaxProviderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereTaxRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereUuid($value)
+ */
+	class Region extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -403,22 +459,27 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property string $verified
  * @property string|null $verification_token
- * @property string $admin
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Cart|null $cart
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\SellerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Seller newQuery()
  * @method static \Illuminate\Database\Query\Builder|Seller onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller query()
- * @method static \Illuminate\Database\Eloquent\Builder|Seller whereAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seller whereDeletedAt($value)
@@ -444,6 +505,30 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\TaxProvider
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $tax_provider
+ * @property int|null $is_installed
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\TaxProviderFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider query()
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider whereIsInstalled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider whereTaxProvider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider whereUuid($value)
+ */
+	class TaxProvider extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\User
  *
  * @property int $id
@@ -460,20 +545,25 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property string $verified
  * @property string|null $verification_token
- * @property string $admin
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Cart|null $cart
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
@@ -511,7 +601,6 @@ namespace App\Models{
  * @property int $price
  * @property int $stock
  * @property string $status
- * @property int|null $discount_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attribute[] $attributes
@@ -525,7 +614,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Variant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Variant query()
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Variant whereDiscountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereLongDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant wherePrice($value)

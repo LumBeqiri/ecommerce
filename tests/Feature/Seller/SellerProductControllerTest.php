@@ -17,7 +17,6 @@ beforeEach(function(){
 
 it('can upload a product for sale ', function(){
     Storage::fake();
-    $this->seed(CurrencySeeder::class);
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
     $productName = 'water-bottle';
