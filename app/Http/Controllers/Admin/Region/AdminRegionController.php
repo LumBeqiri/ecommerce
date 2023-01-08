@@ -73,10 +73,7 @@ class AdminRegionController extends ApiController
 
         $countries = Country::findMany($countries);
 
-        foreach($countries as $country){
-            $country->region_id = $region->id;
-            $country->save();
-        }
+        $region->countries()->saveMany($countries);
 
         return $this->showMessage('Region updated successfully');
     }
