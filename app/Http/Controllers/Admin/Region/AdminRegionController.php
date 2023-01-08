@@ -78,6 +78,15 @@ class AdminRegionController extends ApiController
         return $this->showMessage('Region updated successfully');
     }
 
+    public function removeCountries(UpdateRegionRequest $request, Region $region){
+        $data = $request->validated();
+        $countries = $data['countries'];
+
+        $region->countries()->whereIn('id',$countries)->update(['region_id' => null]);
+        
+        return $this->showMessage('Region updated successfully');
+    }
+
     /**
      * @param Region $region
      * 

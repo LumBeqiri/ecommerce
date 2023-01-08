@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,8 @@ class CountryFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'code' => $this->faker->countryCode()
+            'code' => $this->faker->countryCode(),
+            'region_id' => Region::all()->random()->id
         ];
     }
 }

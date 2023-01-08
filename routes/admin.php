@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::resource('categories', AdminCategoryController::class);
     Route::put('regions/{region}/updateCountries', [AdminRegionController::class, 'updateCountries']);
+    Route::delete('regions/{region}/removeCountries', [AdminRegionController::class, 'removeCountries']);
     Route::resource('regions', AdminRegionController::class);
 
 

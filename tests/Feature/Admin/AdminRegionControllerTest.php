@@ -212,6 +212,39 @@ it('admin can update region countries', function(){
     }
 });
 
+
+
+it('admin can remove countries from region', function(){
+
+    TaxProvider::factory()->create(['id' => 1]);
+    TaxProvider::factory()->create(['id' => 2]);
+
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+  
+    $region = Region::factory()->create();
+    $country1 = Country::factory()->for($region)->create();
+    $country2 = Country::factory()->for($region)->create();
+    $country3 = Country::factory()->for($region)->create();
+
+    $countries = collect([$country1,$country2]);
+    $countries = $countries->map(function($item, $key){
+        return $item->id;
+    });
+     
+    login($user);
+
+    $response = $this->deleteJson(action([AdminRegionController::class,'removeCountries'], $region->uuid),[
+        'countries' => $countries
+    ]);
+    $response->assertOk();
+
+    $this->assertDatabaseHas(Country::class, ['id' => $country1->id, 'region_id' => null]);
+    $this->assertDatabaseHas(Country::class, ['id' => $country2->id, 'region_id' => null]);
+    $this->assertDatabaseHas(Country::class, ['id' => $country3->id, 'region_id' => $region->id]);
+
+});
+
 it('can delete region', function(){
     TaxProvider::factory()->create();
 
