@@ -27,16 +27,20 @@ class StoreVariantRequest extends FormRequest
   
     public function rules()
     {
+
         $max_images = 5;
     
           return [
             'sku' => 'string|max:255|required|unique:variants',
-            'price' => 'required|numeric',
             'short_desc' => 'string|max:256',
             'long_desc' => 'string| max:900',
             'stock' => 'required|integer|min:1',
             'attrs' => 'array',
             'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
+            'product_prices' => 'array',
+            'product_prices.*.region_id' => 'required|exists:regions,uuid',
+            'product_prices.*.currency_id' => 'required|exists:currencies,id',
+            'product_prices.*.price' => 'required|integer|min:1',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'medias' => 'max:' . $max_images,
             'medias.*' => 'mimes:jpeg,jpg,png|max:2000'

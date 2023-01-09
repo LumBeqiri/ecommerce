@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RegionResource extends JsonResource
+class ProductPriceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +17,12 @@ class RegionResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'title' => $this->title,
             'currency' => $this->currency,
-            'tax_rate' => $this->tax_rate,
-            'tax_code' => $this->tax_code,
-            'tax_provider' => $this->tax_provider_id
-
+            'price' => $this->price,
+            'variant_id' => new VariantResource($this->whenLoaded('variant')),
+            'region_id' => new RegionResource($this->whenLoaded('region')),
+            'min_quantity' => $this->min_quantity,
+            'max_quantity' => $this->max_quantity,
         ];
     }
 }

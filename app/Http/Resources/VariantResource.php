@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Services\PriceService;
+use App\Http\Resources\ProductPriceResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VariantResource extends JsonResource
@@ -24,8 +25,7 @@ class VariantResource extends JsonResource
             'long_description' => $this->long_description,
             'stock' => $this->stock,
             'status' => $this->status,
-            'price' => PriceService::priceToEuro($this->price),
-            'currency' => $this->product->currency->code
+            'price' => ProductPriceResource::collection($this->whenLoaded('product_prices')),
         ];
     }
 }

@@ -26,4 +26,9 @@ class Region extends Model
     {
         return $this->belongsTo(Currency::class);
     }
+
+    public function tax_provider() : BelongsTo
+    {
+        return $this->belongsTo(TaxProvider::class);
+    }
 }

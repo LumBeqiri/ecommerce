@@ -57,6 +57,9 @@ it('admin can create region', function(){
     $user = User::factory()->create();
     $user->assignRole('admin');
 
+    $countries = Country::inRandomOrder()->limit(3)->get();
+    $countries_ids = $countries->pluck('id');
+
     login($user);
 
     $title = 'EU';
@@ -66,7 +69,8 @@ it('admin can create region', function(){
         'currency_id' => Currency::all()->random()->id,
         'tax_rate' => 22,
         'tax_code' => 'JIIL232',
-        'tax_provider_id' => $tax_provider->id
+        'tax_provider_id' => $tax_provider->id,
+        'countries' => $countries_ids,
     ]);
 
     $response->assertOk();
