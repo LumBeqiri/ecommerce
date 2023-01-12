@@ -17,10 +17,9 @@ class ProductPriceResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'currency' => $this->currency,
             'price' => $this->price,
-            'variant_id' => new VariantResource($this->whenLoaded('variant')),
-            'region_id' => new RegionResource($this->whenLoaded('region')),
+            'variant' => new VariantResource($this->whenLoaded('variant')),
+            'region' => new RegionResource($this->region),
             'min_quantity' => $this->min_quantity,
             'max_quantity' => $this->max_quantity,
         ];

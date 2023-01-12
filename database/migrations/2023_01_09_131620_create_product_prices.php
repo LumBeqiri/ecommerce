@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('product_prices', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->foreignId('currency_id')->constrained('currencies');
             $table->integer('price');
             $table->foreignId('variant_id')->constrained('variants')->cascadeOnDelete();
             $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();

@@ -19,12 +19,6 @@ class Currency extends Model
         'symbol',
     ];
 
-    public function products() : HasMany
-    {
-        return $this->hasMany(Product::class);
-
-    }
-
     public function regions() : HasMany
     {
         return $this->hasMany(Region::class);

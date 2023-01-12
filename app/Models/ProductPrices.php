@@ -16,12 +16,6 @@ class ProductPrices extends Model
 
     protected $guarded = [];
 
-    public function currency() : BelongsTo
-    {
-        return $this->belongsTo(Currency::class);
-    }
-
-
     public function variant() : BelongsTo
     {
         return $this->belongsTo(Variant::class);

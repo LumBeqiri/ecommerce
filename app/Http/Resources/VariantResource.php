@@ -25,7 +25,7 @@ class VariantResource extends JsonResource
             'long_description' => $this->long_description,
             'stock' => $this->stock,
             'status' => $this->status,
-            'price' => ProductPriceResource::collection($this->whenLoaded('product_prices')),
+            'price' => ProductPriceResource::collection($this->product_prices),
         ];
     }
 }
