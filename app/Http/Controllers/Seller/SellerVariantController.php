@@ -7,8 +7,7 @@ use App\Models\Region;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Attribute;
-use App\Models\ProductPrices;
-use App\Services\PriceService;
+use App\Models\ProductPrice;
 use Illuminate\Support\Facades\DB;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
@@ -132,7 +131,7 @@ class SellerVariantController extends ApiController
         foreach($product_prices as $product_price){
             $product_price['region_id'] = Region::where('uuid',$product_price['region_id'])->firstOrFail()->id;
             $product_price['variant_id'] = $newVariant->id;
-            ProductPrices::create($product_price);
+            ProductPrice::create($product_price);
         }
     }
 
@@ -142,7 +141,7 @@ class SellerVariantController extends ApiController
             $product_price['region_id'] = Region::where('uuid',$product_price['region_id'])->firstOrFail()->id;
             $product_price['variant_id'] = $variant->id;
             
-            ProductPrices::where('variant_id', $variant->id)
+            ProductPrice::where('variant_id', $variant->id)
             ->where('region_id', $product_price['region_id'])
             ->update([
                 'region_id' => $product_price['region_id'],

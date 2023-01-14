@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
-use App\Models\ProductPrices;
+use App\Models\ProductPrice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,7 +42,7 @@ class Variant extends Model
 
     public function product_prices() : HasMany
     {
-        return $this->hasMany(ProductPrices::class);
+        return $this->hasMany(ProductPrice::class);
     }
 
 }
