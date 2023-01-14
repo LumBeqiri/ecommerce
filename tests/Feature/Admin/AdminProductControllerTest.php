@@ -91,31 +91,6 @@ it('admin can update product status', function(){
 });
 
 
-it('admin can update product currency', function(){
-
-    Currency::factory()->create();
-
-    $currency = Currency::all()->first();
-
-    User::factory()->count(10)->create();
-    $product = Product::factory()->create(['currency_id' => 1]);
-   
-    $user = User::factory()->create(['name' => 'Lum']);
-    $user->assignRole('admin');
-
-
-    login($user);
-    
-    $response = $this->putJson(action([AdminProductController::class, 'update'],$product->uuid),[
-        'currency_id' => $currency->id
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(Product::class, ['currency_id' => $currency->id]);
-
-});
-
 
 it('admin can update product seller', function(){
 

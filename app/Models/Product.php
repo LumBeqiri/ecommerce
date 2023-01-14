@@ -77,11 +77,6 @@ class Product extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function currency() : BelongsTo
-    {
-        return $this->belongsTo(Currency::class);
-    }
-
     public function medias() : MorphMany
     {
         return $this->morphMany(Media::class, 'mediable');

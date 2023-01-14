@@ -28,7 +28,9 @@ class RegionRequest extends FormRequest
             'currency_id' => 'exists:currencies,id',
             'tax_rate' => 'integer|max:100',
             'tax_code' => 'string|max:255',
-            'tax_provider_id' => 'exists:tax_providers,id'
+            'tax_provider_id' => 'exists:tax_providers,id',
+            'countries' => 'array',
+            'countries.*' => 'integer|exists:countries,id',
         ];
     }
 }

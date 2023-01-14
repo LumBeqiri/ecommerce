@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin\Variant;
 
 use App\Models\Variant;
+use App\Models\ProductPrice;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
 use App\Http\Requests\UpdateVariantRequest;
-
 
 class AdminVariantController extends ApiController
 {
@@ -26,11 +26,14 @@ class AdminVariantController extends ApiController
         if($request->has('images')){
             $images = $request->images;
             $request_images = count($request->file('images'));
+
             abort_if( $request_images > 1, 422, 'Can not update more than 1 image per variant');
+            
             UploadImageService::upload($variant,$images, Variant::class);
         }
         
-        $variant->fill($request->except(['categories', 'attrs']));   
+        $variant->fill($request->except(['categories', 'attrs','price']));
+        if($request->has('price')){ ProductPrice::where('variant_id', $variant->id)->update(['price' => $request->price]);}
 
         $attr = $request->attrs;
 

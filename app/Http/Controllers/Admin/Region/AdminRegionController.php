@@ -32,8 +32,14 @@ class AdminRegionController extends ApiController
      */
     public function store(RegionRequest $request)
     {
-        $region = Region::create($request->validated());
+        $data = $request->validated();
+        $region = Region::create($request->except('countries'));
 
+        $countries = $data['countries'];
+
+        $countries = Country::findMany($countries);
+
+        $region->countries()->saveMany($countries);
         return $this->showOne(new RegionResource($region));
     }
 

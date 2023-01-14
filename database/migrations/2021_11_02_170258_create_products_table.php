@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('seller_id')->constrained('users');
-            $table->foreignId('currency_id')->constrained('currencies');
             $table->foreignId('discount_id')->nullable()->constrained('discounts');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
 

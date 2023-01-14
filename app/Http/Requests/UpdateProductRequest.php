@@ -28,7 +28,6 @@ class UpdateProductRequest extends FormRequest
             'name' => 'string|max:256',
             'description' => 'string|max:256',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'currency_id' => 'integer',
             // 'seller_id' => 'exists:users',
             'medias' => 'max:' . 1,
             'medias.*' => 'mimes:jpeg,jpg,png|max:2000',

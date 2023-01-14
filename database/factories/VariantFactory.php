@@ -26,7 +26,6 @@ class VariantFactory extends Factory
             'variant_name' => $this->faker->word,
             'short_description' => $this->faker->paragraph(1),
             'long_description' => $this->faker->paragraph(1),
-            'price' => $this->faker->numberBetween($min = 1, $max = 500),
             'stock' => $this->faker->numberBetween($min = 0, $max = 30),
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
         ];

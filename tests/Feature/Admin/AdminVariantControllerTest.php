@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\Variant\AdminVariantController;
 use App\Models\User;
+use App\Models\Region;
 use App\Models\Product;
 use App\Models\Variant;
 use Database\Seeders\RoleAndPermissionSeeder;
-
+use App\Http\Controllers\Admin\Variant\AdminVariantController;
+use App\Models\ProductPrice;
+use App\Models\TaxProvider;
 
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
@@ -101,8 +103,12 @@ it('admin can update variant long description', function(){
 it('admin can update variant price', function(){
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
-    $variant = Variant::factory()->create();
-   
+
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    $variant = Variant::factory()->create(['id'=>3]);
+    ProductPrice::factory()->for($variant)->create();
+
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
     $updated = 230;
@@ -114,7 +120,7 @@ it('admin can update variant price', function(){
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(Variant::class, ['price' => $updated]);
+    $this->assertDatabaseHas(ProductPrice::class, ['price' => $updated]);
 
 });
 

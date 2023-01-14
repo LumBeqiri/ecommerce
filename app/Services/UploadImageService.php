@@ -3,7 +3,6 @@ namespace App\Services;
 
 use App\Contracts\UploadServiceContract;
 use App\Models\Media;
-use Illuminate\Support\Facades\Storage;
 
 class UploadImageService implements UploadServiceContract
 {

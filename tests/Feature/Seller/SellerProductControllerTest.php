@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Currency;
 use Illuminate\Http\UploadedFile;
 use Database\Seeders\CurrencySeeder;
+use App\Http\Controllers\Seller\SellerProductController;
 
 beforeEach(function(){
     $this->seed(CurrencySeeder::class); 
@@ -26,7 +27,7 @@ it('can upload a product for sale ', function(){
 
     $file = UploadedFile::fake()->image('avatar.jpg');
 
-    $response = $this->postJson(route('seller.create.product', [$user->uuid]),
+    $response = $this->postJson(action([SellerProductController::class, 'store'],[$user->uuid]),
         [
             'name' => $productName,
             'sku' => 'llllusasew',
