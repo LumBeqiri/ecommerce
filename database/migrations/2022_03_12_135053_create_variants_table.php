@@ -18,12 +18,24 @@ class CreateVariantsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->string('sku');
             $table->string('variant_name');
             $table->string('short_description')->nullable();
             $table->text('long_description')->nullable();
             $table->integer('stock')->unsigned();
+            $table->boolean('manage_inventory');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
+            $table->string('publish_status')->default(Product::DRAFT);
+            $table->string('sku');
+            $table->string('barcode')->nullable();
+            $table->string('ean')->nullable();
+            $table->string('upc')->nullable();
+            $table->boolean('allow_backorder')->nullable();
+            $table->string('material',255)->nullable();
+            $table->integer('weight')->nullable();
+            $table->integer('length')->nullable();
+            $table->integer('height')->nullable();
+            $table->integer('width')->nullable();
+            
 
             $table->timestamps();
         });

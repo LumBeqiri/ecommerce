@@ -20,8 +20,11 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('seller_id')->constrained('users');
-            $table->foreignId('discount_id')->nullable()->constrained('discounts');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
+            $table->string('published_status')->default(Product::DRAFT);
+            $table->boolean('discountable');
+            $table->foreignId('origin_country')->nullable()->constrained('countries');
+            $table->string('thumbnail');
 
             $table->timestamps();
         });

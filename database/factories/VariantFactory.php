@@ -22,12 +22,23 @@ class VariantFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'product_id' => Product::all()->random()->id,
+            'variant_name' => $this->faker->name,
+            'short_description' => $this->faker->sentence,
+            'long_description' => $this->faker->text,
+            'stock' => $this->faker->randomNumber(3),
+            'manage_inventory' => $this->faker->boolean,
             'sku' => $this->faker->word(),
-            'variant_name' => $this->faker->word,
-            'short_description' => $this->faker->paragraph(1),
-            'long_description' => $this->faker->paragraph(1),
-            'stock' => $this->faker->numberBetween($min = 0, $max = 30),
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
+            'publish_status' => $this->faker->randomElement([Product::PUBLISHED, Product::DRAFT]),
+            'barcode' => $this->faker->randomNumber(12),
+            'ean' =>$this->faker->randomNumber(13),
+            'upc' => $this->faker->randomNumber(12),
+            'allow_backorder' => $this->faker->boolean,
+            'material' => $this->faker->word,
+            'weight' => $this->faker->randomNumber(3),
+            'length' => $this->faker->randomNumber(3),
+            'height' =>$this->faker->randomNumber(3),
+            'width' => $this->faker->randomNumber(3),
         ];
     }
 

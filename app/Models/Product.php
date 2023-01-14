@@ -22,6 +22,9 @@ class Product extends Model
     public const AVAILABLE_PRODUCT = 'available';
     public const UNAVAILABLE_PRODUCT = 'unavailable';
 
+    public const PUBLISHED = 'published';
+    public const DRAFT = 'draft';
+
     protected $hidden = ['pivot'];
 
     protected $guarded = [];

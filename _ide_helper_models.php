@@ -201,6 +201,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Region|null $region
+ * @method static \Database\Factories\CountryFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country query()
@@ -224,8 +225,8 @@ namespace App\Models{
  * @property string $symbol
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
- * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
+ * @property-read int|null $regions_count
  * @method static \Database\Factories\CurrencyFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
@@ -373,14 +374,12 @@ namespace App\Models{
  * @property string $name
  * @property string $description
  * @property int $seller_id
- * @property int $currency_id
  * @property int|null $discount_id
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Currency $currency
  * @property-read \App\Models\Discount|null $discount
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
  * @property-read int|null $medias_count
@@ -395,7 +394,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCurrencyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
@@ -406,6 +404,38 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  */
 	class Product extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ProductPrice
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property int $price
+ * @property int $variant_id
+ * @property int $region_id
+ * @property int|null $min_quantity
+ * @property int|null $max_quantity
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Region $region
+ * @property-read \App\Models\Variant $variant
+ * @method static \Database\Factories\ProductPriceFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereMaxQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereMinQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereVariantId($value)
+ */
+	class ProductPrice extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -424,6 +454,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
  * @property-read int|null $countries_count
  * @property-read \App\Models\Currency $currency
+ * @property-read \App\Models\TaxProvider|null $tax_provider
  * @method static \Database\Factories\RegionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Region newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Region newQuery()
@@ -513,6 +544,8 @@ namespace App\Models{
  * @property int|null $is_installed
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
+ * @property-read int|null $regions_count
  * @method static \Database\Factories\TaxProviderFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TaxProvider newQuery()
@@ -598,7 +631,6 @@ namespace App\Models{
  * @property string $variant_name
  * @property string|null $short_description
  * @property string|null $long_description
- * @property int $price
  * @property int $stock
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -609,6 +641,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
  * @property-read int|null $medias_count
  * @property-read \App\Models\Product $product
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductPrice[] $product_prices
+ * @property-read int|null $product_prices_count
  * @method static \Database\Factories\VariantFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Variant newQuery()
@@ -616,7 +650,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereLongDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Variant wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereSku($value)
