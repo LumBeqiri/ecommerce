@@ -2,12 +2,13 @@
 
 use App\Models\User;
 use App\Models\Region;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
+use App\Models\TaxProvider;
+use App\Models\ProductPrice;
 use Database\Seeders\RoleAndPermissionSeeder;
 use App\Http\Controllers\Admin\Variant\AdminVariantController;
-use App\Models\ProductPrice;
-use App\Models\TaxProvider;
 
 beforeEach(function(){
     $this->seed(RoleAndPermissionSeeder::class);
@@ -19,6 +20,10 @@ beforeEach(function(){
 
 
 it('admin can update variant name', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
@@ -39,6 +44,9 @@ it('admin can update variant name', function(){
 });
 
 it('admin can update variant sku', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
@@ -60,6 +68,9 @@ it('admin can update variant sku', function(){
 
 
 it('admin can update variant short description', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
@@ -81,6 +92,9 @@ it('admin can update variant short description', function(){
 
 
 it('admin can update variant long description', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
@@ -101,6 +115,9 @@ it('admin can update variant long description', function(){
 });
 
 it('admin can update variant price', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
 
@@ -125,6 +142,9 @@ it('admin can update variant price', function(){
 });
 
 it('admin can not update variant with negative price', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
@@ -144,6 +164,9 @@ it('admin can not update variant with negative price', function(){
 
 
 it('admin can update variant stock', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create(['stock' => 5]);
@@ -164,6 +187,9 @@ it('admin can update variant stock', function(){
 });
 
 it('admin can not update variant with negative stock value', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create(['stock' => 5]);
@@ -182,6 +208,9 @@ it('admin can not update variant with negative stock value', function(){
 });
 
 it('admin can delete variant', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
 
     User::factory()->count(10)->create();
     Product::factory()->count(10)->create();

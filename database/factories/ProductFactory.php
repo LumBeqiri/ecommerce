@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
@@ -25,11 +26,14 @@ class ProductFactory extends Factory
         DB::statement('SET FOREIGN_KEY_CHECKS =0');
         return [
             'uuid' => $this->faker->uuid(),
-            'name' => $this->faker->word,
+            'name' => $this->faker->name,
             'description' => $this->faker->paragraph(1),
             'seller_id' => User::all()->random()->id,
-            'discount_id' => $this->faker->numberBetween($min = 0, $max = 30),
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
+            'publish_status' => $this->faker->randomElement([Product::PUBLISHED, Product::DRAFT]),
+            'discountable' => $this->faker->boolean,
+            'origin_country' => Country::all()->random()->id,
+            'thumbnail' => $this->faker->imageUrl(),
         ];
     }
 

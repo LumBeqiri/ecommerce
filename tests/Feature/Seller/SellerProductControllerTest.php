@@ -21,7 +21,6 @@ it('can upload a product for sale ', function(){
     Category::factory()->count(2)->create();
     $user = User::factory()->create();
     $productName = 'water-bottle';
-    $currency = Currency::inRandomOrder()->first();
 
     login($user);
 
@@ -34,12 +33,13 @@ it('can upload a product for sale ', function(){
             'variant_name' => 'test',
             'short_description' => 'faker()->paragraph(1)',
             'long_description' => 'faker()->paragraph(2)',
-            'currency_id' => $currency->id,
             'stock' => 4,
             'status' => Product::AVAILABLE_PRODUCT,
             'categories' => [1,2],
             'price' => 200,
             'medias' => [$file]
+
+            
         ]
     );
 

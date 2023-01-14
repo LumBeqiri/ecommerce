@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Models\Currency;
 use App\Models\User;
+use App\Models\Region;
+use App\Models\Country;
 use App\Models\Product;
+use App\Models\TaxProvider;
 use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Admin\Product\AdminProductController;
 
 
 beforeEach(function(){
@@ -16,6 +18,9 @@ beforeEach(function(){
 });
 
 it('admin can show products', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
@@ -31,6 +36,9 @@ it('admin can show products', function(){
 });
 
 it('admin can update product name', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     $product = Product::factory()->create();
    
@@ -51,6 +59,9 @@ it('admin can update product name', function(){
 });
 
 it('admin can update product description', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     $product = Product::factory()->create();
    
@@ -71,6 +82,9 @@ it('admin can update product description', function(){
 });
 
 it('admin can update product status', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     User::factory()->count(10)->create();
     $product = Product::factory()->unavailable()->create();
    
@@ -93,6 +107,9 @@ it('admin can update product status', function(){
 
 
 it('admin can update product seller', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
 
     $oldSeller = User::factory()->create(['id' => 1]);
     $newSeller = User::factory()->create(['id' => 2]);
@@ -119,6 +136,9 @@ it('admin can update product seller', function(){
 
 
 it('admin can delete product', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
 
     User::factory()->count(10)->create();
     $product = Product::factory()->create();

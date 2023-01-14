@@ -19,8 +19,8 @@ class CreateVariantsTable extends Migration
             $table->uuid('uuid');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('variant_name');
-            $table->string('short_description')->nullable();
-            $table->text('long_description')->nullable();
+            $table->string('variant_short_description')->nullable();
+            $table->text('variant_long_description')->nullable();
             $table->integer('stock')->unsigned();
             $table->boolean('manage_inventory');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);

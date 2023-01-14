@@ -27,45 +27,50 @@ class StoreProductRequest extends FormRequest
   
     public function rules()
     {
-        $max_images = 5;
         if($this->getMethod()== 'POST'){
           return [
-            'name' => 'required',
-            'sku' => 'required|unique:variants',
-            'price' => 'required|numeric',
-            'short_description' => 'string|max:256',
-            'long_description' => 'string| max:900',
-            'variant_name' => 'string| max:50',
-            'stock' => 'required|integer|min:1',
-            'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'currency_id' => 'integer|required',
+            'name' => 'required|string|max:255',
+            'product_short_description' => 'string|max:256',
+            'product_long_description' => 'string| max:900',
             'categories' => 'required',
-            'medias' => 'max:' . $max_images,
-            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
-
-          ];
-        }
-        return [
-            'name' => 'required',
-            // 'sku' => 'required|unique:variants',
-            'short_description' => 'string|max:256',
-            'long_description' => 'string| max:900',
+            'status' => 'required|string|in:'. Product::UNAVAILABLE_PRODUCT .','. Product::AVAILABLE_PRODUCT,
+            'publish_status' => 'required|string|in:'. Product::DRAFT .','. Product::PUBLISHED,
+            //rules for variant model
+            'sku' => 'required|unique:variants',
+            'barcode' => 'nullable|string|max:255|unique:variants',
+            'ean' => 'nullable|string|max:255|unique:variants',
+            'upc' => 'nullable|string|max:255|unique:variants',
+            'stock' => 'required|integer|min:0|unsigned',
             'variant_name' => 'string| max:50',
-            'stock' => 'required|integer|min:1',
-            'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'currency_id' => 'integer',
-            'medias' => 'max:' . $max_images,
-            'medias.*' => 'mimes:jpeg,jpg,png|max:2000'
+            'variant_short_description' => 'string|max:255',
+            'variant_long_description' => 'string| max:255',
+            'manage_inventory' => 'required|boolean',
+            'allow_backorder' => 'nullable|boolean',
+            'material' => 'nullable|string|max:255',
+            'weight' => 'nullable|integer|min:0',
+            'length' => 'nullable|integer|min:0',
+            'height' => 'nullable|integer|min:0',
+            'width' => 'nullable|integer|min:0',
+            //rules for attributes
+            'attrs' => 'array',
+            'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
+            //rules for product_prices
+            'product_prices' => 'required|array',
+            'product_prices.*.region_id' => 'required|exists:regions,uuid',
+            'product_prices.*.price' => 'required|integer|min:1',
+            // rules for media
+            // 'medias' => 'max:' . $max_images,
+            // 'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
 
           ];
         }
-
-    public function messages() {
-          $max_images = 5;
         return [
-          'images.*.max' => 'Image size should be less than 2mb',
-          'coverImage.*.mimes' => 'Only jpeg, png, jpg files are allowed.',
-          'images.max' => 'Only ' . $max_images . ' images per product are allowed'
-        ];
-      }
+          'name' => 'string|max:255',
+          'product_short_description' => 'string|max:256',
+          'product_long_description' => 'string| max:900',
+          'categories' => 'array',
+          'status' => 'string|in:'. Product::UNAVAILABLE_PRODUCT .','. Product::AVAILABLE_PRODUCT,
+          'publish_status' => 'string|in:'. Product::DRAFT .','. Product::PUBLISHED,
+          ];
+        }
 }

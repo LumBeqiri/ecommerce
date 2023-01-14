@@ -18,10 +18,10 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('name');
-            $table->string('description');
+            $table->string('product_short_description')->nullable();
+            $table->text('product_long_description')->nullable();
             $table->foreignId('seller_id')->constrained('users');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
-            $table->string('published_status')->default(Product::DRAFT);
             $table->boolean('discountable');
             $table->foreignId('origin_country')->nullable()->constrained('countries');
             $table->string('thumbnail');
