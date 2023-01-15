@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Attributes;
 
 use App\Models\Attribute;
 use App\Http\Controllers\ApiController;

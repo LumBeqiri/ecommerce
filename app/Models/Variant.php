@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasUuid;
 use App\Models\ProductPrice;
+use App\Models\VariantPrice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,9 +41,9 @@ class Variant extends Model
         return $this->hasOne(CartItem::class);
     }
 
-    public function product_prices() : HasMany
+    public function variant_prices() : HasMany
     {
-        return $this->hasMany(ProductPrice::class);
+        return $this->hasMany(VariantPrice::class);
     }
 
 }

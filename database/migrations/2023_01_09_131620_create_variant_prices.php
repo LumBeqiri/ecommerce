@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_prices', function (Blueprint $table) {
+        Schema::create('variant_prices', function (Blueprint $table) {
             $table->id();
             $table->uuid();
             $table->integer('price');

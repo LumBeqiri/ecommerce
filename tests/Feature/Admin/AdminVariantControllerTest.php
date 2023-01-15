@@ -6,7 +6,7 @@ use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\TaxProvider;
-use App\Models\ProductPrice;
+use App\Models\VariantPrice;
 use Database\Seeders\RoleAndPermissionSeeder;
 use App\Http\Controllers\Admin\Variant\AdminVariantController;
 
@@ -81,12 +81,12 @@ it('admin can update variant short description', function(){
     login($user);
     
     $response = $this->putJson(action([AdminVariantController::class, 'update'],$variant->uuid),[
-        'short_description' => $updated
+        'variant_short_description' => $updated
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(Variant::class, ['short_description' => $updated]);
+    $this->assertDatabaseHas(Variant::class, ['variant_short_description' => $updated]);
 
 });
 
@@ -105,12 +105,12 @@ it('admin can update variant long description', function(){
     login($user);
     
     $response = $this->putJson(action([AdminVariantController::class, 'update'],$variant->uuid),[
-        'long_description' => $updated
+        'variant_long_description' => $updated
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(Variant::class, ['long_description' => $updated]);
+    $this->assertDatabaseHas(Variant::class, ['variant_long_description' => $updated]);
 
 });
 
@@ -124,7 +124,7 @@ it('admin can update variant price', function(){
     TaxProvider::factory()->create();
     Region::factory()->create();
     $variant = Variant::factory()->create(['id'=>3]);
-    ProductPrice::factory()->for($variant)->create();
+    VariantPrice::factory()->for($variant)->create();
 
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
@@ -137,7 +137,7 @@ it('admin can update variant price', function(){
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(ProductPrice::class, ['price' => $updated]);
+    $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated]);
 
 });
 

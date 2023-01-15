@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin\Variant;
 
 use App\Models\Variant;
-use App\Models\ProductPrice;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
 use App\Http\Requests\UpdateVariantRequest;
+use App\Models\VariantPrice;
 
 class AdminVariantController extends ApiController
 {
@@ -33,7 +33,7 @@ class AdminVariantController extends ApiController
         }
         
         $variant->fill($request->except(['categories', 'attrs','price']));
-        if($request->has('price')){ ProductPrice::where('variant_id', $variant->id)->update(['price' => $request->price]);}
+        if($request->has('price')){ VariantPrice::where('variant_id', $variant->id)->update(['price' => $request->price]);}
 
         $attr = $request->attrs;
 

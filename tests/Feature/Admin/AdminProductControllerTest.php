@@ -58,7 +58,7 @@ it('admin can update product name', function(){
 
 });
 
-it('admin can update product description', function(){
+it('admin can update product long description', function(){
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -72,12 +72,35 @@ it('admin can update product description', function(){
 
     
     $response = $this->putJson(action([AdminProductController::class, 'update'],$product->uuid),[
-        'description' => $updatedDescription
+        'product_long_description' => $updatedDescription
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(Product::class, ['description' => $updatedDescription]);
+    $this->assertDatabaseHas(Product::class, ['product_long_description' => $updatedDescription]);
+
+});
+
+it('admin can update product short description', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    User::factory()->count(10)->create();
+    $product = Product::factory()->create();
+   
+    $user = User::factory()->create(['name' => 'Lum']);
+    $user->assignRole('admin');
+    $updatedDescription = 'new description';
+    login($user);
+
+    
+    $response = $this->putJson(action([AdminProductController::class, 'update'],$product->uuid),[
+        'product_short_description' => $updatedDescription
+    ]);
+
+    $response->assertOk();
+
+    $this->assertDatabaseHas(Product::class, ['product_short_description' => $updatedDescription]);
 
 });
 

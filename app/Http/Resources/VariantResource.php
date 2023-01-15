@@ -2,8 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Services\PriceService;
-use App\Http\Resources\ProductPriceResource;
+use App\Http\Resources\VariantPriceResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VariantResource extends JsonResource
@@ -21,11 +20,11 @@ class VariantResource extends JsonResource
             'product' => new ProductResource($this->whenLoaded('product')),
             'sku' => $this->sku,
             'variant_name' => $this->variant_name,
-            'short_description' => $this->short_description,
-            'long_description' => $this->long_description,
+            'short_description' => $this->variant_short_description,
+            'long_description' => $this->variant_long_description,
             'stock' => $this->stock,
             'status' => $this->status,
-            'price' => ProductPriceResource::collection($this->product_prices),
+            'price' => VariantPriceResource::collection($this->variant_prices),
         ];
     }
 }

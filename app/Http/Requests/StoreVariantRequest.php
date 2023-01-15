@@ -48,9 +48,6 @@ class StoreVariantRequest extends FormRequest
             'length' => 'nullable|integer|min:0',
             'height' => 'nullable|integer|min:0',
             'width' => 'nullable|integer|min:0',
-            //rules for attributes
-            'attrs' => 'array',
-            'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
             //rules for product_prices
             'product_prices' => 'required|array',
             'product_prices.*.region_id' => 'required|exists:regions,uuid',

@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Buyer\BuyerController;
@@ -9,15 +9,15 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Seller\SellerController;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Variant\VariantController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
-use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Order\OrderSellerController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Order\OrderCategoryController;
+use App\Http\Controllers\Attributes\AttributeController;
 use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductOrderController;
 use App\Http\Controllers\Seller\SellerProductController;
@@ -27,7 +27,6 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
-use App\Http\Controllers\Variant\VariantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +62,7 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.products');
-    Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
+    // Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
 
     Route::resource('carts', CartController::class);

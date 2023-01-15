@@ -25,12 +25,12 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|max:256',
-            'description' => 'string|max:256',
-            'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            // 'seller_id' => 'exists:users',
-            'medias' => 'max:' . 1,
-            'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
+            'name' => 'sometimes|string|max:255',
+            'product_short_description' => 'string|max:256',
+            'product_long_description' => 'string| max:900',
+            'categories' => 'sometimes|array',
+            'status' => 'sometimes|string|in:'. Product::UNAVAILABLE_PRODUCT .','. Product::AVAILABLE_PRODUCT,
+            'publish_status' => 'sometimes|string|in:'. Product::DRAFT .','. Product::PUBLISHED,
         ];
     }
 }

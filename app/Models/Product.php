@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Order;
 use App\Traits\HasUuid;
 use App\Models\Category;
-use App\Models\Currency;
+use App\Models\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,31 +29,6 @@ class Product extends Model
 
     protected $guarded = [];
 
-    // move isAvailable to variant
-    // public function isAvaliable() 
-    // {
-    //     return $this->status == Product::AVAILABLE_PRODUCT;
-    // }
-
-
-    // the price it's gonna sell for
-    public function getSellingPrice(){
-        if($this->discount !=null && $this->discount->active){
-            $discount_percent = $this->discount->discount_percent;
-            $price =  $this->price - $this->price*($discount_percent/100);
-            return $price;
-        }
-        return $this->price;
-    }
-
-    //discount percentage per product
-    public function getDiscountPercent(){
-        if($this->discount){
-            return $this->discount->discount_percent;
-        }
-        return 0;
-        
-    }
 
     public function discount() : BelongsTo
     {
@@ -68,6 +43,11 @@ class Product extends Model
     public function variants() : HasMany
     {
         return $this->hasMany(Variant::class);
+    }
+
+    public function attributes() : HasMany 
+    {
+        return $this->hasMany(Attribute::class);
     }
     
     public function seller() : BelongsTo

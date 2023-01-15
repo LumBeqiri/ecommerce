@@ -23,9 +23,9 @@ class CreateProductsTable extends Migration
             $table->foreignId('seller_id')->constrained('users');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
             $table->string('publish_status')->default(Product::DRAFT);
-            $table->boolean('discountable');
+            $table->boolean('discountable')->default(0);
             $table->foreignId('origin_country')->nullable()->constrained('countries');
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
 
             $table->timestamps();
         });

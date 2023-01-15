@@ -40,7 +40,7 @@ class StoreProductRequest extends FormRequest
             'barcode' => 'nullable|string|max:255|unique:variants',
             'ean' => 'nullable|string|max:255|unique:variants',
             'upc' => 'nullable|string|max:255|unique:variants',
-            'stock' => 'required|integer|min:0|unsigned',
+            'stock' => 'required|integer|min:0',
             'variant_name' => 'string| max:50',
             'variant_short_description' => 'string|max:255',
             'variant_long_description' => 'string| max:255',
@@ -52,8 +52,8 @@ class StoreProductRequest extends FormRequest
             'height' => 'nullable|integer|min:0',
             'width' => 'nullable|integer|min:0',
             //rules for attributes
-            'attrs' => 'array',
-            'attrs.*' => 'required|max:150|string|exists:attributes,uuid',
+            'attributes' => 'array',
+            'attributes.*' => 'required|max:150|string',
             //rules for product_prices
             'product_prices' => 'required|array',
             'product_prices.*.region_id' => 'required|exists:regions,uuid',

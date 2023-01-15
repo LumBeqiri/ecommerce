@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Seller;
 
+use Exception;
+use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
+use App\Models\Variant;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\VariantResource;
-use App\Models\Category;
-use App\Models\User;
-use App\Models\Variant;
-use Exception;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class SellerProductController extends ApiController
 {
@@ -23,52 +24,38 @@ class SellerProductController extends ApiController
         return $this->showAll(ProductResource::collection($products));
     }
 
-
     public function store(StoreProductRequest $request, User $seller){
+        $request->validated();
 
-        $variant_data = $request->validated();
-        $product_data = [];
+        $product_data = [
+            'name',
+            'product_short_description',
+            'product_long_description',
+            'seller_id',
+            'status',
+            'publish_status',
+            'discountable',
+            'origin_country', 
+            'thumbnail'
+        ];
 
-        $images = $request->file('medias');
+        $variant = DB::transaction(function () use ($request, $product_data, $seller){
+            $product = Product::create($request->only($product_data) + ['seller_id' => $seller->id]);
 
-        $product_data = $request->only(['name','seller_id','currency_id']);
-        $product_data['description'] = $request->short_description;
-        $product_data['seller_id'] = $seller->id;
+            $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+    
+            $product->categories()->sync($categories);
+          
+            $variant_data = $request->except(['categories','product_prices',...$product_data]);
+    
+            $variant = Variant::create($variant_data + ['product_id' => $product->id]);
 
-        $newProduct = Product::create($product_data);
 
-        $categories = $request->categories;
-        
-        abort_if(in_array(0,$categories),422, 'Category cannot be 0');
-        abort_if(count($categories) >5, 422, 'Only 5 categories per product');
+            return $variant;
+        });
+       
+        return $this->showOne(new VariantResource($variant));
 
-        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
-        
-        $newProduct->categories()->sync($categories);
-
-        $variant_data['product_id'] = $newProduct->id;
-
-        $newVariant = Variant::create([
-            'product_id' => $newProduct->id,
-            'sku' => $variant_data['sku'],
-            'variant_name' => $variant_data['variant_name'],
-            'short_description' => $variant_data['short_description'],
-            'long_description' => $variant_data['long_description'],
-            'price' => $variant_data['price'],
-            'stock' => $variant_data['stock'],
-            'status' => $variant_data['status'],
-        ]);
-
-        try{
-            UploadImageService::upload($newVariant,$images, Variant::class);
-        }catch(Exception $e){
-            Variant::destroy($newVariant->id);
-            Product::destroy($newProduct->id);
-            $newVariant = null;
-            return $this->errorResponse("File(s) could not be uploaded", 500);
-        }
-
-        return $this->showOne(new VariantResource($newVariant->load('product')),201);
     }
 
     public function update(UpdateProductRequest $request, Seller $seller, Product $product){
@@ -76,28 +63,27 @@ class SellerProductController extends ApiController
 
         $this->authorize('update', $product);
 
-        $images = null;
+        // $images = null;
 
-        if($request->has('medias')){
-            $images = $request->file('medias');
-            $request_images = count($request->file('medias'));
+        // if($request->has('medias')){
+        //     $images = $request->file('medias');
+        //     $request_images = count($request->file('medias'));
 
-            abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
+        //     abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
 
-            UploadImageService::upload($product,$images, Product::class);
-        }
+        //     UploadImageService::upload($product,$images, Product::class);
+        // }
     
         $product->fill($request->except(['categories']));
 
-        $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
-
         if($request->has('categories')){
+            $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
             abort_if(count($categories) >5, 422, 'Only 5 categories per product');
             $product->categories()->sync($categories);
         }
 
         $product->save();
-
+        
         return $this->showOne(new ProductResource($product));
     }
 
@@ -109,4 +95,5 @@ class SellerProductController extends ApiController
             }
         }
     }
+
 }

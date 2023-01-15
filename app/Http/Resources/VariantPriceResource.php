@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductPriceResource extends JsonResource
+class VariantPriceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

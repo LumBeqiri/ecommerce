@@ -62,7 +62,6 @@ it('admin can show carts with items', function(){
     login($user);
 
     $response = $this->getJson(action([AdminCartController::class, 'index'], ['include' => 'cart_items']));
-    // $response = $this->getJson('admin/carts?include=cart_items');
 
     $response->assertOk();
 
