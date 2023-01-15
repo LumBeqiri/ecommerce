@@ -23,10 +23,18 @@ class RegionSeeder extends Seeder
         $region = [
             'title' => 'EU',
             'currency_id' => 2,
-            'tax_rate' => 18,
+            'tax_rate' => 22,
             'tax_code' => 'IJK012',
         ];
 
+        $region2 = [
+            'title' => 'ASIA',
+            'currency_id' => 2,
+            'tax_rate' => 14,
+            'tax_code' => 'ZCAC7A3',
+        ];
+
         Region::create($region);
+        Region::create($region2);
     }
 }

@@ -27,9 +27,7 @@ class StoreVariantRequest extends FormRequest
   
     public function rules()
     {
-
-        $max_images = 5;
-    
+   
           return [
             //rules for variant model
             'product_id' => 'required|exists:products,id',
