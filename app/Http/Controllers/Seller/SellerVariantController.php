@@ -14,6 +14,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
+use App\Models\VariantPrice;
 
 class SellerVariantController extends ApiController
 {
@@ -49,7 +50,7 @@ class SellerVariantController extends ApiController
         $newVariant = DB::transaction(function () use($variant_data, $request) {
             $newVariant = Variant::create($variant_data);
 
-            $this->createProductPrice($request->product_prices, $newVariant);
+            $this->createVariantPrice($request->product_prices, $newVariant);
 
             return $newVariant;
         });
@@ -101,7 +102,7 @@ class SellerVariantController extends ApiController
             }
     
             if($request->has('product_prices')){
-                $this->updateProductPrice($request->product_prices, $variant);
+                $this->updateVariantPrice($request->product_prices, $variant);
             }
     
             $variant->save();
@@ -127,21 +128,21 @@ class SellerVariantController extends ApiController
     }
 
 
-    private function createProductPrice($product_prices, $newVariant){
+    private function createVariantPrice($product_prices, $newVariant){
         foreach($product_prices as $product_price){
             $product_price['region_id'] = Region::where('uuid',$product_price['region_id'])->firstOrFail()->id;
             $product_price['variant_id'] = $newVariant->id;
-            ProductPrice::create($product_price);
+            VariantPrice::create($product_price);
         }
     }
 
-    private function updateProductPrice($product_prices, $variant){
+    private function updateVariantPrice($product_prices, $variant){
 
         foreach($product_prices as $product_price){
             $product_price['region_id'] = Region::where('uuid',$product_price['region_id'])->firstOrFail()->id;
             $product_price['variant_id'] = $variant->id;
             
-            ProductPrice::where('variant_id', $variant->id)
+            VariantPrice::where('variant_id', $variant->id)
             ->where('region_id', $product_price['region_id'])
             ->update([
                 'region_id' => $product_price['region_id'],

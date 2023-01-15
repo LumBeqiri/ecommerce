@@ -30,7 +30,6 @@ class StoreVariantRequest extends FormRequest
    
           return [
             //rules for variant model
-            'product_id' => 'required|exists:products,id',
             'variant_name' => 'required|string|max:255',
             'sku' => 'string|max:255|required|unique:variants',
             'barcode' => 'nullable|string|max:255|unique:variants',
@@ -38,7 +37,7 @@ class StoreVariantRequest extends FormRequest
             'upc' => 'nullable|string|max:255|unique:variants',
             'variant_short_description' => 'string|max:255',
             'variant_long_description' => 'string| max:255',
-            'stock' => 'required|integer|min:0|unsigned',
+            'stock' => 'required|integer|min:0',
             'manage_inventory' => 'required|boolean',
             'status' => 'required|string|in:'. Product::UNAVAILABLE_PRODUCT .','. Product::AVAILABLE_PRODUCT,
             'publish_status' => 'required|string|in:'. Product::DRAFT .','. Product::PUBLISHED,

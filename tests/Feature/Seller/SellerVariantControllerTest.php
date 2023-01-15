@@ -1,12 +1,15 @@
 <?php
 
 use App\Models\User;
+use App\Models\Region;
 use App\Models\Seller;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
+use App\Models\TaxProvider;
 use Illuminate\Http\UploadedFile;
-use App\Http\Controllers\Seller\SellerVariantController;
 use Database\Seeders\CurrencySeeder;
+use App\Http\Controllers\Seller\SellerVariantController;
 
 beforeEach(function(){
     $this->seed(CurrencySeeder::class);
@@ -14,6 +17,9 @@ beforeEach(function(){
     Bus::fake();
 });
 it('can upload a product variant for sale ', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     Storage::fake();
     User::factory()->count(10)->create();
     $product = Product::factory()->available()->create();
