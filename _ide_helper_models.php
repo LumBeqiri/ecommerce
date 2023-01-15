@@ -18,8 +18,10 @@ namespace App\Models{
  * @property string $uuid
  * @property string $attribute_type
  * @property string $attribute_value
+ * @property int $product_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Product $product
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Variant[] $variants
  * @property-read int|null $variants_count
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute newModelQuery()
@@ -29,6 +31,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereAttributeValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attribute whereUuid($value)
  */
@@ -372,12 +375,18 @@ namespace App\Models{
  * @property int $id
  * @property string $uuid
  * @property string $name
- * @property string $description
+ * @property string|null $product_short_description
+ * @property string|null $product_long_description
  * @property int $seller_id
- * @property int|null $discount_id
  * @property string $status
+ * @property string $publish_status
+ * @property int $discountable
+ * @property int|null $origin_country
+ * @property string|null $thumbnail
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attribute[] $attributes
+ * @property-read int|null $attributes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Discount|null $discount
@@ -394,48 +403,20 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscountable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereOriginCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereProductLongDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereProductShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product wherePublishStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereThumbnail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  */
 	class Product extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\ProductPrice
- *
- * @property int $id
- * @property string $uuid
- * @property int $price
- * @property int $variant_id
- * @property int $region_id
- * @property int|null $min_quantity
- * @property int|null $max_quantity
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Region $region
- * @property-read \App\Models\Variant $variant
- * @method static \Database\Factories\ProductPriceFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereMaxQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereMinQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereRegionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice whereVariantId($value)
- */
-	class ProductPrice extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -627,12 +608,23 @@ namespace App\Models{
  * @property int $id
  * @property string $uuid
  * @property int $product_id
- * @property string $sku
  * @property string $variant_name
- * @property string|null $short_description
- * @property string|null $long_description
+ * @property string|null $variant_short_description
+ * @property string|null $variant_long_description
  * @property int $stock
+ * @property int $manage_inventory
  * @property string $status
+ * @property string $publish_status
+ * @property string $sku
+ * @property string|null $barcode
+ * @property string|null $ean
+ * @property string|null $upc
+ * @property int|null $allow_backorder
+ * @property string|null $material
+ * @property int|null $weight
+ * @property int|null $length
+ * @property int|null $height
+ * @property int|null $width
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attribute[] $attributes
@@ -641,24 +633,67 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $medias
  * @property-read int|null $medias_count
  * @property-read \App\Models\Product $product
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductPrice[] $product_prices
- * @property-read int|null $product_prices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\VariantPrice[] $variant_prices
+ * @property-read int|null $variant_prices_count
  * @method static \Database\Factories\VariantFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Variant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Variant query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereAllowBackorder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereBarcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereEan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereHeight($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Variant whereLongDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereLength($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereManageInventory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereMaterial($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Variant whereShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant wherePublishStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereSku($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereStock($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereUpc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereVariantLongDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Variant whereVariantName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereVariantShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereWeight($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Variant whereWidth($value)
  */
 	class Variant extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\VariantPrice
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property int $price
+ * @property int $variant_id
+ * @property int $region_id
+ * @property int|null $min_quantity
+ * @property int|null $max_quantity
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Region $region
+ * @property-read \App\Models\Variant $variant
+ * @method static \Database\Factories\VariantPriceFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice query()
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereMaxQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereMinQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VariantPrice whereVariantId($value)
+ */
+	class VariantPrice extends \Eloquent {}
 }
 

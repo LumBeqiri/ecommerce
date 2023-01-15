@@ -7,7 +7,6 @@ use App\Models\Region;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Attribute;
-use App\Models\ProductPrice;
 use Illuminate\Support\Facades\DB;
 use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
