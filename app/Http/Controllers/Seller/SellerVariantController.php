@@ -40,7 +40,7 @@ class SellerVariantController extends ApiController
 
         $request->validated();
 
-        $variant_data = $request->except('attrs','medias', 'product_prices');
+        $variant_data = $request->except('attrs','medias', 'variant_prices');
 
         $images = $request->file('medias');
 
@@ -49,7 +49,7 @@ class SellerVariantController extends ApiController
         $newVariant = DB::transaction(function () use($variant_data, $request) {
             $newVariant = Variant::create($variant_data);
 
-            $this->createVariantPrice($request->product_prices, $newVariant);
+            $this->createVariantPrice($request->variant_prices, $newVariant);
 
             return $newVariant;
         });
@@ -100,15 +100,15 @@ class SellerVariantController extends ApiController
                 $variant->attributes()->sync($attrs);
             }
     
-            if($request->has('product_prices')){
-                $this->updateVariantPrice($request->product_prices, $variant);
+            if($request->has('variant_prices')){
+                $this->updateVariantPrice($request->variant_prices, $variant);
             }
-    
+
             $variant->save();
         });
         
 
-        return $this->showOne(new VariantResource($variant->load('product_prices')));
+        return $this->showOne(new VariantResource($variant->load('variant_prices')));
      
     }
 
@@ -127,28 +127,28 @@ class SellerVariantController extends ApiController
     }
 
 
-    private function createVariantPrice($product_prices, $newVariant){
-        foreach($product_prices as $product_price){
-            $product_price['region_id'] = Region::where('uuid',$product_price['region_id'])->firstOrFail()->id;
-            $product_price['variant_id'] = $newVariant->id;
-            VariantPrice::create($product_price);
+    private function createVariantPrice($variant_prices, $newVariant){
+        foreach($variant_prices as $variant_price){
+            $variant_price['region_id'] = Region::where('uuid',$variant_price['region_id'])->firstOrFail()->id;
+            $variant_price['variant_id'] = $newVariant->id;
+            VariantPrice::create($variant_price);
         }
     }
 
-    private function updateVariantPrice($product_prices, $variant){
+    private function updateVariantPrice($variant_prices, $variant){
 
-        foreach($product_prices as $product_price){
-            $product_price['region_id'] = Region::where('uuid',$product_price['region_id'])->firstOrFail()->id;
-            $product_price['variant_id'] = $variant->id;
+        foreach($variant_prices as $variant_price){
+            $product_price['region_id'] = Region::where('uuid',$variant_price['region_id'])->firstOrFail()->id;
+            $variant_price['variant_id'] = $variant->id;
             
             VariantPrice::where('variant_id', $variant->id)
-            ->where('region_id', $product_price['region_id'])
+            ->where('region_id', $variant_price['region_id'])
             ->update([
-                'region_id' => $product_price['region_id'],
-                'currency_id' => $product_price['currency_id'],
-                'price' => $product_price['price'],
-                'min_quantity' => $product_price['min_quantity'],
-                'max_quantity' => $product_price['max_quantity'],
+                'region_id' => $variant_price['region_id'],
+                'currency_id' => $variant_price['currency_id'],
+                'price' => $variant_price['price'],
+                'min_quantity' => $variant_price['min_quantity'],
+                'max_quantity' => $variant_price['max_quantity'],
             ]);
         }
     }

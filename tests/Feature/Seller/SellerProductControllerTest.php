@@ -54,7 +54,7 @@ it('can upload a product for sale ', function(){
             "length" => 20,
             "height" => 30,
             "width" => 40,
-            "product_prices" => array(
+            "variant_prices" => array(
                 array(
                     "region_id" => $region1->uuid,
                     "price" => 100
@@ -63,9 +63,7 @@ it('can upload a product for sale ', function(){
                     "region_id" => $region2->uuid,
                     "price" => 120
                 )
-            )
-
-            
+            )            
         ]
     );
 

@@ -39,6 +39,7 @@ class SellerProductController extends ApiController
             'thumbnail'
         ];
 
+
         $variant = DB::transaction(function () use ($request, $product_data, $seller){
             $product = Product::create($request->only($product_data) + ['seller_id' => $seller->id]);
 
@@ -46,10 +47,9 @@ class SellerProductController extends ApiController
     
             $product->categories()->sync($categories);
           
-            $variant_data = $request->except(['categories','product_prices',...$product_data]);
+            $variant_data = $request->except(['categories','variant_prices',...$product_data]);
     
             $variant = Variant::create($variant_data + ['product_id' => $product->id]);
-
 
             return $variant;
         });

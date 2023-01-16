@@ -16,9 +16,11 @@ beforeEach(function(){
     Notification::fake();
     Bus::fake();
 });
+
 it('can upload a product variant for sale ', function(){
     TaxProvider::factory()->create();
-    Region::factory()->create();
+    $region1 = Region::factory()->create();
+    $region2 = Region::factory()->create();
     Country::factory()->create();
     Storage::fake();
     User::factory()->count(10)->create();
@@ -26,40 +28,57 @@ it('can upload a product variant for sale ', function(){
     $user = User::factory()->create();
  
     login($user);
-
-    $file = UploadedFile::fake()->image('avatar.jpg');
-
-    $variant = Variant::factory()->for($product)->create();
-
-    $variant_data = $variant->toArray();
-
-    unset($variant_data['id']);
-
-    $variant_data['medias'] = [$file];
-    //need to add sku manually
-    $variant_data['sku'] = 'abc23d';
-    
-    $response = $this->postJson(
-            action([SellerVariantController::class, 'store'],
-            $product->uuid),
-            $variant_data
-        );
+  
+    $response = $this->postJson(action([SellerVariantController::class, 'store'],[$product->uuid]),
+    [
+        "variant_name" => "Example variant",
+        "status" => "available",
+        "publish_status" => "published",
+        "sku" => "ABdC1ff223",
+        "barcode" => "1234a5f6f7f89",
+        "ean" => "987f6d5s4s321f",
+        "upc" => "111d2f223s33d",
+        "stock" => 10,
+        "variant_short_description" => "A short description of the variant",
+        "variant_long_description" => "A longer description of the variant with a maximum of 255 characters",
+        "manage_inventory" => true,
+        "allow_backorder" => false,
+        "material" => "cloth",
+        "weight" => 10,
+        "length" => 20,
+        "height" => 30,
+        "width" => 40,
+        "variant_prices" => array(
+            array(
+                "region_id" => $region1->uuid,
+                "price" => 100
+            ),
+            array(
+                "region_id" => $region2->uuid,
+                "price" => 120
+            )
+        )            
+    ]
+);
 
     $response->assertStatus(200);
 
-    $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
-    $this->assertDatabaseHas(Variant::class, ['variant_name' => $variant->variant_name]);
+    $this->assertDatabaseHas(Variant::class, ['uuid' => $response->json('id')]);
 
 });
 
 
 it('can update product variant name', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $old_name = 'old_name';
     $new_name = 'new_name';
 
     $seller = Seller::factory()->create();
 
     $product = Product::factory()->for($seller)->create();
+
     $variant = Variant::factory()->create(['variant_name' => $old_name, 'product_id'=> $product->id]);
     
     login($seller);
@@ -78,55 +97,65 @@ it('can update product variant name', function(){
 });
 
 it('can update product variant short_description', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $old_data = 'old_name';
     $new_data = 'new_name';
 
     $seller = Seller::factory()->create();
 
     $product = Product::factory()->for($seller)->create();
-    $variant = Variant::factory()->create(['short_description' => $old_data, 'product_id'=> $product->id]);
+    $variant = Variant::factory()->create(['variant_short_description' => $old_data, 'product_id'=> $product->id]);
     
     login($seller);
 
     $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid),[
-        'short_description' => $new_data
+        'variant_short_description' => $new_data
     ]);
 
     $response->assertStatus(200);
+
     
     expect($response->json())
-        ->short_description->toBe($new_data);
+        ->variant_short_description->toBe($new_data);
 
-    $this->assertDatabaseHas(Variant::class, ['short_description' => $new_data]);
+    $this->assertDatabaseHas(Variant::class, ['variant_short_description' => $new_data]);
 
 });
 
 
 it('can update product variant long_description', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $old_data = 'old_name';
     $new_data = 'new_name';
 
     $seller = Seller::factory()->create();
 
     $product = Product::factory()->for($seller)->create();
-    $variant = Variant::factory()->create(['long_description' => $old_data, 'product_id'=> $product->id]);
+    $variant = Variant::factory()->create(['variant_long_description' => $old_data, 'product_id'=> $product->id]);
     
     login($seller);
 
     $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid),[
-        'long_description' => $new_data
+        'variant_long_description' => $new_data
     ]);
 
     $response->assertStatus(200);
     
     expect($response->json())
-        ->long_description->toBe($new_data);
+        ->variant_long_description->toBe($new_data);
 
-    $this->assertDatabaseHas(Variant::class, ['long_description' => $new_data]);
+    $this->assertDatabaseHas(Variant::class, ['variant_long_description' => $new_data]);
 
 });
 
 it('can update product variant stock', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $old_data = 43;
     $new_data = 120;
 
@@ -152,6 +181,9 @@ it('can update product variant stock', function(){
 
 
 it('can update product variant status', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $old_data = Product::UNAVAILABLE_PRODUCT;
     $new_data = Product::AVAILABLE_PRODUCT;
 
@@ -177,6 +209,9 @@ it('can update product variant status', function(){
 
 
 it('can not update some elses product variant', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $old_data = Product::UNAVAILABLE_PRODUCT;
     $new_data = Product::AVAILABLE_PRODUCT;
 
@@ -200,6 +235,9 @@ it('can not update some elses product variant', function(){
 
 
 it('can delete product variant', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
 
     $seller = Seller::factory()->create();
 
@@ -217,6 +255,9 @@ it('can delete product variant', function(){
 });
 
 it('can not delete some elses product variant', function(){
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
 
     $seller = Seller::factory()->create();
     $rougeSeller = Seller::factory()->create();
