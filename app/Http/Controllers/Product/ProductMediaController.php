@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\MediaRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 
-class ProductMediaController extends Controller
+class ProductMediaController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -23,11 +27,23 @@ class ProductMediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MediaRequest $request,Product $product)
     {
-        //
-    }
+        $request->validated();
 
+        $this->authorize('update', $product);
+        
+        $media = $request->media;
+
+        $upload = $media->store('', 'images');
+
+        $product->thumbnail = $upload;
+
+        $product->save();
+        
+        return $this->showOne(new ProductResource($product));
+
+    }
     /**
      * Display the specified resource.
      *

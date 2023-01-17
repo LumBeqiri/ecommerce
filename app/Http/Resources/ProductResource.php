@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'seller' => new UserResource($this->seller),
             'images' => $this->medias,
             'status' => $this->status,
+            'thumbnail' => $this->thumbnail,
         ];
     }
 }

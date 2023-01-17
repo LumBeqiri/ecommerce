@@ -58,10 +58,6 @@ class StoreProductRequest extends FormRequest
             'variant_prices' => 'required|array',
             'variant_prices.*.region_id' => 'required|exists:regions,uuid',
             'variant_prices.*.price' => 'required|integer|min:1',
-            // rules for media
-            // 'medias' => 'max:' . $max_images,
-            // 'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
-
           ];
         }
         return [

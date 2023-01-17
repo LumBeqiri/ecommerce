@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Attributes\AttributeController;
 use App\Http\Controllers\Product\ProductBuyerController;
+use App\Http\Controllers\Product\ProductMediaController;
 use App\Http\Controllers\Product\ProductOrderController;
 use App\Http\Controllers\Seller\SellerProductController;
 use App\Http\Controllers\Seller\SellerVariantController;
@@ -64,6 +65,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.products');
     // Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
+    Route::post('products/{product}/media', [ProductMediaController::class, 'store']);
 
     Route::resource('carts', CartController::class);
 

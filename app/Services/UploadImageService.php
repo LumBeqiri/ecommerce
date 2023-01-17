@@ -8,37 +8,30 @@ class UploadImageService implements UploadServiceContract
 {
 
     /**
-     * @param mixed $newProductVariant
+     * @param mixed $model
      * @param mixed $images
      * @param mixed $className
      * 
-     * @return void
+     * @return App\Models\Media
      */
-    public static function upload($newProductVariant, $medias, $className){
-     
+    public static function upload($model, $media, $className){
+       
+        if($media){
+            $name = $media->hashName();
+            $upload = $media->store('', 'images');
 
+            $mediaData['mediable_id'] = $model->id;
+            $mediaData['mediable_type'] = $className;
+            $mediaData['name'] = $name;
+            $mediaData['file_name'] = $media->getClientOriginalName();
+            $mediaData['mime_type'] = $media->getClientMimeType();
+            $mediaData['path'] = $upload;
+            $mediaData['disk'] = 'images';
+            $mediaData['size'] = $media->getSize();
+            $mediaData['collection'] = 'products';
 
-        //if there are images
-        if($medias){
-            
-            //for every image:
-            foreach($medias as $media){
-                $name = $media->hashName();
- 
-                $upload = $media->store('', 'images');
-                //attach image to the product
-                $mediaData['mediable_id'] = $newProductVariant->id;
-                $mediaData['mediable_type'] = $className;
-                $mediaData['name'] = $name;
-                $mediaData['file_name'] = $media->getClientOriginalName();
-                $mediaData['mime_type'] = $media->getClientMimeType();
-                $mediaData['path'] = $upload;
-                $mediaData['disk'] = 'images';
-                $mediaData['size'] = $media->getSize();
-                $mediaData['collection'] = 'products';
+            return Media::updateOrCreate($mediaData);
 
-                Media::updateOrCreate($mediaData);
-            }
         }
     }
 }
