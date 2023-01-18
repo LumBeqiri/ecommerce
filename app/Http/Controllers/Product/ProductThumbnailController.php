@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Http\Controllers\ApiController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
+use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
+use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class ProductThumbnailController extends ApiController
 {
@@ -24,9 +26,13 @@ class ProductThumbnailController extends ApiController
 
         $this->authorize('update', $product);
         
-        $media = $request->media;
+        $thumbnail = $request->thumbnail;
 
-        $upload = $media->store('', 'images');
+        if($product->thumbnail){
+            Storage::disk('images')->delete($product->thumbnail);
+        }
+
+        $upload = $thumbnail->store('', 'images');
 
         $product->thumbnail = $upload;
 
@@ -35,37 +41,26 @@ class ProductThumbnailController extends ApiController
         return $this->showOne(new ProductResource($product));
 
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $this->authorize('delete', $product);
+
+        $thumbnail = $product->thumbnail;
+
+        if($thumbnail === null){
+            return $this->showMessage("This product has no thumbnail!");
+        }
+
+        try{
+            Storage::disk('images')->delete($thumbnail);
+        }catch(Exception $e){}
+
+        $product->thumbnail = null;
+
+        $product->save();
+
+        return $this->showMessage('Thumbnail Removed Successfully');
     }
 }

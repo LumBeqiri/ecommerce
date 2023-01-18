@@ -65,7 +65,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.products');
     // Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
-    Route::post('products/{product}/media', [ProductThumbnailController::class, 'store']);
+    Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
+    Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
 
     Route::resource('carts', CartController::class);
 

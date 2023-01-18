@@ -72,18 +72,7 @@ class SellerProductController extends ApiController
         $request->validated();
 
         $this->authorize('update', $product);
-
-        // $images = null;
-
-        // if($request->has('medias')){
-        //     $images = $request->file('medias');
-        //     $request_images = count($request->file('medias'));
-
-        //     abort_if( $request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
-
-        //     UploadImageService::upload($product,$images, Product::class);
-        // }
-    
+        
         $product->fill($request->except(['categories']));
 
         if($request->has('categories')){
