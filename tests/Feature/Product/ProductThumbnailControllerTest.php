@@ -32,7 +32,7 @@ it('can upload product thumbnail', function(){
 
     $response = $this->postJson(action([ProductThumbnailController::class, 'store'],['product'=>$product->uuid]),
         [
-            'media' => $file
+            'thumbnail' => $file
         ]
     );
     
