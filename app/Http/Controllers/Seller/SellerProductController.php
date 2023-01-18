@@ -36,7 +36,6 @@ class SellerProductController extends ApiController
             'publish_status',
             'discountable',
             'origin_country', 
-            'thumbnail'
         ];
 
 

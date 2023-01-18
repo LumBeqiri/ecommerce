@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use App\Models\Region;
 use App\Models\Seller;
 use App\Models\Country;
@@ -8,7 +7,7 @@ use App\Models\Product;
 use App\Models\TaxProvider;
 use Illuminate\Http\UploadedFile;
 use Database\Seeders\CurrencySeeder;
-use App\Http\Controllers\Product\ProductMediaController;
+use App\Http\Controllers\Product\ProductThumbnailController;
 
 beforeEach(function(){
     Storage::fake();
@@ -31,7 +30,7 @@ it('can upload product thumbnail', function(){
     
     login($seller);
 
-    $response = $this->postJson(action([ProductMediaController::class, 'store'],['product'=>$product->uuid]),
+    $response = $this->postJson(action([ProductThumbnailController::class, 'store'],['product'=>$product->uuid]),
         [
             'media' => $file
         ]

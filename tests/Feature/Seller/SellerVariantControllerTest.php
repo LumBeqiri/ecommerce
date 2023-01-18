@@ -7,7 +7,6 @@ use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\TaxProvider;
-use Illuminate\Http\UploadedFile;
 use Database\Seeders\CurrencySeeder;
 use App\Http\Controllers\Seller\SellerVariantController;
 

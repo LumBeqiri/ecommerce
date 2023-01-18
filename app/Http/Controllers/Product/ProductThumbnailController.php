@@ -6,20 +6,11 @@ use App\Http\Controllers\ApiController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 
-class ProductMediaController extends ApiController
+class ProductThumbnailController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+ 
 
     /**
      * Store a newly created resource in storage.
