@@ -29,7 +29,7 @@ class StoreProductRequest extends FormRequest
     {
         if($this->getMethod()== 'POST'){
           return [
-            'name' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
             'product_short_description' => 'string|max:256',
             'product_long_description' => 'string| max:900',
             'categories' => 'required',
@@ -58,8 +58,12 @@ class StoreProductRequest extends FormRequest
             'variant_prices' => 'required|array',
             'variant_prices.*.region_id' => 'required|exists:regions,uuid',
             'variant_prices.*.price' => 'required|integer|min:1',
+            'variant_prices.*.max_quantity' => 'nullable|integer',
+            'variant_prices.*.min_quantity' => 'nullable|integer',
           ];
         }
+        // if method is different than POST
+        // return these rules
         return [
           'name' => 'string|max:255',
           'product_short_description' => 'string|max:256',

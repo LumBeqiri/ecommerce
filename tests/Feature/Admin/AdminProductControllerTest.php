@@ -49,12 +49,12 @@ it('admin can update product name', function(){
 
     
     $response = $this->putJson(action([AdminProductController::class, 'update'],$product->uuid),[
-        'name' => $updatedName
+        'product_name' => $updatedName
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(Product::class, ['name' => $updatedName]);
+    $this->assertDatabaseHas(Product::class, ['product_name' => $updatedName]);
 
 });
 

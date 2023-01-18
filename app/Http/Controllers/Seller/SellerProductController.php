@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Seller;
 
-use Exception;
 use App\Models\User;
+use App\Models\Region;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Category;
+use App\Models\VariantPrice;
 use Illuminate\Support\Facades\DB;
-use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\VariantResource;
@@ -28,7 +28,7 @@ class SellerProductController extends ApiController
         $request->validated();
 
         $product_data = [
-            'name',
+            'product_name',
             'product_short_description',
             'product_long_description',
             'seller_id',
@@ -47,9 +47,20 @@ class SellerProductController extends ApiController
             $product->categories()->sync($categories);
           
             $variant_data = $request->except(['categories','variant_prices',...$product_data]);
-    
+
             $variant = Variant::create($variant_data + ['product_id' => $product->id]);
 
+            foreach($request->variant_prices as $variant_price){
+                $region = Region::where('uuid', $variant_price['region_id'])->first();
+                VariantPrice::create([
+                    'price' => $variant_price['price'],
+                    'variant_id' => $variant->id,
+                    'region_id' => $region->id,
+                    'max_quantity' => $variant_price['max_quantity'],
+                    'min_quantity' => $variant_price['min_quantity'],
+                ]);
+            }
+    
             return $variant;
         });
        

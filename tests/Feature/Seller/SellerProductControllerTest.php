@@ -31,7 +31,7 @@ it('can upload a product for sale ', function(){
 
     $response = $this->postJson(action([SellerProductController::class, 'store'],[$user->uuid]),
         [
-            "name" => $productName,
+            "product_name" => $productName,
             "variant_name" => "Example variant",
             "product_short_description" => "A short description of the product",
             "product_long_description" => "A longer description of the product with a maximum of 900 characters",
@@ -55,21 +55,24 @@ it('can upload a product for sale ', function(){
             "variant_prices" => array(
                 array(
                     "region_id" => $region1->uuid,
-                    "price" => 100
+                    "price" => 100,
+                    "max_quantity" => null,
+                    "min_quantity" => null,
                 ),
                 array(
                     "region_id" => $region2->uuid,
-                    "price" => 120
+                    "price" => 120,
+                    "max_quantity" => null,
+                    "min_quantity" => null,
                 )
             )            
         ]
     );
-
     
     $response->assertStatus(200);
 
     // $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
-    $this->assertDatabaseHas(Product::class, ['name' => $productName]);
+    $this->assertDatabaseHas(Product::class, ['product_name' => $productName]);
 
 });
 
@@ -81,7 +84,7 @@ it('can update product name', function(){
     $old_name = 'old_name';
     $new_name = 'new_name';
     $seller = Seller::factory()
-    ->has(Product::factory(['name' => $old_name])->available()->count(1))
+    ->has(Product::factory(['product_name' => $old_name])->available()->count(1))
     ->create();
     $product = $seller->products()->first();
     
@@ -89,7 +92,7 @@ it('can update product name', function(){
 
     $response = $this->putJson(action([SellerProductController::class, 'update'],['seller'=>$seller->uuid, 'product'=>$product->uuid]),
         [
-            'name' => $new_name 
+            'product_name' => $new_name 
         ]
     );
 
@@ -97,9 +100,9 @@ it('can update product name', function(){
 
     
     expect($response->json())
-        ->name->toBe($new_name);
+        ->product_name->toBe($new_name);
 
-    $this->assertDatabaseHas(Product::class, ['name' => $new_name]);
+    $this->assertDatabaseHas(Product::class, ['product_name' => $new_name]);
 
 });
 

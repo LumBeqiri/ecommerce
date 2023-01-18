@@ -26,7 +26,7 @@ class ProductFactory extends Factory
         DB::statement('SET FOREIGN_KEY_CHECKS =0');
         return [
             'uuid' => $this->faker->uuid(),
-            'name' => $this->faker->name,
+            'product_name' => $this->faker->name,
             'product_long_description' => $this->faker->paragraph(1),
             'product_short_description' => $this->faker->paragraph(1),
             'seller_id' => User::all()->random()->id,
