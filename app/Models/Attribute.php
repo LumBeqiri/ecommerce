@@ -16,10 +16,7 @@ class Attribute extends Model
     use HasUuid;
     
 
-    protected $fillable = [
-        'attribute_type',
-        'attribute_value'
-    ];
+    protected $guarded = [];
 
     public function variants() : BelongsToMany
     {

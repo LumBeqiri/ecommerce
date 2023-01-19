@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AttributeStoreRequest extends FormRequest
+class ProductAttributeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,14 +19,13 @@ class AttributeStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,uuid',
-            'attribute_type' => 'required|string|max:150',
-            'attribute_value' => 'required|string|max:150|unique:attributes,attribute_value',
+            'product_id' => 'exists:products,uuid',
+
         ];
     }
 }

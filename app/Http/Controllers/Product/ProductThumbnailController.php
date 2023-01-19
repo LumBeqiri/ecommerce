@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Product;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;

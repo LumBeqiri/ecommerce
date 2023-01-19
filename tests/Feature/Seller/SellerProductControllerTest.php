@@ -52,6 +52,12 @@ it('can upload a product for sale ', function(){
             "length" => 20,
             "height" => 30,
             "width" => 40,
+            "product_attributes" => array(
+                array(
+                    "attribute_type" => 'Color',
+                    "attribute_value" => 'Blue'
+                )
+            ),
             "variant_prices" => array(
                 array(
                     "region_id" => $region1->uuid,
@@ -68,7 +74,6 @@ it('can upload a product for sale ', function(){
             )            
         ]
     );
-    
     $response->assertStatus(200);
 
     // $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));

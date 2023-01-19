@@ -8,6 +8,7 @@ use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Category;
+use App\Models\Attribute;
 use App\Models\VariantPrice;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ApiController;
@@ -43,10 +44,21 @@ class SellerProductController extends ApiController
             $product = Product::create($request->only($product_data) + ['seller_id' => $seller->id]);
 
             $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
+
+            $attributes = $request->product_attributes;
+
+            foreach($attributes as $attribute){
+                Attribute::create([
+                    'attribute_type' => $attribute['attribute_type'],
+                    'attribute_value' => $attribute['attribute_value'],
+                    'product_id' => $product->id,
+
+                ]);                
+            }
     
             $product->categories()->sync($categories);
           
-            $variant_data = $request->except(['categories','variant_prices',...$product_data]);
+            $variant_data = $request->except(['categories','product_attributes', 'variant_prices',...$product_data]);
 
             $variant = Variant::create($variant_data + ['product_id' => $product->id]);
 
