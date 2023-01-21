@@ -7,13 +7,13 @@ use App\Models\Region;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Attribute;
+use App\Models\VariantPrice;
 use Illuminate\Support\Facades\DB;
-use App\Services\UploadImageService;
+use App\Services\UploadImagesService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
-use App\Models\VariantPrice;
 
 class SellerVariantController extends ApiController
 {
@@ -42,7 +42,7 @@ class SellerVariantController extends ApiController
 
         $variant_data = $request->except('attrs','medias', 'variant_prices');
 
-        $images = $request->file('medias');
+
 
         $variant_data['product_id'] = $product->id;
 
@@ -53,9 +53,7 @@ class SellerVariantController extends ApiController
 
             return $newVariant;
         });
-
-        UploadImageService::upload($newVariant,$images, Variant::class);
-
+        
         if($request->has('attrs')){
             $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
             $newVariant->attributes()->sync($attrs);
@@ -84,7 +82,7 @@ class SellerVariantController extends ApiController
 
             abort_if( $request_images > 1, 422, 'Can not update more than 1 image per variant');
 
-            UploadImageService::upload($variant,$images, Variant::class);
+            UploadImagesService::upload($variant,$images, Variant::class);
         }
 
         DB::transaction(function () use ($variant, $request){

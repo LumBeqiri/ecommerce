@@ -2,45 +2,38 @@
 
 namespace Database\Factories;
 
-use App\Models\Media;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Media>
+ */
 class MediaFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-
-     protected $model = Media::class;
-
     public function definition()
     {
-        $mediable = $this->mediable();
         return [
             'uuid' => $this->faker->uuid(),
-            'name' => $this->faker->word(),
-            'file_name' => $this->faker->word(),
-            'mime' => $this->faker->mimeType(),
-            'path' => $this->faker->image(),
+            'mediable_id' => function (array $attributes) {
+                return $attributes['mediable_type']::factory();
+            },
+            'mediable_type' => $this->faker->randomElement([
+                Variant::class,
+                Product::class,
+            ]),
+            'name' => $this->faker->word,
+            'file_name' => $this->faker->word . '.' . $this->faker->fileExtension,
+            'mime_type' => $this->faker->mimeType,
+            'path' => $this->faker->url,
             'disk' => 'local',
-            'hash' => $this->faker,
-            'size' => $this->faker->filesize(),
-            'mediable_id' => $mediable::factory(),
-            'mediable_type' => $mediable,
-        
+            'collection' => $this->faker->word,
+            'size' => $this->faker->randomNumber(),
         ];
-    }
-
-
-    public function mediable()
-    {
-        return $this->faker->randomElement([
-            Product::class,
-            Variant::class,
-        ]);
     }
 }

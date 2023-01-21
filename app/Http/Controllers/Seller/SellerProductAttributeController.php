@@ -29,6 +29,8 @@ class SellerProductAttributeController extends ApiController
     {
         $request->validated();
 
+        
+
     }
 
     /**

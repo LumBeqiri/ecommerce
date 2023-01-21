@@ -9,24 +9,17 @@ class UploadImagesService implements UploadServiceContract
 
     /**
      * @param mixed $model
-     * @param mixed $images
+     * @param array $medias
      * @param mixed $className
      * 
      * @return void
      */
     public static function upload($model, $medias, $className){
-     
-
-
-        //if there are images
         if($medias){
-            
-            //for every image:
             foreach($medias as $media){
                 $name = $media->hashName();
  
                 $upload = $media->store('', 'images');
-                //attach image to the product
                 $mediaData['mediable_id'] = $model->id;
                 $mediaData['mediable_type'] = $className;
                 $mediaData['name'] = $name;

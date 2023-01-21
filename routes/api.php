@@ -28,6 +28,7 @@ use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Http\Controllers\Seller\SellerVariantMediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,9 +63,11 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
-    Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.products');
-    // Route::post('sellers/{seller}/products', [SellerProductController::class, 'store'])->name('seller.create.product');
-    Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update'])->name('seller.update.product');
+    Route::post('sellers/{seller}/products', [SellerProductController::class, 'store']);
+    Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update']);
+    Route::get('variants/{variant}/medias', [SellerVariantMediaController::class, 'index']);
+    Route::post('variants/{variant}/medias', [SellerVariantMediaController::class, 'store']);
+    Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
     Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
     Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
 
