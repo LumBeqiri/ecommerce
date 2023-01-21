@@ -49,5 +49,11 @@ class AttributeSeeder extends Seeder
             'attribute_type' => 'color',
             'attribute_value' => 'blue'
         ]);
+
+        Attribute::create([
+            'product_id' => 1,
+            'attribute_type' => 'test',
+            'attribute_value' => 'yes'
+        ]);
     }
 }

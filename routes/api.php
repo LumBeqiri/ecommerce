@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update']);
 
     Route::post('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'store']);
+    Route::delete('variants/{variant}/attributes/{attribute}', [SellerVariantAttributeController::class, 'destroy']);
     
 
     Route::get('variants/{variant}/medias', [SellerVariantMediaController::class, 'index']);

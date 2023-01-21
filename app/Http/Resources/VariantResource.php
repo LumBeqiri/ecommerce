@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Attribute;
 use App\Models\Media;
+use App\Http\Resources\AttributeResource;
 use App\Http\Resources\VariantPriceResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,6 +29,7 @@ class VariantResource extends JsonResource
             'status' => $this->status,
             'price' => VariantPriceResource::collection($this->variant_prices),
             'medias' => MediaResource::collection($this->medias),
+            'attributes' => AttributeResource::collection($this->whenLoaded('attributes'))
         ];
     }
 }

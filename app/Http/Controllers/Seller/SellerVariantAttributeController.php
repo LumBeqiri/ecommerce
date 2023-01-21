@@ -6,6 +6,7 @@ use App\Models\Variant;
 use App\Models\Attribute;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -29,6 +30,7 @@ class SellerVariantAttributeController extends ApiController
      */
     public function store(Request $request, Variant $variant)
     {
+
         $data = $request->validate([
             'product_attributes' => 'array',
             'product_attributes.*' => 'required|string|exists:attributes,uuid'
@@ -36,36 +38,14 @@ class SellerVariantAttributeController extends ApiController
 
         $attributes = Attribute::whereIn('uuid', $data['product_attributes'])->get();
 
-        abort_if($this->duplicateAttribute($attributes), 422, 'Cannot have the same attribute type more than once');
+        abort_if($this->duplicateAttribute($variant, $attributes), 422, 'Cannot have the same attribute type more than once');
 
-        foreach($attributes as $attribute){
-            $variant->attributes()->attach($attribute);
-        }
+        $variant->attributes()->sync($attributes->pluck('id'));
+
+        return $this->showOne(new VariantResource($variant->load(['attributes'])));
         
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -80,12 +60,26 @@ class SellerVariantAttributeController extends ApiController
         return $this->showMessage('Attribute removed successfully!');
     }
 
-    private function duplicateAttribute($attributes) : bool
-    {
-        $attributes = collect($attributes);
-        $attributes = $attributes->duplicates('attribute_type');
 
-        return count($attributes) !== 0;
+    private function duplicateAttribute($variant, $attributes) : bool
+    {
+        // in order to use duplicates(), 
+        // we transform our eloquent collection in a Illuminate/Support/Collection
+
+        $attributes_collection = collect($attributes);
+        $attributes_collection = $attributes_collection->duplicates('attribute_type');
+
+        if(count($attributes_collection) !==0){
+            return true;
+        }
+
+        foreach($attributes as $attribute){
+            
+            if($variant->attributes()->where('attribute_type', $attribute['attribute_type'])->exists()){
+                return true;
+            }
+        }
+        return false;
     }
 }
 

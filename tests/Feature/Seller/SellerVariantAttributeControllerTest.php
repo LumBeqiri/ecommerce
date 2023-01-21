@@ -6,109 +6,97 @@ use App\Models\Region;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Attribute;
 use App\Models\TaxProvider;
-use Illuminate\Http\UploadedFile;
 use Database\Seeders\CurrencySeeder;
-use App\Http\Controllers\Seller\SellerVariantMediaController;
+use App\Http\Controllers\Seller\SellerVariantAttributeController;
 
 beforeEach(function(){
-    $this->seed(CurrencySeeder::class);
     Notification::fake();
     Bus::fake();
-    Storage::fake();
-});
-
-it('can upload one variant image ', function(){
+    $this->seed(CurrencySeeder::class);
     TaxProvider::factory()->create();
     Region::factory()->create();
-    Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
-    Product::factory()->available()->create();
-    $variant = Variant::factory()->create();
-    $user = User::factory()->create();
+    User::factory()->create();
+});
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
+it('can add an attribute to a variant ', function(){
+
+    $product = Product::factory()->available()->create();
+    $attribute1 = Attribute::factory()->for($product)->create();
+    $attribute2 = Attribute::factory()->for($product)->create();
+    $variant = Variant::factory()->for($product)->create();
+    $user = User::factory()->create();
  
     login($user);
   
-    $response = $this->postJson(action([SellerVariantMediaController::class, 'store'],[$variant->uuid]),
+    $response = $this->postJson(action([SellerVariantAttributeController::class, 'store'],[$variant->uuid]),
         [
-            'medias' => [$file]
+            'product_attributes' => [$attribute1->uuid, $attribute2->uuid]
         ]
     );
 
     $response->assertStatus(200);
 
-    $this->assertDatabaseHas(Media::class, [
-        'mediable_type' => Variant::class,
-        'mediable_id' => $variant->id,
-        'name' => $file->hashname()
+    $this->assertDatabaseHas('attribute_variant', [
+        'variant_id' => $variant->id,
+        'attribute_id' => $attribute1->id,
     ]);
 
+    $this->assertDatabaseHas('attribute_variant', [
+        'variant_id' => $variant->id,
+        'attribute_id' => $attribute2->id,
+    ]);
 });
 
 
-it('can upload more than one variant image ', function(){
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    User::factory()->count(10)->create();
-    Product::factory()->available()->create();
-    $variant = Variant::factory()->create();
+it('can not have duplicate attribute type in a variant ', function(){
+
+    $product = Product::factory()->available()->create();
+    $attribute1 = Attribute::factory()->for($product)->create(['attribute_type' => 'color', 'attribute_value' => 'blue']);
+    $attribute2 = Attribute::factory()->for($product)->create(['attribute_type' => 'color', 'attribute_value' => 'red']);
+    $variant = Variant::factory()->for($product)->create();
     $user = User::factory()->create();
-
-    $file1 = UploadedFile::fake()->image('avatar.jpg');
-    $file2 = UploadedFile::fake()->image('avatar.jpg');
-    $file3= UploadedFile::fake()->image('avatar.jpg');
-
-    $files[] = $file1;
-    $files[] = $file2;
-    $files[] = $file3;
  
     login($user);
   
-    $response = $this->postJson(action([SellerVariantMediaController::class, 'store'],[$variant->uuid]),
+    $response = $this->postJson(action([SellerVariantAttributeController::class, 'store'],[$variant->uuid]),
         [
-            'medias' => [$file1, $file2, $file3]
+            'product_attributes' => [$attribute1->uuid, $attribute2->uuid]
         ]
     );
 
-    $response->assertStatus(200);
+    $response->assertStatus(422);
 
-    foreach($files as $file){
-        $this->assertDatabaseHas(Media::class, [
-            'mediable_type' => Variant::class,
-            'mediable_id' => $variant->id,
-            'name' => $file->hashname()
-        ]);
-    }
+    $this->assertDatabaseMissing('attribute_variant', [
+        'variant_id' => $variant->id,
+        'attribute_id' => $attribute1->id,
+    ]);
 
+    $this->assertDatabaseMissing('attribute_variant', [
+        'variant_id' => $variant->id,
+        'attribute_id' => $attribute2->id,
+    ]);
 });
 
 
-it('can delete one variant image ', function(){
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    User::factory()->count(10)->create();
-    Product::factory()->available()->create();
-    $variant = Variant::factory()->create();
-    $user = User::factory()->create();
+it('can remove attribute type from variant ', function(){
 
-    $media = Media::factory()->create(['mediable_id' => $variant->id, 'mediable_type' => Variant::class]);
-    
+    $product = Product::factory()->available()->create();
+    $attribute = Attribute::factory()->for($product)->create(['attribute_type' => 'color', 'attribute_value' => 'blue']);
+    $variant = Variant::factory()->for($product)->create();
+    $user = User::factory()->create();
+ 
     login($user);
   
-    $response = $this->deleteJson(action([SellerVariantMediaController::class, 'destroy'],[$variant->uuid, $media->uuid]));
+    $response = $this->deleteJson(action([SellerVariantAttributeController::class, 'destroy'],[$variant->uuid,$attribute->uuid]));
 
     $response->assertStatus(200);
 
-    $this->assertDatabaseMissing(Media::class, [
-        'uuid' => $media->uuid
+    $this->assertDatabaseMissing('attribute_variant', [
+        'variant_id' => $variant->id,
+        'attribute_id' => $attribute->id,
     ]);
-    
 
 });
