@@ -42,8 +42,6 @@ class SellerVariantController extends ApiController
 
         $variant_data = $request->except('attrs','medias', 'variant_prices');
 
-
-
         $variant_data['product_id'] = $product->id;
 
         $newVariant = DB::transaction(function () use($variant_data, $request) {
