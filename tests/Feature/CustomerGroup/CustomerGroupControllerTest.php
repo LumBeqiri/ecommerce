@@ -2,14 +2,7 @@
 
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Models\User;
-use App\Models\Region;
-use App\Models\Seller;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\TaxProvider;
 use Database\Seeders\CurrencySeeder;
-use App\Http\Controllers\Seller\SellerProductController;
 use App\Models\CustomerGroup;
 
 use function Pest\Laravel\json;
@@ -29,8 +22,6 @@ it('can store a customer group ', function(){
 
     login($user);
 
-    // $file = UploadedFile::fake()->image('avatar.jpg');
-
     $response = $this->postJson(action([CustomerGroupController::class, 'store']),
         [
           'name' => $customer_group_name,
@@ -38,7 +29,6 @@ it('can store a customer group ', function(){
         ]
     );
 
-    dd($response->json());
     $response->assertStatus(200);
 
     $this->assertDatabaseHas(CustomerGroup::class, ['name' => $customer_group_name]);
