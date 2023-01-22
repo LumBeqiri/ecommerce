@@ -52,8 +52,6 @@ Route::post('login', LoginController::class)->name('login');
 //     'index','update', 'destroy'
 // ]);
 
-//AUTH Routes
-// mywebsite.com/api/register
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
@@ -74,7 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('variants/{variant}/medias', [SellerVariantMediaController::class, 'store']);
     Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
 
-    Route::post('customer-group', [CustomerGroupController::class, 'store']);
+    Route::post('customer-groups', [CustomerGroupController::class, 'store']);
 
     Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
     Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);

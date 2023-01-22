@@ -15,6 +15,7 @@ class CustomerGroupService{
      * @return App\Models\CustomerGroup
      */
     public function createCustomerGroup($name, $metadata = null){
+
         return CustomerGroup::create([
                 'name' => $name,
                 'metadata' => $metadata,

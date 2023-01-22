@@ -18,7 +18,7 @@ class CustomerGroupResource extends JsonResource
             'id' => $this->uuid,
             'name' => $this->name,
             'metadata' => $this->metadata ?? '',
-            'seller' => $this->user
+            'seller' => new UserResource($this->user)
         ];
     }
 }

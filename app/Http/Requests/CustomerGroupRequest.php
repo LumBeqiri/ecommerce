@@ -24,7 +24,7 @@ class CustomerGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string',
             'metadata' => 'nullable|json'
         ];
     }

@@ -10,6 +10,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\CustomerGroupRequest;
 use App\Services\CreateCustomerGroupService;
 use App\Http\Resources\CustomerGroupResource;
+use App\Models\CustomerGroup;
 
 class CustomerGroupController extends ApiController
 {
@@ -20,7 +21,9 @@ class CustomerGroupController extends ApiController
      */
     public function index()
     {
-        //
+        $customer_groups = CustomerGroup::where('user_id', auth()->id())->get();
+
+        return $this->showAll(CustomerGroupResource::collection($customer_groups));
     }
 
     /**
@@ -33,10 +36,18 @@ class CustomerGroupController extends ApiController
     {
         $data = $request->validated();
 
+        $name_availabilty = CustomerGroup::where('name', $data['name'])
+            ->where('user_id', auth()->id())
+            ->get();
+
+        if(count($name_availabilty)){
+            return $this->showError('Name ' . $data['name'] . ' is already taken!');
+        }
+
         $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get('metadata', ''));
 
         return $this->showOne(new CustomerGroupResource($customerGroup));
-        
+
     }
 
     /**
