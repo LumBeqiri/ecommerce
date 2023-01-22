@@ -27,6 +27,7 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Seller\SellerVariantMediaController;
 use App\Http\Controllers\Seller\SellerVariantAttributeController;
@@ -52,15 +53,13 @@ Route::post('login', LoginController::class)->name('login');
 // ]);
 
 //AUTH Routes
-
+// mywebsite.com/api/register
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
 
 
 //Cart
-
-
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
@@ -75,15 +74,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('variants/{variant}/medias', [SellerVariantMediaController::class, 'store']);
     Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
 
+    Route::post('customer-group', [CustomerGroupController::class, 'store']);
+
     Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
     Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
 
     Route::resource('carts', CartController::class);
 
     Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
-    Route::post('store_cart', [BuyerCartController::class, 'store'])->name('store.cart');
-    Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart'])->name('add.to.cart');
-    Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart'])->name('remove.from.cart');
+    Route::post('store_cart', [BuyerCartController::class, 'store']);
+    Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart']);
+    Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
 
     Route::post('products/{product}/variants', [SellerVariantController::class, 'store']);
     Route::put('variants/{variant}', [SellerVariantController::class, 'update']);

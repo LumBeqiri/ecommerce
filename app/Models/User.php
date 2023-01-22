@@ -5,13 +5,16 @@ namespace App\Models;
 use App\Models\Cart;
 use App\Traits\HasUuid;
 use Illuminate\Support\Str;
+use App\Models\CustomerGroup;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -81,5 +84,15 @@ class User extends Authenticatable
     public function cart() : HasOne
     {
         return $this->hasOne(Cart::class);
+    }
+
+    public function customerGroups() : BelongsToMany
+    {
+        return $this->belongsToMany(CustomerGroup::class);
+    }
+
+    // seller/store has many groups
+    public function customerGroup() : HasMany {
+        return $this->hasMany(CustomerGroup::class);
     }
 }

@@ -44,7 +44,7 @@ class CartService{
   
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-            // if item doesnt exist in the cart and there's enough, add to cart 
+            // if item doesnt exist in the cart and there's enough stock, add to cart 
             if(! $cart_item){
                 if($item['count'] < $variant->stock && $variant->status === Product::AVAILABLE_PRODUCT){
                     CartItem::create([

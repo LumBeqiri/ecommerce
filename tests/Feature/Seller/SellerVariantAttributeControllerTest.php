@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Models\Media;
 use App\Models\Region;
 use App\Models\Country;
 use App\Models\Product;
