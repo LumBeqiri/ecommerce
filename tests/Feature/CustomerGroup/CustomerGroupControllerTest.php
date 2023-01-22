@@ -5,8 +5,6 @@ use App\Models\User;
 use Database\Seeders\CurrencySeeder;
 use App\Models\CustomerGroup;
 
-use function Pest\Laravel\json;
-
 beforeEach(function(){
     $this->seed(CurrencySeeder::class); 
     Notification::fake();
