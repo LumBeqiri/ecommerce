@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
 
     Route::post('customer-groups', [CustomerGroupController::class, 'store']);
+    Route::get('customer-groups', [CustomerGroupController::class, 'index']);
+    Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
 
     Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
     Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
