@@ -13,7 +13,7 @@ beforeEach(function(){
 
 it('can show all user groups for seller', function(){
     $user = User::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->count(5)->create();
     CustomerGroup::factory()
         ->for($user)
         ->count(5)->create();
@@ -29,20 +29,20 @@ it('can store a customer group ', function(){
 
     $user = User::factory()->create();
     
-    $customer_group_name = 'Golf Club';
+    $customerGroupName = 'Golf Club';
 
     login($user);
 
     $response = $this->postJson(action([CustomerGroupController::class, 'store']),
         [
-          'name' => $customer_group_name,
+          'name' => $customerGroupName,
           'metadata' => '{"info": "hello"}'
         ]
     );
 
     $response->assertStatus(200);
 
-    $this->assertDatabaseHas(CustomerGroup::class, ['name' => $customer_group_name]);
+    $this->assertDatabaseHas(CustomerGroup::class, ['name' => $customerGroupName]);
 
 });
 
@@ -65,7 +65,7 @@ it('can show one coustomer group', function(){
 
 it('can not show customer group of another seller',function(){
     $user = User::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->count(2)->create();
     $customerGroup = CustomerGroup::factory()
     ->for($user)->create();
     $userThatDoesntOwnCustomerGroups = User::factory()->create();
@@ -77,3 +77,39 @@ it('can not show customer group of another seller',function(){
     $response->assertStatus(403);
 });
 
+
+
+it('can delete one coustomer group', function(){
+    User::factory()->create();
+    CustomerGroup::factory()->create();
+
+    $user = User::factory()->create();
+
+    $customerGroup = CustomerGroup::factory()->for($user)->create();
+    
+    login($user);
+
+    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->uuid));
+
+    $response->assertOk();
+
+    $this->assertDatabaseMissing(CustomerGroup::class, ['id' => $customerGroup->id]);
+});
+
+
+
+it('can not delete customer group of another seller',function(){
+    $user = User::factory()->create();
+    User::factory()->count(2)->create();
+    $customerGroup = CustomerGroup::factory()
+    ->for($user)->create();
+    $userThatDoesntOwnCustomerGroups = User::factory()->create();
+
+    login($userThatDoesntOwnCustomerGroups);
+
+    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'],$customerGroup->uuid));
+
+    $response->assertStatus(403);
+
+    $this->assertDatabaseHas(CustomerGroup::class, ['id' => $customerGroup->id]);
+});

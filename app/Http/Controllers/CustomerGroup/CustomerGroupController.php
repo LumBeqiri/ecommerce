@@ -86,8 +86,12 @@ class CustomerGroupController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(CustomerGroup $customerGroup)
     {
-        //
+        $this->authorize('delete', $customerGroup);
+
+        $customerGroup->delete();
+
+        return $this->showMessage('Customer group deleted successfully!');
     }
 }

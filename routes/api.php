@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('customer-groups', [CustomerGroupController::class, 'store']);
     Route::get('customer-groups', [CustomerGroupController::class, 'index']);
     Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
+    Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
 
     Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
     Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);

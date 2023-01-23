@@ -33,7 +33,7 @@ class CustomerGroupPolicy
     {
         return $user->id === $customerGroup->user_id
         ? Response::allow()
-        : Response::deny('You do not own this CustomerGroup.');
+        : Response::deny('You do not own this CustomerGroup!');
     }
 
     /**
@@ -58,7 +58,7 @@ class CustomerGroupPolicy
     {
         return $user->id === $customerGroup->user_id
         ? Response::allow()
-        : Response::deny('You do not own this CustomerGroup.');
+        : Response::deny('You do not own this CustomerGroup!');
     }
 
     /**
@@ -70,7 +70,9 @@ class CustomerGroupPolicy
      */
     public function delete(User $user, CustomerGroup $customerGroup)
     {
-        //
+        return $user->id === $customerGroup->user_id
+        ? Response::allow()
+        : Response::deny('You do not own this CustomerGroup!');
     }
 
     /**
