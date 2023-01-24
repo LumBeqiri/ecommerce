@@ -28,7 +28,8 @@ it('can show all user groups for seller', function(){
 it('can store a customer group ', function(){
 
     $user = User::factory()->create();
-    
+    $users = User::factory()->count(10)->create();
+
     $customerGroupName = 'Golf Club';
 
     login($user);
@@ -36,7 +37,8 @@ it('can store a customer group ', function(){
     $response = $this->postJson(action([CustomerGroupController::class, 'store']),
         [
           'name' => $customerGroupName,
-          'metadata' => '{"info": "hello"}'
+          'metadata' => '{"info": "hello"}',
+          'users' => $users->pluck('uuid')
         ]
     );
 
