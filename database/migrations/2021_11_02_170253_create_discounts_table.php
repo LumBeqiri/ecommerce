@@ -16,11 +16,15 @@ class CreateDiscountsTable extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('name');
-            $table->string('desc')->nullable();
-            $table->integer('discount_percent');
-            $table->boolean('active');
-            $table->timestamp('valid_thru');
+            $table->string('code');
+            $table->boolean('is_dynamic')->nullable();
+            $table->boolean('is_disabled')->default(false)->nullable();
+            $table->foreignId('rule_id')->constrained('discount_rules');
+            $table->foreignId('parent_id')->nullable()->constrained('discounts');
+            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
+            $table->integer('usage_limit')->nullable();
+            $table->integer('usage_count');
             $table->timestamps();
             $table->softDeletes();
         });
