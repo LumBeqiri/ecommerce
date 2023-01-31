@@ -19,14 +19,13 @@ class CreateDiscountsTable extends Migration
             $table->string('code');
             $table->boolean('is_dynamic')->nullable();
             $table->boolean('is_disabled')->default(false)->nullable();
-            $table->foreignId('rule_id')->constrained('discount_rules');
+            $table->foreignId('discount_rule_id')->constrained('discount_rules');
             $table->foreignId('parent_id')->nullable()->constrained('discounts');
             $table->timestamp('starts_at')->nullable();
             $table->timestamp('ends_at')->nullable();
             $table->integer('usage_limit')->nullable();
-            $table->integer('usage_count');
+            $table->integer('usage_count')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

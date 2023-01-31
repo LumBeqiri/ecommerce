@@ -9,7 +9,7 @@ use Database\Seeders\CountrySeeder;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\TaxProviderSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Models\{Cart, CartItem, User,Category, Discount, Product,Order, Variant, VariantAttribute};
+use App\Models\{Cart, CartItem, User,Category, Discount, DiscountRule, Product,Order, Variant, VariantAttribute};
 
 
 class DatabaseSeeder extends Seeder
@@ -73,12 +73,14 @@ class DatabaseSeeder extends Seeder
 
         $adminUser->assignRole('admin');
         
-        $user = User::factory()->create([
+       User::factory()->create([
             'uuid' => '0eaf6d30-9b51-11ed-a8fc-0242ac120002',
             'name' => 'Drin Beqiri',
             'email' => 'drin@gmail.com',
             'password' => bcrypt('123123123')
         ]);
+        DiscountRule::factory()->count(5)->create();
+
         User::factory($usersQuantity)->create();
         Discount::factory(5)->create();
         Category::factory($categoriesQuantity)->create();

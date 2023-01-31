@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('description');
             $table->enum('type', ['fixed', 'percentage', 'free_shipping']);
             $table->double('value', 8, 2);
-            $table->enum('allocation', ['total_ammount', 'item_specific']);
-            $table->json('metadata');
+            $table->enum('allocation', ['total_amount', 'item_specific']);
+            $table->json('metadata')->nullable();
             
             $table->timestamps();
         });
