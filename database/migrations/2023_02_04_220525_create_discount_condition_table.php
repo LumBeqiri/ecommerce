@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('discount_rules', function (Blueprint $table) {
+        Schema::create('discount_condition', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('description');
-            $table->enum('discount_type', ['fixed', 'percentage', 'free_shipping']);
-            $table->double('value', 8, 2);
-            $table->enum('allocation', ['total_amount', 'item_specific']);
-            $table->json('metadata')->nullable();
-            
+            $table->string('model_type');
+            $table->enum('operator',['in', 'not_in']);
+            $table->foreignId('discount_rule_id')->constrained('discount_rules')->cascadeOnDelete();
+            $table->json('metadata');
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discount_rules');
+        Schema::dropIfExists('discount_condition');
     }
 };

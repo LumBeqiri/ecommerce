@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Traits\HasUuid;
 use App\Models\Category;
 use App\Models\Attribute;
+use App\Models\DiscountRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +34,11 @@ class Product extends Model
     public function discount() : BelongsTo
     {
       return $this->belongsTo(Discount::class);
+    }
+
+    public function discount_rules() : BelongsToMany
+    {
+      return $this->belongsToMany(DiscountRule::class);
     }
 
     public function categories() : BelongsToMany

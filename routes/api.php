@@ -28,6 +28,7 @@ use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Http\Controllers\Discount\DiscountController;
 use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Seller\SellerVariantMediaController;
 use App\Http\Controllers\Seller\SellerVariantAttributeController;
@@ -78,6 +79,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('products/{product}/variants', [SellerVariantController::class, 'store']);
     Route::put('variants/{variant}', [SellerVariantController::class, 'update']);
     Route::delete('variants/{variant}', [SellerVariantController::class, 'destroy']);
+
+
+    Route::post('discounts', [DiscountController::class, 'store']);
 
 });
 

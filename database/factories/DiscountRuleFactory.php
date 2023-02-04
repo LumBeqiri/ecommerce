@@ -23,7 +23,7 @@ class DiscountRuleFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'description' => $this->faker->paragraph(1),
-            'type' => $type = $this->faker->randomElement([DiscountRuleTypes::FIXED, DiscountRuleTypes::PERCENTAGE, DiscountRuleTypes::FREE_SHIPPING]),
+            'discount_type' => $type = $this->faker->randomElement([DiscountRuleTypes::FIXED, DiscountRuleTypes::PERCENTAGE, DiscountRuleTypes::FREE_SHIPPING]),
             'value' => $this->valueForType($type),
             'allocation' => $this->faker->randomElement([DiscountAllocationTypes::TOTAL_AMOUNT, DiscountAllocationTypes::ITEM_SPICIFIC]),
         ];

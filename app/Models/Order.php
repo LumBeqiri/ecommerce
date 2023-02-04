@@ -24,22 +24,7 @@ class Order extends Model
     public const UNSHIPPED_ORDER = 'false';
     
 
-    protected $fillable =[
-        'buyer_id',
-        'product_id',
-        'quantity',
-        'ship_name',
-        'ship_address',
-        'ship_city',
-        'ship_state',
-        'order_tax',
-        'order_date',
-        'total',
-        'order_shipped',
-        'order_email',
-        'order_phone',
-        'payment_id'
-    ];
+    protected $guarded =[];
 
     public function buyer() : BelongsTo
     {
