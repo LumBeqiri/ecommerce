@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Discount;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\DiscountRequest;
-use App\Http\Resources\DiscountResource;
+use App\Models\Product;
 use App\Models\Discount;
 use App\Models\DiscountRule;
 use Illuminate\Http\Request;
+use App\Http\Requests\DiscountRequest;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\DiscountResource;
+use App\Models\DiscountCondition;
 
 class DiscountController extends ApiController
 {
@@ -30,6 +32,14 @@ class DiscountController extends ApiController
     public function store(DiscountRequest $request)
     {
         $request->validated();
+        
+        $code_availabilty = Discount::where('code', $request->code)
+            ->where('seller_id', auth()->id())
+            ->get();
+
+        if(count($code_availabilty)){
+            return $this->showError('Code ' . $request->code . ' is already taken!', 422);
+        }
 
         $discountRule = DiscountRule::create(
             ['value' => $request->percentage ?? $request->amount] 
@@ -39,18 +49,15 @@ class DiscountController extends ApiController
                 'discount_type',
                 'allocation',
                 'metadata',
-            ])
-        );
-
-        $code_availabilty = Discount::where('code', $request->code)
-            ->where('seller_id', auth()->id())
-            ->get();
-
-        if($code_availabilty){
-            return $this->showError('Name ' . $request->code . ' is already taken!', 422);
-        }
+                ])
+            );
 
         $discount = $discountRule->discount()->create(
+            [
+                'seller_id' => auth()->id(),
+                'starts_at' => now()
+            ]
+            +
             $request->only([
                 'code',
                 'is_dynamic',
@@ -62,7 +69,16 @@ class DiscountController extends ApiController
                 ])
         );
 
-        $discount->starts_at = now();
+        // if($request->has('conditions')){
+        //     // if there's conditions
+        //     // create condition object and add products
+        //     if($request->has('products')){
+        //         $products = Product::whereIn('uuid', $request->products)->pluck('id');
+        //         // if there's products add them to 
+        //         $discountRule->discount_condition()->create([]);
+        //     }
+        // }
+
 
         return $this->showOne(new DiscountResource($discount->load('discount_rule')));
 

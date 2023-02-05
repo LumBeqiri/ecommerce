@@ -41,7 +41,7 @@ class DiscountRequest extends FormRequest
             'conditions' => 'required|boolean',
             'operator' => 'required_if: conditions, 1|in:in,not_in',
             'products' => 'required_if: conditions, 1| array',
-            'products.*' => 'required_if: conditions, 1| exists:product,uuid',
+            'products.*' => 'required_if: conditions, 1| exists:products,uuid',
         ];
     }
 }
