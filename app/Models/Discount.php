@@ -13,6 +13,9 @@ class Discount extends Model
     use HasFactory;
     use HasUuid;
 
+    protected $casts = [
+        'starts_at' => 'datetime',
+    ];
 
     protected $guarded = [];
 
@@ -24,5 +27,10 @@ class Discount extends Model
     public function discount_rule() : BelongsTo
     {
         return $this->belongsTo(DiscountRule::class);
+    }
+
+    public function parent() : BelongsTo
+    {
+        return $this->belongsTo(Discount::class);
     }
 }

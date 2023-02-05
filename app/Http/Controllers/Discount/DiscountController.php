@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Discount;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\DiscountRequest;
+use App\Http\Resources\DiscountResource;
 use App\Models\Discount;
 use App\Models\DiscountRule;
 use Illuminate\Http\Request;
@@ -28,20 +29,43 @@ class DiscountController extends ApiController
      */
     public function store(DiscountRequest $request)
     {
-        $data = $request->validated();
+        $request->validated();
 
         $discountRule = DiscountRule::create(
             ['value' => $request->percentage ?? $request->amount] 
             +
             $request->only([
-            'description',
-            'discount_type',
-            'allocation',
-            'metadata'
+                'description',
+                'discount_type',
+                'allocation',
+                'metadata',
             ])
         );
 
-        return $discountRule;
+        $code_availabilty = Discount::where('code', $request->code)
+            ->where('seller_id', auth()->id())
+            ->get();
+
+        if($code_availabilty){
+            return $this->showError('Name ' . $request->code . ' is already taken!', 422);
+        }
+
+        $discount = $discountRule->discount()->create(
+            $request->only([
+                'code',
+                'is_dynamic',
+                'is_disabled',
+                'parent_id',
+                'ends_at',
+                'usage_limit',
+                'usage_count',
+                ])
+        );
+
+        $discount->starts_at = now();
+
+        return $this->showOne(new DiscountResource($discount->load('discount_rule')));
+
     }
 
     /**
