@@ -1,17 +1,17 @@
 <?php
 
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Models\CustomerGroup;
 use App\Models\User;
 use Database\Seeders\CurrencySeeder;
-use App\Models\CustomerGroup;
 
-beforeEach(function(){
-    $this->seed(CurrencySeeder::class); 
+beforeEach(function () {
+    $this->seed(CurrencySeeder::class);
     Notification::fake();
     Bus::fake();
 });
 
-it('can show all user groups for seller', function(){
+it('can show all user groups for seller', function () {
     $user = User::factory()->create();
     User::factory()->count(5)->create();
     CustomerGroup::factory()
@@ -25,8 +25,7 @@ it('can show all user groups for seller', function(){
     $response->assertOk();
 });
 
-it('can store a customer group ', function(){
-
+it('can store a customer group ', function () {
     $user = User::factory()->create();
     $users = User::factory()->count(10)->create();
 
@@ -36,27 +35,25 @@ it('can store a customer group ', function(){
 
     $response = $this->postJson(action([CustomerGroupController::class, 'store']),
         [
-          'name' => $customerGroupName,
-          'metadata' => '{"info": "hello"}',
-          'users' => $users->pluck('uuid')
+            'name' => $customerGroupName,
+            'metadata' => '{"info": "hello"}',
+            'users' => $users->pluck('uuid'),
         ]
     );
 
     $response->assertStatus(200);
 
     $this->assertDatabaseHas(CustomerGroup::class, ['name' => $customerGroupName]);
-
 });
 
-
-it('can show one coustomer group', function(){
+it('can show one coustomer group', function () {
     User::factory()->count(5)->create();
     CustomerGroup::factory()->count(5)->create();
 
     $user = User::factory()->create();
 
     $customerGroup = CustomerGroup::factory()->for($user)->create();
-    
+
     login($user);
 
     $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->uuid));
@@ -64,8 +61,7 @@ it('can show one coustomer group', function(){
     $response->assertOk();
 });
 
-
-it('can not show customer group of another seller',function(){
+it('can not show customer group of another seller', function () {
     $user = User::factory()->create();
     User::factory()->count(2)->create();
     $customerGroup = CustomerGroup::factory()
@@ -74,21 +70,19 @@ it('can not show customer group of another seller',function(){
 
     login($userThatDoesntOwnCustomerGroups);
 
-    $response = $this->getJson(action([CustomerGroupController::class, 'show'],$customerGroup->uuid));
+    $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->uuid));
 
     $response->assertStatus(403);
 });
 
-
-
-it('can delete one coustomer group', function(){
+it('can delete one coustomer group', function () {
     User::factory()->create();
     CustomerGroup::factory()->create();
 
     $user = User::factory()->create();
 
     $customerGroup = CustomerGroup::factory()->for($user)->create();
-    
+
     login($user);
 
     $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->uuid));
@@ -98,9 +92,7 @@ it('can delete one coustomer group', function(){
     $this->assertDatabaseMissing(CustomerGroup::class, ['id' => $customerGroup->id]);
 });
 
-
-
-it('can not delete customer group of another seller',function(){
+it('can not delete customer group of another seller', function () {
     $user = User::factory()->create();
     User::factory()->count(2)->create();
     $customerGroup = CustomerGroup::factory()
@@ -109,7 +101,7 @@ it('can not delete customer group of another seller',function(){
 
     login($userThatDoesntOwnCustomerGroups);
 
-    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'],$customerGroup->uuid));
+    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->uuid));
 
     $response->assertStatus(403);
 

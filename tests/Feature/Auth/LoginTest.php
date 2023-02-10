@@ -2,10 +2,9 @@
 
 use App\Models\User;
 
-beforeEach(function(){
+beforeEach(function () {
     Notification::fake();
     Bus::fake();
-
 });
 
 it('can login user', function () {
@@ -15,7 +14,7 @@ it('can login user', function () {
 
     $response = $this->postJson(route('login'), [
         'email' => $user->email,
-        'password' => $password
+        'password' => $password,
     ]);
 
     $response->assertOk();

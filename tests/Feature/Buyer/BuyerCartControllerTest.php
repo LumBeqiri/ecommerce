@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\User;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\CartItem;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Variant;
 
 // beforeEach(function(){
 //     $this->seed(CurrencySeeder::class);
@@ -29,7 +29,7 @@ use App\Models\Cart;
 //     ]);
 
 //     $response->assertOk();
-    
+
 //     $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant->id, 'count' => $count, 'cart_id' => $buyer->cart->id]);
 //     $this->assertDatabaseHas(Cart::class, ['user_id' => $buyer->id]);
 // });
@@ -50,7 +50,6 @@ use App\Models\Cart;
 
 //     $cart = Cart::factory()->for($buyer)->create();
 //     CartItem::factory()->for($cart)->create(['variant_id' => $variant->id, 'count' => $inCart]);
-
 
 //     $response = $this->deleteJson(action([BuyerCartController::class, 'remove_from_cart']), [
 //         'variant_id' => $variant->uuid,

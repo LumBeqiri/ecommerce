@@ -3,12 +3,10 @@
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 
-beforeEach(function(){
+beforeEach(function () {
     Notification::fake();
     Bus::fake();
-
 });
-
 
 it('can reset password', function () {
     Mail::fake();
@@ -16,25 +14,25 @@ it('can reset password', function () {
 
     $user = User::factory()->create();
 
-    //check if password reset notification is sent to user 
+    //check if password reset notification is sent to user
     $reset_link_response = $this->postJson(
-            route('reset.link'), [
-                'email' => $user->email
-            ]);
+        route('reset.link'), [
+            'email' => $user->email,
+        ]);
 
     $reset_link_response->assertStatus(302);
     Notification::assertSentTo($user, ResetPassword::class);
-    
+
     // a token is needed to reset password
     $token = Password::createToken($user);
 
     // send a request to change password
     $reset_response = $this->postJson(
-        route('password.reset'),[
+        route('password.reset'), [
             'token' => $token,
             'email' => $user->email,
             'password' => 'testtest',
-            'password_confirmation' => 'testtest'
+            'password_confirmation' => 'testtest',
         ]
     );
 
@@ -42,10 +40,9 @@ it('can reset password', function () {
 
     $new_login_response = $this->postJson(route('login'), [
         'email' => $user->email,
-        'password' => 'testtest'
+        'password' => 'testtest',
     ]);
 
     //check if new password works
-    $new_login_response->assertOk(); 
-    
+    $new_login_response->assertOk();
 });

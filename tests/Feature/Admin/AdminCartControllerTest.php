@@ -1,31 +1,30 @@
 <?php
 
+use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Seller;
+use App\Models\CartItem;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
-use App\Models\CartItem;
+use App\Models\Region;
+use App\Models\Seller;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Cart\AdminCartController;
 
-beforeEach(function(){
+beforeEach(function () {
     Notification::fake();
     Bus::fake();
     $this->seed(RoleAndPermissionSeeder::class);
     $this->seed(CurrencySeeder::class);
-
 });
 
-it('admin can show carts', function(){
+it('admin can show carts', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-  
+
     User::factory()->count(20)->create();
 
     Cart::factory()->count(10)->create();
@@ -39,11 +38,9 @@ it('admin can show carts', function(){
     $response = $this->getJson(action([AdminCartController::class, 'index']));
 
     $response->assertOk();
-
 });
 
-
-it('admin can show carts with items', function(){
+it('admin can show carts with items', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -52,7 +49,7 @@ it('admin can show carts with items', function(){
     Product::factory()->count(20)->create();
     Variant::factory()->count(10)->create();
     Cart::factory()->count(10)->create();
-    
+
     CartItem::factory()->count(10)->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
@@ -64,10 +61,9 @@ it('admin can show carts with items', function(){
     $response = $this->getJson(action([AdminCartController::class, 'index'], ['include' => 'cart_items']));
 
     $response->assertOk();
-
 });
 
-it('admin can show carts with user', function(){
+it('admin can show carts with user', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -88,11 +84,9 @@ it('admin can show carts with user', function(){
     $response = $this->getJson('admin/carts?include=user');
 
     $response->assertOk();
-
 });
 
-
-it('admin can show cart with user', function(){
+it('admin can show cart with user', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -112,11 +106,9 @@ it('admin can show cart with user', function(){
     $response = $this->getJson('admin/carts?include=user', ['cart' => Cart::inRandomOrder()->first()->uuid]);
 
     $response->assertOk();
-
 });
 
-
-it('admin can show cart with cart items', function(){
+it('admin can show cart with cart items', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -136,17 +128,12 @@ it('admin can show cart with cart items', function(){
     $response = $this->getJson('admin/carts?include=cart_items', ['cart' => $cart]);
 
     $response->assertOk();
-
 });
 
-
-
-
-it('admin can delete cart', function(){
-
+it('admin can delete cart', function () {
     $user = User::factory()->create();
     $cart = Cart::factory()->for($user)->create();
-   
+
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
 
@@ -157,11 +144,9 @@ it('admin can delete cart', function(){
     $response->assertOk();
 
     $this->assertDatabaseMissing(Cart::class, ['id' => $cart->id]);
-
 });
 
-
-it('admin can remove item qty from cart', function(){
+it('admin can remove item qty from cart', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -177,26 +162,24 @@ it('admin can remove item qty from cart', function(){
     $cart_item = CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant->id,
-        'count' => $initialAmount
+        'count' => $initialAmount,
     ]);
-   
+
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
 
     login($user);
 
-    $response = $this->deleteJson('admin/carts/' . $cart->uuid . '/variants/' . $variant->uuid,[
-        'count' => $amountToBeRemoved
+    $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid, [
+        'count' => $amountToBeRemoved,
     ]);
 
     $response->assertOk();
 
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'count' => $amountLeft]);
-
 });
 
-
-it('admin can remove item from cart completely', function(){
+it('admin can remove item from cart completely', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -209,18 +192,17 @@ it('admin can remove item from cart completely', function(){
     $cart_item = CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant->id,
-        'count' => $initialAmount
+        'count' => $initialAmount,
     ]);
-   
+
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
 
     login($user);
 
-    $response = $this->deleteJson('admin/carts/' . $cart->uuid . '/variants/' . $variant->uuid);
+    $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid);
 
     $response->assertOk();
 
     $this->assertDatabaseMissing(CartItem::class, ['id' => $cart_item->id]);
-
 });

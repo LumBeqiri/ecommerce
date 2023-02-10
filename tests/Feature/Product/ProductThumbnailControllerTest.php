@@ -1,22 +1,22 @@
 <?php
 
-use App\Models\Region;
-use App\Models\Seller;
+use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\Region;
+use App\Models\Seller;
 use App\Models\TaxProvider;
-use Illuminate\Http\UploadedFile;
 use Database\Seeders\CurrencySeeder;
-use App\Http\Controllers\Product\ProductThumbnailController;
+use Illuminate\Http\UploadedFile;
 
-beforeEach(function(){
+beforeEach(function () {
     Storage::fake();
-    $this->seed(CurrencySeeder::class); 
+    $this->seed(CurrencySeeder::class);
     Notification::fake();
     Bus::fake();
 });
 
-it('can upload product thumbnail', function(){
+it('can upload product thumbnail', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -27,23 +27,20 @@ it('can upload product thumbnail', function(){
     $product = $seller->products()->first();
 
     $file = UploadedFile::fake()->image('avatar.jpg');
-    
+
     login($seller);
 
-    $response = $this->postJson(action([ProductThumbnailController::class, 'store'],['product'=>$product->uuid]),
+    $response = $this->postJson(action([ProductThumbnailController::class, 'store'], ['product' => $product->uuid]),
         [
-            'thumbnail' => $file
+            'thumbnail' => $file,
         ]
     );
-    
+
     $response->assertStatus(200);
 
     expect($response->json())
         ->thumbnail->toBe($file->hashname());
 
-    $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
+    $this->assertTrue(file_exists(public_path().'/img/'.$file->hashName()));
     $this->assertDatabaseHas(Product::class, ['thumbnail' => $file->hashName()]);
-
 });
-
-
