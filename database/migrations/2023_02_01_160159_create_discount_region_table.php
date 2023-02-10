@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('discount_region', function (Blueprint $table) {
-            $table->foreignId('discount_id')->constrained('discounts')->deleteOnCascade();
-            $table->foreignId('region_id')->constrained('regions')->deleteOnCascade();
+            $table->foreignId('discount_id')->constrained('discounts')->cascadeOnDelete();
+            $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();
             $table->timestamps();
         });
     }

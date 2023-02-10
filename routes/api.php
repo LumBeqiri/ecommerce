@@ -83,6 +83,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
     Route::post('discounts', [DiscountController::class, 'store']);
+    Route::put('discounts/{discount}', [DiscountController::class, 'update']);
+    Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
 
 });
 

@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Discount;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\DiscountRequest;
+use App\Http\Requests\UpdateDiscountRequest;
 use App\Http\Resources\DiscountResource;
 use App\Models\Discount;
 use App\Models\DiscountRule;
 use App\Models\Product;
 use App\Models\Region;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DiscountController extends ApiController
@@ -34,11 +34,7 @@ class DiscountController extends ApiController
     {
         $request->validated();
 
-        $code_availabilty = Discount::where('code', $request->code)
-            ->where('seller_id', auth()->id())
-            ->get();
-
-        if (count($code_availabilty)) {
+        if ($this->validate_code($request->code)) {
             return $this->showError('Code '.$request->code.' is already taken!', 422);
         }
 
@@ -108,12 +104,24 @@ class DiscountController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDiscountRequest $request, Discount $discount)
     {
-        //
+        $dataToUpdate = $request->validated();
+
+        if ($request->has('code')) {
+            if ($this->validate_code($request->code)) {
+                return $this->showError('Code '.$request->code.' is already taken!', 422);
+            }
+        }
+
+        $discount->fill($dataToUpdate);
+
+        $discount->save();
+
+        return $this->showOne(new DiscountResource($discount));
     }
 
     /**
@@ -122,8 +130,20 @@ class DiscountController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Discount $discount)
     {
-        //
+        $discount->delete();
+
+        return response()->noContent();
+    }
+
+    
+    private function validate_code($code)
+    {
+        $code_availabilty = Discount::where('code', $code)
+            ->where('seller_id', auth()->id())
+            ->get();
+
+        return count($code_availabilty) > 0;
     }
 }
