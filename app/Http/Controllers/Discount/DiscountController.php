@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Discount;
 
-use App\Models\Product;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\DiscountRequest;
+use App\Http\Resources\DiscountResource;
 use App\Models\Discount;
 use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\Region;
 use Illuminate\Http\Request;
-use App\Http\Requests\DiscountRequest;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\DiscountResource;
-use App\Models\DiscountCondition;
+use Illuminate\Support\Facades\DB;
 
 class DiscountController extends ApiController
 {
@@ -32,56 +33,64 @@ class DiscountController extends ApiController
     public function store(DiscountRequest $request)
     {
         $request->validated();
-        
+
         $code_availabilty = Discount::where('code', $request->code)
             ->where('seller_id', auth()->id())
             ->get();
 
-        if(count($code_availabilty)){
-            return $this->showError('Code ' . $request->code . ' is already taken!', 422);
+        if (count($code_availabilty)) {
+            return $this->showError('Code '.$request->code.' is already taken!', 422);
         }
 
-        $discountRule = DiscountRule::create(
-            ['value' => $request->percentage ?? $request->amount] 
-            +
-            $request->only([
-                'description',
-                'discount_type',
-                'allocation',
-                'metadata',
+        $newDiscount = DB::transaction(function () use ($request) {
+            $discountRule = DiscountRule::create(
+                ['value' => $request->percentage ?? $request->amount]
+                +
+                $request->only([
+                    'description',
+                    'discount_type',
+                    'allocation',
+                    'metadata',
                 ])
             );
 
-        $discount = $discountRule->discount()->create(
-            [
-                'seller_id' => auth()->id(),
-                'starts_at' => now()
-            ]
-            +
-            $request->only([
-                'code',
-                'is_dynamic',
-                'is_disabled',
-                'parent_id',
-                'ends_at',
-                'usage_limit',
-                'usage_count',
+            $discount = $discountRule->discount()->create(
+                [
+                    'seller_id' => auth()->id(),
+                    'starts_at' => now(),
+                ]
+                +
+                $request->only([
+                    'code',
+                    'is_dynamic',
+                    'is_disabled',
+                    'parent_id',
+                    'ends_at',
+                    'usage_limit',
+                    'usage_count',
                 ])
-        );
+            );
 
-        // if($request->has('conditions')){
-        //     // if there's conditions
-        //     // create condition object and add products
-        //     if($request->has('products')){
-        //         $products = Product::whereIn('uuid', $request->products)->pluck('id');
-        //         // if there's products add them to 
-        //         $discountRule->discount_condition()->create([]);
-        //     }
-        // }
+            $regions = Region::whereIn('uuid', $request->regions)->pluck('id');
+            $discount->regions()->attach($regions);
 
+            if ($request->has('conditions')) {
+                if ($request->has('products')) {
+                    $products = Product::whereIn('uuid', $request->products)->pluck('id');
+                    $discountCondition = $discountRule->discount_condition()->create([
+                        'model_type' => $request->model_type,
+                        'operator' => $request->operator,
+                        'metadata' => $request->metadata ?? null,
+                    ]);
 
-        return $this->showOne(new DiscountResource($discount->load('discount_rule')));
+                    $discountCondition->products()->attach($products);
+                }
+            }
 
+            return $discount;
+        });
+
+        return $this->showOne(new DiscountResource($newDiscount->load('discount_rule')));
     }
 
     /**

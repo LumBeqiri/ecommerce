@@ -10,7 +10,7 @@ beforeEach(function(){
     Bus::fake();
 });
 
-it('can store discount', function(){
+it('can store percentage discount for percentage type without conditions ', function(){
     $user = User::factory()->create();
 
     login($user);
@@ -27,8 +27,6 @@ it('can store discount', function(){
     );
 
     $response->assertStatus(200);
-
-    dd($response->json());
 
     $discount_rule_uuid = $response->json('discount_rule.id');
     $discount_code = $response->json('code');

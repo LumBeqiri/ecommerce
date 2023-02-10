@@ -14,46 +14,6 @@ class AttributeSeeder extends Seeder
      */
     public function run()
     {
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'size',
-            'attribute_value' => 's'
-        ]);
-
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'size',
-            'attribute_value' => 'm'
-        ]);
-
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'size',
-            'attribute_value' => 'l'
-        ]);
-
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'color',
-            'attribute_value' => 'red'
-        ]);
-
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'color',
-            'attribute_value' => 'green'
-        ]);
-
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'color',
-            'attribute_value' => 'blue'
-        ]);
-
-        Attribute::create([
-            'product_id' => 1,
-            'attribute_type' => 'test',
-            'attribute_value' => 'yes'
-        ]);
+        Attribute::factory()->count(10)->create();
     }
 }

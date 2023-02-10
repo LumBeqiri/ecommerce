@@ -52,7 +52,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
     Route::post('sellers/{seller}/products', [SellerProductController::class, 'store']);
     Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update']);
-
+    
+    Route::get('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'show']);
     Route::post('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'store']);
     Route::delete('variants/{variant}/attributes/{attribute}', [SellerVariantAttributeController::class, 'destroy']);
     

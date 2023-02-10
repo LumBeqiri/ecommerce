@@ -8,20 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
 
-use function PHPUnit\Framework\isEmpty;
-
 class SellerVariantAttributeController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -30,23 +18,27 @@ class SellerVariantAttributeController extends ApiController
      */
     public function store(Request $request, Variant $variant)
     {
-
+        
         $data = $request->validate([
             'product_attributes' => 'array',
             'product_attributes.*' => 'required|string|exists:attributes,uuid'
         ]);
-
+        
         $attributes = Attribute::whereIn('uuid', $data['product_attributes'])->get();
-
+        
         abort_if($this->duplicateAttribute($variant, $attributes), 422, 'Cannot have the same attribute type more than once');
-
+        
         $variant->attributes()->sync($attributes->pluck('id'));
-
+        
         return $this->showOne(new VariantResource($variant->load(['attributes'])));
         
     }
-
-
+    
+    public function show($variant){
+        $vr = Variant::select(['id','barcode', 'sku', 'stock', 'ean'])->where('uuid', $variant)->first();
+        return $this->showOne($vr->load('attributes'));
+    }
+    
     /**
      * Remove the specified resource from storage.
      *

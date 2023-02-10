@@ -27,11 +27,11 @@ class DiscountRequest extends FormRequest
     {
         return [
             'discount_type' => 'required|in:' . DiscountRuleTypes::FIXED . ',' . DiscountRuleTypes::FREE_SHIPPING . ',' . DiscountRuleTypes::PERCENTAGE,
-            'allocation' => 'required_if:discount_type,' .  '|in:' . DiscountAllocationTypes::ITEM_SPICIFIC . ',' . DiscountAllocationTypes::TOTAL_AMOUNT,
+            'allocation' => 'required_if:discount_type,' . DiscountRuleTypes::FIXED . '|in:' . DiscountAllocationTypes::ITEM_SPICIFIC . ',' . DiscountAllocationTypes::TOTAL_AMOUNT,
             'percentage' => 'required_if:discount_type,' . DiscountRuleTypes::PERCENTAGE . '|numeric',
             'amount' => 'required_if:discount_type,' . DiscountRuleTypes::FIXED . '|numeric',
-            'regions' => 'array',
-            'regions.*' => 'integer|exists:regions,uuid',
+            'regions' => 'array|required',
+            'regions.*' => 'exists:regions,uuid',
             'code' => 'required|string',
             'description' => 'required|string|max:255',
             'is_dynamic' => 'nullable|boolean',
