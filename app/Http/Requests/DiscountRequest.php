@@ -41,7 +41,7 @@ class DiscountRequest extends FormRequest
             'usage_limit' => 'nullable|number',
             'conditions' => 'required|boolean',
             'operator' => 'required_if: conditions, 1|in:in,not_in',
-            'model_type' => 'required_if: conditions,1|string|' . Rule::in(['product']),
+            'model_type' => 'required_if: conditions,1|string|' . Rule::in(['product', 'customer_group']),
             'products' => 'required_if: conditions, 1| array',
             'products.*' => 'required_if: conditions, 1| exists:products,uuid',
         ];

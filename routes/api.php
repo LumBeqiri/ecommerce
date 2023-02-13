@@ -12,6 +12,7 @@ use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Variant\VariantController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
+use App\Http\Controllers\Discount\DiscountController;
 use App\Http\Controllers\Order\OrderSellerController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Auth\ChangePasswordController;
@@ -27,10 +28,10 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Category\CategoryProductController;
-use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Discount\DiscountController;
 use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Seller\SellerVariantMediaController;
+use App\Http\Controllers\Discount\DiscountConditionController;
+use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Seller\SellerVariantAttributeController;
 
 
@@ -83,7 +84,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
     Route::post('discounts', [DiscountController::class, 'store']);
+    Route::get('discounts/{discount}', [DiscountController::class, 'show']);
     Route::put('discounts/{discount}', [DiscountController::class, 'update']);
+    Route::put('discount_conditions/{discount_condition}', [DiscountConditionController::class, 'update']);
+    Route::delete('discount_conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
+    Route::delete('discount_conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
     Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
 
 });

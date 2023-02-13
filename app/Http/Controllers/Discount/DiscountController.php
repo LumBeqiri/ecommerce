@@ -71,14 +71,18 @@ class DiscountController extends ApiController
             $discount->regions()->attach($regions);
 
             if ($request->has('conditions')) {
+                $discountCondition = $discountRule->discount_condition()->create([
+                    'model_type' => $request->model_type,
+                    'operator' => $request->operator,
+                    'metadata' => $request->metadata ?? null,
+                ]);
+
                 if ($request->has('products')) {
                     $products = Product::whereIn('uuid', $request->products)->pluck('id');
-                    $discountCondition = $discountRule->discount_condition()->create([
-                        'model_type' => $request->model_type,
-                        'operator' => $request->operator,
-                        'metadata' => $request->metadata ?? null,
-                    ]);
-
+                    $discountCondition->products()->attach($products);
+                }
+                if ($request->has('customer_group')) {
+                    $products = Product::whereIn('uuid', $request->products)->pluck('id');
                     $discountCondition->products()->attach($products);
                 }
             }
@@ -95,9 +99,10 @@ class DiscountController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Discount $discount)
     {
-        //
+        // return discount with conditions
+        return $this->showOne(new DiscountResource($discount->load('discount_rule.discount_condition')));
     }
 
     /**
