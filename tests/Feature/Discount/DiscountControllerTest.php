@@ -30,7 +30,7 @@ it('can store percentage discount without conditions ', function () {
             'regions' => [Region::first()->uuid],
             'percentage' => 23.2,
             'description' => 'hello',
-            'conditions' => false,
+            'conditions' => 0,
         ]
     );
 
@@ -57,7 +57,7 @@ it('can store fixed discount without conditions ', function ($allocation) {
             'amount' => 23.2,
             'allocation' => $allocation,
             'description' => 'hello',
-            'conditions' => false,
+            'conditions' => 0,
         ]
     );
 
@@ -86,7 +86,7 @@ it('can store free shipping discount without conditions ', function () {
             'amount' => 0,
             'regions' => [Region::first()->uuid],
             'description' => 'hello',
-            'conditions' => false,
+            'conditions' => 0,
         ]
     );
 
