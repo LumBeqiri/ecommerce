@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 use App\Mail\UserPasswordChanged;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class ForgotPasswordController extends ApiController
 {
@@ -31,29 +31,26 @@ class ForgotPasswordController extends ApiController
     }
 
     /**
-     * @param Request $request
-     * 
+     * @param  Request  $request
      * @return string
      */
-    public function reset_password(Request $request){
-
+    public function reset_password(Request $request)
+    {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        
-
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
                 ])->setRememberToken(Str::random(60));
-     
+
                 $user->save();
-                retry(5, function() use($user){
+                retry(5, function () use ($user) {
                     Mail::to($user)->send(new UserPasswordChanged($user));
                 });
             }
@@ -63,5 +60,4 @@ class ForgotPasswordController extends ApiController
                 ? redirect()->route('login')->with('status', __($status))
                 : back()->withErrors(['email' => [__($status)]]);
     }
-
 }

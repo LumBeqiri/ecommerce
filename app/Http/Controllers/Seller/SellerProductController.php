@@ -2,30 +2,32 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Seller;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Category;
-use App\Models\Attribute;
-use App\Models\VariantPrice;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\Seller;
+use App\Models\User;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use Illuminate\Support\Facades\DB;
 
 class SellerProductController extends ApiController
 {
-    public function index(Seller $seller){
+    public function index(Seller $seller)
+    {
         $products = $seller->products;
 
         return $this->showAll(ProductResource::collection($products));
     }
 
-    public function store(StoreProductRequest $request, User $seller){
+    public function store(StoreProductRequest $request, User $seller)
+    {
         $request->validated();
 
         $product_data = [
@@ -36,33 +38,32 @@ class SellerProductController extends ApiController
             'status',
             'publish_status',
             'discountable',
-            'origin_country', 
+            'origin_country',
         ];
 
-
-        $variant = DB::transaction(function () use ($request, $product_data, $seller){
+        $variant = DB::transaction(function () use ($request, $product_data, $seller) {
             $product = Product::create($request->only($product_data) + ['seller_id' => $seller->id]);
 
             $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
 
             $attributes = $request->product_attributes;
 
-            foreach($attributes as $attribute){
+            foreach ($attributes as $attribute) {
                 Attribute::create([
                     'attribute_type' => $attribute['attribute_type'],
                     'attribute_value' => $attribute['attribute_value'],
                     'product_id' => $product->id,
 
-                ]);                
+                ]);
             }
-    
+
             $product->categories()->sync($categories);
-          
-            $variant_data = $request->except(['categories','product_attributes', 'variant_prices',...$product_data]);
+
+            $variant_data = $request->except(['categories', 'product_attributes', 'variant_prices', ...$product_data]);
 
             $variant = Variant::create($variant_data + ['product_id' => $product->id]);
 
-            foreach($request->variant_prices as $variant_price){
+            foreach ($request->variant_prices as $variant_price) {
                 $region = Region::where('uuid', $variant_price['region_id'])->first();
                 VariantPrice::create([
                     'price' => $variant_price['price'],
@@ -72,39 +73,39 @@ class SellerProductController extends ApiController
                     'min_quantity' => $variant_price['min_quantity'],
                 ]);
             }
-    
+
             return $variant;
         });
-       
-        return $this->showOne(new VariantResource($variant));
 
+        return $this->showOne(new VariantResource($variant));
     }
 
-    public function update(UpdateProductRequest $request, Seller $seller, Product $product){
+    public function update(UpdateProductRequest $request, Seller $seller, Product $product)
+    {
         $request->validated();
 
         $this->authorize('update', $product);
-        
+
         $product->fill($request->except(['categories']));
 
-        if($request->has('categories')){
+        if ($request->has('categories')) {
             $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
-            abort_if(count($categories) >5, 422, 'Only 5 categories per product');
+            abort_if(count($categories) > 5, 422, 'Only 5 categories per product');
             $product->categories()->sync($categories);
         }
 
         $product->save();
-        
+
         return $this->showOne(new ProductResource($product));
     }
 
-    protected function removeCategories($start_id,$end_id){
+    protected function removeCategories($start_id, $end_id)
+    {
         $products = Product::all();
-        foreach($products as $product){
-            if($product->id >=$start_id && $product->id <=$end_id){
+        foreach ($products as $product) {
+            if ($product->id >= $start_id && $product->id <= $end_id) {
                 $product->categories()->detach();
             }
         }
     }
-
 }

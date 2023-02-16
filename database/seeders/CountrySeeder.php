@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Country;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CountrySeeder extends Seeder
 {
@@ -269,8 +267,8 @@ class CountrySeeder extends Seeder
             ['name' => 'Zimbabwe', 'code' => 'ZW'],
         ];
 
-        foreach($countries as $country){
+        foreach ($countries as $country) {
             Country::create($country);
         }
-}
+    }
 }

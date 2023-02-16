@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Product;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateVariantsTable extends Migration
 {
@@ -30,12 +30,11 @@ class CreateVariantsTable extends Migration
             $table->string('ean')->nullable();
             $table->string('upc')->nullable();
             $table->boolean('allow_backorder')->nullable();
-            $table->string('material',255)->nullable();
+            $table->string('material', 255)->nullable();
             $table->integer('weight')->nullable();
             $table->integer('length')->nullable();
             $table->integer('height')->nullable();
             $table->integer('width')->nullable();
-            
 
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->string('model_type');
-            $table->enum('operator',['in', 'not_in']);
+            $table->enum('operator', ['in', 'not_in']);
             $table->foreignId('discount_rule_id')->constrained('discount_rules')->cascadeOnDelete();
             $table->json('metadata')->nullable();
             $table->timestamps();

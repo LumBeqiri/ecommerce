@@ -30,7 +30,7 @@ class UpdateRegionRequest extends FormRequest
             'tax_code' => 'string|max:255',
             'tax_provider_id' => 'exists:tax_providers,id',
             'countries' => 'array',
-            'countries.*' => 'integer|exists:countries,id'
+            'countries.*' => 'integer|exists:countries,id',
         ];
     }
 }

@@ -10,7 +10,7 @@ class Country extends Model
 {
     use HasFactory;
 
-    public function region() : BelongsTo
+    public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
     }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Discount;
 
-use App\Models\Product;
-use App\Models\Discount;
-use App\Models\CustomerGroup;
-use App\Models\DiscountCondition;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\DiscountConditionRequest;
-use App\Http\Resources\DiscountConditionResource;
 use App\Http\Requests\UpdateDiscountConditionRequest;
+use App\Http\Resources\DiscountConditionResource;
+use App\Models\CustomerGroup;
+use App\Models\Discount;
+use App\Models\DiscountCondition;
+use App\Models\Product;
 
 class DiscountConditionController extends ApiController
 {
@@ -48,8 +48,6 @@ class DiscountConditionController extends ApiController
         }
 
         return $this->showOne(new DiscountConditionResource($discountCondition->load('products', 'customer_groups')));
-        
-
     }
 
     /**
@@ -60,7 +58,7 @@ class DiscountConditionController extends ApiController
      */
     public function show(DiscountCondition $discount_condition)
     {
-       return $this->showOne(new DiscountConditionResource($discount_condition));
+        return $this->showOne(new DiscountConditionResource($discount_condition));
     }
 
     /**
@@ -72,26 +70,27 @@ class DiscountConditionController extends ApiController
      */
     public function update(UpdateDiscountConditionRequest $request, DiscountCondition $discount_condition)
     {
-        if($request->has('products')){
-            $products = Product::whereIn('uuid', $request->products)->pluck('id'); 
-            $discount_condition->products()->syncWithoutDetaching($products);   
+        if ($request->has('products')) {
+            $products = Product::whereIn('uuid', $request->products)->pluck('id');
+            $discount_condition->products()->syncWithoutDetaching($products);
         }
-        if($request->has('customer_group')){
-            $products = CustomerGroup::whereIn('uuid', $request->customer_group)->pluck('id'); 
-            $discount_condition->customer_groups()->syncWithoutDetaching($products);   
+        if ($request->has('customer_group')) {
+            $products = CustomerGroup::whereIn('uuid', $request->customer_group)->pluck('id');
+            $discount_condition->customer_groups()->syncWithoutDetaching($products);
         }
-
 
         return $this->showOne(new DiscountConditionResource($discount_condition));
     }
 
-    public function removeProduct( DiscountCondition $discount_condition, Product $product){
+    public function removeProduct(DiscountCondition $discount_condition, Product $product)
+    {
         $discount_condition->products()->detach($product);
 
         return $this->showMessage('Product Removed Successfully!');
     }
 
-    public function removeCustomerGroup( DiscountCondition $discount_condition, CustomerGroup $customerGroup){
+    public function removeCustomerGroup(DiscountCondition $discount_condition, CustomerGroup $customerGroup)
+    {
         $discount_condition->customer_groups()->detach($customerGroup);
 
         return $this->showMessage('Customer Group Removed Successfully!');

@@ -27,7 +27,7 @@ class CustomerGroupRequest extends FormRequest
             'name' => 'required|string',
             'metadata' => 'nullable|json',
             'users' => 'array|required',
-            'users.*' => 'string|exists:users,uuid'
+            'users.*' => 'string|exists:users,uuid',
         ];
     }
 }

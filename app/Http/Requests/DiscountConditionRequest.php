@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Rules\UniqueDiscountConditionModelType;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DiscountConditionRequest extends FormRequest
 {
@@ -27,12 +27,12 @@ class DiscountConditionRequest extends FormRequest
     {
         return [
             'operator' => 'required|in:in,not_in',
-            'model_type' => ['required', 'string', Rule::in(['product', 'customer_group']),new UniqueDiscountConditionModelType],
+            'model_type' => ['required', 'string', Rule::in(['product', 'customer_group']), new UniqueDiscountConditionModelType],
             'products' => 'array',
             'products.*' => 'exists:products,uuid',
             'customer_groups' => 'array',
             'customer_groups.*' => 'exists:customer_groups,uuid',
-            'metadata' => 'sometimes|json'
+            'metadata' => 'sometimes|json',
 
         ];
     }

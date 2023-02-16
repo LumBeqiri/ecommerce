@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\DiscountRule;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,10 +27,10 @@ class DiscountFactory extends Factory
             'discount_rule_id' => DiscountRule::all()->random()->id,
             'starts_at' => $this->faker->dateTime(),
             'ends_at' => $this->faker->dateTime(),
-            'usage_limit' => $this->faker->numberBetween(2,20),
-            'usage_limit' => $this->faker->numberBetween(2,20),
-            'usage_count' => $this->faker->numberBetween(2,20),
-            'parent_id' => null
+            'usage_limit' => $this->faker->numberBetween(2, 20),
+            'usage_limit' => $this->faker->numberBetween(2, 20),
+            'usage_count' => $this->faker->numberBetween(2, 20),
+            'parent_id' => null,
         ];
     }
 }

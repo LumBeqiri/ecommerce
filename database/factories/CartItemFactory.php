@@ -22,7 +22,7 @@ class CartItemFactory extends Factory
             'uuid' => $this->faker->uuid(),
             'cart_id' => Cart::all()->random()->id,
             'variant_id' => Variant::all()->random()->id,
-            'count' => $this->faker->numberBetween(3,5),
+            'count' => $this->faker->numberBetween(3, 5),
         ];
     }
 }

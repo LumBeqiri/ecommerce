@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Attributes;
 
-use App\Models\Attribute;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\AttributeStoreRequest;
+use App\Models\Attribute;
 
 class AttributeController extends ApiController
 {
@@ -19,8 +19,7 @@ class AttributeController extends ApiController
     }
 
     /**
-     * @param AttributeStoreRequest $request
-     * 
+     * @param  AttributeStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(AttributeStoreRequest $request)
@@ -30,13 +29,10 @@ class AttributeController extends ApiController
         $attribute = Attribute::create($data);
 
         return $this->showOne($attribute);
-
     }
 
-
     /**
-     * @param Attribute $attribute
-     * 
+     * @param  Attribute  $attribute
      * @return \Illuminate\Http\Response
      */
     public function show(Attribute $attribute)
@@ -44,11 +40,9 @@ class AttributeController extends ApiController
         return $this->showOne($attribute);
     }
 
-
     /**
-     * @param AttributeStoreRequest $request
-     * @param Attribute $attribute
-     * 
+     * @param  AttributeStoreRequest  $request
+     * @param  Attribute  $attribute
      * @return \Illuminate\Http\Response
      */
     public function update(AttributeStoreRequest $request, Attribute $attribute)
@@ -63,7 +57,7 @@ class AttributeController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Attribute $attribute
+     * @param  Attribute  $attribute
      * @return \Illuminate\Http\Response
      */
     public function destroy(Attribute $attribute)

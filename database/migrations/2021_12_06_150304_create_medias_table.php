@@ -25,9 +25,8 @@ class CreateMediasTable extends Migration
             $table->string('disk')->default('local');
             $table->string('collection')->nullable();
             $table->unsignedBigInteger('size');
-            
-            $table->timestamps();
 
+            $table->timestamps();
         });
     }
 

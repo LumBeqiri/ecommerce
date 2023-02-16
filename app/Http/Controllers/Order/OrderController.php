@@ -11,17 +11,19 @@ class OrderController extends ApiController
     /**
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index()
+    {
         $orders = Order::all();
+
         return $this->showAll(OrderResource::collection($orders));
     }
 
     /**
-     * @param Order $order
-     * 
+     * @param  Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order){
+    public function show(Order $order)
+    {
         return $this->showOne(new OrderResource($order));
     }
 }

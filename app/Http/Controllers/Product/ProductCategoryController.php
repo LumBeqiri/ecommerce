@@ -6,26 +6,25 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\CategoryResource;
 use App\Models\Product;
 
-
 class ProductCategoryController extends ApiController
 {
     /**
-     * @param Product $product
-     * 
+     * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function index(Product $product){
+    public function index(Product $product)
+    {
         $categories = $product->categories()->get();
 
         return $this->showAll(CategoryResource::collection($categories));
     }
 
     /**
-     * @param Product $product
-     * 
+     * @param  Product  $product
      * @return void
      */
-    public function deleteCategories(Product $product){
+    public function deleteCategories(Product $product)
+    {
         $product->categories()->detach();
     }
 }

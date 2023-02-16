@@ -16,6 +16,7 @@ class VariantController extends ApiController
     public function index()
     {
         $variants = Variant::all();
+
         return $this->showAll(VariantResource::collection($variants));
     }
 

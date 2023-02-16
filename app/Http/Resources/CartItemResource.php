@@ -14,11 +14,10 @@ class CartItemResource extends JsonResource
      */
     public function toArray($request)
     {
-    
         return [
             'id' => $this->uuid,
             'cart' => $this->cart->uuid,
-            'variant' =>new VariantResource($this->variant),
+            'variant' => new VariantResource($this->variant),
             'count' => $this->count,
         ];
     }

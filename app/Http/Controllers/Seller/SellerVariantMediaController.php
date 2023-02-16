@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\Media;
-use App\Models\Variant;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\MediasRequest;
 use App\Http\Resources\MediaResource;
-use App\Services\UploadImagesService;
-use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
+use App\Models\Media;
+use App\Models\Variant;
+use App\Services\UploadImagesService;
 use Illuminate\Support\Facades\Storage;
 
 class SellerVariantMediaController extends ApiController
@@ -43,10 +42,7 @@ class SellerVariantMediaController extends ApiController
         }
 
         return $this->showOne(new VariantResource($variant));
-
-
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -58,11 +54,11 @@ class SellerVariantMediaController extends ApiController
     {
         Storage::disk('images')->delete($media->path);
 
-        Media::where('id',$media->id)
+        Media::where('id', $media->id)
             ->where('mediable_id', $variant->id)
             ->where('mediable_type', $media->mediable_type)
             ->delete();
 
-        return $this->showMessage("Image deleted successfully!");
+        return $this->showMessage('Image deleted successfully!');
     }
 }

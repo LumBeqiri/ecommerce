@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Country;
 use App\Traits\HasUuid;
-use App\Models\Currency;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Region extends Model
 {
@@ -17,17 +15,17 @@ class Region extends Model
 
     protected $guarded = [];
 
-    public function countries() : HasMany
+    public function countries(): HasMany
     {
         return $this->hasMany(Country::class);
     }
 
-    public function currency() : BelongsTo
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
 
-    public function tax_provider() : BelongsTo
+    public function tax_provider(): BelongsTo
     {
         return $this->belongsTo(TaxProvider::class);
     }

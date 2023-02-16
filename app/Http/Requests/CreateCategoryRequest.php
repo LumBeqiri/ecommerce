@@ -27,7 +27,7 @@ class CreateCategoryRequest extends FormRequest
             'name' => 'required|max:255|string',
             'description' => 'required|max:500|string',
             'slug' => 'required|unique:categories,slug',
-            'parent_id' => 'exists:categories,uuid'
+            'parent_id' => 'exists:categories,uuid',
         ];
     }
 }

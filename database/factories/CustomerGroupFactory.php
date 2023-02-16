@@ -20,7 +20,7 @@ class CustomerGroupFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'name' => $this->faker->word(),
-            'user_id' => User::all()->random()->id
+            'user_id' => User::all()->random()->id,
         ];
     }
 }

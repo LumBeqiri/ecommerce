@@ -10,7 +10,6 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class CartController extends ApiController
 {
-
     /**
      * Display the specified resource.
      *
@@ -22,6 +21,7 @@ class CartController extends ApiController
         $cartResult = QueryBuilder::for($cart)
             ->allowedIncludes('user', 'cart_items')
             ->first();
+
         return $this->showOne(new CartResource($cartResult));
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VariantPriceResource extends JsonResource

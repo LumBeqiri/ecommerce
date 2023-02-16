@@ -22,6 +22,7 @@ class DiscountController extends ApiController
     public function index()
     {
         $discounts = Discount::with(['discount_rule.discount_conditions.products', 'discount_rule.discount_conditions.customer_groups'])->get();
+
         return $this->showAll(DiscountResource::collection($discounts));
     }
 
@@ -71,7 +72,7 @@ class DiscountController extends ApiController
             $regions = Region::whereIn('uuid', $request->regions)->pluck('id');
             $discount->regions()->attach($regions);
 
-            if ($request->has('conditions')) {
+            if ($request->conditions) {
                 $discountCondition = $discountRule->discount_conditions()->create([
                     'model_type' => $request->model_type,
                     'operator' => $request->operator,
@@ -143,7 +144,6 @@ class DiscountController extends ApiController
         return response()->noContent();
     }
 
-    
     private function validate_code($code)
     {
         $code_availabilty = Discount::where('code', $code)

@@ -3,12 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Country;
-use App\Models\User;
-use App\Models\Seller;
 use App\Models\Product;
-use App\Models\Currency;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 class ProductFactory extends Factory
 {
@@ -17,13 +15,12 @@ class ProductFactory extends Factory
      *
      * @return array
      */
-
     protected $model = Product::class;
-    
 
     public function definition()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS =0');
+
         return [
             'uuid' => $this->faker->uuid(),
             'product_name' => $this->faker->name,
@@ -47,11 +44,10 @@ class ProductFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'status' => Product::AVAILABLE_PRODUCT
+                'status' => Product::AVAILABLE_PRODUCT,
             ];
         });
     }
-
 
     /**
      * Indicate that the product is unavailable
@@ -62,7 +58,7 @@ class ProductFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'status' => Product::UNAVAILABLE_PRODUCT
+                'status' => Product::UNAVAILABLE_PRODUCT,
             ];
         });
     }

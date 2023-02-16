@@ -2,27 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\Cart;
 use App\Traits\HasUuid;
-use Illuminate\Support\Str;
-use App\Models\CustomerGroup;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
     use HasUuid;
 
-
     public const VERIFIED_USER = '1';
+
     public const UNVERIFIED_USER = '0';
 
     /**
@@ -41,7 +39,7 @@ class User extends Authenticatable
         'phone',
         'verified',
         'verification_token',
-        'admin'
+        'admin',
     ];
 
     /**
@@ -52,7 +50,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'verification_token'
+        'verification_token',
     ];
 
     /**
@@ -64,11 +62,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     /**
      * @return bool
      */
-    public function isVerified() : bool
+    public function isVerified(): bool
     {
         return $this->verified === User::VERIFIED_USER;
     }
@@ -76,23 +73,24 @@ class User extends Authenticatable
     /**
      * @return string
      */
-    public static function generateVerificationCode() : string
+    public static function generateVerificationCode(): string
     {
         return Str::random(40);
     }
 
-    public function cart() : HasOne
+    public function cart(): HasOne
     {
         return $this->hasOne(Cart::class);
     }
 
-    public function customerGroups() : BelongsToMany
+    public function customerGroups(): BelongsToMany
     {
         return $this->belongsToMany(CustomerGroup::class);
     }
 
     // seller/store has many groups
-    public function customerGroup() : HasMany {
+    public function customerGroup(): HasMany
+    {
         return $this->hasMany(CustomerGroup::class);
     }
 }

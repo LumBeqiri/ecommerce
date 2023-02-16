@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Variant;
 use App\Observers\ProductObserver;
 use App\Observers\UserObserver;

@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Support\Facades\DB;
 
 class UniqueDiscountConditionModelType implements InvokableRule
 {
@@ -23,7 +23,7 @@ class UniqueDiscountConditionModelType implements InvokableRule
             ->where('id', '!=', $discount ? $discount->id : null)
             ->count();
 
-        if($count !== 0){
+        if ($count !== 0) {
             $fail('The model_type already exists for this discount condition');
         }
     }

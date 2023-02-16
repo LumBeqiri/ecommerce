@@ -27,7 +27,7 @@ class OrderResource extends JsonResource
             'order_email' => $this->order_email,
             'order_phone' => $this->order_phone,
             'payment' => 1,
-            'total' => $this->total
+            'total' => $this->total,
         ];
     }
 }

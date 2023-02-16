@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\values\DiscountRuleTypes;
 use App\values\DiscountAllocationTypes;
+use App\values\DiscountRuleTypes;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateDiscountRequest extends FormRequest
@@ -26,10 +26,10 @@ class UpdateDiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'discount_type' => 'sometimes|in:' . DiscountRuleTypes::FIXED . ',' . DiscountRuleTypes::FREE_SHIPPING . ',' . DiscountRuleTypes::PERCENTAGE,
-            'allocation' => 'required_if:discount_type,' . DiscountRuleTypes::FIXED . '|in:' . DiscountAllocationTypes::ITEM_SPICIFIC . ',' . DiscountAllocationTypes::TOTAL_AMOUNT,
-            'percentage' => 'required_if:discount_type,' . DiscountRuleTypes::PERCENTAGE . '|numeric',
-            'amount' => 'required_if:discount_type,' . DiscountRuleTypes::FIXED . '|numeric',
+            'discount_type' => 'sometimes|in:'.DiscountRuleTypes::FIXED.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
+            'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
+            'percentage' => 'required_if:discount_type,'.DiscountRuleTypes::PERCENTAGE.'|numeric',
+            'amount' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|numeric',
             'regions' => 'array',
             'regions.*' => 'exists:regions,uuid',
             'code' => 'sometimes|string',

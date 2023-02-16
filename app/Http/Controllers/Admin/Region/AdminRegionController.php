@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Region;
 
-use App\Models\Region;
-use App\Models\Country;
-use Illuminate\Http\Request;
-use App\Http\Requests\RegionRequest;
-use App\Http\Resources\RegionResource;
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\RegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use App\Http\Resources\RegionResource;
+use App\Models\Country;
+use App\Models\Region;
 
 class AdminRegionController extends ApiController
 {
@@ -40,13 +39,12 @@ class AdminRegionController extends ApiController
         $countries = Country::findMany($countries);
 
         $region->countries()->saveMany($countries);
+
         return $this->showOne(new RegionResource($region));
     }
 
-
     /**
-     * @param Region $region
-     * 
+     * @param  Region  $region
      * @return \Illuminate\Http\Response
      */
     public function show(Region $region)
@@ -70,10 +68,10 @@ class AdminRegionController extends ApiController
         $region->save();
 
         return $this->showOne($region);
-         
     }
 
-    public function updateCountries(UpdateRegionRequest $request, Region $region){
+    public function updateCountries(UpdateRegionRequest $request, Region $region)
+    {
         $data = $request->validated();
         $countries = $data['countries'];
 
@@ -84,18 +82,18 @@ class AdminRegionController extends ApiController
         return $this->showMessage('Region updated successfully');
     }
 
-    public function removeCountries(UpdateRegionRequest $request, Region $region){
+    public function removeCountries(UpdateRegionRequest $request, Region $region)
+    {
         $data = $request->validated();
         $countries = $data['countries'];
 
-        $region->countries()->whereIn('id',$countries)->update(['region_id' => null]);
-        
+        $region->countries()->whereIn('id', $countries)->update(['region_id' => null]);
+
         return $this->showMessage('Region updated successfully');
     }
 
     /**
-     * @param Region $region
-     * 
+     * @param  Region  $region
      * @return \Illuminate\Http\Response
      */
     public function destroy(Region $region)

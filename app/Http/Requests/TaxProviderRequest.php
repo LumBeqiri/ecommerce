@@ -25,7 +25,7 @@ class TaxProviderRequest extends FormRequest
     {
         return [
             'tax_provider' => 'required|string|max:255|unique:tax_providers,tax_provider',
-            'is_installed' => 'boolean'
+            'is_installed' => 'boolean',
         ];
     }
 }

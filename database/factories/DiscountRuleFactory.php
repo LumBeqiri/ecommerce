@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Discount;
-use App\Models\DiscountRule;
 use App\values\DiscountAllocationTypes;
 use App\values\DiscountRuleTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,19 +27,18 @@ class DiscountRuleFactory extends Factory
         ];
     }
 
-    private function valueForType($type){
-
-        if($type === DiscountRuleTypes::FIXED){
+    private function valueForType($type)
+    {
+        if ($type === DiscountRuleTypes::FIXED) {
             return 0;
         }
-        if($type === DiscountRuleTypes::FREE_SHIPPING){
+        if ($type === DiscountRuleTypes::FREE_SHIPPING) {
             return 0;
         }
-        if($type === DiscountRuleTypes::PERCENTAGE){
-            return $this->faker->numberBetween(1,50);
+        if ($type === DiscountRuleTypes::PERCENTAGE) {
+            return $this->faker->numberBetween(1, 50);
         }
 
         return 0;
-
     }
 }

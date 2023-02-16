@@ -20,8 +20,6 @@ class CreateCartsTable extends Migration
             $table->integer('total_cart_price')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->timestamps();
-
-
         });
     }
 

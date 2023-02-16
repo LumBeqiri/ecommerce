@@ -24,18 +24,18 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
-
-        if($this->getMethod() == "POST"){
+        if ($this->getMethod() == 'POST') {
             return [
                 'name' => 'required|string|max:255',
                 'city' => 'required|string|max:255',
                 'state' => 'required|string|max:255',
                 'zip' => 'required|regex:/\b\d{5}\b/',
                 'phone' => 'required|string|max:255',
-                'email'=> 'required|email|unique:users',
+                'email' => 'required|email|unique:users',
                 'password' => 'required|min:6|confirmed',
             ];
         }
+
         return [
             'name' => 'string',
             'city' => 'string',
@@ -44,6 +44,5 @@ class StoreUserRequest extends FormRequest
             // 'email'=> 'required|email|unique:users,email,' . auth()->id(),
             'password' => 'min:6|confirmed',
         ];
-
     }
 }

@@ -20,7 +20,7 @@ class CartFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'user_id' => User::all()->random()->id,
-            'total_cart_price' => $this->faker->numberBetween(3,40)
+            'total_cart_price' => $this->faker->numberBetween(3, 40),
         ];
     }
 }

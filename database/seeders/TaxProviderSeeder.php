@@ -21,9 +21,9 @@ class TaxProviderSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
         $tax_provider = [
             'tax_provider' => 'default',
-            'is_installed' => 1
+            'is_installed' => 1,
         ];
-        
+
         TaxProvider::create($tax_provider);
     }
 }

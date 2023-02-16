@@ -25,7 +25,7 @@ class CartItemRequest extends FormRequest
     {
         return [
             'variant_id' => 'required|exists:variants,uuid',
-            'count' => 'required|integer|min:1'
+            'count' => 'required|integer|min:1',
         ];
     }
 }

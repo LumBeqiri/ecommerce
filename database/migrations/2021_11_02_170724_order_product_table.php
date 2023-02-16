@@ -19,7 +19,6 @@ class OrderProductTable extends Migration
 
             $table->timestamps();
         });
-		
     }
 
     /**

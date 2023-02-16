@@ -20,7 +20,7 @@ class CountryFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'code' => $this->faker->countryCode(),
-            'region_id' => Region::all()->random()->id
+            'region_id' => Region::all()->random()->id,
         ];
     }
 }

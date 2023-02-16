@@ -20,7 +20,7 @@ class RegionResource extends JsonResource
             'currency' => $this->currency,
             'tax_rate' => $this->tax_rate,
             'tax_code' => $this->tax_code,
-            'tax_provider' => $this->tax_provider_id
+            'tax_provider' => $this->tax_provider_id,
 
         ];
     }

@@ -15,16 +15,16 @@ class MediaResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "uuid" => $this->uuid,
-            "mediable_id" => $this->mediable_id,
-            "mediable_type" => $this->mediable_type,
-            "name" => $this->name,
-            "file_name" => $this->file_name,
-            "mime_type" => $this->mime_type,
-            "path" => $this->path,
-            "disk" => $this->disk,
-            "collection" => $this->collection,
-            "size" => $this->size
-            ];
+            'uuid' => $this->uuid,
+            'mediable_id' => $this->mediable_id,
+            'mediable_type' => $this->mediable_type,
+            'name' => $this->name,
+            'file_name' => $this->file_name,
+            'mime_type' => $this->mime_type,
+            'path' => $this->path,
+            'disk' => $this->disk,
+            'collection' => $this->collection,
+            'size' => $this->size,
+        ];
     }
 }

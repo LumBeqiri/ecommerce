@@ -20,7 +20,6 @@ class CreateCartItemsTable extends Migration
             $table->foreignId('variant_id')->constrained('variants')->onDelete('cascade');
             $table->integer('count');
             $table->timestamps();
-
         });
     }
 

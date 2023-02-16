@@ -19,7 +19,7 @@ class TaxProviderFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'tax_provider' => 'default',
-            'is_installed' => $this->faker->boolean(45)
+            'is_installed' => $this->faker->boolean(45),
         ];
     }
 }

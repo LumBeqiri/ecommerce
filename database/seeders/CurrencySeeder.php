@@ -19,7 +19,7 @@ class CurrencySeeder extends Seeder
                 'id' => 1,
                 'name' => 'Leke',
                 'code' => 'ALL',
-                'symbol' => 'Lek'
+                'symbol' => 'Lek',
             ]
         );
         Currency::create(
@@ -27,7 +27,7 @@ class CurrencySeeder extends Seeder
                 'id' => 2,
                 'name' => 'Dollars',
                 'code' => 'USD',
-                'symbol' => '$'
+                'symbol' => '$',
             ]
         );
 
@@ -36,7 +36,7 @@ class CurrencySeeder extends Seeder
                 'id' => 3,
                 'name' => 'Euro',
                 'code' => 'EUR',
-                'symbol' => '€'
+                'symbol' => '€',
             ]
         );
     }

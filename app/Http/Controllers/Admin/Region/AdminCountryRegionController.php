@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Region;
 
+use App\Http\Controllers\ApiController;
 use App\Models\Region;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
 
 class AdminCountryRegionController extends ApiController
 {
-
     /**
      * Store a newly created resource in storage.
      *

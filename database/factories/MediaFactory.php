@@ -28,7 +28,7 @@ class MediaFactory extends Factory
                 Product::class,
             ]),
             'name' => $this->faker->word,
-            'file_name' => $this->faker->word . '.' . $this->faker->fileExtension,
+            'file_name' => $this->faker->word.'.'.$this->faker->fileExtension,
             'mime_type' => $this->faker->mimeType,
             'path' => $this->faker->url,
             'disk' => 'local',

@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 
 class Media extends Model
 {
@@ -15,9 +13,10 @@ class Media extends Model
     use HasUuid;
 
     protected $table = 'medias';
+
     protected $guarded = [];
 
-    public function mediable() : MorphTo
+    public function mediable(): MorphTo
     {
         return $this->morphTo();
     }

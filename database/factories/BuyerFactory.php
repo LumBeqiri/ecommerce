@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Buyer;
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class BuyerFactory extends Factory
 {
@@ -14,11 +14,12 @@ class BuyerFactory extends Factory
      *
      * @return array
      */
-
     protected $model = Buyer::class;
+
     public function definition()
     {
         static $password;
+
         return [
             'uuid' => $this->faker->uuid(),
             'name' => $this->faker->name(),
@@ -30,9 +31,9 @@ class BuyerFactory extends Factory
             'state' => $this->faker->country(),
             'zip' => 5000,
             'shipping_address' => $this->faker->address(),
-            'phone' => "044123456",
+            'phone' => '044123456',
             'remember_token' => Str::random(10),
-            'verified' =>  $this->faker->randomElement([User::VERIFIED_USER,User::UNVERIFIED_USER]),
+            'verified' => $this->faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
             'verification_token' => User::VERIFIED_USER ? null : User::generateVerificationCode(),
 
         ];

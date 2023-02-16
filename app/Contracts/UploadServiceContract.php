@@ -1,4 +1,7 @@
 <?php
+
 namespace App\Contracts;
 
-interface UploadServiceContract{}
+interface UploadServiceContract
+{
+}

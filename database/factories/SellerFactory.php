@@ -3,9 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use Illuminate\Support\Str;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Seller>
@@ -20,6 +19,7 @@ class SellerFactory extends Factory
     public function definition()
     {
         static $password;
+
         return [
             'uuid' => $this->faker->uuid(),
             'name' => $this->faker->name(),
@@ -31,9 +31,9 @@ class SellerFactory extends Factory
             'state' => $this->faker->country(),
             'zip' => 5000,
             'shipping_address' => $this->faker->address(),
-            'phone' => "044123456",
+            'phone' => '044123456',
             'remember_token' => Str::random(10),
-            'verified' =>  $this->faker->randomElement([User::VERIFIED_USER,User::UNVERIFIED_USER]),
+            'verified' => $this->faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
             'verification_token' => User::VERIFIED_USER ? null : User::generateVerificationCode(),
 
         ];

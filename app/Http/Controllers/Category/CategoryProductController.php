@@ -10,24 +10,24 @@ use App\Models\Category;
 class CategoryProductController extends ApiController
 {
     /**
-     * @param Category $category
-     * 
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function index(Category $category){
+    public function index(Category $category)
+    {
         $products = $category->products;
 
         return $this->showAll(ProductResource::collection($products));
     }
 
     /**
-     * @param Category $category
-     * 
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function subcats(Category $category){
-       $subs = $category->subcategory()->get();
-       
-       return $this->showAll(CategoryResource::collection($subs));
+    public function subcats(Category $category)
+    {
+        $subs = $category->subcategory()->get();
+
+        return $this->showAll(CategoryResource::collection($subs));
     }
 }

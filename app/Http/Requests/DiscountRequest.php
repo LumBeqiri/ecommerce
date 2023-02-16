@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
-use App\values\DiscountRuleTypes;
 use App\values\DiscountAllocationTypes;
+use App\values\DiscountRuleTypes;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DiscountRequest extends FormRequest
 {
@@ -27,10 +27,10 @@ class DiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'discount_type' => 'required|in:' . DiscountRuleTypes::FIXED . ',' . DiscountRuleTypes::FREE_SHIPPING . ',' . DiscountRuleTypes::PERCENTAGE,
-            'allocation' => 'required_if:discount_type,' . DiscountRuleTypes::FIXED . '|in:' . DiscountAllocationTypes::ITEM_SPICIFIC . ',' . DiscountAllocationTypes::TOTAL_AMOUNT,
-            'percentage' => 'required_if:discount_type,' . DiscountRuleTypes::PERCENTAGE . '|numeric',
-            'amount' => 'required_if:discount_type,' . DiscountRuleTypes::FIXED . '|numeric',
+            'discount_type' => 'required|in:'.DiscountRuleTypes::FIXED.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
+            'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
+            'percentage' => 'required_if:discount_type,'.DiscountRuleTypes::PERCENTAGE.'|numeric',
+            'amount' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|numeric',
             'regions' => 'array|required',
             'regions.*' => 'exists:regions,uuid',
             'code' => 'required|string',
@@ -41,10 +41,10 @@ class DiscountRequest extends FormRequest
             'usage_limit' => 'nullable|number',
             'conditions' => 'required|boolean',
             'operator' => 'required_if: conditions, 1|in:in,not_in',
-            'model_type' => 'required_if: conditions,1|string|' . Rule::in(['product', 'customer_group']),
+            'model_type' => 'required_if: conditions,1|string|'.Rule::in(['product', 'customer_group']),
             'products' => 'required_if: conditions, 1| array',
             'products.*' => 'required_if: conditions, 1| exists:products,uuid',
-            'metadata' => 'sometimes|json'
+            'metadata' => 'sometimes|json',
         ];
     }
 }

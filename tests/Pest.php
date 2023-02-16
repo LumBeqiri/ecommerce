@@ -1,11 +1,10 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Tests\CreatesApplication;
-use Illuminate\Foundation\Testing\TestCase;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +17,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 |
 */
 
-uses(TestCase::class,  CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
+uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -46,16 +45,14 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-
 function login($user = null)
 {
-    if($user === null) {
+    if ($user === null) {
         $user = User::factory()->create();
     }
-    
+
     Sanctum::actingAs(
         $user,
         ['*']
     );
 }
-

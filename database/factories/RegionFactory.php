@@ -22,9 +22,9 @@ class RegionFactory extends Factory
             'uuid' => $this->faker->uuid(),
             'title' => $this->faker->word(),
             'currency_id' => Currency::all()->random()->id,
-            'tax_rate' => $this->faker->randomDigit(4,30),
+            'tax_rate' => $this->faker->randomDigit(4, 30),
             'tax_code' => $this->faker->randomElement(['TEST110', 'TEST2002']),
-            'tax_provider_id' => TaxProvider::all()->random()->id
+            'tax_provider_id' => TaxProvider::all()->random()->id,
         ];
     }
 }

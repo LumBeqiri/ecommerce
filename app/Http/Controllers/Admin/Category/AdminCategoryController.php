@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Models\Category;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\CategoryResource;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 
 class AdminCategoryController extends ApiController
 {
@@ -20,13 +20,12 @@ class AdminCategoryController extends ApiController
         $categories = Category::orderBy('id')->get();
 
         return $this->showAll(CategoryResource::collection($categories));
-
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateCategoryRequest $request
+     * @param  CreateCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateCategoryRequest $request)
@@ -39,7 +38,7 @@ class AdminCategoryController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  Category $category
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
@@ -50,25 +49,24 @@ class AdminCategoryController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  CreateCategoryRequest $request
-     * @param  Category $category
+     * @param  CreateCategoryRequest  $request
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-
         $category->fill($request->only([
             'name',
             'description',
-            'slug'
+            'slug',
         ]));
 
-        if($request->parent){
-            $category->parent_id = Category::where('uuid',$request->parent)->first()->id;
+        if ($request->parent) {
+            $category->parent_id = Category::where('uuid', $request->parent)->first()->id;
         }
 
-         if(!$category->isDirty()){
-            return $this->errorResponse("Nothing to update!", 422 );
+        if (! $category->isDirty()) {
+            return $this->errorResponse('Nothing to update!', 422);
         }
 
         $category->save();
@@ -76,16 +74,16 @@ class AdminCategoryController extends ApiController
         return $this->showOne(new CategoryResource($category), 201);
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Category $category
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)
     {
         $category->delete();
+
         return $this->showOne($category);
     }
 }

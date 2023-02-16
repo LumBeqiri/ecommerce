@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\AttributeStoreRequest;
+use App\Models\Product;
+use Illuminate\Http\Request;
 
 class SellerProductAttributeController extends ApiController
 {
@@ -28,9 +28,6 @@ class SellerProductAttributeController extends ApiController
     public function store(AttributeStoreRequest $request, Product $product)
     {
         $request->validated();
-
-        
-
     }
 
     /**

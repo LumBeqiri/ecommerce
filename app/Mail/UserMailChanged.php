@@ -12,19 +12,16 @@ class UserMailChanged extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-
     /**
      * @var User
      */
     public $user;
-
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -38,6 +35,5 @@ class UserMailChanged extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->markdown('emails.confirm')->subject('Please confirm your account');
-
     }
 }

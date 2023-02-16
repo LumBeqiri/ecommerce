@@ -16,7 +16,7 @@ class TaxProviderResource extends JsonResource
     {
         return [
             'tax_provider' => $this->tax_provider,
-            'is_installed' => $this->is_installed
+            'is_installed' => $this->is_installed,
         ];
     }
 }

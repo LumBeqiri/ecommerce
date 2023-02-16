@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Models\CartItem;
 use App\Models\Media;
 use App\Models\Variant;
 

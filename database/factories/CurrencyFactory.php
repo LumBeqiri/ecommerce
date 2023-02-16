@@ -17,10 +17,15 @@ class CurrencyFactory extends Factory
     public function definition()
     {
         $currencyNames = ['Leke', 'Dollars', 'Euro'];
+
         return [
             'name' => $currencyName = $this->faker->randomElement($currencyNames),
-            'code' => match($currencyName){'Leke' => 'ALL', 'Dollars' => 'USD', 'Euro' => 'EUR'},
-            'symbol' => match($currencyName){'Leke' => 'Lek', 'Dollars' => '$', 'Euro' => '€'},
+            'code' => match ($currencyName) {
+                'Leke' => 'ALL', 'Dollars' => 'USD', 'Euro' => 'EUR'
+            },
+            'symbol' => match ($currencyName) {
+                'Leke' => 'Lek', 'Dollars' => '$', 'Euro' => '€'
+            },
         ];
     }
 }

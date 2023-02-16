@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\CustomerGroup;
 
-use App\Models\User;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use App\Models\CustomerGroup;
-use App\Services\CustomerGroupService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\CustomerGroupRequest;
 use App\Http\Resources\CustomerGroupResource;
+use App\Models\CustomerGroup;
+use App\Models\User;
+use App\Services\CustomerGroupService;
+use Illuminate\Support\Arr;
 
 class CustomerGroupController extends ApiController
 {
@@ -39,8 +38,8 @@ class CustomerGroupController extends ApiController
             ->where('user_id', auth()->id())
             ->get();
 
-        if(count($name_availabilty)){
-            return $this->showError('Name ' . $data['name'] . ' is already taken!', 422);
+        if (count($name_availabilty)) {
+            return $this->showError('Name '.$data['name'].' is already taken!', 422);
         }
 
         $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get('metadata', ''));
@@ -50,7 +49,6 @@ class CustomerGroupController extends ApiController
         $customerGroup->users()->attach($users);
 
         return $this->showOne(new CustomerGroupResource($customerGroup));
-
     }
 
     /**
@@ -62,7 +60,7 @@ class CustomerGroupController extends ApiController
     public function show(CustomerGroup $customerGroup)
     {
         $this->authorize('view', $customerGroup);
-        
+
         return $this->showOne(new CustomerGroupResource($customerGroup));
     }
 
@@ -82,7 +80,6 @@ class CustomerGroupController extends ApiController
         $customerGroup->save();
 
         return $this->showOne(new CustomerGroupResource($customerGroup));
-
     }
 
     /**

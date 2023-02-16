@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-
 
 class CartItem extends Model
 {
@@ -16,12 +14,12 @@ class CartItem extends Model
 
     protected $guarded = [];
 
-    public function cart() : BelongsTo
+    public function cart(): BelongsTo
     {
-        return $this->belongsTo(Cart::class); 
+        return $this->belongsTo(Cart::class);
     }
 
-    public function variant() : BelongsTo
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(Variant::class);
     }

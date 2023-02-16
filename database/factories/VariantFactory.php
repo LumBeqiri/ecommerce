@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Discount;
-use App\Models\User;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,8 +13,8 @@ class VariantFactory extends Factory
      *
      * @return array
      */
-
     protected $model = Variant::class;
+
     public function definition()
     {
         return [
@@ -25,23 +23,22 @@ class VariantFactory extends Factory
             'variant_name' => $this->faker->name,
             'variant_short_description' => $this->faker->paragraph(1),
             'variant_long_description' => $this->faker->text,
-            'stock' => $this->faker->randomNumber(1,6),
+            'stock' => $this->faker->randomNumber(1, 6),
             'manage_inventory' => $this->faker->boolean,
             'sku' => $this->faker->word(),
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
             'publish_status' => $this->faker->randomElement([Product::PUBLISHED, Product::DRAFT]),
-            'barcode' => $this->faker->randomNumber(1,6),
-            'ean' =>$this->faker->randomNumber(1,6),
-            'upc' => $this->faker->randomNumber(1,6),
+            'barcode' => $this->faker->randomNumber(1, 6),
+            'ean' => $this->faker->randomNumber(1, 6),
+            'upc' => $this->faker->randomNumber(1, 6),
             'allow_backorder' => $this->faker->boolean,
             'material' => $this->faker->word,
-            'weight' =>$this->faker->randomNumber(1,6),
-            'length' => $this->faker->randomNumber(1,6),
-            'height' =>$this->faker->randomNumber(1,6),
-            'width' =>$this->faker->randomNumber(1,6),
+            'weight' => $this->faker->randomNumber(1, 6),
+            'length' => $this->faker->randomNumber(1, 6),
+            'height' => $this->faker->randomNumber(1, 6),
+            'width' => $this->faker->randomNumber(1, 6),
         ];
     }
-
 
     /**
      * Indicate that the variant is available
@@ -52,7 +49,7 @@ class VariantFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'status' => Product::AVAILABLE_PRODUCT
+                'status' => Product::AVAILABLE_PRODUCT,
             ];
         });
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Contracts\UploadServiceContract;
@@ -6,19 +7,18 @@ use App\Models\Media;
 
 class UploadImagesService implements UploadServiceContract
 {
-
     /**
-     * @param mixed $model
-     * @param array $medias
-     * @param mixed $className
-     * 
+     * @param  mixed  $model
+     * @param  array  $medias
+     * @param  mixed  $className
      * @return void
      */
-    public static function upload($model, $medias, $className){
-        if($medias){
-            foreach($medias as $media){
+    public static function upload($model, $medias, $className)
+    {
+        if ($medias) {
+            foreach ($medias as $media) {
                 $name = $media->hashName();
- 
+
                 $upload = $media->store('', 'images');
                 $mediaData['mediable_id'] = $model->id;
                 $mediaData['mediable_type'] = $className;

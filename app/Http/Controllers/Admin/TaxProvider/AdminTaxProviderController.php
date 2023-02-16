@@ -69,7 +69,7 @@ class AdminTaxProviderController extends ApiController
     public function destroy(TaxProvider $taxProvider)
     {
         $taxProvider->delete();
+
         return $this->showOne(new TaxProviderResource($taxProvider));
-        
     }
 }

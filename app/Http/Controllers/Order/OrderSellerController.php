@@ -9,11 +9,11 @@ use App\Models\Order;
 class OrderSellerController extends ApiController
 {
     /**
-     * @param Order $order
-     * 
+     * @param  Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function index(Order $order){
+    public function index(Order $order)
+    {
         $sellers = $order->products()->with('seller')
         ->get()
         ->pluck('seller');

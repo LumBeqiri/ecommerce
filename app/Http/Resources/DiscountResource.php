@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\DiscountRule;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DiscountResource extends JsonResource
