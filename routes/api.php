@@ -87,12 +87,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('discounts', [DiscountController::class, 'store']);
     Route::get('discounts/{discount}', [DiscountController::class, 'show']);
     Route::put('discounts/{discount}', [DiscountController::class, 'update']);
-    Route::put('discount_conditions/{discount_condition}', [DiscountConditionController::class, 'update']);
-    Route::post('discount_conditions/{discount}', [DiscountConditionController::class, 'store']);
-    Route::delete('discount_conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
-    Route::delete('discount_conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
-    Route::delete('discount_conditions/{discount_condition}/product/{customerGroup}', [DiscountConditionController::class, 'removeCustomerGroup']);
     Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
+    Route::get('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'show']);
+    Route::put('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'update']);
+    Route::post('discount-conditions/{discount}', [DiscountConditionController::class, 'store']);
+    Route::delete('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
+    Route::delete('discount-conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
+    Route::delete('discount-conditions/{discount_condition}/product/{customerGroup}', [DiscountConditionController::class, 'removeCustomerGroup']);
 
 });
 

@@ -72,8 +72,15 @@ class DiscountConditionController extends ApiController
      */
     public function update(UpdateDiscountConditionRequest $request, DiscountCondition $discount_condition)
     {
-        $products = Product::whereIn('uuid', $request->products)->pluck('id'); 
-        $discount_condition->products()->syncWithoutDetaching($products);   
+        if($request->has('products')){
+            $products = Product::whereIn('uuid', $request->products)->pluck('id'); 
+            $discount_condition->products()->syncWithoutDetaching($products);   
+        }
+        if($request->has('customer_group')){
+            $products = CustomerGroup::whereIn('uuid', $request->customer_group)->pluck('id'); 
+            $discount_condition->customer_groups()->syncWithoutDetaching($products);   
+        }
+
 
         return $this->showOne(new DiscountConditionResource($discount_condition));
     }
