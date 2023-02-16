@@ -21,7 +21,8 @@ class DiscountController extends ApiController
      */
     public function index()
     {
-        //
+        $discounts = Discount::with(['discount_rule.discount_conditions.products', 'discount_rule.discount_conditions.customer_groups'])->get();
+        return $this->showAll(DiscountResource::collection($discounts));
     }
 
     /**

@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Discount;
 
-use PDO;
 use App\Models\Product;
 use App\Models\Discount;
 use App\Models\CustomerGroup;
 use App\Models\DiscountCondition;
 use App\Http\Controllers\ApiController;
-use Illuminate\Validation\ValidationException;
 use App\Http\Requests\DiscountConditionRequest;
 use App\Http\Resources\DiscountConditionResource;
 use App\Http\Requests\UpdateDiscountConditionRequest;
@@ -49,7 +47,7 @@ class DiscountConditionController extends ApiController
             $discountCondition->products()->attach($products);
         }
 
-        return $this->showOne(new DiscountConditionResource($discountCondition));
+        return $this->showOne(new DiscountConditionResource($discountCondition->load('products', 'customer_groups')));
         
 
     }

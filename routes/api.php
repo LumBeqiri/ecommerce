@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('variants/{variant}', [SellerVariantController::class, 'destroy']);
 
 
+    Route::get('discounts', [DiscountController::class, 'index']);
     Route::post('discounts', [DiscountController::class, 'store']);
     Route::get('discounts/{discount}', [DiscountController::class, 'show']);
     Route::put('discounts/{discount}', [DiscountController::class, 'update']);
