@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Discount;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\DiscountConditionRequest;
+use PDO;
 use App\Models\Product;
 use App\Models\Discount;
+use App\Models\CustomerGroup;
 use App\Models\DiscountCondition;
-use App\Http\Requests\UpdateDiscountConditionRequest;
+use App\Http\Controllers\ApiController;
+use Illuminate\Validation\ValidationException;
+use App\Http\Requests\DiscountConditionRequest;
 use App\Http\Resources\DiscountConditionResource;
+use App\Http\Requests\UpdateDiscountConditionRequest;
 
 class DiscountConditionController extends ApiController
 {
@@ -30,8 +33,25 @@ class DiscountConditionController extends ApiController
      */
     public function store(DiscountConditionRequest $request, Discount $discount)
     {
-        $products = Product::whereIn('uuid', $request->products)->pluck('id'); 
-        $discount->discount_rule()->discount_condition()->products()->attach($products);
+        $discountCondition = $discount->discount_rule->discount_conditions()->create([
+            'model_type' => $request->model_type,
+            'operator' => $request->operator,
+            'metadata' => $request->metadata ?? null,
+        ]);
+
+        if ($request->has('products')) {
+            $discountCondition->model_type = $request->model_type;
+            $products = Product::whereIn('uuid', $request->products)->pluck('id');
+            $discountCondition->products()->attach($products);
+        }
+        if ($request->has('customer_group')) {
+            $products = Product::whereIn('uuid', $request->products)->pluck('id');
+            $discountCondition->products()->attach($products);
+        }
+
+        return $this->showOne(new DiscountConditionResource($discountCondition));
+        
+
     }
 
     /**
@@ -64,6 +84,12 @@ class DiscountConditionController extends ApiController
         $discount_condition->products()->detach($product);
 
         return $this->showMessage('Product Removed Successfully!');
+    }
+
+    public function removeCustomerGroup( DiscountCondition $discount_condition, CustomerGroup $customerGroup){
+        $discount_condition->customer_groups()->detach($customerGroup);
+
+        return $this->showMessage('Customer Group Removed Successfully!');
     }
 
     /**

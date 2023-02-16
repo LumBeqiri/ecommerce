@@ -19,7 +19,8 @@ class DiscountConditionResource extends JsonResource
             'model_type' => $this->model_type,
             'operator' => $this->operator,
             'metadata' => $this->metadata,
-            'products' => ProductResource::collection($this->whenLoaded('products'))
+            'products' => ProductResource::collection($this->whenLoaded('products')),
+            'customer_groups' => CustomerGroupResource::collection($this->whenLoaded('customer_groups')),
         ];
     }
 }

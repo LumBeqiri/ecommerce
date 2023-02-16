@@ -71,7 +71,7 @@ class DiscountController extends ApiController
             $discount->regions()->attach($regions);
 
             if ($request->has('conditions')) {
-                $discountCondition = $discountRule->discount_condition()->create([
+                $discountCondition = $discountRule->discount_conditions()->create([
                     'model_type' => $request->model_type,
                     'operator' => $request->operator,
                     'metadata' => $request->metadata ?? null,

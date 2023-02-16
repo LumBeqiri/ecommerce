@@ -44,6 +44,7 @@ class DiscountRequest extends FormRequest
             'model_type' => 'required_if: conditions,1|string|' . Rule::in(['product', 'customer_group']),
             'products' => 'required_if: conditions, 1| array',
             'products.*' => 'required_if: conditions, 1| exists:products,uuid',
+            'metadata' => 'sometimes|json'
         ];
     }
 }

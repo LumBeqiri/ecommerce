@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Product;
 use App\Traits\HasUuid;
 use App\Models\DiscountRule;
+use App\Models\CustomerGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,11 @@ class DiscountCondition extends Model
     public function products() : BelongsToMany
     {
         return $this->belongsToMany(Product::class);
+    }
+
+    public function customer_groups() : BelongsToMany
+    {
+        return $this->belongsToMany(CustomerGroup::class);
     }
 
 }
