@@ -26,18 +26,16 @@ class UpdateDiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'discount_type' => 'sometimes|in:'.DiscountRuleTypes::FIXED.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
             'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
-            'percentage' => 'required_if:discount_type,'.DiscountRuleTypes::PERCENTAGE.'|numeric',
-            'amount' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|numeric',
+            'value' => 'required_if:discount_type,'.DiscountRuleTypes::PERCENTAGE.'|numeric',
             'regions' => 'array',
             'regions.*' => 'exists:regions,uuid',
             'code' => 'sometimes|string',
             'description' => 'sometimes|string|max:255',
             'is_dynamic' => 'nullable|boolean',
-            'starts_at' => 'nullable|timestamp',
-            'ends_at' => 'nullable|timestamp',
-            'usage_limit' => 'nullable|number',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date',
+            'usage_limit' => 'nullable|numeric',
         ];
     }
 }

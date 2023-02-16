@@ -42,7 +42,7 @@ class DiscountController extends ApiController
 
         $newDiscount = DB::transaction(function () use ($request) {
             $discountRule = DiscountRule::create(
-                ['value' => $request->percentage ?? $request->amount]
+                ['value' => $request->value]
                 +
                 $request->only([
                     'description',
@@ -116,18 +116,37 @@ class DiscountController extends ApiController
      */
     public function update(UpdateDiscountRequest $request, Discount $discount)
     {
-        $dataToUpdate = $request->validated();
+        $request->validated();
 
-        if ($request->has('code')) {
-            if ($this->validate_code($request->code)) {
-                return $this->showError('Code '.$request->code.' is already taken!', 422);
+        DB::transaction(function () use ($request, $discount) {
+
+            if ($request->has('code')) {
+                if ($this->validate_code($request->code)) {
+                    return $this->showError('Code '.$request->code.' is already taken!', 422);
+                }
             }
-        }
 
-        $discount->fill($dataToUpdate);
-
-        $discount->save();
-
+            $discount->discount_rule()->update([
+                'description' => $request->description,
+                'value' => $request->value,
+            ]);
+        
+            $discount->fill($request->only([
+                'code',
+                'is_dynamic',
+                'is_disabled',
+                'parent_id',
+                'starts_at',
+                'ends_at',
+                'usage_limit',
+                'usage_count',
+            ]));
+            $discount->save();
+        
+            $regions = Region::whereIn('uuid', $request->regions)->pluck('id');
+            $discount->regions()->sync($regions);
+        });
+        
         return $this->showOne(new DiscountResource($discount));
     }
 

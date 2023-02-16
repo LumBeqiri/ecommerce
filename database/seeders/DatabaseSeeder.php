@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
         DB::table('attribute_variant')->truncate();
         DB::table('category_product')->truncate();
         DB::table('order_product')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // in order to not send emails to fake accounts when seeding the db, we call flushEventListenres() method
         User::flushEventListeners();
@@ -58,7 +59,6 @@ class DatabaseSeeder extends Seeder
         $categoriesQuantity = 30;
         $productsQuantity = 50;
         $variantsQuantity = 30;
-        $ordersQuantity = 50;
 
         $adminUser = User::factory()->create([
             'uuid' => 'f4e367e1-aefe-33de-8e38-5f8b2ef1bead',
@@ -96,15 +96,6 @@ class DatabaseSeeder extends Seeder
                 $variant->attributes()->attach($attributes);
             }
         );
-
-        // Media::factory($imagesQuantity)->create();
-
-        // Order::factory($ordersQuantity)->create()->each(
-        //     function($order){
-        //         $products = Product::all()->random(mt_rand(1, 5))->pluck('id');
-        //         $order->products()->attach($products);
-        //     }
-        // );
 
         Cart::factory(10)->create();
         CartItem::factory(20)->create();
