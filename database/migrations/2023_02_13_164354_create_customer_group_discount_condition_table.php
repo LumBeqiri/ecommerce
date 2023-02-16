@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customer_group_dicount_condition', function (Blueprint $table) {
+        Schema::create('customer_group_discount_condition', function (Blueprint $table) {
             $table->foreignId('discount_condition_id')->constrained('discount_conditions')->cascadeOnDelete();
             $table->foreignId('customer_group_id')->constrained('customer_groups')->cascadeOnDelete();
             $table->timestamps();
