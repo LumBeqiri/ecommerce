@@ -13,7 +13,7 @@ class AdminCategoryController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -49,9 +49,7 @@ class AdminCategoryController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  CreateCategoryRequest  $request
-     * @param  Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {

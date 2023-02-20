@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\MediasRequest;
-use App\Http\Resources\MediaResource;
-use App\Http\Resources\VariantResource;
 use App\Models\Media;
 use App\Models\Variant;
-use App\Services\UploadImagesService;
+use App\Http\Requests\MediasRequest;
+use App\Services\UploadImageService;
+use App\Http\Resources\MediaResource;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
 use Illuminate\Support\Facades\Storage;
 
 class SellerVariantMediaController extends ApiController
@@ -36,7 +36,7 @@ class SellerVariantMediaController extends ApiController
         $medias = $request->file('medias');
 
         try {
-            UploadImagesService::upload($variant, $medias, Variant::class);
+            UploadImageService::upload($variant, $medias, Variant::class);
         } catch (\Throwable $th) {
             return $this->showError('Something went wrong');
         }

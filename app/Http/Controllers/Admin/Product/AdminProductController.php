@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\UpdateProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Seller;
 use App\Models\User;
-use App\Services\UploadImageService;
+use App\Models\Seller;
+use App\Models\Product;
+use App\Models\Category;
+use App\Services\UploadImagesService;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
+use App\Http\Requests\UpdateProductRequest;
 
 class AdminProductController extends ApiController
 {
@@ -47,7 +47,7 @@ class AdminProductController extends ApiController
             $request_images = count($request->file('medias'));
             abort_if($request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
 
-            UploadImageService::upload($product, $images, Product::class);
+            UploadImagesService::upload($product, $images, Product::class);
         }
 
         $product->fill($request->except(['categories', 'seller_id']));

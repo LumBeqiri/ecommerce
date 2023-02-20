@@ -31,6 +31,12 @@ trait ApiResponser
         return response()->json(['error' => $message, 'code' => $code], $code);
     }
 
+    /**
+     * @param string $message
+     * @param int $code
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function showError($message = 'An error ocurred', $code = 400)
     {
         return $this->errorResponse($message, $code);
