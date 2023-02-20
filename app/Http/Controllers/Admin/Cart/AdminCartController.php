@@ -16,7 +16,7 @@ class AdminCartController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -30,7 +30,6 @@ class AdminCartController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(Cart $cart)
@@ -44,10 +43,7 @@ class AdminCartController extends ApiController
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(CartRequest $request, Cart $cart)
     {
@@ -62,8 +58,7 @@ class AdminCartController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Cart $cart)
     {
@@ -73,18 +68,13 @@ class AdminCartController extends ApiController
     }
 
     /**
-     * @param  CartItemRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function remove_from_cart(Request $request, Cart $cart, Variant $variant)
     {
         $data = $request->validate([
             'count' => 'integer|min:1|max:500',
         ]);
-
-        if (! $cart) {
-            return $this->errorResponse('Shopping cart missing', 404);
-        }
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 

@@ -37,7 +37,7 @@ trait ApiResponser
     }
 
     /**
-     * @param  Collection<int, Model>  $collection
+     * @param  $collection
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */

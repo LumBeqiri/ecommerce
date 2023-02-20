@@ -79,8 +79,6 @@ class Handler extends ExceptionHandler
             return $this->errorResponse('The specified url cannot be found ', 404);
         }
 
-        // ATTENTION
-        // exception->getSatusCode instead of getCode()
         if ($exception instanceof HttpException) {
             return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
         }
