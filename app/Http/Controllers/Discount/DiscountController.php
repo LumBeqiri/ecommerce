@@ -119,7 +119,6 @@ class DiscountController extends ApiController
         $request->validated();
 
         DB::transaction(function () use ($request, $discount) {
-
             if ($request->has('code')) {
                 if ($this->validate_code($request->code)) {
                     return $this->showError('Code '.$request->code.' is already taken!', 422);
@@ -130,7 +129,7 @@ class DiscountController extends ApiController
                 'description' => $request->description,
                 'value' => $request->value,
             ]);
-        
+
             $discount->fill($request->only([
                 'code',
                 'is_dynamic',
@@ -142,11 +141,11 @@ class DiscountController extends ApiController
                 'usage_count',
             ]));
             $discount->save();
-        
+
             $regions = Region::whereIn('uuid', $request->regions)->pluck('id');
             $discount->regions()->sync($regions);
         });
-        
+
         return $this->showOne(new DiscountResource($discount));
     }
 

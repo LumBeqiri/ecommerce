@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Cart;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CartItemRequest;
 use App\Http\Requests\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
@@ -43,6 +42,7 @@ class AdminCartController extends ApiController
 
     /**
      * Update the specified resource in storage.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(CartRequest $request, Cart $cart)

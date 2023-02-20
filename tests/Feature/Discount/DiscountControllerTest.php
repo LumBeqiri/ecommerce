@@ -122,9 +122,8 @@ it('can store percentage discount with conditions', function () {
             'products' => Product::all()->pluck('uuid'),
         ]
     );
-    
-    $response->assertStatus(200);
 
+    $response->assertStatus(200);
 
     $discount_rule_uuid = $response->json('discount_rule.id');
     $discount_code = $response->json('code');
@@ -187,16 +186,12 @@ it('can update percentage discount', function () {
     expect($response->json('starts_at'))
         ->not()->toBeNull(null);
     expect($response->json('ends_at'))
-         ->not()->toBeNull(null);        
+         ->not()->toBeNull(null);
     expect($response->json('is_dynamic'))
         ->toBe($is_dynamic);
 
     $this->assertDatabaseHas('discount_region', ['discount_id' => $discount->id, 'region_id' => $region->id]);
-    
-        
 });
-
-
 
 it('can delete discount', function () {
     TaxProvider::factory()->create();
@@ -215,6 +210,4 @@ it('can delete discount', function () {
     $response->assertStatus(204);
 
     $this->assertDatabaseMissing(Discount::class, ['id' => $discount->id]);
-    
-        
 });

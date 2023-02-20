@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Models\User;
-use App\Models\Seller;
-use App\Models\Product;
-use App\Models\Category;
-use App\Services\UploadImageService;
-use App\Services\UploadImagesService;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Seller;
+use App\Models\User;
+use App\Services\UploadImageService;
 
 class AdminProductController extends ApiController
 {

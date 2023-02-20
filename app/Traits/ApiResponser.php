@@ -3,9 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,9 +30,8 @@ trait ApiResponser
     }
 
     /**
-     * @param string $message
-     * @param int $code
-     * 
+     * @param  string  $message
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
     protected function showError($message = 'An error ocurred', $code = 400)
@@ -43,7 +40,7 @@ trait ApiResponser
     }
 
     /**
-     * @param  $collection
+     * @param    $collection
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */

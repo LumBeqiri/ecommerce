@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\Region;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Attribute;
-use App\Models\VariantPrice;
-use Illuminate\Support\Facades\DB;
-use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use App\Services\UploadImageService;
+use Illuminate\Support\Facades\DB;
 
 class SellerVariantController extends ApiController
 {

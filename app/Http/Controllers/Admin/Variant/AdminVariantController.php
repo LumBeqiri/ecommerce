@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Variant;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
 use App\Models\Variant;
 use App\Models\VariantPrice;
 use App\Services\UploadImageService;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
-use App\Http\Requests\UpdateVariantRequest;
 
 class AdminVariantController extends ApiController
 {
