@@ -11,7 +11,7 @@ class PriceService
         return $priceInCents / 100;
     }
 
-    public static function priceToCents($priceInEuro): int
+    public static function priceToCents(int $priceInEuro): int
     {
         return $priceInEuro * 100;
     }

@@ -11,7 +11,7 @@ class AttributeController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -19,8 +19,7 @@ class AttributeController extends ApiController
     }
 
     /**
-     * @param  AttributeStoreRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(AttributeStoreRequest $request)
     {
@@ -32,8 +31,7 @@ class AttributeController extends ApiController
     }
 
     /**
-     * @param  Attribute  $attribute
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Attribute $attribute)
     {
@@ -41,9 +39,7 @@ class AttributeController extends ApiController
     }
 
     /**
-     * @param  AttributeStoreRequest  $request
-     * @param  Attribute  $attribute
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(AttributeStoreRequest $request, Attribute $attribute)
     {
@@ -56,9 +52,7 @@ class AttributeController extends ApiController
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  Attribute  $attribute
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Attribute $attribute)
     {

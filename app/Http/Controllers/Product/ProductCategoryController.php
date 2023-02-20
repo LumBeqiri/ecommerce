@@ -10,7 +10,7 @@ class ProductCategoryController extends ApiController
 {
     /**
      * @param  Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Product $product)
     {

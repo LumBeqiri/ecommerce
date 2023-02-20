@@ -9,7 +9,7 @@ class CustomerGroupService
     /**
      * @param  mixed  $name
      * @param  mixed  $metadata
-     * @return App\Models\CustomerGroup
+     * @return CustomerGroup
      */
     public function createCustomerGroup($name, $metadata = null)
     {
@@ -20,12 +20,12 @@ class CustomerGroupService
         ]);
     }
 
-    /**
-     * @param  mixed  $users
-     * @param  App\Models\CustomerGroup  $custom_group
-     * @return [type]
-     */
-    public function addUsersToCustomGroup($users, $custom_group)
-    {
-    }
+    // /**
+    //  * @param  mixed  $users
+    //  * @param  App\Models\CustomerGroup  $custom_group
+    //  * @return [type]
+    //  */
+    // public function addUsersToCustomGroup($users, $custom_group)
+    // {
+    // }
 }

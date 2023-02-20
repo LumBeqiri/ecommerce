@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\InvokableRule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Validation\InvokableRule;
 
 class UniqueDiscountConditionModelType implements InvokableRule
 {
@@ -20,6 +20,7 @@ class UniqueDiscountConditionModelType implements InvokableRule
         $discount = request()->route('discount');
         $count = DB::table('discount_conditions')
             ->where('model_type', $value)
+            /** @phpstan-ignore-next-line */
             ->where('id', '!=', $discount ? $discount->id : null)
             ->count();
 

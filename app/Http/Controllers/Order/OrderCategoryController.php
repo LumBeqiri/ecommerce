@@ -9,8 +9,7 @@ use App\Models\Order;
 class OrderCategoryController extends ApiController
 {
     /**
-     * @param  Order  $order
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse.
      */
     public function index(Order $order)
     {

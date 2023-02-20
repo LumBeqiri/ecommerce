@@ -19,7 +19,7 @@ class SellerVariantController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Product $product)
     {
@@ -30,9 +30,7 @@ class SellerVariantController extends ApiController
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  StoreVariantRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreVariantRequest $request, Product $product)
     {
@@ -60,10 +58,7 @@ class SellerVariantController extends ApiController
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  UpdateVariantRequest  $request
-     * @param  Variant  $variant
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateVariantRequest $request, Variant $variant)
     {
@@ -104,8 +99,7 @@ class SellerVariantController extends ApiController
     }
 
     /**
-     * @param  Variant  $variant
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Variant $variant)
     {
@@ -116,7 +110,11 @@ class SellerVariantController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    private function createVariantPrice($variant_prices, $newVariant)
+    /**
+     * @param array<string, mixed> $variant_prices
+     * @return void
+     */
+    private function createVariantPrice(array $variant_prices, Variant $newVariant) : void
     {
         foreach ($variant_prices as $variant_price) {
             $variant_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;
@@ -125,7 +123,11 @@ class SellerVariantController extends ApiController
         }
     }
 
-    private function updateVariantPrice($variant_prices, $variant)
+    /**
+     * @param array<string, mixed> $variant_prices
+     * @return void
+     */
+    private function updateVariantPrice(array $variant_prices, Variant $variant) : void
     {
         foreach ($variant_prices as $variant_price) {
             $product_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;

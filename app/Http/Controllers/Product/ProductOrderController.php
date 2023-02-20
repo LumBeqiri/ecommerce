@@ -8,6 +8,11 @@ use App\Models\Product;
 
 class ProductOrderController extends ApiController
 {
+    /**
+     * @param Product $product
+     * 
+     * @return \Illuminate\Http\JsonResponse.
+     */
     public function index(Product $product)
     {
         $orders = $product->orders;

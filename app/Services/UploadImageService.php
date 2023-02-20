@@ -4,12 +4,13 @@ namespace App\Services;
 
 use App\Contracts\UploadServiceContract;
 use App\Models\Media;
+use Illuminate\Http\UploadedFile;
 
 class UploadImageService implements UploadServiceContract
 {
     /**
      * @param  mixed  $model
-     * @param  array  $medias
+     * @param  array<int, UploadedFile>  $medias
      * @param  mixed  $className
      * @return void
      */
@@ -18,7 +19,6 @@ class UploadImageService implements UploadServiceContract
         if ($medias) {
             foreach ($medias as $media) {
                 $name = $media->hashName();
-
                 $upload = $media->store('', 'images');
                 $mediaData['mediable_id'] = $model->id;
                 $mediaData['mediable_type'] = $className;

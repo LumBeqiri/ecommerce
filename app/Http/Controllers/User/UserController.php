@@ -14,7 +14,7 @@ class UserController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -25,9 +25,7 @@ class UserController extends ApiController
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  StoreUserRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreUserRequest $request)
     {
@@ -45,8 +43,7 @@ class UserController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(User $user)
     {
@@ -56,9 +53,7 @@ class UserController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreUserRequest  $request
-     * @param  User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(StoreUserRequest $request, User $user)
     {
@@ -93,14 +88,6 @@ class UserController extends ApiController
         if ($request->has('phone')) {
             $user->phone = $request->phone;
         }
-
-        if ($request->has('admin')) {
-            if (! $user->isVerified()) {
-                return $this->errorResponse('Only verified users can modify the admin field', 409);
-            }
-            $user->admin = $request->admin;
-        }
-
         if (! $user->isDirty()) {
             return $this->errorResponse('Please specify a field to update', 409);
         }
@@ -113,8 +100,7 @@ class UserController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(User $user)
     {
@@ -123,6 +109,11 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
+    /**
+     * @param mixed $token
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function verify($token)
     {
         $user = User::where('verification_token', $token)->firstOrFail();
@@ -136,6 +127,9 @@ class UserController extends ApiController
         return $this->showMessage('Account has been verified!');
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function resend(User $user)
     {
         if ($user->isVerified()) {
