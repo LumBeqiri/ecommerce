@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Category;
+use App\Services\UploadImageService;
 use App\Services\UploadImagesService;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
@@ -47,7 +48,7 @@ class AdminProductController extends ApiController
             $request_images = count($request->file('medias'));
             abort_if($request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
 
-            UploadImagesService::upload($product, $images, Product::class);
+            UploadImageService::upload($product, $images, Product::class);
         }
 
         $product->fill($request->except(['categories', 'seller_id']));
