@@ -16,7 +16,7 @@ class AdminProductController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -24,7 +24,6 @@ class AdminProductController extends ApiController
     }
 
     /**
-     * @param  Product  $product
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Product $product)
@@ -33,9 +32,6 @@ class AdminProductController extends ApiController
     }
 
     /**
-     * @param  UpdateProductRequest  $request
-     * @param  Seller  $seller
-     * @param  Product  $product
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateProductRequest $request, Product $product)
@@ -68,8 +64,7 @@ class AdminProductController extends ApiController
      * Remove the specified resource from storage.
      * See ProductObserver
      *
-     * @param  Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Product $product)
     {
@@ -83,8 +78,6 @@ class AdminProductController extends ApiController
     /**
      * Delete category from product
      *
-     * @param  Product  $product
-     * @param  Category  $category
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete_product_category(Product $product, Category $category)

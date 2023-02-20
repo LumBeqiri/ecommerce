@@ -6,15 +6,12 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\TaxProviderRequest;
 use App\Http\Resources\TaxProviderResource;
 use App\Models\TaxProvider;
+use Illuminate\Http\JsonResponse;
 
 class AdminTaxProviderController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         $taxProviders = TaxProvider::all();
 

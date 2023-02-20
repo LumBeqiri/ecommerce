@@ -8,28 +8,20 @@ use App\Http\Requests\UpdateRegionRequest;
 use App\Http\Resources\RegionResource;
 use App\Models\Country;
 use App\Models\Region;
+use Illuminate\Http\JsonResponse;
 
 class AdminRegionController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         $regions = Region::all();
 
         return $this->showAll(RegionResource::collection($regions));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(RegionRequest $request)
+
+    public function store(RegionRequest $request) : JsonResponse
     {
         $data = $request->validated();
         $region = Region::create($request->except('countries'));
@@ -43,23 +35,14 @@ class AdminRegionController extends ApiController
         return $this->showOne(new RegionResource($region));
     }
 
-    /**
-     * @param  Region  $region
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Region $region)
+
+    public function show(Region $region) : JsonResponse
     {
         return $this->showOne(new RegionResource($region));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateRegionRequest $request, Region $region)
+
+    public function update(UpdateRegionRequest $request, Region $region) : JsonResponse
     {
         $data = $request->validated();
 
@@ -70,7 +53,7 @@ class AdminRegionController extends ApiController
         return $this->showOne($region);
     }
 
-    public function updateCountries(UpdateRegionRequest $request, Region $region)
+    public function updateCountries(UpdateRegionRequest $request, Region $region) : JsonResponse
     {
         $data = $request->validated();
         $countries = $data['countries'];
@@ -82,7 +65,7 @@ class AdminRegionController extends ApiController
         return $this->showMessage('Region updated successfully');
     }
 
-    public function removeCountries(UpdateRegionRequest $request, Region $region)
+    public function removeCountries(UpdateRegionRequest $request, Region $region) : JsonResponse
     {
         $data = $request->validated();
         $countries = $data['countries'];
@@ -92,11 +75,7 @@ class AdminRegionController extends ApiController
         return $this->showMessage('Region updated successfully');
     }
 
-    /**
-     * @param  Region  $region
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Region $region)
+    public function destroy(Region $region) : JsonResponse
     {
         $region->delete();
 
