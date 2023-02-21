@@ -99,7 +99,9 @@ class SellerVariantController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-
+    /**
+     * @param array<string, mixed> $variant_prices
+     */
     private function createVariantPrice(array $variant_prices, Variant $newVariant) : void
     {
         foreach ($variant_prices as $variant_price) {

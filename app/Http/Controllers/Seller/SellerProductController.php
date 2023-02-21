@@ -100,7 +100,7 @@ class SellerProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    protected function removeCategories($start_id, $end_id) : void
+    protected function removeCategories(int $start_id, int $end_id) : void
     {
         $products = Product::all();
         foreach ($products as $product) {

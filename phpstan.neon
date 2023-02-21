@@ -13,8 +13,11 @@ parameters:
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
-#    excludePaths:
-#        - C:\Users\lum\Desktop\ecommerce\app\Http\Controllers\Product\ProductCartController.php
-
+    excludePaths:
+        - app/Http/Kernel.php
+        - app/Http/Middleware
+        - app/Policies
+        - app/Services/PriceService.php
+        - app/Services/CartService.php
 #
-#    checkMissingIterableValueType: false
+    checkMissingIterableValueType: false

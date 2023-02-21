@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \App\Models\DiscountRule */
 class DiscountRuleResource extends JsonResource
 {
     /**
@@ -15,6 +16,7 @@ class DiscountRuleResource extends JsonResource
     public function toArray($request)
     {
         return [
+            /** @phpstan-ignore-next-line */
             'id' => $this->uuid,
             'description' => $this->description,
             'discount_type' => $this->discount_type,

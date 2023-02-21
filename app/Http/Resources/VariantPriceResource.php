@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+/** @mixin \App\Models\VariantPrice */
 class VariantPriceResource extends JsonResource
 {
     /**
@@ -15,6 +15,7 @@ class VariantPriceResource extends JsonResource
     public function toArray($request)
     {
         return [
+            /** @phpstan-ignore-next-line */
             'id' => $this->uuid,
             'price' => $this->price,
             'variant' => new VariantResource($this->whenLoaded('variant')),

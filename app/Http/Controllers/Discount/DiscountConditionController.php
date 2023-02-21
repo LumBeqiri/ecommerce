@@ -17,7 +17,7 @@ class DiscountConditionController extends ApiController
 
     public function index(Discount $discount) : JsonResponse
     {
-        return $this->showAll(DiscountConditionResource::collection($discount->discount_rule()->discount_conditions()->get()));
+        return $this->showAll(DiscountConditionResource::collection($discount->discount_rule->discount_conditions()->get()));
     }
 
     public function store(DiscountConditionRequest $request, Discount $discount) : JsonResponse
@@ -61,14 +61,14 @@ class DiscountConditionController extends ApiController
         return $this->showOne(new DiscountConditionResource($discount_condition));
     }
 
-    public function removeProduct(DiscountCondition $discount_condition, Product $product)
+    public function removeProduct(DiscountCondition $discount_condition, Product $product) : JsonResponse
     {
         $discount_condition->products()->detach($product);
 
         return $this->showMessage('Product Removed Successfully!');
     }
 
-    public function removeCustomerGroup(DiscountCondition $discount_condition, CustomerGroup $customerGroup)
+    public function removeCustomerGroup(DiscountCondition $discount_condition, CustomerGroup $customerGroup) : JsonResponse
     {
         $discount_condition->customer_groups()->detach($customerGroup);
 

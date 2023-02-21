@@ -3,9 +3,11 @@
 namespace App\Traits;
 
 use App\Models\User;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 trait ApiResponser
 {
@@ -39,12 +41,7 @@ trait ApiResponser
         return $this->errorResponse($message, $code);
     }
 
-    /**
-     * @param    $collection
-     * @param  int  $code
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function showAll($collection, $code = 200, $paginate = true)
+    protected function showAll(mixed $collection, int $code = 200, bool $paginate = true) : JsonResponse
     {
         if ($collection->isEmpty()) {
             return $this->successResponse(['data' => $collection], $code);
@@ -57,7 +54,7 @@ trait ApiResponser
         return $this->successResponse($collection, $code);
     }
 
-    protected function showOne($instance, $code = 200)
+    protected function showOne(mixed $instance, int $code = 200) : JsonResponse
     {
         return $this->successResponse($instance, $code);
     }
@@ -72,7 +69,7 @@ trait ApiResponser
         return $this->successResponse(['data' => $message], $code);
     }
 
-    protected function paginate($collection)
+    protected function paginate(mixed $collection) : LengthAwarePaginator
     {
         $rules = [
             'per_page' => 'integer|min:2|max:50',

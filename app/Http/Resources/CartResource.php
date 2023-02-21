@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Services\PriceService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \App\Models\Cart */
 class CartResource extends JsonResource
 {
     /**

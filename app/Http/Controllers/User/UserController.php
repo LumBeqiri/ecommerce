@@ -88,7 +88,7 @@ class UserController extends ApiController
     }
 
 
-    public function verify($token) : JsonResponse
+    public function verify(string $token) : JsonResponse
     { 
         $user = User::where('verification_token', $token)->firstOrFail();
 

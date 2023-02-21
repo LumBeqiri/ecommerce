@@ -15,25 +15,15 @@ use App\Http\Requests\UpdateDiscountRequest;
 
 class DiscountController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         $discounts = Discount::with(['discount_rule.discount_conditions.products', 'discount_rule.discount_conditions.customer_groups'])->get();
 
         return $this->showAll(DiscountResource::collection($discounts));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(DiscountRequest $request)
+    public function store(DiscountRequest $request) : JsonResponse
     {
         $request->validated();
 
@@ -144,7 +134,7 @@ class DiscountController extends ApiController
         return $this->showMessage('Discount deleted successfully!');
     }
 
-    private function validate_code($code) : bool
+    private function validate_code(string $code) : bool
     {
         $code_availabilty = Discount::where('code', $code)
             ->where('seller_id', auth()->id())

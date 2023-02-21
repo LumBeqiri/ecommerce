@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
+use Illuminate\Database\Eloquent\Collection;
 
 class SellerVariantAttributeController extends ApiController
 {
@@ -28,11 +29,9 @@ class SellerVariantAttributeController extends ApiController
         return $this->showOne(new VariantResource($variant->load(['attributes'])));
     }
 
-    public function show($variant) : JsonResponse
+    public function show(Variant $variant) : JsonResponse
     {
-        $vr = Variant::select(['id', 'barcode', 'sku', 'stock', 'ean'])->where('uuid', $variant)->first();
-
-        return $this->showOne($vr->load('attributes'));
+        return $this->showOne($variant->load('attributes'));
     }
 
     public function destroy(Variant $variant, Attribute $attribute) : JsonResponse
@@ -42,7 +41,7 @@ class SellerVariantAttributeController extends ApiController
         return $this->showMessage('Attribute removed successfully!');
     }
 
-    private function duplicateAttribute($variant, $attributes): bool
+    private function duplicateAttribute(Variant $variant, Collection $attributes): bool
     {
         // in order to use duplicates(),
         // we transform our eloquent collection in a Illuminate/Support/Collection
