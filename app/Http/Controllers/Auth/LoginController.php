@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends ApiController
 {
-
-    public function __invoke(LoginRequest $request) : JsonResponse
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         $data = $request->validated();
 

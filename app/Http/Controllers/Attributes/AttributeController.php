@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Attributes;
 
-use App\Models\Attribute;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\AttributeStoreRequest;
+use App\Models\Attribute;
+use Illuminate\Http\JsonResponse;
 
 class AttributeController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         return $this->showAll(Attribute::all());
     }
 
-
-    public function store(AttributeStoreRequest $request) : JsonResponse
+    public function store(AttributeStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -25,14 +23,12 @@ class AttributeController extends ApiController
         return $this->showOne($attribute);
     }
 
-
-    public function show(Attribute $attribute) : JsonResponse
+    public function show(Attribute $attribute): JsonResponse
     {
         return $this->showOne($attribute);
     }
 
-
-    public function update(AttributeStoreRequest $request, Attribute $attribute) : JsonResponse
+    public function update(AttributeStoreRequest $request, Attribute $attribute): JsonResponse
     {
         $data = $request->validated();
 
@@ -41,8 +37,7 @@ class AttributeController extends ApiController
         return $this->showOne($attribute);
     }
 
-
-    public function destroy(Attribute $attribute) : JsonResponse
+    public function destroy(Attribute $attribute): JsonResponse
     {
         $attribute->delete();
 

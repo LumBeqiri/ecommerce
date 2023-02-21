@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class AdminUserController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         return $this->showAll(UserResource::collection(User::all()));
     }
 
-    public function store(StoreUserRequest $request) : JsonResponse
+    public function store(StoreUserRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -29,12 +28,12 @@ class AdminUserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    public function show(User $user) : JsonResponse
+    public function show(User $user): JsonResponse
     {
         return $this->showOne(new UserResource($user));
     }
 
-    public function update(StoreUserRequest $request, User $user) : JsonResponse
+    public function update(StoreUserRequest $request, User $user): JsonResponse
     {
         $request->validated();
 
@@ -66,8 +65,7 @@ class AdminUserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-
-    public function destroy(User $user) : JsonResponse
+    public function destroy(User $user): JsonResponse
     {
         if ($user->id == 1) {
             return $this->showError('This user cannot be deleted');

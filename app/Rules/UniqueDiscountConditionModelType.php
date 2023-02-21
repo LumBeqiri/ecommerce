@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Support\Facades\DB;
 
 class UniqueDiscountConditionModelType implements InvokableRule
 {

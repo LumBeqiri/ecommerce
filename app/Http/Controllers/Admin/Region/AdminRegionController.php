@@ -12,16 +12,14 @@ use Illuminate\Http\JsonResponse;
 
 class AdminRegionController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $regions = Region::all();
 
         return $this->showAll(RegionResource::collection($regions));
     }
 
-
-    public function store(RegionRequest $request) : JsonResponse
+    public function store(RegionRequest $request): JsonResponse
     {
         $data = $request->validated();
         $region = Region::create($request->except('countries'));
@@ -35,14 +33,12 @@ class AdminRegionController extends ApiController
         return $this->showOne(new RegionResource($region));
     }
 
-
-    public function show(Region $region) : JsonResponse
+    public function show(Region $region): JsonResponse
     {
         return $this->showOne(new RegionResource($region));
     }
 
-
-    public function update(UpdateRegionRequest $request, Region $region) : JsonResponse
+    public function update(UpdateRegionRequest $request, Region $region): JsonResponse
     {
         $data = $request->validated();
 
@@ -53,7 +49,7 @@ class AdminRegionController extends ApiController
         return $this->showOne($region);
     }
 
-    public function updateCountries(UpdateRegionRequest $request, Region $region) : JsonResponse
+    public function updateCountries(UpdateRegionRequest $request, Region $region): JsonResponse
     {
         $data = $request->validated();
         $countries = $data['countries'];
@@ -65,7 +61,7 @@ class AdminRegionController extends ApiController
         return $this->showMessage('Region updated successfully');
     }
 
-    public function removeCountries(UpdateRegionRequest $request, Region $region) : JsonResponse
+    public function removeCountries(UpdateRegionRequest $request, Region $region): JsonResponse
     {
         $data = $request->validated();
         $countries = $data['countries'];
@@ -75,7 +71,7 @@ class AdminRegionController extends ApiController
         return $this->showMessage('Region updated successfully');
     }
 
-    public function destroy(Region $region) : JsonResponse
+    public function destroy(Region $region): JsonResponse
     {
         $region->delete();
 

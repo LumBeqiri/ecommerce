@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
-use App\Mail\UserCreated;
-use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
+use App\Mail\UserCreated;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $users = User::all();
 
         return $this->showAll(UserResource::collection($users));
     }
 
-    public function store(StoreUserRequest $request) : JsonResponse
+    public function store(StoreUserRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -32,12 +32,12 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    public function show(User $user) : JsonResponse
+    public function show(User $user): JsonResponse
     {
         return $this->showOne(new UserResource($user));
     }
 
-    public function update(StoreUserRequest $request, User $user) : JsonResponse
+    public function update(StoreUserRequest $request, User $user): JsonResponse
     {
         $request->validated();
 
@@ -79,17 +79,15 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-
-    public function destroy(User $user) : JsonResponse
+    public function destroy(User $user): JsonResponse
     {
         $user->delete();
 
         return $this->showOne(new UserResource($user));
     }
 
-
-    public function verify(string $token) : JsonResponse
-    { 
+    public function verify(string $token): JsonResponse
+    {
         $user = User::where('verification_token', $token)->firstOrFail();
 
         $user->verified = User::VERIFIED_USER;
@@ -101,8 +99,7 @@ class UserController extends ApiController
         return $this->showMessage('Account has been verified!');
     }
 
-
-    public function resend(User $user) : JsonResponse
+    public function resend(User $user): JsonResponse
     {
         if ($user->isVerified()) {
             return $this->errorResponse('This user is already verified', 409);

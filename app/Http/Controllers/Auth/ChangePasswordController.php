@@ -13,8 +13,7 @@ use Mail;
 
 class ChangePasswordController extends ApiController
 {
-
-    public function __invoke(ChangePasswordRequest $request) : UserResource | JsonResponse
+    public function __invoke(ChangePasswordRequest $request): UserResource|JsonResponse
     {
         $data = $request->validated();
 

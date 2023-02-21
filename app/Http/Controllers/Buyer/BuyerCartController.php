@@ -15,16 +15,14 @@ use Illuminate\Http\JsonResponse;
 
 class BuyerCartController extends ApiController
 {
-
-    public function index(User $buyer) : JsonResponse
+    public function index(User $buyer): JsonResponse
     {
         $cart = $buyer->cart()->with('cart_items')->first();
 
         return $this->showOne(new CartResource($cart));
     }
 
-
-    public function store(CartRequest $request) : JsonResponse
+    public function store(CartRequest $request): JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
@@ -38,7 +36,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function add_to_cart(CartItemRequest $request) : JsonResponse
+    public function add_to_cart(CartItemRequest $request): JsonResponse
     {
         $data = $request->validated();
         $cart = Cart::where('user_id', auth()->id())->first();
@@ -75,7 +73,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function remove_from_cart(CartItemRequest $request) : JsonResponse
+    public function remove_from_cart(CartItemRequest $request): JsonResponse
     {
         $data = $request->validated();
 

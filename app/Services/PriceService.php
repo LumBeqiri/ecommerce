@@ -4,7 +4,7 @@ namespace App\Services;
 
 class PriceService
 {
-    public static function priceToEuro(int $priceInCents) : float
+    public static function priceToEuro(int $priceInCents): float
     {
         return $priceInCents / 100;
     }

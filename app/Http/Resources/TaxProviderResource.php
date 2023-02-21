@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+
 /** @mixin \App\Models\TaxProvider */
 class TaxProviderResource extends JsonResource
 {

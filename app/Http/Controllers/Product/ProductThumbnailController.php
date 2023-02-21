@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Product;
 
-use Exception;
-use App\Models\Product;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\MediaRequest;
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\MediaRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class ProductThumbnailController extends ApiController
 {
-
-    public function store(MediaRequest $request, Product $product) : JsonResponse
+    public function store(MediaRequest $request, Product $product): JsonResponse
     {
         $request->validated();
 
@@ -34,7 +33,7 @@ class ProductThumbnailController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    public function destroy(Product $product) : JsonResponse
+    public function destroy(Product $product): JsonResponse
     {
         $this->authorize('delete', $product);
 

@@ -2,39 +2,35 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Models\Category;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\CategoryResource;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 
 class AdminCategoryController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $categories = Category::orderBy('id')->get();
 
         return $this->showAll(CategoryResource::collection($categories));
     }
 
-
-    public function store(CreateCategoryRequest $request) : JsonResponse
+    public function store(CreateCategoryRequest $request): JsonResponse
     {
         $newCategory = Category::create($request->validated());
 
         return $this->showOne(new CategoryResource($newCategory), 201);
     }
 
-
-    public function show(Category $category) : JsonResponse
+    public function show(Category $category): JsonResponse
     {
         return $this->showOne(new CategoryResource($category));
     }
 
-
-    public function update(UpdateCategoryRequest $request, Category $category) : JsonResponse
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
         $category->fill($request->only([
             'name',
@@ -55,7 +51,7 @@ class AdminCategoryController extends ApiController
         return $this->showOne(new CategoryResource($category), 201);
     }
 
-    public function destroy(Category $category) : JsonResponse
+    public function destroy(Category $category): JsonResponse
     {
         $category->delete();
 

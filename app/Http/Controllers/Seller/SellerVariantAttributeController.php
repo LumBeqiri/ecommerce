@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\Variant;
-use App\Models\Attribute;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
+use App\Models\Variant;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SellerVariantAttributeController extends ApiController
 {
-
-    public function store(Request $request, Variant $variant) : JsonResponse
+    public function store(Request $request, Variant $variant): JsonResponse
     {
         $data = $request->validate([
             'product_attributes' => 'array',
@@ -29,12 +28,12 @@ class SellerVariantAttributeController extends ApiController
         return $this->showOne(new VariantResource($variant->load(['attributes'])));
     }
 
-    public function show(Variant $variant) : JsonResponse
+    public function show(Variant $variant): JsonResponse
     {
         return $this->showOne($variant->load('attributes'));
     }
 
-    public function destroy(Variant $variant, Attribute $attribute) : JsonResponse
+    public function destroy(Variant $variant, Attribute $attribute): JsonResponse
     {
         $variant->attributes()->detach($attribute);
 

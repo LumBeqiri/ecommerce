@@ -2,31 +2,29 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\Region;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Attribute;
-use App\Models\VariantPrice;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
 use App\Http\Requests\StoreVariantRequest;
 use App\Http\Requests\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use App\Services\UploadImageService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class SellerVariantController extends ApiController
 {
-   
-    public function index(Product $product) : JsonResponse
+    public function index(Product $product): JsonResponse
     {
         $variants = $product->variants()->get();
 
         return $this->showAll(VariantResource::collection($variants));
     }
 
-
-    public function store(StoreVariantRequest $request, Product $product) : JsonResponse
+    public function store(StoreVariantRequest $request, Product $product): JsonResponse
     {
         $request->validated();
 
@@ -50,8 +48,7 @@ class SellerVariantController extends ApiController
         return $this->showOne(new VariantResource($newVariant));
     }
 
-
-    public function update(UpdateVariantRequest $request, Variant $variant) : JsonResponse
+    public function update(UpdateVariantRequest $request, Variant $variant): JsonResponse
     {
         $this->authorize('update', $variant);
         $request->validated();
@@ -89,8 +86,7 @@ class SellerVariantController extends ApiController
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
 
-
-    public function destroy(Variant $variant) : JsonResponse
+    public function destroy(Variant $variant): JsonResponse
     {
         $this->authorize('delete', $variant);
 
@@ -100,9 +96,9 @@ class SellerVariantController extends ApiController
     }
 
     /**
-     * @param array<string, mixed> $variant_prices
+     * @param  array<string, mixed>  $variant_prices
      */
-    private function createVariantPrice(array $variant_prices, Variant $newVariant) : void
+    private function createVariantPrice(array $variant_prices, Variant $newVariant): void
     {
         foreach ($variant_prices as $variant_price) {
             $variant_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;
@@ -112,9 +108,9 @@ class SellerVariantController extends ApiController
     }
 
     /**
-     * @param array<string, mixed> $variant_prices
+     * @param  array<string, mixed>  $variant_prices
      */
-    private function updateVariantPrice(array $variant_prices, Variant $variant) : void
+    private function updateVariantPrice(array $variant_prices, Variant $variant): void
     {
         foreach ($variant_prices as $variant_price) {
             $product_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;

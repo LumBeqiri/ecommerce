@@ -9,16 +9,14 @@ use Illuminate\Http\JsonResponse;
 
 class ProductCategoryController extends ApiController
 {
-
-    public function index(Product $product) : JsonResponse
+    public function index(Product $product): JsonResponse
     {
         $categories = $product->categories()->get();
 
         return $this->showAll(CategoryResource::collection($categories));
     }
 
-
-    public function deleteCategories(Product $product) : JsonResponse
+    public function deleteCategories(Product $product): JsonResponse
     {
         $product->categories()->detach();
 

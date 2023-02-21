@@ -13,8 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminCartController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $carts = QueryBuilder::for(Cart::class)
             ->allowedIncludes('user', 'cart_items')
@@ -23,7 +22,7 @@ class AdminCartController extends ApiController
         return $this->showAll(CartResource::collection($carts));
     }
 
-    public function show(Cart $cart) : JsonResponse
+    public function show(Cart $cart): JsonResponse
     {
         $cartResult = QueryBuilder::for($cart)
             ->allowedIncludes('user', 'cart_items')
@@ -31,7 +30,6 @@ class AdminCartController extends ApiController
 
         return $this->showOne(new CartResource($cartResult));
     }
-
 
     public function update(CartRequest $request, Cart $cart): JsonResponse
     {
@@ -43,15 +41,14 @@ class AdminCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-
-    public function destroy(Cart $cart) : JsonResponse
+    public function destroy(Cart $cart): JsonResponse
     {
         $cart->delete();
 
         return $this->showMessage('Cart deleted Successfully', 200);
     }
 
-    public function remove_from_cart(Request $request, Cart $cart, Variant $variant) : JsonResponse
+    public function remove_from_cart(Request $request, Cart $cart, Variant $variant): JsonResponse
     {
         $data = $request->validate([
             'count' => 'integer|min:1|max:500',

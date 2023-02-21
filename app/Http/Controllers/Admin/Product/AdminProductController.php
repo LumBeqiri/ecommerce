@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Models\User;
-use App\Models\Seller;
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Http\JsonResponse;
-use App\Services\UploadImageService;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\User;
+use App\Services\UploadImageService;
+use Illuminate\Http\JsonResponse;
 
 class AdminProductController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         return $this->showAll(ProductResource::collection(Product::all()));
     }
 
-
-    public function show(Product $product) : JsonResponse
+    public function show(Product $product): JsonResponse
     {
         return $this->showOne(new ProductResource($product));
     }
 
-
-    public function update(UpdateProductRequest $request, Product $product) : JsonResponse
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         $request->validated();
         $images = null;
@@ -53,8 +49,7 @@ class AdminProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-
-    public function destroy(Product $product) : JsonResponse
+    public function destroy(Product $product): JsonResponse
     {
         $product->categories()->detach();
         $product->orders()->detach();
@@ -63,8 +58,7 @@ class AdminProductController extends ApiController
         return $this->showMessage('Product deleted successfully!');
     }
 
-
-    public function delete_product_category(Product $product, Category $category) : JsonResponse
+    public function delete_product_category(Product $product, Category $category): JsonResponse
     {
         $product->categories()->detach($category);
 

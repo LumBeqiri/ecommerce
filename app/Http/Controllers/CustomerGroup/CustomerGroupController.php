@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers\CustomerGroup;
 
-use App\Models\User;
-use Illuminate\Support\Arr;
-use App\Models\CustomerGroup;
-use Illuminate\Http\JsonResponse;
-use App\Services\CustomerGroupService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\CustomerGroupRequest;
 use App\Http\Resources\CustomerGroupResource;
+use App\Models\CustomerGroup;
+use App\Models\User;
+use App\Services\CustomerGroupService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 
 class CustomerGroupController extends ApiController
 {
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $customerGroups = CustomerGroup::where('user_id', auth()->id())->get();
 
         return $this->showAll(CustomerGroupResource::collection($customerGroups));
     }
 
-
-    public function store(CustomerGroupRequest $request, CustomerGroupService $customerGroupService) : JsonResponse
+    public function store(CustomerGroupRequest $request, CustomerGroupService $customerGroupService): JsonResponse
     {
         $data = $request->validated();
 
@@ -33,7 +32,7 @@ class CustomerGroupController extends ApiController
             return $this->showError('Name '.$data['name'].' is already taken!', 422);
         }
 
-        $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get($data,'metadata', ''));
+        $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get($data, 'metadata', ''));
 
         $users = User::whereIn('uuid', $data['users'])->get();
 
@@ -42,16 +41,14 @@ class CustomerGroupController extends ApiController
         return $this->showOne(new CustomerGroupResource($customerGroup));
     }
 
-
-    public function show(CustomerGroup $customerGroup) : JsonResponse
+    public function show(CustomerGroup $customerGroup): JsonResponse
     {
         $this->authorize('view', $customerGroup);
 
         return $this->showOne(new CustomerGroupResource($customerGroup));
     }
 
-
-    public function update(CustomerGroupRequest $request, CustomerGroup $customerGroup) : JsonResponse
+    public function update(CustomerGroupRequest $request, CustomerGroup $customerGroup): JsonResponse
     {
         $this->authorize('update', $customerGroup);
 
@@ -62,8 +59,7 @@ class CustomerGroupController extends ApiController
         return $this->showOne(new CustomerGroupResource($customerGroup));
     }
 
-
-    public function destroy(CustomerGroup $customerGroup) : JsonResponse
+    public function destroy(CustomerGroup $customerGroup): JsonResponse
     {
         $this->authorize('delete', $customerGroup);
 

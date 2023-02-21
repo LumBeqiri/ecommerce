@@ -10,8 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 class RegisterController extends ApiController
 {
-
-    public function register(RegisterUserRequest $request) : JsonResponse
+    public function register(RegisterUserRequest $request): JsonResponse
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
