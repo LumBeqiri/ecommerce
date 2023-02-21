@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Discount;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\DiscountRequest;
-use App\Http\Requests\UpdateDiscountRequest;
-use App\Http\Resources\DiscountResource;
+use App\Models\Region;
+use App\Models\Product;
 use App\Models\Discount;
 use App\Models\DiscountRule;
-use App\Models\Product;
-use App\Models\Region;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\DiscountRequest;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\DiscountResource;
+use App\Http\Requests\UpdateDiscountRequest;
 
 class DiscountController extends ApiController
 {
@@ -95,26 +96,13 @@ class DiscountController extends ApiController
         return $this->showOne(new DiscountResource($newDiscount->load('discount_rule')));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Discount $discount)
+    public function show(Discount $discount) : JsonResponse
     {
-        // return discount with conditions
         return $this->showOne(new DiscountResource($discount->load('discount_rule.discount_condition')));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Discount  $discount
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDiscountRequest $request, Discount $discount)
+
+    public function update(UpdateDiscountRequest $request, Discount $discount) : JsonResponse
     {
         $request->validated();
 
@@ -149,20 +137,14 @@ class DiscountController extends ApiController
         return $this->showOne(new DiscountResource($discount));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Discount $discount)
+    public function destroy(Discount $discount) : JsonResponse
     {
         $discount->delete();
 
-        return response()->noContent();
+        return $this->showMessage('Discount deleted successfully!');
     }
 
-    private function validate_code($code)
+    private function validate_code($code) : bool
     {
         $code_availabilty = Discount::where('code', $code)
             ->where('seller_id', auth()->id())

@@ -2,31 +2,32 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use App\Models\Attribute;
-use App\Models\Category;
-use App\Models\Product;
+use App\Models\User;
 use App\Models\Region;
 use App\Models\Seller;
-use App\Models\User;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Category;
+use App\Models\Attribute;
 use App\Models\VariantPrice;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class SellerProductController extends ApiController
 {
-    public function index(Seller $seller)
+    public function index(Seller $seller) : JsonResponse
     {
         $products = $seller->products;
 
         return $this->showAll(ProductResource::collection($products));
     }
 
-    public function store(StoreProductRequest $request, User $seller)
+    public function store(StoreProductRequest $request, User $seller) : JsonResponse
     {
         $request->validated();
 
@@ -80,7 +81,7 @@ class SellerProductController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    public function update(UpdateProductRequest $request, Seller $seller, Product $product)
+    public function update(UpdateProductRequest $request, Seller $seller, Product $product) : JsonResponse
     {
         $request->validated();
 
@@ -99,7 +100,7 @@ class SellerProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    protected function removeCategories($start_id, $end_id)
+    protected function removeCategories($start_id, $end_id) : void
     {
         $products = Product::all();
         foreach ($products as $product) {

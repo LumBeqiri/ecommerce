@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers\Attributes;
 
+use App\Models\Attribute;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\AttributeStoreRequest;
-use App\Models\Attribute;
 
 class AttributeController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         return $this->showAll(Attribute::all());
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(AttributeStoreRequest $request)
+
+    public function store(AttributeStoreRequest $request) : JsonResponse
     {
         $data = $request->validated();
 
@@ -30,18 +25,14 @@ class AttributeController extends ApiController
         return $this->showOne($attribute);
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(Attribute $attribute)
+
+    public function show(Attribute $attribute) : JsonResponse
     {
         return $this->showOne($attribute);
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(AttributeStoreRequest $request, Attribute $attribute)
+
+    public function update(AttributeStoreRequest $request, Attribute $attribute) : JsonResponse
     {
         $data = $request->validated();
 
@@ -50,11 +41,8 @@ class AttributeController extends ApiController
         return $this->showOne($attribute);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(Attribute $attribute)
+
+    public function destroy(Attribute $attribute) : JsonResponse
     {
         $attribute->delete();
 

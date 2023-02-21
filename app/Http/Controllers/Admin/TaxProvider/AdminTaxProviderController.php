@@ -18,38 +18,22 @@ class AdminTaxProviderController extends ApiController
         return $this->showAll(TaxProviderResource::collection($taxProviders));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(TaxProviderRequest $request)
+
+    public function store(TaxProviderRequest $request) : JsonResponse
     {
         $taxProvider = TaxProvider::create($request->validated());
 
         return $this->showOne(new TaxProviderResource($taxProvider));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TaxProvider $taxProvider)
+
+    public function show(TaxProvider $taxProvider) : JsonResponse
     {
         return $this->showOne(new TaxProviderResource($taxProvider));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(TaxProviderRequest $request, TaxProvider $taxProvider)
+
+    public function update(TaxProviderRequest $request, TaxProvider $taxProvider) : JsonResponse
     {
         $taxProvider->fill($request->validated());
         $taxProvider->save();
@@ -57,13 +41,8 @@ class AdminTaxProviderController extends ApiController
         return $this->showOne(new TaxProviderResource($taxProvider));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TaxProvider $taxProvider)
+ 
+    public function destroy(TaxProvider $taxProvider) : JsonResponse
     {
         $taxProvider->delete();
 

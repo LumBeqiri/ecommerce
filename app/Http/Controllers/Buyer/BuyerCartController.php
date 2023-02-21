@@ -11,28 +11,20 @@ use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Variant;
 use App\Services\CartService;
+use Illuminate\Http\JsonResponse;
 
 class BuyerCartController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(User $buyer)
+
+    public function index(User $buyer) : JsonResponse
     {
         $cart = $buyer->cart()->with('cart_items')->first();
 
         return $this->showOne(new CartResource($cart));
     }
 
-    /**
-     * Store in storage
-     *
-     * @param  CartRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CartRequest $request)
+
+    public function store(CartRequest $request) : JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
@@ -46,7 +38,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function add_to_cart(CartItemRequest $request)
+    public function add_to_cart(CartItemRequest $request) : JsonResponse
     {
         $data = $request->validated();
         $cart = Cart::where('user_id', auth()->id())->first();
@@ -83,7 +75,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function remove_from_cart(CartItemRequest $request)
+    public function remove_from_cart(CartItemRequest $request) : JsonResponse
     {
         $data = $request->validated();
 

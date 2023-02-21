@@ -2,36 +2,27 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\MediasRequest;
-use App\Http\Resources\MediaResource;
-use App\Http\Resources\VariantResource;
 use App\Models\Media;
 use App\Models\Variant;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\MediasRequest;
 use App\Services\UploadImageService;
+use App\Http\Resources\MediaResource;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
 use Illuminate\Support\Facades\Storage;
 
 class SellerVariantMediaController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Variant $variant)
+
+    public function index(Variant $variant) : JsonResponse
     {
         $medias = $variant->medias;
 
         return $this->showAll(MediaResource::collection($medias));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(MediasRequest $request, Variant $variant)
+    public function store(MediasRequest $request, Variant $variant) : JsonResponse
     {
         $medias = $request->file('medias');
 
@@ -44,13 +35,7 @@ class SellerVariantMediaController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Variant $variant, Media $media)
+    public function destroy(Variant $variant, Media $media) : JsonResponse
     {
         Storage::disk('images')->delete($media->path);
 

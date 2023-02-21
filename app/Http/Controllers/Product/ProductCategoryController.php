@@ -5,26 +5,23 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CategoryResource;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 
 class ProductCategoryController extends ApiController
 {
-    /**
-     * @param  Product  $product
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(Product $product)
+
+    public function index(Product $product) : JsonResponse
     {
         $categories = $product->categories()->get();
 
         return $this->showAll(CategoryResource::collection($categories));
     }
 
-    /**
-     * @param  Product  $product
-     * @return void
-     */
-    public function deleteCategories(Product $product)
+
+    public function deleteCategories(Product $product) : JsonResponse
     {
         $product->categories()->detach();
+
+        return $this->showMessage('Categories deleted');
     }
 }

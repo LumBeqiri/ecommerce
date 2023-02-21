@@ -2,30 +2,21 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
 
 class AdminUserController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         return $this->showAll(UserResource::collection(User::all()));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request) : JsonResponse
     {
         $data = $request->validated();
 
@@ -38,25 +29,12 @@ class AdminUserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
+    public function show(User $user) : JsonResponse
     {
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(StoreUserRequest $request, User $user)
+    public function update(StoreUserRequest $request, User $user) : JsonResponse
     {
         $request->validated();
 
@@ -88,13 +66,8 @@ class AdminUserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
+
+    public function destroy(User $user) : JsonResponse
     {
         if ($user->id == 1) {
             return $this->showError('This user cannot be deleted');

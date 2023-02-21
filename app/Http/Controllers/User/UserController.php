@@ -2,32 +2,24 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\User;
+use App\Mail\UserCreated;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\UserResource;
-use App\Mail\UserCreated;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+    public function index() : JsonResponse
     {
         $users = User::all();
 
         return $this->showAll(UserResource::collection($users));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request) : JsonResponse
     {
         $data = $request->validated();
 
@@ -40,22 +32,12 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(User $user)
+    public function show(User $user) : JsonResponse
     {
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(StoreUserRequest $request, User $user)
+    public function update(StoreUserRequest $request, User $user) : JsonResponse
     {
         $request->validated();
 
@@ -97,25 +79,17 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(User $user)
+
+    public function destroy(User $user) : JsonResponse
     {
         $user->delete();
 
         return $this->showOne(new UserResource($user));
     }
 
-    /**
-     * @param mixed $token
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function verify($token)
-    {
+
+    public function verify($token) : JsonResponse
+    { 
         $user = User::where('verification_token', $token)->firstOrFail();
 
         $user->verified = User::VERIFIED_USER;
@@ -127,10 +101,8 @@ class UserController extends ApiController
         return $this->showMessage('Account has been verified!');
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function resend(User $user)
+
+    public function resend(User $user) : JsonResponse
     {
         if ($user->isVerified()) {
             return $this->errorResponse('This user is already verified', 409);

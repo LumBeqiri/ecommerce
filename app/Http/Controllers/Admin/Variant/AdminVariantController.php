@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers\Admin\Variant;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\UpdateVariantRequest;
-use App\Http\Resources\VariantResource;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use Illuminate\Http\JsonResponse;
 use App\Services\UploadImageService;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\UpdateVariantRequest;
 
 class AdminVariantController extends ApiController
 {
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateVariantRequest  $request
-     * @param  Variant  $variant
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateVariantRequest $request, Variant $variant)
+
+    public function update(UpdateVariantRequest $request, Variant $variant) : JsonResponse
     {
         $request->validated();
         $images = $request->images;
@@ -46,11 +41,8 @@ class AdminVariantController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    /**
-     * @param  Variant  $variant
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Variant $variant)
+
+    public function destroy(Variant $variant) : JsonResponse
     {
         $variant->delete();
 

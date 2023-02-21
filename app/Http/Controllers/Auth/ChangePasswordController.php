@@ -12,11 +12,8 @@ use Mail;
 
 class ChangePasswordController extends ApiController
 {
-    /**
-     * @param  ChangePasswordRequest  $request
-     * @return UserResource
-     */
-    public function __invoke(ChangePasswordRequest $request)
+
+    public function __invoke(ChangePasswordRequest $request) : UserResource
     {
         $data = $request->validated();
 

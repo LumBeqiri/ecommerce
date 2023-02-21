@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Models\Variant;
+use App\Models\Attribute;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;
-use App\Models\Attribute;
-use App\Models\Variant;
-use Illuminate\Http\Request;
 
 class SellerVariantAttributeController extends ApiController
 {
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, Variant $variant)
+
+    public function store(Request $request, Variant $variant) : JsonResponse
     {
         $data = $request->validate([
             'product_attributes' => 'array',
@@ -32,20 +28,14 @@ class SellerVariantAttributeController extends ApiController
         return $this->showOne(new VariantResource($variant->load(['attributes'])));
     }
 
-    public function show($variant)
+    public function show($variant) : JsonResponse
     {
         $vr = Variant::select(['id', 'barcode', 'sku', 'stock', 'ean'])->where('uuid', $variant)->first();
 
         return $this->showOne($vr->load('attributes'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Variant $variant, Attribute $attribute)
+    public function destroy(Variant $variant, Attribute $attribute) : JsonResponse
     {
         $variant->attributes()->detach($attribute);
 

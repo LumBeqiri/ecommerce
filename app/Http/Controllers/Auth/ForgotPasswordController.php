@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\ApiController;
-use App\Mail\UserPasswordChanged;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\UserPasswordChanged;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
 
 class ForgotPasswordController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function reset_link(Request $request)
+
+    public function reset_link(Request $request) : RedirectResponse
     {
         $request->validate(['email' => 'required|email']);
 
@@ -30,11 +27,8 @@ class ForgotPasswordController extends ApiController
         : back()->withErrors(['email' => __($status)]);
     }
 
-    /**
-     * @param  Request  $request
-     * @return string
-     */
-    public function reset_password(Request $request)
+
+    public function reset_password(Request $request) : string
     {
         $request->validate([
             'token' => 'required',

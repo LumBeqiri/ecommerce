@@ -6,14 +6,12 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\RegisterUserRequest;
 use App\Jobs\SaveCookieCartToDB;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class RegisterController extends ApiController
 {
-    /**
-     * @param  RegisterUserRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function register(RegisterUserRequest $request)
+
+    public function register(RegisterUserRequest $request) : JsonResponse
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);

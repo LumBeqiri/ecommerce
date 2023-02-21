@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Http\Controllers\ApiController;
+use App\Models\Cart;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\CartRequest;
 use App\Http\Resources\CartResource;
-use App\Models\Cart;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Controllers\ApiController;
 
 class CartController extends ApiController
 {
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cart $cart)
+
+    public function show(Cart $cart) : JsonResponse
     {
         $cartResult = QueryBuilder::for($cart)
             ->allowedIncludes('user', 'cart_items')
@@ -25,14 +21,8 @@ class CartController extends ApiController
         return $this->showOne(new CartResource($cartResult));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(CartRequest $request, Cart $cart)
+
+    public function update(CartRequest $request, Cart $cart) : JsonResponse
     {
         $data = $request->validated();
 
@@ -42,13 +32,7 @@ class CartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Cart $cart)
+    public function destroy(Cart $cart) : JsonResponse
     {
         $cart->delete();
 

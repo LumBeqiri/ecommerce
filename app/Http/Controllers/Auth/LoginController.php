@@ -7,15 +7,13 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Jobs\SaveCookieCartToDB;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends ApiController
 {
-    /**
-     * @param  LoginRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function __invoke(LoginRequest $request)
+
+    public function __invoke(LoginRequest $request) : JsonResponse
     {
         $data = $request->validated();
 

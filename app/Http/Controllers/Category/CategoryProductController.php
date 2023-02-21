@@ -2,29 +2,24 @@
 
 namespace App\Http\Controllers\Category;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\ProductResource;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\CategoryResource;
 
 class CategoryProductController extends ApiController
 {
-    /**
-     * @param  Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Category $category)
+
+    public function index(Category $category) : JsonResponse
     {
         $products = $category->products;
 
         return $this->showAll(ProductResource::collection($products));
     }
 
-    /**
-     * @param  Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function subcats(Category $category)
+
+    public function subcats(Category $category) : JsonResponse
     {
         $subs = $category->subcategory()->get();
 

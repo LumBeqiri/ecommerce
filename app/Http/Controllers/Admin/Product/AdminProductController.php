@@ -2,39 +2,32 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\UpdateProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Seller;
 use App\Models\User;
+use App\Models\Seller;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use App\Services\UploadImageService;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
+use App\Http\Requests\UpdateProductRequest;
 
 class AdminProductController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         return $this->showAll(ProductResource::collection(Product::all()));
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(Product $product)
+
+    public function show(Product $product) : JsonResponse
     {
         return $this->showOne(new ProductResource($product));
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(UpdateProductRequest $request, Product $product)
+
+    public function update(UpdateProductRequest $request, Product $product) : JsonResponse
     {
         $request->validated();
         $images = null;
@@ -60,13 +53,8 @@ class AdminProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * See ProductObserver
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(Product $product)
+
+    public function destroy(Product $product) : JsonResponse
     {
         $product->categories()->detach();
         $product->orders()->detach();
@@ -75,12 +63,8 @@ class AdminProductController extends ApiController
         return $this->showMessage('Product deleted successfully!');
     }
 
-    /**
-     * Delete category from product
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete_product_category(Product $product, Category $category)
+
+    public function delete_product_category(Product $product, Category $category) : JsonResponse
     {
         $product->categories()->detach($category);
 

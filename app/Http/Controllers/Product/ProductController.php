@@ -2,38 +2,29 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\Product;
+use Illuminate\Http\JsonResponse;
+use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
-use App\Models\Product;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         $products = Product::all();
 
         return $this->showAll(ProductResource::collection($products));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
+    public function show(Product $product) : JsonResponse
     {
         $product = QueryBuilder::for(Product::class)
             ->with(['variants.medias'])
             ->where('uuid', $product->uuid)
             ->first();
 
-        return new ProductResource($product);
+        return $this->showOne(new ProductResource($product));
     }
 }

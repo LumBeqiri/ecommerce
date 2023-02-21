@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Category;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\UserResource;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use App\Http\Controllers\ApiController;
 
 class CategorySellerController extends ApiController
 {
-    /**
-     * @param  Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Category $category)
+
+    public function index(Category $category) : JsonResponse
     {
         $sellers = $category->products()
         ->with('seller')

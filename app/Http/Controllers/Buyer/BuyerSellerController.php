@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\UserResource;
 use App\Models\Buyer;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use App\Http\Controllers\ApiController;
 
 class BuyerSellerController extends ApiController
 {
-    /**
-     * @param  Buyer  $buyer
-     * @return  \Illuminate\Http\Response
-     */
-    public function index(Buyer $buyer)
+
+    public function index(Buyer $buyer) : JsonResponse
     {
         $sellers = $buyer->orders()->with('products.seller')->get()
         ->pluck('products')

@@ -7,17 +7,14 @@ use App\Http\Requests\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\Variant;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminCartController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+
+    public function index() : JsonResponse
     {
         $carts = QueryBuilder::for(Cart::class)
             ->allowedIncludes('user', 'cart_items')
@@ -26,12 +23,7 @@ class AdminCartController extends ApiController
         return $this->showAll(CartResource::collection($carts));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cart $cart)
+    public function show(Cart $cart) : JsonResponse
     {
         $cartResult = QueryBuilder::for($cart)
             ->allowedIncludes('user', 'cart_items')
@@ -40,12 +32,8 @@ class AdminCartController extends ApiController
         return $this->showOne(new CartResource($cartResult));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(CartRequest $request, Cart $cart)
+
+    public function update(CartRequest $request, Cart $cart): JsonResponse
     {
         $data = $request->validated();
 
@@ -55,22 +43,15 @@ class AdminCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(Cart $cart)
+
+    public function destroy(Cart $cart) : JsonResponse
     {
         $cart->delete();
 
         return $this->showMessage('Cart deleted Successfully', 200);
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function remove_from_cart(Request $request, Cart $cart, Variant $variant)
+    public function remove_from_cart(Request $request, Cart $cart, Variant $variant) : JsonResponse
     {
         $data = $request->validate([
             'count' => 'integer|min:1|max:500',
