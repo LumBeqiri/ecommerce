@@ -7,13 +7,14 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\UserPasswordChanged;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 
 class ChangePasswordController extends ApiController
 {
 
-    public function __invoke(ChangePasswordRequest $request) : UserResource
+    public function __invoke(ChangePasswordRequest $request) : UserResource | JsonResponse
     {
         $data = $request->validated();
 

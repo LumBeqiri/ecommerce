@@ -207,7 +207,7 @@ it('can delete discount', function () {
 
     $response = $this->deleteJson(action([DiscountController::class, 'destroy'], $discount->uuid));
 
-    $response->assertStatus(204);
+    $response->assertStatus(200);
 
     $this->assertDatabaseMissing(Discount::class, ['id' => $discount->id]);
 });

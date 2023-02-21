@@ -33,7 +33,7 @@ class CustomerGroupController extends ApiController
             return $this->showError('Name '.$data['name'].' is already taken!', 422);
         }
 
-        $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get('metadata', ''));
+        $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get($data,'metadata', ''));
 
         $users = User::whereIn('uuid', $data['users'])->get();
 

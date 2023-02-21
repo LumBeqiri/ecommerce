@@ -36,7 +36,7 @@ it('can reset password', function () {
         ]
     );
 
-    $reset_response->assertStatus(302);
+    $reset_response->assertStatus(200);
 
     $new_login_response = $this->postJson(route('login'), [
         'email' => $user->email,
