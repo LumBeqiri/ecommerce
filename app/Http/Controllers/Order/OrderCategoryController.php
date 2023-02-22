@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CategoryResource;
 use App\Models\Order;
+use Illuminate\Http\JsonResponse;
 
 class OrderCategoryController extends ApiController
 {
-    /**
-     * @return Illuminate\Http\JsonResponse.
-     */
-    public function index(Order $order)
+
+    public function index(Order $order) : JsonResponse
     {
         $categories = $order->products()->with('categories')
         ->get()

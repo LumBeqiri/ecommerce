@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\UserResource;
 use App\Models\Order;
+use Illuminate\Http\JsonResponse;
 
 class OrderSellerController extends ApiController
 {
-    /**
-     * @param  Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Order $order)
+
+    public function index(Order $order) : JsonResponse
     {
         $sellers = $order->products()->with('seller')
         ->get()
