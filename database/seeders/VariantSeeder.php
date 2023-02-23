@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Attribute;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Attribute;
+use function Pest\Faker\faker;
 use Illuminate\Database\Seeder;
 
 class VariantSeeder extends Seeder
@@ -15,6 +17,11 @@ class VariantSeeder extends Seeder
      */
     public function run()
     {
+        
+        Variant::factory()->setUuid('a92f7c0d-5781-4367-b817-5cd9f9064184')->create();
+        Variant::factory()->setUuid('f6e89183-6b9d-4c17-9719-fbb4c02d5614')->create();
+        Variant::factory()->setUuid('8fe19731-ba71-44c4-a0af-ac1183cb6c26')->create();
+
         $variantsQuantity = 30;
         Variant::factory($variantsQuantity)->count($variantsQuantity)->create()->each(
             function ($variant) {

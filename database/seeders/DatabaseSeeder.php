@@ -3,12 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Cart;
+use App\Models\User;
+use App\Models\Region;
+use App\Models\Product;
+use App\Models\Variant;
 use App\Models\CartItem;
 use App\Models\Category;
+use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\Product;
-use App\Models\User;
-use App\Models\Variant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS =0');
-
+        Currency::truncate();
         User::truncate();
         Category::truncate();
         Cart::truncate();
@@ -45,6 +47,8 @@ class DatabaseSeeder extends Seeder
         Discount::flushEventListeners();
         Cart::flushEventListeners();
         CartItem::flushEventListeners();
+        Variant::flushEventListeners();
+        Region::flushEventListeners();
 
         $this->call([RoleAndPermissionSeeder::class]);
         $this->call([UserSeeder::class]);

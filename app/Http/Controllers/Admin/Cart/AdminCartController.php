@@ -51,23 +51,23 @@ class AdminCartController extends ApiController
     public function remove_from_cart(Request $request, Cart $cart, Variant $variant): JsonResponse
     {
         $data = $request->validate([
-            'count' => 'integer|min:1|max:500',
+            'quantity' => 'integer|min:1|max:500',
         ]);
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-        if (! $request->has('count')) {
+        if (! $request->has('quantity')) {
             $cart_item->delete();
 
             return $this->showOne(new CartResource($cart->load('cart_items')));
         }
-        if ($cart_item->count < $data['count']) {
-            return $this->errorResponse('You have less than '.$data['count'].' items', 422);
+        if ($cart_item->quantity < $data['quantity']) {
+            return $this->errorResponse('You have less than '.$data['quantity'].' items', 422);
         }
 
-        $cart_item->count -= $data['count'];
+        $cart_item->quantity -= $data['quantity'];
 
-        if ($cart_item->count == 0) {
+        if ($cart_item->quantity == 0) {
             $cart_item->delete();
         } else {
             $cart_item->save();

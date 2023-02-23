@@ -53,4 +53,13 @@ class VariantFactory extends Factory
             ];
         });
     }
+
+    public function setUuid(string $uuid)
+    {
+        return $this->state(function (array $attributes) use ($uuid) {
+            return [
+                'uuid' => $uuid
+            ];
+        });
+    }
 }

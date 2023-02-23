@@ -164,7 +164,7 @@ it('admin can remove item qty from cart', function () {
     $cart_item = CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant->id,
-        'count' => $initialAmount,
+        'quantity' => $initialAmount,
     ]);
 
     $user = User::factory()->create(['name' => 'Lum']);
@@ -173,12 +173,12 @@ it('admin can remove item qty from cart', function () {
     login($user);
 
     $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid, [
-        'count' => $amountToBeRemoved,
+        'quantity' => $amountToBeRemoved,
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'count' => $amountLeft]);
+    $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'quantity' => $amountLeft]);
 });
 
 it('admin can remove item from cart completely', function () {
@@ -194,7 +194,7 @@ it('admin can remove item from cart completely', function () {
     $cart_item = CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant->id,
-        'count' => $initialAmount,
+        'quantity' => $initialAmount,
     ]);
 
     $user = User::factory()->create(['name' => 'Lum']);
