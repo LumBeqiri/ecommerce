@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Variant;
 use App\Models\Attribute;
+use App\Models\Variant;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VariantSeeder extends Seeder
 {

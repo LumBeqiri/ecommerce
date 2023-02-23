@@ -3,25 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\Variant;
 use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Discount;
-use App\Models\Attribute;
-use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Variant;
 use Illuminate\Database\Seeder;
-use Database\Seeders\CartSeeder;
-use Database\Seeders\UserSeeder;
 use Illuminate\Support\Facades\DB;
-use Database\Seeders\ProductSeeder;
-use Database\Seeders\VariantSeeder;
-use Database\Seeders\CartItemSeeder;
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\DiscountSeeder;
-use Database\Seeders\DiscountRuleSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -57,7 +46,6 @@ class DatabaseSeeder extends Seeder
         Cart::flushEventListeners();
         CartItem::flushEventListeners();
 
-        
         $this->call([RoleAndPermissionSeeder::class]);
         $this->call([UserSeeder::class]);
         $this->call([CurrencySeeder::class]);
@@ -66,7 +54,7 @@ class DatabaseSeeder extends Seeder
         $this->call([RegionSeeder::class]);
         $this->call([DiscountRuleSeeder::class]);
         $this->call([DiscountSeeder::class]);
-        $this->call([CategorySeeder::class]);       
+        $this->call([CategorySeeder::class]);
         $this->call([ProductSeeder::class]);
         $this->call(AttributeSeeder::class);
         $this->call(VariantSeeder::class);
