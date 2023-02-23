@@ -131,6 +131,8 @@ it('admin can show cart with cart items', function () {
 });
 
 it('admin can delete cart', function () {
+    TaxProvider::factory()->create();
+    Region::factory()->create();
     $user = User::factory()->create();
     $cart = Cart::factory()->for($user)->create();
 
