@@ -39,7 +39,7 @@ class BuyerCartController extends ApiController
         $data = $request->validated();
         $cart = Cart::where('user_id', auth()->id())->first();
 
-        if (isset($cart)) {   
+        if (isset($cart)) {
             $cart = $this->authUser()->cart()->create();
         }
 
@@ -51,12 +51,11 @@ class BuyerCartController extends ApiController
             return $this->errorResponse('Item is not available', 404);
         }
 
-        if(isset($cart_item)){
-            if((optional($cart_item)->count + $data['count']) > $variant->stock){
+        if (isset($cart_item)) {
+            if ((optional($cart_item)->count + $data['count']) > $variant->stock) {
                 return $this->errorResponse('There are not enough items in stock', 404);
             }
         }
-
 
         if (isset($cart_item)) {
             $cart_item->count += $data['count'];

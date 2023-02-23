@@ -58,7 +58,7 @@ class VariantFactory extends Factory
     {
         return $this->state(function (array $attributes) use ($uuid) {
             return [
-                'uuid' => $uuid
+                'uuid' => $uuid,
             ];
         });
     }

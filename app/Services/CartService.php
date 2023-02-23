@@ -3,10 +3,9 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Product;
-use App\Models\Variant;
 use App\Models\CartItem;
+use App\Models\User;
+use App\Models\Variant;
 
 class CartService
 {
@@ -33,14 +32,14 @@ class CartService
         return PriceService::priceToEuro($total);
     }
 
-    public static function saveItemsToCart(mixed $items, User $user) : Cart
+    public static function saveItemsToCart(mixed $items, User $user): Cart
     {
         $cart = Cart::updateOrCreate(['user_id' => $user->id]);
 
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
-            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first  ();
+            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
             if ($variant->status === 'unavailable') {
                 return response()->json(['error' => 'Product is not available', 'code' => 404], 404);
@@ -65,8 +64,8 @@ class CartService
         return $cart;
     }
 
-    private function validateCartItem(CartItem $cart_item, Variant $variant, $quantity){
-        
+    private function validateCartItem(CartItem $cart_item, Variant $variant, $quantity)
+    {
     }
 
     public static function validateCookieItems(array $items): bool

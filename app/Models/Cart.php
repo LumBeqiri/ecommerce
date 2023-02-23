@@ -29,4 +29,9 @@ class Cart extends Model
     {
         return $this->belongsTo(Buyer::class);
     }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
 }

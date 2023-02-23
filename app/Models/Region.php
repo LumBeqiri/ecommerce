@@ -29,4 +29,9 @@ class Region extends Model
     {
         return $this->belongsTo(TaxProvider::class);
     }
+
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
