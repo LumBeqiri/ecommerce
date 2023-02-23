@@ -26,9 +26,9 @@ class LoginController extends ApiController
 
         if ($request->hasCookie('cart')) {
             $cookie_cart = $request->cookie('cart');
-            $items = json_decode($cookie_cart, true);
-            if (! empty($items) && array_key_exists('items', $items)) {
-                $items = $items['items'];
+            $cart = json_decode($cookie_cart, true);
+            if (! empty($cart) && array_key_exists('items', $cart)) {
+                $items = $cart['items'];
                 SaveCookieCartToDB::dispatch($items, $user);
             }
         }

@@ -9,16 +9,14 @@ use Illuminate\Http\JsonResponse;
 
 class OrderController extends ApiController
 {
-
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $orders = Order::all();
 
         return $this->showAll(OrderResource::collection($orders));
     }
 
-
-    public function show(Order $order) : JsonResponse
+    public function show(Order $order): JsonResponse
     {
         return $this->showOne(new OrderResource($order));
     }

@@ -9,8 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class OrderCategoryController extends ApiController
 {
-
-    public function index(Order $order) : JsonResponse
+    public function index(Order $order): JsonResponse
     {
         $categories = $order->products()->with('categories')
         ->get()
