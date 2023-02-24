@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\ApiController;
+use App\Models\Cart;
+use App\Models\User;
+use App\Services\CartService;
+use App\Jobs\SaveCookieCartToDB;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
-use App\Jobs\SaveCookieCartToDB;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\ApiController;
 
 class LoginController extends ApiController
 {
@@ -29,7 +31,7 @@ class LoginController extends ApiController
             $cart = json_decode($cookie_cart, true);
             if (! empty($cart) && array_key_exists('items', $cart)) {
                 $items = $cart['items'];
-                SaveCookieCartToDB::dispatch($items, $user);
+                SaveCookieCartToDB::dispatch($items, $user,1);
             }
         }
 

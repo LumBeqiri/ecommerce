@@ -14,20 +14,17 @@ class SaveCookieCartToDB implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected mixed $items;
-
-    protected User $user;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(mixed $items, User $user)
-    {
-        $this->items = $items;
-        $this->user = $user;
-    }
+    public function __construct(
+        protected mixed $items,
+        protected User $user,
+        protected string $region_id
+        )
+    {}
 
     /**
      * Execute the job.
@@ -36,6 +33,6 @@ class SaveCookieCartToDB implements ShouldQueue
      */
     public function handle()
     {
-        CartService::saveItemsToCart($this->items, $this->user);
+        CartService::saveCookieItemsToCart($this->items, $this->user, $this->region_id);
     }
 }

@@ -27,7 +27,11 @@ class BuyerCartController extends ApiController
         $data = $request->validated();
         $items = $data['items'];
 
-        $cart = CartService::saveItemsToCart($items, auth()->user());
+        $cart = CartService::saveItemsToCart($items, auth()->user(), $data['region_id']);
+
+        if($cart instanceof JsonResponse){
+            return $cart;
+        }
 
         $cart->total_cart_price = CartService::calculatePrice($items);
 

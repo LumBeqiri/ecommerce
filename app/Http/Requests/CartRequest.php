@@ -30,6 +30,7 @@ class CartRequest extends FormRequest
         }
 
         return [
+            'region_id' => 'string|required',
             'items' => 'array',
             'items.*.variant_id' => 'required|exists:variants,uuid',
             'items.*.count' => 'integer',
