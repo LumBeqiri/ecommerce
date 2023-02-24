@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
 use App\Models\Country;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
 use Stevebauman\Location\Facades\Location;
 
 class ProductController extends ApiController
@@ -21,9 +21,9 @@ class ProductController extends ApiController
         if ($position = Location::get($ip)) {
             $country_name = $position->countryName;
         }
-        $region_id = Country::select('region_id')->where('name','LIKE','%'.$country_name.'%')->value('region_id');
+        $region_id = Country::select('region_id')->where('name', 'LIKE', '%'.$country_name.'%')->value('region_id');
 
-        $products = Product::with(['seller','variant_prices' => function($query) use ($region_id){
+        $products = Product::with(['seller', 'variant_prices' => function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
         }])->get();
 

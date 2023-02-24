@@ -72,7 +72,7 @@ class CartService
     {
         $region = Region::where('uuid', $region_id)->firstOrFail();
         $cart = Cart::updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
-        
+
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
