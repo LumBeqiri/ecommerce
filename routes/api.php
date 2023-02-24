@@ -38,47 +38,47 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', LoginController::class)->name('login');
 
 // Route::resource('products.categories', ProductController::class)->only([
-//     'index','update', 'destroy'
-// ]);
-
-Route::post('register', [RegisterController::class, 'register'])->name('register');
-Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
-Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
-
-//Cart
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::put('change_password', ChangePasswordController::class)->name('change_password');
-    Route::post('sellers/{seller}/products', [SellerProductController::class, 'store']);
-    Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update']);
-
-    Route::get('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'show']);
-    Route::post('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'store']);
-    Route::delete('variants/{variant}/attributes/{attribute}', [SellerVariantAttributeController::class, 'destroy']);
-
-    Route::get('variants/{variant}/medias', [SellerVariantMediaController::class, 'index']);
-    Route::post('variants/{variant}/medias', [SellerVariantMediaController::class, 'store']);
-    Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
-
-    Route::post('customer-groups', [CustomerGroupController::class, 'store']);
-    Route::get('customer-groups', [CustomerGroupController::class, 'index']);
-    Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
-    Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
-
-    Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
-    Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
-
-    Route::resource('carts', CartController::class);
-
-    Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
-    Route::post('store_cart', [BuyerCartController::class, 'store']);
+    //     'index','update', 'destroy'
+    // ]);
+    
+    Route::post('register', [RegisterController::class, 'register'])->name('register');
+    Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
+    Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
+    
+    //Cart
+    
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::put('change_password', ChangePasswordController::class)->name('change_password');
+        Route::post('sellers/{seller}/products', [SellerProductController::class, 'store']);
+        Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update']);
+        
+        Route::get('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'show']);
+        Route::post('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'store']);
+        Route::delete('variants/{variant}/attributes/{attribute}', [SellerVariantAttributeController::class, 'destroy']);
+        
+        Route::get('variants/{variant}/medias', [SellerVariantMediaController::class, 'index']);
+        Route::post('variants/{variant}/medias', [SellerVariantMediaController::class, 'store']);
+        Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
+        
+        Route::post('customer-groups', [CustomerGroupController::class, 'store']);
+        Route::get('customer-groups', [CustomerGroupController::class, 'index']);
+        Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
+        Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
+        
+        Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
+        Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
+        
+        Route::resource('carts', CartController::class);
+        
+        Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
+        Route::post('store_cart', [BuyerCartController::class, 'store']);
     Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
-
+    
     Route::post('products/{product}/variants', [SellerVariantController::class, 'store']);
     Route::put('variants/{variant}', [SellerVariantController::class, 'update']);
     Route::delete('variants/{variant}', [SellerVariantController::class, 'destroy']);
-
+    
     Route::get('discounts', [DiscountController::class, 'index']);
     Route::post('discounts', [DiscountController::class, 'store']);
     Route::get('discounts/{discount}', [DiscountController::class, 'show']);
@@ -90,6 +90,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
     Route::delete('discount-conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
     Route::delete('discount-conditions/{discount_condition}/product/{customerGroup}', [DiscountConditionController::class, 'removeCustomerGroup']);
+    Route::resource('variants', VariantController::class)->only(['index', 'show']);
 });
 
 //Product Routes
@@ -101,7 +102,6 @@ Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
 // VARIANT Routes
-Route::resource('variants', VariantController::class)->only(['index', 'show']);
 
 // ATTRIUBTE Routes
 

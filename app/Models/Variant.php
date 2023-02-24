@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,5 +42,10 @@ class Variant extends Model
     public function variant_prices(): HasMany
     {
         return $this->hasMany(VariantPrice::class);
+    }
+
+    public function region_price()
+    {
+        return $this->variant_prices()->where('region_id', auth()->user()->cart->region_id);
     }
 }

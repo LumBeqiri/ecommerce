@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\VariantPrice;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -76,6 +77,18 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class, 'order_product')
         ->withTimestamps();
+    }
+
+    public function variant_prices()
+    {
+        return $this->hasManyThrough(
+            VariantPrice::class, // The target model
+            Variant::class, // The intermediate model
+            'product_id', // The foreign key on the intermediate model
+            'variant_id', // The foreign key on the target model
+            'id', // The local key on the source model
+            'id' // The local key on the intermediate model
+        );
     }
 
     // public function orders(){
