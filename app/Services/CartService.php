@@ -3,17 +3,16 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Variant;
 use App\Models\CartItem;
-use App\Models\VariantPrice;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\User;
+use App\Models\Variant;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 
 class CartService
 {
-    public static function calculatePrice(mixed $items) : int
+    public static function calculatePrice(mixed $items): int
     {
         $variant_ids = [];
         $itemCount = count($items);
@@ -32,20 +31,18 @@ class CartService
         return PriceService::priceToEuro($total);
     }
 
-    public static function saveItemsToCart(mixed $items, User $user, string $region_id): Cart | JsonResponse
+    public static function saveItemsToCart(mixed $items, User $user, string $region_id): Cart|JsonResponse
     {
         $region = Region::where('uuid', $region_id)->firstOrFail();
-        $cart = Cart::updateOrCreate(['user_id' => $user->id],['region_id' => $region->id]);
+        $cart = Cart::updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
 
-        
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
-            
-            
+
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-            if(! $variant->variant_prices()->where('region_id', $region->id)->exists()){
-                return response()->json(['error' => "Product not available in your region", 'code' => 422], 422, ['application/json']);
+            if (! $variant->variant_prices()->where('region_id', $region->id)->exists()) {
+                return response()->json(['error' => 'Product not available in your region', 'code' => 422], 422, ['application/json']);
             }
 
             if ($variant->status === 'unavailable') {
@@ -71,23 +68,21 @@ class CartService
         return $cart;
     }
 
-
-    public static function saveCookieItemsToCart(mixed $items, User $user, string $region_id) : void
+    public static function saveCookieItemsToCart(mixed $items, User $user, string $region_id): void
     {
         $region = Region::where('uuid', $region_id)->firstOrFail();
-        $cart = Cart::updateOrCreate(['user_id' => $user->id],['region_id' => $region->id]);
+        $cart = Cart::updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
         
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
-            
-            
+
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-            if(! $variant->variant_prices()->where('region_id', $region->id)->exists()){
+            if (! $variant->variant_prices()->where('region_id', $region->id)->exists()) {
                 continue;
             }
 
-            if ($variant->status === 'unavailable') {
+            if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
                 continue;
             }
 

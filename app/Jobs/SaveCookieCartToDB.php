@@ -23,8 +23,8 @@ class SaveCookieCartToDB implements ShouldQueue
         protected mixed $items,
         protected User $user,
         protected string $region_id
-        )
-    {}
+        ) {
+    }
 
     /**
      * Execute the job.

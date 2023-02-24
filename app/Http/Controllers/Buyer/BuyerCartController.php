@@ -29,7 +29,7 @@ class BuyerCartController extends ApiController
 
         $cart = CartService::saveItemsToCart($items, auth()->user(), $data['region_id']);
 
-        if($cart instanceof JsonResponse){
+        if ($cart instanceof JsonResponse) {
             return $cart;
         }
 
