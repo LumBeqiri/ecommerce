@@ -26,7 +26,7 @@ class RegisterUserRequest extends FormRequest
         return [
             'name' => 'required|string',
             'city' => 'required',
-            'state' => 'required',
+            'country' => 'required',
             'zip' => 'required|regex:/\b\d{5}\b/',
             'phone' => 'required|string',
             'email' => 'required|email|unique:users',

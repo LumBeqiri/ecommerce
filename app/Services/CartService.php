@@ -70,6 +70,7 @@ class CartService
 
     public static function saveCookieItemsToCart(mixed $items, User $user, string $region_id): void
     {
+        //TODO here get country from IP, find region and save it to that cart
         $region = Region::where('uuid', $region_id)->firstOrFail();
         $cart = Cart::updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
 

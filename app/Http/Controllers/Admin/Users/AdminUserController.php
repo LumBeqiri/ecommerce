@@ -37,7 +37,7 @@ class AdminUserController extends ApiController
     {
         $request->validated();
 
-        $user->fill($request->only(['name', 'city', 'state', 'zip', 'phone']));
+        $user->fill($request->only(['name', 'city', 'country', 'zip', 'phone']));
 
         if ($request->has('email')) {
             $user->verified = User::UNVERIFIED_USER;

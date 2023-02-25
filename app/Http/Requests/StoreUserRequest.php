@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             return [
                 'name' => 'required|string|max:255',
                 'city' => 'required|string|max:255',
-                'state' => 'required|string|max:255',
+                'country' => 'required|string|max:255',
                 'zip' => 'required|regex:/\b\d{5}\b/',
                 'phone' => 'required|string|max:255',
                 'email' => 'required|email|unique:users',
@@ -39,7 +39,7 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => 'string',
             'city' => 'string',
-            'state' => 'string',
+            'country' => 'string',
             'zip' => 'regex:/\b\d{5}\b/',
             // 'email'=> 'required|email|unique:users,email,' . auth()->id(),
             'password' => 'min:6|confirmed',

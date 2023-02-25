@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
             'ship_name' => $this->ship_name,
             'ship_address' => $this->ship_address,
             'ship_city' => $this->ship_city,
-            'ship_state' => $this->ship_state,
+            'ship_country' => $this->ship_country,
             'order_tax' => $this->order_tax,
             'order_date' => $this->order_date,
             'order_shipped' => $this->order_shipped,

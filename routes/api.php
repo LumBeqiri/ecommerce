@@ -90,7 +90,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
     Route::delete('discount-conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
     Route::delete('discount-conditions/{discount_condition}/product/{customerGroup}', [DiscountConditionController::class, 'removeCustomerGroup']);
-    Route::resource('variants', VariantController::class)->only(['index', 'show']);
 });
 
 //Product Routes
@@ -102,6 +101,7 @@ Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
 // VARIANT Routes
+Route::resource('variants', VariantController::class)->only(['index', 'show']);
 
 // ATTRIUBTE Routes
 

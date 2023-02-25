@@ -13,7 +13,7 @@ it('can register user', function () {
     $response = $this->post(route('register'), [
         'name' => faker()->name(),
         'city' => faker()->city(),
-        'state' => faker()->country(),
+        'country' => faker()->country(),
         'zip' => faker()->numberBetween(10000, 100000),
         'phone' => faker()->phoneNumber(),
         'email' => faker()->email(),

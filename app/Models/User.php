@@ -33,7 +33,7 @@ class User extends Authenticatable
         'email',
         'password',
         'city',
-        'state',
+        'country',
         'zip',
         'shipping_address',
         'phone',

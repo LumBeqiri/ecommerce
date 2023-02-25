@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('ship_name')->nullable();
             $table->string('ship_address');
             $table->string('ship_city');
-            $table->string('ship_state');
+            $table->string('ship_country');
             $table->float('order_tax')->nullable();
             $table->float('total');
             $table->dateTime('order_date');

@@ -35,7 +35,7 @@ it('admin can create user', function () {
     $response = $this->postJson(action([AdminUserController::class, 'store']), [
         'name' => faker()->name(),
         'city' => faker()->city(),
-        'state' => faker()->country(),
+        'country' => faker()->country(),
         'zip' => faker()->numberBetween(10000, 100000),
         'phone' => faker()->phoneNumber(),
         'email' => faker()->email(),
@@ -83,20 +83,20 @@ it('admin can update user city', function () {
     $this->assertDatabaseHas(User::class, ['city' => $updated]);
 });
 
-it('admin can update user state', function () {
-    $userA = User::factory()->create(['state' => 'Amber']);
+it('admin can update user country', function () {
+    $userA = User::factory()->create(['country' => 'Amber']);
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
     $updated = 'Mars';
     login($user);
 
     $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
-        'state' => $updated,
+        'country' => $updated,
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(User::class, ['state' => $updated]);
+    $this->assertDatabaseHas(User::class, ['country' => $updated]);
 });
 
 it('admin can update user phone', function () {
