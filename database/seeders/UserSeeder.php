@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'name' => 'Lum Beqiri',
             'email' => 'lum@gmail.com',
             'password' => bcrypt('123123123'),
+            'country' => 'Kosovo, Republic of'
         ]);
 
         $adminUser->assignRole('admin');
