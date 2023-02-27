@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'name' => 'Lum Beqiri',
             'email' => 'lum@gmail.com',
             'password' => bcrypt('123123123'),
-            'country' => 'Kosovo, Republic of'
+            'country_id' => 120,
         ]);
 
         $adminUser->assignRole('admin');
@@ -31,6 +31,7 @@ class UserSeeder extends Seeder
             'name' => 'Drin Beqiri',
             'email' => 'drin@gmail.com',
             'password' => bcrypt('123123123'),
+            'country_id' => 3,
         ]);
 
         User::factory($usersQuantity)->create();

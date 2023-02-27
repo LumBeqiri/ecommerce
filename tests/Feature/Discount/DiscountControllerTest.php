@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Discount\DiscountController;
 use App\Models\Country;
+use App\Models\Currency;
 use App\Models\Discount;
 use App\Models\DiscountCondition;
 use App\Models\DiscountRule;
@@ -10,19 +11,19 @@ use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
 use Carbon\Carbon;
-use Database\Seeders\CurrencySeeder;
 use function Pest\Faker\faker;
 
 beforeEach(function () {
-    $this->seed(CurrencySeeder::class);
+    Currency::factory()->count(5)->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     Notification::fake();
     Bus::fake();
 });
 
 it('can store percentage discount without conditions ', function () {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
-    Region::factory()->create();
     login($user);
 
     $response = $this->postJson(action([DiscountController::class, 'store']),
@@ -46,9 +47,7 @@ it('can store percentage discount without conditions ', function () {
 });
 
 it('can store fixed discount without conditions ', function ($allocation) {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
-    Region::factory()->create();
     login($user);
 
     $response = $this->postJson(action([DiscountController::class, 'store']),
@@ -76,9 +75,7 @@ it('can store fixed discount without conditions ', function ($allocation) {
 ]);
 
 it('can store free shipping discount without conditions ', function () {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
-    Region::factory()->create();
     login($user);
 
     $response = $this->postJson(action([DiscountController::class, 'store']),
@@ -102,10 +99,7 @@ it('can store free shipping discount without conditions ', function () {
 });
 
 it('can store percentage discount with conditions', function () {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
     Product::factory()->count(5)->create();
     login($user);
 
@@ -144,10 +138,7 @@ it('can store percentage discount with conditions', function () {
 });
 
 it('can update percentage discount', function () {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
 
@@ -194,10 +185,7 @@ it('can update percentage discount', function () {
 });
 
 it('can delete discount', function () {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
 

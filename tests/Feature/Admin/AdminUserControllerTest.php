@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Admin\Users\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Region;
+use App\Models\TaxProvider;
 use App\Models\User;
 use Database\Seeders\RoleAndPermissionSeeder;
 use function Pest\Faker\faker;
@@ -10,6 +14,10 @@ beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
     Notification::fake();
     Bus::fake();
+    Currency::factory()->count(5)->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
 });
 
 it('admin can show users', function () {
@@ -27,7 +35,6 @@ it('admin can show users', function () {
 it('admin can create user', function () {
     $user = User::factory()->create();
     $user->assignRole('admin');
-
     login($user);
 
     $password = faker()->password(8, 12);
@@ -35,7 +42,7 @@ it('admin can create user', function () {
     $response = $this->postJson(action([AdminUserController::class, 'store']), [
         'name' => faker()->name(),
         'city' => faker()->city(),
-        'country' => faker()->country(),
+        'country_id' => Country::inRandomOrder()->first()->id,
         'zip' => faker()->numberBetween(10000, 100000),
         'phone' => faker()->phoneNumber(),
         'email' => faker()->email(),
@@ -84,19 +91,21 @@ it('admin can update user city', function () {
 });
 
 it('admin can update user country', function () {
-    $userA = User::factory()->create(['country' => 'Amber']);
+    $old_country = Country::factory()->create();
+    $userA = User::factory()->create(['country_id' => $old_country->id]);
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
-    $updated = 'Mars';
+    $new_country = Country::factory()->create();
+
     login($user);
 
     $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
-        'country' => $updated,
+        'country_id' => $new_country->id,
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(User::class, ['country' => $updated]);
+    $this->assertDatabaseHas(User::class, ['country_id' => $new_country->id]);
 });
 
 it('admin can update user phone', function () {

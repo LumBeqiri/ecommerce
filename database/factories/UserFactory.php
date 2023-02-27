@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -26,7 +27,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => $password ?: $password = bcrypt('secret'),
             'city' => $this->faker->city(),
-            'country' => $this->faker->country(),
+            'country_id' => Country::factory(),
             'zip' => 5000,
             'shipping_address' => $this->faker->address(),
             'phone' => '044123456',

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
 use App\Models\Country;
 use App\Models\Product;
 use App\Services\LocationService;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
 
 class ProductController extends ApiController
 {

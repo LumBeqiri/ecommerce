@@ -2,10 +2,18 @@
 
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
 use App\Models\Category;
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Region;
+use App\Models\TaxProvider;
 use App\Models\User;
 use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function () {
+    Currency::factory()->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $this->seed(RoleAndPermissionSeeder::class);
     Notification::fake();
     Bus::fake();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,7 +34,7 @@ class User extends Authenticatable
         'email',
         'password',
         'city',
-        'country',
+        'country_id',
         'zip',
         'shipping_address',
         'phone',
@@ -92,5 +93,10 @@ class User extends Authenticatable
     public function customerGroup(): HasMany
     {
         return $this->hasMany(CustomerGroup::class);
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
     }
 }

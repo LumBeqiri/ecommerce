@@ -1,12 +1,18 @@
 <?php
 
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Models\Country;
+use App\Models\Currency;
 use App\Models\CustomerGroup;
+use App\Models\Region;
+use App\Models\TaxProvider;
 use App\Models\User;
-use Database\Seeders\CurrencySeeder;
 
 beforeEach(function () {
-    $this->seed(CurrencySeeder::class);
+    Currency::factory()->count(5)->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     Notification::fake();
     Bus::fake();
 });

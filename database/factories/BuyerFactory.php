@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Buyer;
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -28,7 +29,7 @@ class BuyerFactory extends Factory
             // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'password' => $password ?: $password = bcrypt('secret'),
             'city' => $this->faker->city(),
-            'country' => $this->faker->country(),
+            'country_id' => Country::factory(),
             'zip' => 5000,
             'shipping_address' => $this->faker->address(),
             'phone' => '044123456',

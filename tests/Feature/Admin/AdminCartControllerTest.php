@@ -117,7 +117,6 @@ it('admin can show cart with cart items', function () {
     $variant = Variant::factory()->for($product)->create();
     $cart = Cart::factory()->for(User::factory())->create();
     CartItem::factory()->for($cart)->for($variant)->create();
-
     $user = User::factory()->create();
     $user->assignRole('admin');
 

@@ -51,11 +51,11 @@ class DatabaseSeeder extends Seeder
         Region::flushEventListeners();
 
         $this->call([RoleAndPermissionSeeder::class]);
-        $this->call([UserSeeder::class]);
         $this->call([CurrencySeeder::class]);
-        $this->call([CountrySeeder::class]);
         $this->call([TaxProviderSeeder::class]);
         $this->call([RegionSeeder::class]);
+        $this->call([CountrySeeder::class]);
+        $this->call([UserSeeder::class]);
         $this->call([DiscountRuleSeeder::class]);
         $this->call([DiscountSeeder::class]);
         $this->call([CategorySeeder::class]);

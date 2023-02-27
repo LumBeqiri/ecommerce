@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\User;
@@ -14,27 +15,32 @@ class CartService
 {
     public static function calculatePrice(mixed $items): int
     {
-        $variant_ids = [];
-        $itemCount = count($items);
-        for ($i = 0; $i < $itemCount; $i++) {
-            $variant_ids[$i] = $items[$i]['variant_id'];
-        }
+        // $variant_ids = [];
+        // $itemCount = count($items);
+        // for ($i = 0; $i < $itemCount; $i++) {
+        //     $variant_ids[$i] = $items[$i]['variant_id'];
+        // }
 
-        $variant_prices = Variant::whereIn('id', $variant_ids)->pluck('price');
+        // $variant_prices = Variant::whereIn('id', $variant_ids)->pluck('price');
 
-        $total = 0;
+        // $total = 0;
 
-        foreach ($variant_prices as $price) {
-            $total += (int) $price;
-        }
+        // foreach ($variant_prices as $price) {
+        //     $total += (int) $price;
+        // }
 
-        return PriceService::priceToEuro($total);
+        return PriceService::priceToEuro(40);
     }
 
-    public static function saveItemsToCart(mixed $items, User $user, string $region_id): Cart|JsonResponse
+    public static function saveItemsToCart(mixed $items): Cart|JsonResponse
     {
+        $region_id = Country::select('region_id')->where('id', auth()->user()->country_id)
+        ->first()
+        ->pluck('region_id');
+
+        dd($region_id);
         $region = Region::where('uuid', $region_id)->firstOrFail();
-        $cart = Cart::updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
+        $cart = Cart::updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
 
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();

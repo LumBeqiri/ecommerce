@@ -37,7 +37,7 @@ class AdminUserController extends ApiController
     {
         $request->validated();
 
-        $user->fill($request->only(['name', 'city', 'country', 'zip', 'phone']));
+        $user->fill($request->only(['name', 'city', 'country', 'zip', 'phone', 'country_id']));
 
         if ($request->has('email')) {
             $user->verified = User::UNVERIFIED_USER;
@@ -47,17 +47,6 @@ class AdminUserController extends ApiController
 
         if ($request->has('password')) {
             $user->password = bcrypt($request->password);
-        }
-
-        if ($request->has('admin')) {
-            if (! $user->isVerified()) {
-                return $this->errorResponse('Only verified users can modify the admin field', 409);
-            }
-            $user->assignRole('admin');
-        }
-
-        if (! $user->isDirty()) {
-            return $this->errorResponse('Please specify a field to update', 409);
         }
 
         $user->save();

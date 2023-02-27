@@ -27,7 +27,7 @@ class BuyerCartController extends ApiController
         $data = $request->validated();
         $items = $data['items'];
 
-        $cart = CartService::saveItemsToCart($items, auth()->user(), $data['region_id']);
+        $cart = CartService::saveItemsToCart($items);
 
         if ($cart instanceof JsonResponse) {
             return $cart;
@@ -42,9 +42,10 @@ class BuyerCartController extends ApiController
     {
         $data = $request->validated();
         $cart = Cart::where('user_id', auth()->id())->first();
+        $region_id = auth()->user()->country->region_id;
 
         if (isset($cart)) {
-            $cart = $this->authUser()->cart()->create();
+            $cart = $this->authUser()->cart()->create(['region_id' => $region_id]);
         }
 
         $variant = Variant::where('uuid', $data['variant_id'])->first();
@@ -56,19 +57,19 @@ class BuyerCartController extends ApiController
         }
 
         if (isset($cart_item)) {
-            if ((optional($cart_item)->count + $data['count']) > $variant->stock) {
+            if ((optional($cart_item)->quantity + $data['quantity']) > $variant->stock) {
                 return $this->errorResponse('There are not enough items in stock', 404);
             }
         }
 
         if (isset($cart_item)) {
-            $cart_item->count += $data['count'];
+            $cart_item->quantity += $data['quantity'];
             $cart_item->save();
         } else {
             CartItem::create([
                 'cart_id' => $cart->id,
                 'variant_id' => $variant->id,
-                'count' => $data['count'],
+                'quantity' => $data['quantity'],
             ]);
         }
 
@@ -89,13 +90,13 @@ class BuyerCartController extends ApiController
         }
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-        if ($cart_item->count < $data['count']) {
-            return $this->errorResponse('You have less than '.$data['count'].' items', 422);
+        if ($cart_item->quantity < $data['quantity']) {
+            return $this->errorResponse('You have less than '.$data['quantity'].' items', 422);
         }
 
-        $cart_item->count -= $data['count'];
+        $cart_item->quantity -= $data['quantity'];
 
-        if ($cart_item->count == 0) {
+        if ($cart_item->quantity == 0) {
             $cart_item->delete();
         } else {
             $cart_item->save();

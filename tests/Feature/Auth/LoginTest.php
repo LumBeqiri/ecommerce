@@ -1,8 +1,16 @@
 <?php
 
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Region;
+use App\Models\TaxProvider;
 use App\Models\User;
 
 beforeEach(function () {
+    Currency::factory()->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     Notification::fake();
     Bus::fake();
 });

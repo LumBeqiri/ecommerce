@@ -6,21 +6,20 @@ use App\Models\Currency;
 use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
-use Database\Seeders\CountrySeeder;
-use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use function Pest\Faker\faker;
 
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
+    Currency::factory()->count(5)->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $this->seed(RoleAndPermissionSeeder::class);
-    $this->seed(CurrencySeeder::class);
-    $this->seed(CountrySeeder::class);
 });
 
 it('admin can show regions', function () {
-    TaxProvider::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
     Region::factory()->count(1)->make();
@@ -95,23 +94,21 @@ it('admin can update region title', function () {
 
 it('admin can update region currency', function () {
     TaxProvider::factory()->create(['id' => 4]);
-
+    $old_currency = Currency::factory()->create();
+    $new_currency = Currency::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
 
-    $old_attr = Currency::find(1);
-    $new_attr = Currency::find(2);
-
-    $region = Region::factory()->create(['currency_id' => $old_attr->id]);
+    $region = Region::factory()->create(['currency_id' => $old_currency->id]);
     login($user);
 
     $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->uuid), [
-        'currency_id' => $new_attr->id,
+        'currency_id' => $new_currency->id,
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(Region::class, ['currency_id' => $new_attr->id, 'id' => $region->id]);
+    $this->assertDatabaseHas(Region::class, ['currency_id' => $new_currency->id, 'id' => $region->id]);
 });
 
 it('admin can update region tax rate', function () {

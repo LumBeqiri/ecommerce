@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
 use function Pest\Faker\faker;
@@ -8,8 +11,11 @@ use function Pest\Faker\faker;
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
+    Currency::factory()->count(5)->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
     $this->seed(RoleAndPermissionSeeder::class);
-    $this->seed(CurrencySeeder::class);
 });
 
 it('can return a list of tax providers', function () {
