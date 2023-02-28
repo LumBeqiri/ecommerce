@@ -23,7 +23,7 @@ class AdminProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    public function update(UpdateProductRequest $request, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product, UploadImageService $uploadService): JsonResponse
     {
         $request->validated();
         $images = null;
@@ -32,7 +32,7 @@ class AdminProductController extends ApiController
             $request_images = count($request->file('medias'));
             abort_if($request_images > 1, 422, 'Can not have more than 1 image per thumbnail');
 
-            UploadImageService::upload($product, $images, Product::class);
+            $uploadService->upload($product, $images, Product::class);
         }
 
         $product->fill($request->except(['categories', 'seller_id']));

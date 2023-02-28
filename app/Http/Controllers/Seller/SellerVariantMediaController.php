@@ -21,12 +21,12 @@ class SellerVariantMediaController extends ApiController
         return $this->showAll(MediaResource::collection($medias));
     }
 
-    public function store(MediasRequest $request, Variant $variant): JsonResponse
+    public function store(MediasRequest $request, Variant $variant, UploadImageService $uploadImageService): JsonResponse
     {
         $medias = $request->file('medias');
 
         try {
-            UploadImageService::upload($variant, $medias, Variant::class);
+            $uploadImageService->upload($variant, $medias, Variant::class);
         } catch (\Throwable $th) {
             return $this->showError('Something went wrong');
         }

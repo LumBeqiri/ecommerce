@@ -14,7 +14,7 @@ class UploadImageService implements UploadServiceContract
      * @param  mixed  $className
      * @return void
      */
-    public static function upload($model, $medias, $className)
+    public function upload($model, $medias, $className)
     {
         if ($medias) {
             foreach ($medias as $media) {
