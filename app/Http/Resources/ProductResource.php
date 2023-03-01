@@ -16,14 +16,15 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'r-id' => $this->id,
             'id' => $this->uuid,
             'product_name' => $this->product_name,
             'long_description' => $this->product_long_description,
             'product_short_description' => $this->product_short_description,
-            'seller' => new UserResource($this->seller),
+            'seller' => new UserResource($this->whenLoaded('seller')),
             'status' => $this->status,
             'thumbnail' => $this->thumbnail,
-            'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
+            'price' => $this->variant_prices, //VariantPriceResource::collection($this->whenLoaded('variant_prices')),
             'publish_status' => $this->publish_status,
         ];
     }

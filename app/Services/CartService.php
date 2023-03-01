@@ -37,8 +37,6 @@ class CartService
         $region_id = Country::select('region_id')->where('id', auth()->user()->country_id)
         ->first()
         ->pluck('region_id');
-
-        dd($region_id);
         $region = Region::where('uuid', $region_id)->firstOrFail();
         $cart = Cart::updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
 

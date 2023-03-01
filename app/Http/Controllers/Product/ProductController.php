@@ -12,17 +12,16 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends ApiController
 {
-    public function index(LocationService $locationService): JsonResponse
+    public function index(LocationService $locationService)
     {
         $country_name = $locationService->getCountry();
 
         $region_id = Country::select('region_id')->where('name', 'LIKE', '%'.$country_name.'%')->value('region_id');
 
-        $products = QueryBuilder::for(Product::class)
-        ->allowedFilters(['status', 'publish_status'])
-        ->with(['seller', 'variant_prices' => function ($query) use ($region_id) {
+        $products = Product::whereHas('variant_prices', function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
-        }])
+        })
+        ->with(['variant_prices' => fn($query) => $query->where('region_id', $region_id)])
         ->get();
 
         return $this->showAll(ProductResource::collection($products));
