@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Scope;
 class BuyerScope implements Scope
 {
     /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @param  Model  $model
      * @return void
      */
     public function apply(Builder $builder, Model $model)

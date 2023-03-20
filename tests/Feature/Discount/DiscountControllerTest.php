@@ -11,7 +11,8 @@ use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
 use Carbon\Carbon;
-use function Pest\Faker\faker;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     Currency::factory()->count(5)->create();
@@ -143,11 +144,11 @@ it('can update percentage discount', function () {
     DiscountRule::factory()->create();
 
     $discount = Discount::factory()->create();
-    $usage_limit = faker()->randomDigit();
-    $code = faker()->word();
-    $description = faker()->paragraph(1);
-    $value = faker()->randomDigit();
-    $is_dynamic = faker()->boolean(40);
+    $usage_limit = $this->faker()->randomDigit();
+    $code = $this->faker()->word();
+    $description = $this->faker()->paragraph(1);
+    $value = $this->faker()->randomDigit();
+    $is_dynamic = $this->faker()->boolean(40);
     $ends_at = Carbon::create(2023, 3, 23, 23, 59)->format('Y-m-d H:i:s');
     $starts_at = Carbon::now()->format('Y-m-d H:i:s');
     $region = Region::factory()->create();
@@ -175,9 +176,9 @@ it('can update percentage discount', function () {
     expect($response->json('usage_limit'))
         ->toBe($usage_limit);
     expect($response->json('starts_at'))
-        ->not()->toBeNull(null);
+        ->not()->toBeNull();
     expect($response->json('ends_at'))
-         ->not()->toBeNull(null);
+         ->not()->toBeNull();
     expect($response->json('is_dynamic'))
         ->toBe($is_dynamic);
 

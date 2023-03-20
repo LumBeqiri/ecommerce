@@ -6,7 +6,8 @@ use App\Models\Currency;
 use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
-use function Pest\Faker\faker;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     Notification::fake();
@@ -48,7 +49,7 @@ it('can store a tax provider', function () {
 
     login($user);
 
-    $tax_provider = faker()->word();
+    $tax_provider = $this->faker()->word();
 
     $response = $this->postJson(action([AdminTaxProviderController::class, 'store']), [
         'tax_provider' => $tax_provider,
@@ -67,7 +68,7 @@ it('can update a tax provider', function () {
 
     login($user);
 
-    $tax_provider_title = faker()->word();
+    $tax_provider_title = $this->faker()->word();
 
     $response = $this->putJson(action([AdminTaxProviderController::class, 'update'], $taxProvider->uuid), [
         'tax_provider' => $tax_provider_title,

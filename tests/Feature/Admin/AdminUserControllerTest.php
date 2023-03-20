@@ -8,7 +8,8 @@ use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
 use Database\Seeders\RoleAndPermissionSeeder;
-use function Pest\Faker\faker;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -37,16 +38,16 @@ it('admin can create user', function () {
     $user->assignRole('admin');
     login($user);
 
-    $password = faker()->password(8, 12);
+    $password = $this->faker()->password(8, 12);
 
     $response = $this->postJson(action([AdminUserController::class, 'store']), [
-        'name' => faker()->name(),
-        'city' => faker()->city(),
+        'name' => $this->faker()->name(),
+        'city' => $this->faker()->city(),
         'country_id' => Country::inRandomOrder()->first()->id,
-        'zip' => faker()->numberBetween(10000, 100000),
-        'phone' => faker()->phoneNumber(),
-        'email' => faker()->email(),
-        'shipping_address' => faker()->streetAddress(),
+        'zip' => $this->faker()->numberBetween(10000, 100000),
+        'phone' => $this->faker()->phoneNumber(),
+        'email' => $this->faker()->email(),
+        'shipping_address' => $this->faker()->streetAddress(),
         'password' => $password,
         'password_confirmation' => $password,
     ]);

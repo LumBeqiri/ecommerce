@@ -63,17 +63,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * @return bool
-     */
     public function isVerified(): bool
     {
         return $this->verified === User::VERIFIED_USER;
     }
 
-    /**
-     * @return string
-     */
     public static function generateVerificationCode(): string
     {
         return Str::random(40);

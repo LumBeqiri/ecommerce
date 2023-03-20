@@ -10,7 +10,6 @@ class VariantObserver
     /**
      * Handle the Variant "created" event.
      *
-     * @param  \App\Models\Variant  $variant
      * @return void
      */
     public function created(Variant $variant)
@@ -21,7 +20,6 @@ class VariantObserver
     /**
      * Handle the Variant "updated" event.
      *
-     * @param  \App\Models\Variant  $variant
      * @return void
      */
     public function updated(Variant $variant)
@@ -32,7 +30,6 @@ class VariantObserver
     /**
      * Handle the Variant "deleted" event.
      *
-     * @param  \App\Models\Variant  $variant
      * @return void
      */
     public function deleted(Variant $variant)
@@ -47,7 +44,6 @@ class VariantObserver
     /**
      * Handle the Variant "restored" event.
      *
-     * @param  \App\Models\Variant  $variant
      * @return void
      */
     public function restored(Variant $variant)
@@ -58,7 +54,6 @@ class VariantObserver
     /**
      * Handle the Variant "force deleted" event.
      *
-     * @param  \App\Models\Variant  $variant
      * @return void
      */
     public function forceDeleted(Variant $variant)

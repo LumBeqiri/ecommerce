@@ -7,7 +7,8 @@ use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
 use Database\Seeders\RoleAndPermissionSeeder;
-use function Pest\Faker\faker;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     Notification::fake();
@@ -34,7 +35,8 @@ it('admin can show region', function () {
     TaxProvider::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
-    $title = faker()->word();
+
+    $title = $this->faker()->word();
     $region = Region::factory()->create(['title' => $title]);
 
     login($user);

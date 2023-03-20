@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\CreatesApplication;
 
@@ -17,7 +18,7 @@ use Tests\CreatesApplication;
 |
 */
 
-uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature');
+uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class, WithFaker::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

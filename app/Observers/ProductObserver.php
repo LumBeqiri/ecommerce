@@ -9,7 +9,6 @@ class ProductObserver
     /**
      * Handle the Product "created" event.
      *
-     * @param  \App\Models\Product  $product
      * @return void
      */
     public function created(Product $product)
@@ -20,7 +19,6 @@ class ProductObserver
     /**
      * Handle the Product "updated" event.
      *
-     * @param  \App\Models\Product  $product
      * @return void
      */
     public function updated(Product $product)
@@ -31,7 +29,6 @@ class ProductObserver
     /**
      * Handle the Product "deleting" event.
      *
-     * @param  \App\Models\Product  $product
      * @return void
      */
     public function deleting(Product $product)
@@ -44,7 +41,6 @@ class ProductObserver
     /**
      * Handle the Product "restored" event.
      *
-     * @param  \App\Models\Product  $product
      * @return void
      */
     public function restored(Product $product)
@@ -54,7 +50,6 @@ class ProductObserver
     /**
      * Handle the Product "force deleted" event.
      *
-     * @param  \App\Models\Product  $product
      * @return void
      */
     public function forceDeleted(Product $product)
