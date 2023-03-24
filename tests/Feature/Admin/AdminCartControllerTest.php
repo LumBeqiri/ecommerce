@@ -1,17 +1,19 @@
 <?php
 
-use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Country;
-use App\Models\Product;
+use App\Models\User;
 use App\Models\Region;
 use App\Models\Seller;
-use App\Models\TaxProvider;
-use App\Models\User;
+use App\Models\Country;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\CartItem;
+use App\Models\TaxProvider;
+use Illuminate\Support\Facades\Bus;
 use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Admin\Cart\AdminCartController;
 
 beforeEach(function () {
     Notification::fake();
@@ -25,10 +27,10 @@ it('admin can show carts', function () {
     Region::factory()->create();
     Country::factory()->create();
 
-    User::factory()->count(20)->create();
-
-    Cart::factory()->count(10)->create();
     $user = User::factory()->create();
+
+    Cart::factory()->count(1)->create();
+
     $user->assignRole('admin');
 
     Product::factory()->create();
@@ -45,12 +47,12 @@ it('admin can show carts with items', function () {
     Region::factory()->create();
     Country::factory()->create();
 
-    User::factory()->count(20)->create();
-    Product::factory()->count(20)->create();
-    Variant::factory()->count(10)->create();
-    Cart::factory()->count(10)->create();
+    User::factory()->count(1)->create();
+    Product::factory()->count(5)->create();
+    Variant::factory()->count(5)->create();
+    Cart::factory()->count(1)->create();
 
-    CartItem::factory()->count(10)->create();
+    CartItem::factory()->count(5)->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
 
@@ -68,11 +70,12 @@ it('admin can show carts with user', function () {
     Region::factory()->create();
     Country::factory()->create();
 
-    User::factory()->count(20)->create();
-    Product::factory()->count(20)->create();
-    Variant::factory()->count(10)->create();
-    Cart::factory()->count(10)->create();
-    CartItem::factory()->count(10)->create();
+    User::factory()->count(1)->create();
+    Product::factory()->count(5)->create();
+    Variant::factory()->count(5)->create();
+    Cart::factory()->count(1)->create();
+
+    CartItem::factory()->count(5)->create();
 
     $user = User::factory()->create();
     $user->assignRole('admin');
@@ -90,11 +93,12 @@ it('admin can show cart with user', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(20)->create();
-    Product::factory()->count(20)->create();
-    Variant::factory()->count(10)->create();
-    Cart::factory()->count(10)->create();
-    CartItem::factory()->count(10)->create();
+
+    User::factory()->count(1)->create();
+    Product::factory()->count(5)->create();
+    Variant::factory()->count(5)->create();
+    Cart::factory()->count(1)->create();
+    CartItem::factory()->count(5)->create();
 
     $user = User::factory()->create();
     $user->assignRole('admin');
