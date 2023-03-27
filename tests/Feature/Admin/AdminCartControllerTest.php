@@ -1,19 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Seller;
+use App\Models\CartItem;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
-use App\Models\CartItem;
+use App\Models\Region;
+use App\Models\Seller;
 use App\Models\TaxProvider;
-use Illuminate\Support\Facades\Bus;
+use App\Models\User;
+use App\Models\Variant;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Cart\AdminCartController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     Notification::fake();
@@ -131,6 +131,31 @@ it('admin can show cart with cart items', function () {
     $response = $this->getJson('admin/carts?include=cart_items', ['cart' => $cart]);
 
     $response->assertOk();
+});
+
+it('admin can update cart', function () {
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    $seller = Seller::factory()->create();
+    $product = Product::factory()->for($seller)->create();
+    $variant = Variant::factory()->for($product)->create();
+    $cart = Cart::factory(['is_closed' => false])->for(User::factory())->create();
+    CartItem::factory()->for($cart)->for($variant)->create();
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+
+    Product::factory()->create();
+
+    login($user);
+
+    $response = $this->putJson(action([AdminCartController::class, 'update'], $cart->uuid), [
+        'is_closed' => true,
+    ]);
+
+    $response->assertOk();
+
+    $this->assertDatabaseHas(Cart::class, ['id' => $cart->id, 'is_closed' => true]);
 });
 
 it('admin can delete cart', function () {

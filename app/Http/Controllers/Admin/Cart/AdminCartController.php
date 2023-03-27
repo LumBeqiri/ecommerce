@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Cart;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\CartRequest;
-use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\Variant;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\CartRequest;
+use App\Http\Resources\CartResource;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\UpdateCartRequest;
 
 class AdminCartController extends ApiController
 {
@@ -31,7 +32,7 @@ class AdminCartController extends ApiController
         return $this->showOne(new CartResource($cartResult));
     }
 
-    public function update(CartRequest $request, Cart $cart): JsonResponse
+    public function update(UpdateCartRequest $request, Cart $cart): JsonResponse
     {
         $data = $request->validated();
 

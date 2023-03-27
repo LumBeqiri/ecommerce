@@ -23,12 +23,6 @@ class CartRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->getMethod() == 'PUT') {
-            return [
-                'is_closed' => 'required|boolean',
-            ];
-        }
-
         return [
             'region_id' => 'string|required',
             'items' => 'array',
