@@ -33,47 +33,7 @@ class BuyerCartController extends ApiController
             return $cart;
         }
 
-        $cart->total_cart_price = CartService::calculatePrice($items);
-
-        return $this->showOne(new CartResource($cart->load('cart_items')));
-    }
-
-    public function add_to_cart(CartItemRequest $request): JsonResponse
-    {
-        $data = $request->validated();
-        $cart = Cart::where('user_id', auth()->id())->first();
-        $region_id = auth()->user()->country->region_id;
-
-        if (isset($cart)) {
-            $cart = $this->authUser()->cart()->create(['region_id' => $region_id]);
-        }
-
-        $variant = Variant::where('uuid', $data['variant_id'])->first();
-
-        $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
-
-        if ($variant->status == 'unavailable') {
-            return $this->errorResponse('Item is not available', 404);
-        }
-
-        if (isset($cart_item)) {
-            if ((optional($cart_item)->quantity + $data['quantity']) > $variant->stock) {
-                return $this->errorResponse('There are not enough items in stock', 404);
-            }
-        }
-
-        if (isset($cart_item)) {
-            $cart_item->quantity += $data['quantity'];
-            $cart_item->save();
-        } else {
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'variant_id' => $variant->id,
-                'quantity' => $data['quantity'],
-            ]);
-        }
-
-        $cart->total_cart_price = CartService::calculatePrice($cart->cart_items);
+        // $cart->total_cart_price = CartService::calculatePrice($items);
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
@@ -101,8 +61,6 @@ class BuyerCartController extends ApiController
         } else {
             $cart_item->save();
         }
-
-        $cart->total_cart_price = CartService::calculatePrice($cart->cart_items);
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }

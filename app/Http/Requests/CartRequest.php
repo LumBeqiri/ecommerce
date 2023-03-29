@@ -27,7 +27,7 @@ class CartRequest extends FormRequest
             'region_id' => 'string|required',
             'items' => 'array',
             'items.*.variant_id' => 'required|exists:variants,uuid',
-            'items.*.count' => 'integer',
+            'items.*.quantity' => 'integer',
         ];
     }
 }

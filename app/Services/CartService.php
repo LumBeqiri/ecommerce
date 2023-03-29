@@ -14,24 +14,24 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CartService
 {
-    public static function calculatePrice(Collection $variants): int
-    {
-        // $variant_ids = [];
-        // $itemCount = count($items);
-        // for ($i = 0; $i < $itemCount; $i++) {
-        //     $variant_ids[$i] = $items[$i]['variant_id'];
-        // }
+    // public static function calculatePrice(Collection $variants): int
+    // {
+    //     // $variant_ids = [];
+    //     // $itemCount = count($items);
+    //     // for ($i = 0; $i < $itemCount; $i++) {
+    //     //     $variant_ids[$i] = $items[$i]['variant_id'];
+    //     // }
 
-        // $variant_prices = Variant::whereIn('id', $variant_ids)->pluck('price');
+    //     // $variant_prices = Variant::whereIn('id', $variant_ids)->pluck('price');
 
-        // $total = 0;
+    //     // $total = 0;
 
-        // foreach ($variant_prices as $price) {
-        //     $total += (int) $price;
-        // }
+    //     // foreach ($variant_prices as $price) {
+    //     //     $total += (int) $price;
+    //     // }
 
-        return PriceService::priceToEuro(40);
-    }
+    //     return PriceService::priceToEuro(40);
+    // }
 
     public static function saveItemsToCart(mixed $items): Cart|JsonResponse
     {
@@ -39,9 +39,11 @@ class CartService
         ->firstOrFail()
         ->region_id;
 
-        $region = Region::where('uuid', $region_id)->firstOrFail();
-        $cart = Cart::updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
+        $region = Region::findOrFail($region_id);
 
+        $cart = Cart::updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
+        // all added variants are in this variable
+    
         $variants[]= null;
 
         foreach ($items as $item) {
@@ -75,8 +77,12 @@ class CartService
                 ]);
             }
 
+            $variants[] = $variant;
             
         }
+
+        // here we pass the variants to a function 
+        // to calculate the cart price
 
         return $cart;
     }
@@ -88,6 +94,7 @@ class CartService
 
         $variants[] = null;
         foreach ($items as $item) {
+        
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
@@ -103,7 +110,6 @@ class CartService
             if ($variant->publish_status === Product::DRAFT) {
                 continue;
             }
-
             if ((optional($cart_item)->quantity + $item['quantity']) > $variant->stock) {
                 continue;
             }
