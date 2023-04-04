@@ -3,35 +3,31 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Region;
+use App\Models\CartItem;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\Region;
+use App\Models\User;
 use App\Models\Variant;
-use App\Models\CartItem;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Database\Eloquent\Collection;
 
 class CartService
 {
-    // public static function calculatePrice(Collection $variants): int
-    // {
-    //     // $variant_ids = [];
-    //     // $itemCount = count($items);
-    //     // for ($i = 0; $i < $itemCount; $i++) {
-    //     //     $variant_ids[$i] = $items[$i]['variant_id'];
-    //     // }
+    public static function calculateCartPrice(Cart $cart, int $regionId)
+    {
+        $price = 0;
 
-    //     // $variant_prices = Variant::whereIn('id', $variant_ids)->pluck('price');
+        foreach ($cart->cart_items as $cartItem) {
+            $variant = Variant::find($cartItem->variant_id);
 
-    //     // $total = 0;
+            $variantPrice = $variant->variant_prices()->where('region_id', $regionId)->first();
 
-    //     // foreach ($variant_prices as $price) {
-    //     //     $total += (int) $price;
-    //     // }
+            $price += $variantPrice->price * $cartItem->quantity;
+        }
 
-    //     return PriceService::priceToEuro(40);
-    // }
+        $cart->total_cart_price = $price;
+        $cart->save();
+    }
 
     public static function saveItemsToCart(mixed $items): Cart|JsonResponse
     {
@@ -42,9 +38,6 @@ class CartService
         $region = Region::findOrFail($region_id);
 
         $cart = Cart::updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
-        // all added variants are in this variable
-    
-        $variants[]= null;
 
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
@@ -76,13 +69,9 @@ class CartService
                     'quantity' => $item['quantity'],
                 ]);
             }
-
-            $variants[] = $variant;
-            
         }
 
-        // here we pass the variants to a function 
-        // to calculate the cart price
+        self::calculateCartPrice($cart, $region_id);
 
         return $cart;
     }
@@ -94,7 +83,6 @@ class CartService
 
         $variants[] = null;
         foreach ($items as $item) {
-        
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();

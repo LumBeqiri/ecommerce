@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Cart;
 
-use App\Models\Cart;
-use App\Models\Variant;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\CartRequest;
-use App\Http\Resources\CartResource;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\UpdateCartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
+use App\Models\Variant;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminCartController extends ApiController
 {

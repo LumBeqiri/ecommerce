@@ -7,7 +7,6 @@ use App\Http\Requests\CartItemRequest;
 use App\Http\Requests\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Variant;
 use App\Services\CartService;
