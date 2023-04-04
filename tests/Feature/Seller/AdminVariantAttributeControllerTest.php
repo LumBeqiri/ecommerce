@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\Seller\SellerVariantAttributeController;
-use App\Models\Attribute;
+use App\Models\User;
+use App\Models\Region;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
-use App\Models\User;
 use App\Models\Variant;
+use App\Models\Attribute;
+use App\Models\TaxProvider;
+use Illuminate\Support\Facades\Bus;
 use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
+
 
 beforeEach(function () {
     Notification::fake();
@@ -29,7 +32,7 @@ it('can add an attribute to a variant ', function () {
 
     login($user);
 
-    $response = $this->postJson(action([SellerVariantAttributeController::class, 'store'], [$variant->uuid]),
+    $response = $this->postJson(action([AdminVariantAttributeController::class, 'store'], [$variant->uuid]),
         [
             'product_attributes' => [$attribute1->uuid, $attribute2->uuid],
         ]
@@ -57,7 +60,7 @@ it('can not have duplicate attribute type in a variant ', function () {
 
     login($user);
 
-    $response = $this->postJson(action([SellerVariantAttributeController::class, 'store'], [$variant->uuid]),
+    $response = $this->postJson(action([AdminVariantAttributeController::class, 'store'], [$variant->uuid]),
         [
             'product_attributes' => [$attribute1->uuid, $attribute2->uuid],
         ]
@@ -84,7 +87,7 @@ it('can remove attribute type from variant ', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([SellerVariantAttributeController::class, 'destroy'], [$variant->uuid, $attribute->uuid]));
+    $response = $this->deleteJson(action([AdminVariantAttributeController::class, 'destroy'], [$variant->uuid, $attribute->uuid]));
 
     $response->assertStatus(200);
 

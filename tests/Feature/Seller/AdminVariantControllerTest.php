@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\Seller\SellerVariantController;
-use App\Models\Country;
-use App\Models\Product;
+use App\Models\User;
 use App\Models\Region;
 use App\Models\Seller;
-use App\Models\TaxProvider;
-use App\Models\User;
+use App\Models\Country;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\TaxProvider;
+use Illuminate\Support\Facades\Bus;
 use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\Admin\Variant\AdminVariantController;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -28,7 +31,7 @@ it('can upload a product variant for sale ', function () {
 
     login($user);
 
-    $response = $this->postJson(action([SellerVariantController::class, 'store'], [$product->uuid]),
+    $response = $this->postJson(action([AdminVariantController::class, 'store'], [$product->uuid]),
         [
             'variant_name' => 'Example variant',
             'status' => 'available',
@@ -80,7 +83,7 @@ it('can update product variant name', function () {
 
     login($seller);
 
-    $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'variant_name' => $new_name,
     ]);
 
@@ -106,7 +109,7 @@ it('can update product variant short_description', function () {
 
     login($seller);
 
-    $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'variant_short_description' => $new_data,
     ]);
 
@@ -132,7 +135,7 @@ it('can update product variant long_description', function () {
 
     login($seller);
 
-    $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'variant_long_description' => $new_data,
     ]);
 
@@ -158,7 +161,7 @@ it('can update product variant stock', function () {
 
     login($seller);
 
-    $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'stock' => $new_data,
     ]);
 
@@ -184,7 +187,7 @@ it('can update product variant status', function () {
 
     login($seller);
 
-    $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'status' => $new_data,
     ]);
 
@@ -211,7 +214,7 @@ it('can not update some elses product variant', function () {
 
     login($rougeSeller);
 
-    $response = $this->putJson(action([SellerVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'status' => $new_data,
     ]);
 
@@ -232,7 +235,7 @@ it('can delete product variant', function () {
 
     login($seller);
 
-    $response = $this->deleteJson(action([SellerVariantController::class, 'destroy'], $variant->uuid));
+    $response = $this->deleteJson(action([AdminVariantController::class, 'destroy'], $variant->uuid));
 
     $response->assertStatus(200);
 

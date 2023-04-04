@@ -1,15 +1,19 @@
 <?php
 
-use App\Http\Controllers\Seller\SellerVariantMediaController;
-use App\Models\Country;
-use App\Models\Media;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
 use App\Models\User;
+use App\Models\Media;
+use App\Models\Region;
+use App\Models\Country;
+use App\Models\Product;
 use App\Models\Variant;
-use Database\Seeders\CurrencySeeder;
+use App\Models\TaxProvider;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
+use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
+
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -32,7 +36,7 @@ it('can upload one variant image ', function () {
 
     login($user);
 
-    $response = $this->postJson(action([SellerVariantMediaController::class, 'store'], [$variant->uuid]),
+    $response = $this->postJson(action([AdminVariantMediaController::class, 'store'], [$variant->uuid]),
         [
             'medias' => [$file],
         ]

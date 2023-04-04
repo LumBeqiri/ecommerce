@@ -1,18 +1,28 @@
 <?php
 
-use App\Http\Controllers\Admin\Cart\AdminCartController;
-use App\Http\Controllers\Admin\Category\AdminCategoryController;
-use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Http\Controllers\Admin\Region\AdminRegionController;
-use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
-use App\Http\Controllers\Admin\Users\AdminUserController;
-use App\Http\Controllers\Admin\Variant\AdminVariantController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Cart\AdminCartController;
+use App\Http\Controllers\Admin\Users\AdminUserController;
+use App\Http\Controllers\Admin\Region\AdminRegionController;
+use App\Http\Controllers\Admin\Product\AdminProductController;
+use App\Http\Controllers\Admin\Product\AdminVariantController;
+use App\Http\Controllers\Admin\Category\AdminCategoryController;
+use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
+use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
+use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('users', AdminUserController::class);
-    Route::delete('products/{product}/categories/{category}', [AdminProductController::class, 'delete_product_category']);
-    Route::resource('products', AdminProductController::class);
+    Route::post('sellers/{seller}/products', [AdminProductController::class, 'store']);
+    Route::put('sellers/{seller}/products/{product}', [AdminProductController::class, 'update']);
+
+    Route::get('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'show']);
+    Route::post('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'store']);
+    Route::delete('variants/{variant}/attributes/{attribute}', [AdminVariantAttributeController::class, 'destroy']);
+
+    Route::get('variants/{variant}/medias', [AdminVariantMediaController::class, 'index']);
+    Route::post('variants/{variant}/medias', [AdminMediaController::class, 'store']);
+    Route::delete('variants/{variant}/medias/{media}', [AdminVariantMediaController::class, 'destroy']);
 
     Route::put('variants/{variant}', [AdminVariantController::class, 'update']);
     Route::delete('variants/{variant}', [AdminVariantController::class, 'destroy']);

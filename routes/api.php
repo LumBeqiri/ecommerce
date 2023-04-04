@@ -26,11 +26,7 @@ use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductOrderController;
 use App\Http\Controllers\Product\ProductThumbnailController;
-use App\Http\Controllers\Seller\SellerController;
-use App\Http\Controllers\Seller\SellerProductController;
-use App\Http\Controllers\Seller\SellerVariantAttributeController;
 use App\Http\Controllers\Seller\SellerVariantController;
-use App\Http\Controllers\Seller\SellerVariantMediaController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Variant\VariantController;
 use Illuminate\Support\Facades\Route;
@@ -49,16 +45,6 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
-    Route::post('sellers/{seller}/products', [SellerProductController::class, 'store']);
-    Route::put('sellers/{seller}/products/{product}', [SellerProductController::class, 'update']);
-
-    Route::get('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'show']);
-    Route::post('variants/{variant}/attributes', [SellerVariantAttributeController::class, 'store']);
-    Route::delete('variants/{variant}/attributes/{attribute}', [SellerVariantAttributeController::class, 'destroy']);
-
-    Route::get('variants/{variant}/medias', [SellerVariantMediaController::class, 'index']);
-    Route::post('variants/{variant}/medias', [SellerVariantMediaController::class, 'store']);
-    Route::delete('variants/{variant}/medias/{media}', [SellerVariantMediaController::class, 'destroy']);
 
     Route::post('customer-groups', [CustomerGroupController::class, 'store']);
     Route::get('customer-groups', [CustomerGroupController::class, 'index']);
@@ -124,9 +110,6 @@ Route::resource('buyers.orders', BuyerOrderController::class);
 
 // Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
 
-//Seller Routes
-
-Route::resource('sellers', SellerController::class);
 
 //Category routes
 

@@ -2,7 +2,7 @@
 
 namespace App\values;
 
-class DiscountRuleTypes
+class DiscountConditionOperatorTypes
 {
     const IN = 'in';
 

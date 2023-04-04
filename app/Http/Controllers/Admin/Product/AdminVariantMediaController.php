@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\MediasRequest;
@@ -12,7 +12,7 @@ use App\Services\UploadImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
-class SellerVariantMediaController extends ApiController
+class AdminVariantMediaController extends ApiController
 {
     public function index(Variant $variant): JsonResponse
     {

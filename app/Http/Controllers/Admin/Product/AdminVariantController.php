@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreVariantRequest;
@@ -15,7 +15,7 @@ use App\Services\UploadImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class SellerVariantController extends ApiController
+class AdminVariantController extends ApiController
 {
     public function index(Product $product): JsonResponse
     {

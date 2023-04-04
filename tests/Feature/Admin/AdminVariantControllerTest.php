@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\Variant\AdminVariantController;
+use App\Models\User;
+use App\Models\Region;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
-use App\Models\User;
 use App\Models\Variant;
+use App\Models\TaxProvider;
 use App\Models\VariantPrice;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Admin\Variant\AdminVariantController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
