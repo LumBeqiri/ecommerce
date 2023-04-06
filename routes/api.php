@@ -110,7 +110,6 @@ Route::resource('buyers.orders', BuyerOrderController::class);
 
 // Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
 
-
 //Category routes
 
 Route::resource('categories.buyers', CategoryBuyerController::class);

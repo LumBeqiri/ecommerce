@@ -28,7 +28,7 @@ class AdminVariantController extends ApiController
     {
         $request->validated();
 
-        $variant_data = $request->except('attrs', 'medias', 'variant_prices');
+        $variant_data = $request->except('attributes', 'medias', 'variant_prices');
 
         $variant_data['product_id'] = $product->id;
 
@@ -40,9 +40,9 @@ class AdminVariantController extends ApiController
             return $newVariant;
         });
 
-        if ($request->has('attrs')) {
-            $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
-            $newVariant->attributes()->sync($attrs);
+        if ($request->has('attributes')) {
+            $attributes = Attribute::all()->whereIn('uuid', $request->attributes)->pluck('id');
+            $newVariant->attributes()->sync($attributes);
         }
 
         return $this->showOne(new VariantResource($newVariant));
@@ -64,20 +64,20 @@ class AdminVariantController extends ApiController
         }
 
         DB::transaction(function () use ($variant, $request) {
-            $variant->fill($request->except(['categories', 'attrs', 'medias', 'product_id', 'product_prices']));
+            $variant->fill($request->except(['categories', 'attributes', 'medias', 'product_id', 'variant_price']));
 
             if ($request->has('product_id')) {
                 $product = Product::where('uuid', $request->product_id)->firstOrFail();
                 $variant->product_id = $product->id;
             }
 
-            if ($request->has('attrs')) {
-                $attrs = Attribute::all()->whereIn('uuid', $request->attrs)->pluck('id');
-                $variant->attributes()->sync($attrs);
+            if ($request->has('attributes')) {
+                $attributes = Attribute::all()->whereIn('uuid', $request->attributes)->pluck('id');
+                $variant->attributes()->sync($attributes);
             }
 
-            if ($request->has('variant_prices')) {
-                $this->updateVariantPrice($request->variant_prices, $variant);
+            if ($request->has('variant_price')) {
+                VariantPrice::where('variant_id', $variant->id)->update(['price' => $request->variant_price]);
             }
 
             $variant->save();

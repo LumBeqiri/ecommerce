@@ -11,8 +11,6 @@ use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Region;
-use App\Models\Seller;
-use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
 use Illuminate\Http\JsonResponse;
@@ -20,9 +18,9 @@ use Illuminate\Support\Facades\DB;
 
 class AdminProductController extends ApiController
 {
-    public function index(Seller $seller): JsonResponse
+    public function index(): JsonResponse
     {
-        $products = $seller->products;
+        $products = Product::all();
 
         return $this->showAll(ProductResource::collection($products));
     }
@@ -32,9 +30,10 @@ class AdminProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    public function store(StoreProductRequest $request, User $seller): JsonResponse
+    public function store(StoreProductRequest $request): JsonResponse
     {
         $request->validated();
+        $seller = auth()->user();
 
         $product_data = [
             'product_name',
@@ -86,7 +85,7 @@ class AdminProductController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    public function update(UpdateProductRequest $request, Seller $seller, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         $request->validated();
 

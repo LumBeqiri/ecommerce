@@ -1,17 +1,16 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Seller;
+use App\Http\Controllers\Admin\Product\AdminProductController;
+use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\Region;
 use App\Models\TaxProvider;
-use Illuminate\Support\Facades\Bus;
+use App\Models\User;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Product\AdminProductController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -34,7 +33,7 @@ it('can upload a product for sale ', function () {
 
     // $file = UploadedFile::fake()->image('avatar.jpg');
 
-    $response = $this->postJson(action([AdminProductController::class, 'store'], [$user->uuid]),
+    $response = $this->postJson(action([AdminProductController::class, 'store']),
         [
             'product_name' => $productName,
             'variant_name' => 'Example variant',

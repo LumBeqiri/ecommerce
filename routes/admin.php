@@ -1,20 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Cart\AdminCartController;
-use App\Http\Controllers\Admin\Users\AdminUserController;
-use App\Http\Controllers\Admin\Region\AdminRegionController;
-use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Http\Controllers\Admin\Product\AdminVariantController;
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
-use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
-use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
+use App\Http\Controllers\Admin\Product\AdminProductController;
 use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
+use App\Http\Controllers\Admin\Product\AdminVariantController;
+use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
+use App\Http\Controllers\Admin\Region\AdminRegionController;
+use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
+use App\Http\Controllers\Admin\Users\AdminUserController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('users', AdminUserController::class);
-    Route::post('sellers/{seller}/products', [AdminProductController::class, 'store']);
-    Route::put('sellers/{seller}/products/{product}', [AdminProductController::class, 'update']);
+    Route::post('products', [AdminProductController::class, 'store']);
+    Route::put('products/{product}', [AdminProductController::class, 'update']);
+    Route::delete('products/{product}', [AdminProductController::class, 'destroy']);
 
     Route::get('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'show']);
     Route::post('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'store']);

@@ -1,16 +1,16 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
+use App\Http\Controllers\Admin\Product\AdminVariantController;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Variant\AdminVariantController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -126,7 +126,7 @@ it('admin can update variant price', function () {
     login($user);
 
     $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
-        'price' => $updated,
+        'variant_price' => $updated,
     ]);
 
     $response->assertOk();
@@ -148,7 +148,7 @@ it('admin can not update variant with negative price', function () {
     login($user);
 
     $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
-        'price' => $updated,
+        'variant_price' => $updated,
     ]);
 
     $response->assertStatus(422);
