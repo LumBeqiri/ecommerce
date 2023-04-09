@@ -25,7 +25,6 @@ use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductOrderController;
-use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Seller\SellerVariantController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Variant\VariantController;
@@ -50,9 +49,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('customer-groups', [CustomerGroupController::class, 'index']);
     Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
     Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
-
-    Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
-    Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
 
     Route::resource('carts', CartController::class);
 
