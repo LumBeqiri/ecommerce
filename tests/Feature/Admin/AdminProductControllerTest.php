@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Models\Category;
+use App\Models\User;
+use App\Models\Region;
+use App\Models\Seller;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Region;
+use App\Models\Category;
 use App\Models\TaxProvider;
-use App\Models\User;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\RoleAndPermissionSeeder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Http\Controllers\Admin\Product\AdminProductController;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -186,4 +189,34 @@ it('admin can update product status', function () {
     $response->assertOk();
 
     $this->assertDatabaseHas(Product::class, ['status' => $updatedStatus]);
+});
+
+
+it('can upload product thumbnail', function () {
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    User::factory()->create();
+    $product = Product::factory(['thumbnail' => ''])->create();
+
+    $file = UploadedFile::fake()->image('avatar.jpg');
+
+    $user = User::factory()->create(['name' => 'Lum']);
+    $user->assignRole('admin');
+
+    login($user);
+
+    $response = $this->postJson(action([ProductThumbnailController::class, 'store'], ['product' => $product->uuid]),
+        [
+            'thumbnail' => $file,
+        ]
+    );
+
+    $response->assertStatus(200);
+
+    expect($response->json())
+        ->thumbnail->toBe($file->hashname());
+
+    $this->assertTrue(file_exists(public_path().'/img/'.$file->hashName()));
+    $this->assertDatabaseHas(Product::class, ['thumbnail' => $file->hashName()]);
 });

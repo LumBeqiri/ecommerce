@@ -15,37 +15,38 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(['name' => 'create-users']);
-        Permission::create(['name' => 'edit-users']);
-        Permission::create(['name' => 'delete-users']);
-
-        Permission::create(['name' => 'create-products']);
-        Permission::create(['name' => 'edit-products']);
-        Permission::create(['name' => 'delete-products']);
-
-        Permission::create(['name' => 'create-categories']);
-        Permission::create(['name' => 'edit-categories']);
-        Permission::create(['name' => 'delete-categories']);
-
-        Permission::create(['name' => 'create-attributes']);
-        Permission::create(['name' => 'edit-attributes']);
-        Permission::create(['name' => 'delete-attributes']);
-
-        Permission::create(['name' => 'create-roles']);
-        Permission::create(['name' => 'edit-roles']);
-        Permission::create(['name' => 'delete-roles']);
-
-        Permission::create(['name' => 'create-carts']);
-        Permission::create(['name' => 'edit-carts']);
-        Permission::create(['name' => 'delete-carts']);
-
-        Permission::create(['name' => 'create-discounts']);
-        Permission::create(['name' => 'edit-discounts']);
-        Permission::create(['name' => 'delete-discounts']);
-
-        Permission::create(['name' => 'create-orders']);
-        Permission::create(['name' => 'edit-orders']);
-        Permission::create(['name' => 'delete-orders']);
+        Permission::create(['name' => 'create-users', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-users', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-users', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-products', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-products', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-products', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-categories', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-categories', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-categories', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-attributes', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-attributes', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-attributes', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-roles', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-roles', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-roles', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-carts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-carts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-carts', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-discounts', 'guard_name' => 'api']);
+        
+        Permission::create(['name' => 'create-orders', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit-orders', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-orders', 'guard_name' => 'api']);
+        
 
         $adminRole = Role::create(['name' => 'admin']);
 
