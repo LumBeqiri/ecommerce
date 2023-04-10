@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\PriceService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\VariantPrice */
@@ -18,7 +19,7 @@ class VariantPriceResource extends JsonResource
         return [
             /** @phpstan-ignore-next-line */
             'id' => $this->uuid,
-            'price' => $this->price,
+            'price' => PriceService::priceToDisplay($this->resource),
             'variant' => new VariantResource($this->whenLoaded('variant')),
             'region' => new RegionResource($this->region),
             'min_quantity' => $this->min_quantity,
