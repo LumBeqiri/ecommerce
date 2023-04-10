@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Currency;
 use App\Models\Region;
 use App\Models\Variant;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +24,7 @@ class VariantPriceFactory extends Factory
             'price' => $this->faker->randomNumber(1, 400),
             'variant_id' => Variant::all()->random()->id,
             'region_id' => Region::all()->random()->id,
+            'currency_id' => Currency::all()->random()->id,
             'min_quantity' => $this->faker->randomNumber(1, 4),
             'max_quantity' => $this->faker->randomNumber(1, 4),
         ];

@@ -23,4 +23,9 @@ class VariantPrice extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

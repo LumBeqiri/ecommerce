@@ -18,35 +18,34 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'create-users', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-users', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-users', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-products', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-products', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-products', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-categories', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-categories', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-categories', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-attributes', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-attributes', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-attributes', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-roles', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-roles', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-roles', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-carts', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-carts', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-carts', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-discounts', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-discounts', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-discounts', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-orders', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-orders', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-orders', 'guard_name' => 'api']);
-        
 
         $adminRole = Role::create(['name' => 'admin']);
 

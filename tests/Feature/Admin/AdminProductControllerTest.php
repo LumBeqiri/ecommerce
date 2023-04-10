@@ -1,19 +1,18 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Seller;
+use App\Http\Controllers\Admin\Product\AdminProductController;
+use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use Database\Seeders\CurrencySeeder;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
-use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Product\ProductThumbnailController;
-use App\Http\Controllers\Admin\Product\AdminProductController;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -190,7 +189,6 @@ it('admin can update product status', function () {
 
     $this->assertDatabaseHas(Product::class, ['status' => $updatedStatus]);
 });
-
 
 it('can upload product thumbnail', function () {
     TaxProvider::factory()->create();

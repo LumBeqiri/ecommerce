@@ -18,6 +18,7 @@ class CreateCurrenciesTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('symbol');
+            $table->boolean('has_cents')->nullable();
             $table->timestamps();
         });
     }

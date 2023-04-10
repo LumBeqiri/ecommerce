@@ -26,6 +26,7 @@ class CurrencyFactory extends Factory
             'symbol' => match ($currencyName) {
                 'Leke' => 'Lek', 'Dollars' => '$', 'Euro' => '€'
             },
+            'has_cents' => $this->faker->boolean(40),
         ];
     }
 }
