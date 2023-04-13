@@ -76,7 +76,6 @@ class AdminProductController extends ApiController
                     'region_id' => $region->id,
                     'max_quantity' => $variant_price['max_quantity'],
                     'min_quantity' => $variant_price['min_quantity'],
-                    'currency_id' => $region->currency_id,
                 ]);
             }
 

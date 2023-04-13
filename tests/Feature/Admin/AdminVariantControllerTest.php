@@ -8,6 +8,7 @@ use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
@@ -17,6 +18,31 @@ beforeEach(function () {
     $this->seed(CurrencySeeder::class);
     Notification::fake();
     Bus::fake();
+});
+
+it('admin can update variant price', function () {
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    User::factory()->count(10)->create();
+    Product::factory()->count(10)->create();
+
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    $variant = Variant::factory()->create(['id' => 3]);
+    VariantPrice::factory()->for($variant)->create();
+    $user = User::factory()->create(['name' => 'Lum']);
+    $user->assignRole('admin');
+    $updated = 230;
+    login($user);
+
+    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
+        'variant_price' => $updated,
+    ]);
+
+    $response->assertOk();
+
+    $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated]);
 });
 
 it('admin can update variant name', function () {
@@ -106,32 +132,6 @@ it('admin can update variant long description', function () {
     $response->assertOk();
 
     $this->assertDatabaseHas(Variant::class, ['variant_long_description' => $updated]);
-});
-
-it('admin can update variant price', function () {
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    User::factory()->count(10)->create();
-    Product::factory()->count(10)->create();
-
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    $variant = Variant::factory()->create(['id' => 3]);
-    VariantPrice::factory()->for($variant)->create();
-
-    $user = User::factory()->create(['name' => 'Lum']);
-    $user->assignRole('admin');
-    $updated = 230;
-    login($user);
-
-    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
-        'variant_price' => $updated,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated]);
 });
 
 it('admin can not update variant with negative price', function () {

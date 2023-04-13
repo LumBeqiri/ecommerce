@@ -17,8 +17,8 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('can display currency', function () {
-    Currency::factory()->create();
+it('can display currency with cent denomination', function () {
+    Currency::factory()->create(['has_cents' => true]);
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -26,14 +26,25 @@ it('can display currency', function () {
     Product::factory()->create();
     Variant::factory()->create();
 
-    $currencyWithCents = Currency::factory()->create(['has_cents' => true]);
-    $currencyWithoutCents = Currency::factory()->create(['has_cents' => false]);
-    $variantPriceWithCents = VariantPrice::factory()->create(['currency_id' => $currencyWithCents->id, 'price' => 100]);
-    $variantPriceWithoutCents = VariantPrice::factory()->create(['currency_id' => $currencyWithoutCents->id, 'price' => 10]);
+    $variantPriceWithCents = VariantPrice::factory()->create(['price' => 100]);
 
     $priceWithCents = PriceService::priceToDisplay($variantPriceWithCents);
-    $priceWithoutCents = PriceService::priceToDisplay($variantPriceWithoutCents);
 
     $this->assertEquals(1.00, $priceWithCents);
+});
+
+it('can display currency without cent denomination', function () {
+    Currency::factory()->create(['has_cents' => false]);
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    User::factory()->create();
+    Product::factory()->create();
+    Variant::factory()->create();
+
+    $variantPriceWithoutCents = VariantPrice::factory()->create(['price' => 10]);
+
+    $priceWithoutCents = PriceService::priceToDisplay($variantPriceWithoutCents);
+
     $this->assertEquals(10.00, $priceWithoutCents);
 });

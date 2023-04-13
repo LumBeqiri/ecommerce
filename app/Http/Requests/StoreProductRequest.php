@@ -51,7 +51,7 @@ class StoreProductRequest extends FormRequest
             'product_attributes' => 'array',
             'product_attributes.*.attribute_type' => 'required|string|max:150|unique:attributes,attribute_value',
             'product_attributes.*.attribute_value' => 'required|string|max:150|unique:attributes,attribute_value',
-            //rules for product_prices
+            //rules for variant_prices
             'variant_prices' => 'required|array',
             'variant_prices.*.region_id' => 'required|exists:regions,uuid',
             'variant_prices.*.price' => 'required|integer|min:1',

@@ -24,7 +24,6 @@ class VariantPriceResource extends JsonResource
             'region' => new RegionResource($this->region),
             'min_quantity' => $this->min_quantity,
             'max_quantity' => $this->max_quantity,
-            'currency' => $this->currency,
         ];
     }
 }

@@ -20,9 +20,4 @@ class Currency extends Model
     {
         return $this->hasMany(Region::class);
     }
-
-    public function variant_prices(): HasMany
-    {
-        return $this->hasMany(VariantPrice::class);
-    }
 }

@@ -79,7 +79,6 @@ class AdminVariantController extends ApiController
             if ($request->has('variant_price')) {
                 VariantPrice::where('variant_id', $variant->id)->update(['price' => $request->variant_price]);
             }
-
             $variant->save();
         });
 
@@ -120,7 +119,6 @@ class AdminVariantController extends ApiController
             ->where('region_id', $variant_price['region_id'])
             ->update([
                 'region_id' => $variant_price['region_id'],
-                'currency_id' => $variant_price['currency_id'],
                 'price' => $variant_price['price'],
                 'min_quantity' => $variant_price['min_quantity'],
                 'max_quantity' => $variant_price['max_quantity'],

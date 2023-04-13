@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('price');
             $table->foreignId('variant_id')->constrained('variants')->cascadeOnDelete();
             $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();
-            $table->foreignId('currency_id')->constrained('currencies')->cascadeOnDelete();
             $table->integer('min_quantity')->nullable();
             $table->integer('max_quantity')->nullable();
             $table->timestamps();

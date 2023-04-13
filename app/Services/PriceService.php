@@ -8,7 +8,8 @@ class PriceService
 {
     public static function priceToDisplay(VariantPrice $variantPrice): float
     {
-        if ($variantPrice->currency->has_cents) {
+        $variantPrice = VariantPrice::with('region.currency')->find($variantPrice->id);
+        if ($variantPrice->region->currency->has_cents) {
             return $variantPrice->price / 100;
         }
 
