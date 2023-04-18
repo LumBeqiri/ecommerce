@@ -17,10 +17,11 @@ class CartService
     {
         $price = 0;
 
+        // calculate discounts
         foreach ($cart->cart_items as $cartItem) {
             $variant = Variant::find($cartItem->variant_id);
 
-            $variantPrice = $variant->variant_prices()->where('region_id', $regionId)->first();
+            $variantPrice = $variant->variant_prices()->where('region_id', $regionId)->firstOrFail();
 
             $price += $variantPrice->price * $cartItem->quantity;
         }

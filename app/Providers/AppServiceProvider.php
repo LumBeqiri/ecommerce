@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Contracts\UploadServiceContract;
-use App\Services\UploadImageService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
@@ -33,7 +31,5 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Model::preventAccessingMissingAttributes(! App::environment('production'));
-
-        // $this->app->bind(UploadServiceContract::class, UploadImageService::class);
     }
 }

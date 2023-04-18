@@ -32,13 +32,12 @@ class DiscountController extends ApiController
 
         $newDiscount = DB::transaction(function () use ($request) {
             $discountRule = DiscountRule::create(
-                ['value' => $request->value]
-                +
                 $request->only([
                     'description',
                     'discount_type',
                     'allocation',
                     'metadata',
+                    'value',
                 ])
             );
 
