@@ -32,6 +32,8 @@ class DiscountController extends ApiController
 
         $newDiscount = DB::transaction(function () use ($request) {
             $discountRule = DiscountRule::create(
+                ['value' => $request->value]
+                +
                 $request->only([
                     'description',
                     'discount_type',
@@ -58,8 +60,9 @@ class DiscountController extends ApiController
                 ])
             );
 
-            $regions = Region::whereIn('uuid', $request->regions)->pluck('id');
-            $discount->regions()->attach($regions);
+            $region = Region::where('uuid', $request->region)->firstOrFail();
+
+            $discount->regions()->attach($region);
 
             if ($request->conditions) {
                 $discountCondition = $discountRule->discount_conditions()->create([
@@ -117,7 +120,7 @@ class DiscountController extends ApiController
             ]));
             $discount->save();
 
-            $regions = Region::whereIn('uuid', $request->regions)->pluck('id');
+            $regions = Region::where('uuid', $request->region)->firstOrFail();
             $discount->regions()->sync($regions);
         });
 

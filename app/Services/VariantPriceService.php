@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Models\VariantPrice;
 
-class PriceService
+class VariantPriceService
 {
-    public static function priceToDisplay(VariantPrice $variantPrice): float
+    public static function variantPriceToDisplay(VariantPrice $variantPrice): float
     {
         $variantPrice = VariantPrice::with('region.currency')->find($variantPrice->id);
         if ($variantPrice->region->currency->has_cents) {

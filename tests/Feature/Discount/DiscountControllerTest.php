@@ -31,7 +31,7 @@ it('can store percentage discount without conditions ', function () {
         [
             'code' => 'LCX',
             'discount_type' => 'percentage',
-            'regions' => [Region::first()->uuid],
+            'region' => Region::first()->uuid,
             'value' => 23.2,
             'description' => 'hello',
             'conditions' => 0,
@@ -55,7 +55,7 @@ it('can store fixed discount without conditions ', function ($allocation) {
         [
             'code' => 'LCX',
             'discount_type' => 'fixed',
-            'regions' => [Region::first()->uuid],
+            'region' => Region::first()->uuid,
             'value' => 23.2,
             'allocation' => $allocation,
             'description' => 'hello',
@@ -84,7 +84,7 @@ it('can store free shipping discount without conditions ', function () {
             'code' => 'LCX',
             'discount_type' => 'free_shipping',
             'value' => 0,
-            'regions' => [Region::first()->uuid],
+            'region' => Region::first()->uuid,
             'description' => 'hello',
             'conditions' => 0,
         ]
@@ -108,7 +108,7 @@ it('can store percentage discount with conditions', function () {
         [
             'code' => 'LCX',
             'discount_type' => 'percentage',
-            'regions' => [Region::first()->uuid],
+            'region' => Region::first()->uuid,
             'value' => 23.2,
             'description' => 'hello',
             'conditions' => true,
@@ -159,7 +159,7 @@ it('can update percentage discount', function () {
         [
             'code' => $code,
             'discount_type' => 'percentage',
-            'regions' => [$region->uuid],
+            'region' => $region->uuid,
             'value' => $value,
             'description' => $description,
             'usage_limit' => $usage_limit,

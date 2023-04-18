@@ -1,15 +1,16 @@
 <?php
 
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
 use App\Models\User;
+use App\Models\Region;
+use App\Models\Country;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Currency;
+use App\Models\TaxProvider;
 use App\Models\VariantPrice;
 use App\Services\PriceService;
 use Illuminate\Support\Facades\Bus;
+use App\Services\VariantPriceService;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
@@ -28,7 +29,7 @@ it('can display currency with cent denomination', function () {
 
     $variantPriceWithCents = VariantPrice::factory()->create(['price' => 100]);
 
-    $priceWithCents = PriceService::priceToDisplay($variantPriceWithCents);
+    $priceWithCents = VariantPriceService::variantPriceToDisplay($variantPriceWithCents);
 
     $this->assertEquals(1.00, $priceWithCents);
 });
@@ -44,7 +45,7 @@ it('can display currency without cent denomination', function () {
 
     $variantPriceWithoutCents = VariantPrice::factory()->create(['price' => 10]);
 
-    $priceWithoutCents = PriceService::priceToDisplay($variantPriceWithoutCents);
+    $priceWithoutCents = VariantPriceService::variantPriceToDisplay($variantPriceWithoutCents);
 
     $this->assertEquals(10.00, $priceWithoutCents);
 });
