@@ -32,7 +32,7 @@ class LoginController extends ApiController
                 $items = $cart['items'];
 
                 // CartService::saveCookieItemsToCart($items); // just for testing/ delete this afterwards
-                // SaveCookieCartToDB::dispatch($items); // keep this one
+                // SaveCookieCartToDB::dispatch($items, $user); // keep this one
             }
         }
 
