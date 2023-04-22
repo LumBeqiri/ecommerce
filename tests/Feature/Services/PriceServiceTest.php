@@ -1,16 +1,15 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
 use App\Models\Country;
-use App\Models\Product;
-use App\Models\Variant;
 use App\Models\Currency;
+use App\Models\Product;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
-use App\Services\PriceService;
-use Illuminate\Support\Facades\Bus;
 use App\Services\VariantPriceService;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {

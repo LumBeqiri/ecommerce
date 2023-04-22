@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use App\Services\CartService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +20,6 @@ class SaveCookieCartToDB implements ShouldQueue
      */
     public function __construct(
         protected mixed $items,
-        protected User $user,
         protected string $region_id
         ) {
     }
@@ -33,6 +31,6 @@ class SaveCookieCartToDB implements ShouldQueue
      */
     public function handle()
     {
-        CartService::saveCookieItemsToCart($this->items, $this->user, $this->region_id);
+        CartService::saveCookieItemsToCart($this->items, $this->region_id);
     }
 }

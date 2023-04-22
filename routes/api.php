@@ -18,6 +18,7 @@ use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Discount\DiscountConditionController;
 use App\Http\Controllers\Discount\DiscountController;
+use App\Http\Controllers\Discount\DiscountVariantController;
 use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderSellerController;
@@ -51,6 +52,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
 
     Route::resource('carts', CartController::class);
+
+    Route::post('discount/variant/{variant}/apply_discount', [DiscountVariantController::class, 'apply_discount']);
 
     Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
     Route::post('store_cart', [BuyerCartController::class, 'store']);

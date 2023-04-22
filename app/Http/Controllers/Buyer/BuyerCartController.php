@@ -21,12 +21,12 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    public function store(CartRequest $request): JsonResponse
+    public function store(CartRequest $request)
     {
         $data = $request->validated();
         $items = $data['items'];
 
-        $cart = CartService::saveItemsToCart($items);
+        $cart = CartService::saveItemsToCart($items, auth()->user());
 
         if ($cart instanceof JsonResponse) {
             return $cart;
@@ -34,7 +34,9 @@ class BuyerCartController extends ApiController
 
         // $cart->total_cart_price = CartService::calculatePrice($items);
 
-        return $this->showOne(new CartResource($cart->load('cart_items')));
+        // return $cart->total_cart_price;
+
+        // return $this->showOne(new CartResource($cart));
     }
 
     public function remove_from_cart(CartItemRequest $request): JsonResponse

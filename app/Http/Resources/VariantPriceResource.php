@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Services\PriceService;
 use App\Services\VariantPriceService;
 use Illuminate\Http\Resources\Json\JsonResource;
 

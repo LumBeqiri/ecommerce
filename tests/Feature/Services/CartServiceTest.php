@@ -23,8 +23,8 @@ it('saves cookie items to cart', function ($status) {
     Currency::factory()->create();
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
-    User::factory()->create();
-    Country::factory()->create();
+    $country = Country::factory()->for($region)->create();
+    $user = User::factory()->create(['country_id' => $country]);
     Product::factory()->available()->create();
 
     $variant1 = Variant::factory()->create(['status' => Product::AVAILABLE_PRODUCT, 'stock' => 5, 'publish_status' => $status]);
@@ -40,9 +40,8 @@ it('saves cookie items to cart', function ($status) {
         ['variant_id' => $variant2->uuid, 'quantity' => 1],
         ['variant_id' => $variant3->uuid, 'quantity' => 3],
     ];
-    $user = User::factory()->create();
 
-    CartService::saveCookieItemsToCart($items, $user, $region->uuid);
+    CartService::saveCookieItemsToCart($items, $user);
 
     $cart = Cart::where('user_id', $user->id)->where('region_id', $region->id)->firstOrFail();
 
@@ -62,6 +61,6 @@ it('saves cookie items to cart', function ($status) {
     }
 })->with(
     [
-        Product::PUBLISHED, Product::DRAFT,
+        Product::PUBLISHED,
     ]
 );

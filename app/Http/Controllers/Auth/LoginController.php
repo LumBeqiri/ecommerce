@@ -31,8 +31,8 @@ class LoginController extends ApiController
             if (! empty($cart) && array_key_exists('items', $cart)) {
                 $items = $cart['items'];
 
-                CartService::saveCookieItemsToCart($items, $user, '108860ae-f8d1-4d94-83d8-0e7aa30a38ef');
-                // SaveCookieCartToDB::dispatch($items, $user,"108860ae-f8d1-4d94-83d8-0e7aa30a38ef");
+                // CartService::saveCookieItemsToCart($items); // just for testing/ delete this afterwards
+                // SaveCookieCartToDB::dispatch($items); // keep this one
             }
         }
 

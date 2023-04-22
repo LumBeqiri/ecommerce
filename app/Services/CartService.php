@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Country;
 use App\Models\Product;
-use App\Models\Region;
 use App\Models\User;
 use App\Models\Variant;
 use Illuminate\Http\JsonResponse;
@@ -30,22 +28,21 @@ class CartService
         $cart->save();
     }
 
-    public static function saveItemsToCart(mixed $items): Cart|JsonResponse
+    public static function saveItemsToCart(mixed $items, User $user)//: Cart|JsonResponse
     {
-        $region_id = Country::select('region_id')->where('id', auth()->user()->country_id)
-        ->firstOrFail()
-        ->region_id;
+        $region = $user->country->region;
 
-        $region = Region::findOrFail($region_id);
-
-        $cart = Cart::updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
+        $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region) {
+            $query->where('region_id', $region->id);
+        },
+        ])->updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
 
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
-            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+            $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
-            if (! $variant->variant_prices()->where('region_id', $region->id)->exists()) {
+            if (! $variant->variant_prices->where('region_id', $region->id)->first()) {
                 return response()->json(['error' => 'Product not available in your region', 'code' => 422], 422, ['application/json']);
             }
 
@@ -64,25 +61,29 @@ class CartService
                 $cart_item->quantity += $item['quantity'];
                 $cart_item->save();
             } else {
-                CartItem::create([
+                $cart_item = CartItem::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $variant->id,
                     'quantity' => $item['quantity'],
                 ]);
             }
+            $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
+            $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
 
-        self::calculateCartPrice($cart, $region_id);
+        $cart->save();
 
         return $cart;
     }
 
-    public static function saveCookieItemsToCart(mixed $items, User $user, string $region_id): void
+    public static function saveCookieItemsToCart(mixed $items, User $user): void
     {
-        $region = Region::where('uuid', $region_id)->firstOrFail();
-        $cart = Cart::updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
+        $region = $user->country->region;
+        $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region) {
+            $query->where('region_id', $region->id);
+        },
+        ])->updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
 
-        $variants[] = null;
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
@@ -107,32 +108,17 @@ class CartService
                 $cart_item->quantity += $item['quantity'];
                 $cart_item->save();
             } else {
-                CartItem::create([
+                $cart_item = CartItem::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $variant->id,
                     'quantity' => $item['quantity'],
                 ]);
             }
 
-            $variants[] = $variant;
-        }
-    }
-
-    private function validateCartItem(CartItem $cart_item, Variant $variant, $quantity)
-    {
-    }
-
-    public static function validateCookieItems(array $items): bool
-    {
-        foreach ($items as $item) {
-            if (Variant::find($item['variant_id'])) {
-                return false;
-            }
-            if ($item['count'] < 1) {
-                return false;
-            }
+            $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
+            $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
 
-        return true;
+        $cart->save();
     }
 }
