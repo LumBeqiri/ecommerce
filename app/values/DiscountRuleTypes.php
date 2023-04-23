@@ -4,7 +4,7 @@ namespace App\values;
 
 class DiscountRuleTypes
 {
-    const FIXED = 'fixed';
+    const FIXED_AMOUNT = 'fixed_amount';
 
     const PERCENTAGE = 'percentage';
 

@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
+use App\values\DiscountRuleTypes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
@@ -54,7 +55,7 @@ it('can store fixed discount without conditions ', function ($allocation) {
     $response = $this->postJson(action([DiscountController::class, 'store']),
         [
             'code' => 'LCX',
-            'discount_type' => 'fixed',
+            'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
             'region' => Region::first()->uuid,
             'value' => 23.2,
             'allocation' => $allocation,

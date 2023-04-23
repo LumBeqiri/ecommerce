@@ -26,7 +26,7 @@ class UpdateDiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
+            'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED_AMOUNT.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
             'value' => 'required_if:discount_type,'.DiscountRuleTypes::PERCENTAGE.'|numeric',
             'region' => 'exists:regions,uuid',
             'code' => 'sometimes|string',

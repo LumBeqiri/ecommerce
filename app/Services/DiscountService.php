@@ -8,38 +8,47 @@ use App\Models\Variant;
 
 class DiscountService
 {
-    public static function applyDiscount(Cart $cart, Variant $variant, $discount_code)
+    public static function applyDiscount(Cart $cart, $discount_code)
     {
+        $variant_discount = [];
 
-        
-        // check if it is "in" or "not in" the list of products : DiscountCondition Model
-        
-        // if it is "in" : check type value of discount and allocation (item_specific, total ammount)
-        // maybe receive a list of variants from the client and then check discount conditions on those
-        // after that return key - value array for each variant and i'ts discount
-        
-        // $discount = Discount::where('code', $discount_code)->get();
         $discount = Discount::where('code', $discount_code)->firstOrFail();
 
         $discount_region = $discount->regions()->where('region_id', auth()->user()->country->region->id)->first();
-     
+
         if ($discount_region === null || $discount->is_disabled) {
             return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
         }
 
-        $product = $variant->product;
+        $variants = Variant::with('product.discount_conditions.discount_rule.discount')
+        ->whereIn('id', $cart->cart_items->pluck('variant_id'))
+        ->get();
 
-        $discount_condition_product = $product->discount_conditions()->exists();
-        if ($discount_condition_product) {
-            $variant = Variant::with('product.discount_conditions.discount_rule.discount')->where('id', $variant->id)->first();
+        foreach ($variants as $variant) {
+            $product = $variant->product;
 
-dd( 
-    $variant
-);
-        } else {
-            dd('no discount');
+            $discount_condition_product = $product->discount_conditions()->exists();
+
+            if ($discount_condition_product) {
+                $discount_rule = $variant->product->discount_conditions->first()->discount_rule;
+
+                $discount_value = $discount_rule->value;
+                $discount_type = $variant->product->discount_conditions->first()->discount_rule->discount_type;
+
+                $temp = [
+                    'variant' => $variant->uuid,
+                    'value' => $discount_value,
+                    'type' => $discount_type,
+                    'allocation' => $discount_rule->allocation,
+                ];
+
+                $variant_discount[] = $temp;
+            }
         }
-        $discount_value = $variant->product->discount_conditions->first()->discount_rule->value;
-        $discount_type = $variant->product->discount_conditions->first()->discount_rule->discount_type;
+    }
+
+
+    public function calculateDiscount(Cart $cart){
+        
     }
 }

@@ -27,8 +27,8 @@ class DiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'discount_type' => 'required|in:'.DiscountRuleTypes::FIXED.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
-            'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
+            'discount_type' => 'required|in:'.DiscountRuleTypes::FIXED_AMOUNT.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
+            'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED_AMOUNT.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
             'value' => 'required|numeric',
             'region' => 'exists:regions,uuid',
             'code' => 'required|string',

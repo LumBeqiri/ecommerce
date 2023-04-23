@@ -103,7 +103,7 @@ class DiscountController extends ApiController
                 }
             }
 
-            if($request->has('description')){
+            if ($request->has('description')) {
                 $discount->discount_rule()->update([
                     'description' => $request->description,
                     'value' => $request->value,

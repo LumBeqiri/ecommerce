@@ -21,7 +21,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    public function store(CartRequest $request) : JsonResponse
+    public function store(CartRequest $request): JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
