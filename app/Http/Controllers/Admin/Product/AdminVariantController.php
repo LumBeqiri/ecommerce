@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Variant;
 use App\Models\VariantPrice;
 use App\Services\UploadImageService;
+use App\Services\VariantPriceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +29,7 @@ class AdminVariantController extends ApiController
     {
         $request->validated();
 
-        $variant_data = $request->except('attributes', 'medias', 'variant_prices');
+        $variant_data = $request->except('attributes', 'variant_prices');
 
         $variant_data['product_id'] = $product->id;
 
@@ -55,16 +56,16 @@ class AdminVariantController extends ApiController
 
         $images = $request->medias;
 
-        if ($request->has('medias')) {
-            $request_images = count($request->file('medias'));
+        // if ($request->has('medias')) {
+        //     $request_images = count($request->file('medias'));
 
-            abort_if($request_images > 1, 422, 'Can not update more than 1 image per variant');
+        //     abort_if($request_images > 1, 422, 'Can not update more than 1 image per variant');
 
-            UploadImageService::upload($variant, $images, Variant::class);
-        }
+        //     UploadImageService::upload($variant, $images, Variant::class);
+        // }
 
         DB::transaction(function () use ($variant, $request) {
-            $variant->fill($request->except(['categories', 'attributes', 'medias', 'product_id', 'variant_price']));
+            $variant->fill($request->except(['categories', 'attributes', 'product_id', 'variant_price', 'region']));
 
             if ($request->has('product_id')) {
                 $product = Product::where('uuid', $request->product_id)->firstOrFail();
@@ -77,7 +78,12 @@ class AdminVariantController extends ApiController
             }
 
             if ($request->has('variant_price')) {
-                VariantPrice::where('variant_id', $variant->id)->update(['price' => $request->variant_price]);
+                $region = Region::where('uuid', $request->region)->firstOrFail();
+                $variantPrice = VariantPrice::where('variant_id', $variant->id)->where('region_id', $region->id)->firstOrFail();
+                $price = VariantPriceService::priceToSave($request->variant_price, $region);
+                $variantPrice->price = $price;
+                // dd($price);
+                $variantPrice->save();
             }
             $variant->save();
         });

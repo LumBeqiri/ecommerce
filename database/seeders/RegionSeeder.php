@@ -23,7 +23,7 @@ class RegionSeeder extends Seeder
         $region = [
             'uuid' => '108860ae-f8d1-4d94-83d8-0e7aa30a38ef',
             'title' => 'EU',
-            'currency_id' => 2,
+            'currency_id' => 1,
             'tax_rate' => 22,
             'tax_code' => 'IJK012',
         ];

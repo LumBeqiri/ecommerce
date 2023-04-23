@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Region;
 use App\Models\VariantPrice;
 
-class VariantPriceService
+class PriceService
 {
     public static function variantPriceToDisplay(VariantPrice $variantPrice): float
     {
@@ -13,18 +12,12 @@ class VariantPriceService
         if ($variantPrice->region->currency->has_cents) {
             return $variantPrice->price / 100;
         }
-        
+
         return $variantPrice->price;
     }
 
-    public static function priceToSave(int|float $price, Region $region): int
+    public static function priceToSave($priceInEuro): int
     {
-        if ($region->currency->has_cents) {
-            $price *= 100;
-
-            return $price;
-        }
-
-        return $price;
+        return $priceInEuro * 100;
     }
 }

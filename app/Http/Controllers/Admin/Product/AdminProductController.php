@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Services\VariantPriceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -70,8 +71,11 @@ class AdminProductController extends ApiController
 
             foreach ($request->variant_prices as $variant_price) {
                 $region = Region::where('uuid', $variant_price['region_id'])->first();
+
+                $price = VariantPriceService::priceToSave($variant_price['price'], $region);
+
                 VariantPrice::create([
-                    'price' => $variant_price['price'],
+                    'price' => $price,
                     'variant_id' => $variant->id,
                     'region_id' => $region->id,
                     'max_quantity' => $variant_price['max_quantity'],

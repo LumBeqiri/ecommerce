@@ -54,7 +54,7 @@ class StoreProductRequest extends FormRequest
             //rules for variant_prices
             'variant_prices' => 'required|array',
             'variant_prices.*.region_id' => 'required|exists:regions,uuid',
-            'variant_prices.*.price' => 'required|integer|min:1',
+            'variant_prices.*.price' => 'required|integer|min:0| max:100000000',
             'variant_prices.*.max_quantity' => 'nullable|integer',
             'variant_prices.*.min_quantity' => 'nullable|integer',
         ];

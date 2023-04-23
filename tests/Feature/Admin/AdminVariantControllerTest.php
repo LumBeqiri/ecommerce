@@ -28,9 +28,10 @@ it('admin can update variant price', function () {
     Product::factory()->count(10)->create();
 
     TaxProvider::factory()->create();
-    Region::factory()->create();
+    $region = Region::factory()->create(['id' => 12]);
     $variant = Variant::factory()->create(['id' => 3]);
-    VariantPrice::factory()->for($variant)->create();
+    VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
+
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
     $updated = 230;
@@ -38,6 +39,7 @@ it('admin can update variant price', function () {
 
     $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
         'variant_price' => $updated,
+        'region' => $region->uuid,
     ]);
 
     $response->assertOk();

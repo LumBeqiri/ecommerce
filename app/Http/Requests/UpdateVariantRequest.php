@@ -28,8 +28,9 @@ class UpdateVariantRequest extends FormRequest
 
         return [
             'variant_name' => 'sometimes|string|max:255',
+            'region' => 'sometimes|exists:regions,uuid',
             'sku' => 'sometimes',
-            'variant_price' => 'sometimes|required|numeric|min:1',
+            'variant_price' => 'sometimes|required|numeric|min:0| max:100000000',
             'short_desc' => 'sometimes|string|max:256',
             'long_desc' => 'sometimes|string| max:900',
             'stock' => 'sometimes|required|integer|min:1',
@@ -37,8 +38,8 @@ class UpdateVariantRequest extends FormRequest
             'attributes.*' => 'required|max:150|string|exists:attributes,uuid',
             'product_id' => 'exists:products,uuid',
             'status' => 'in:'.Product::AVAILABLE_PRODUCT.','.Product::UNAVAILABLE_PRODUCT,
-            'medias' => 'max:'.$max_images,
-            'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
+            // 'medias' => 'max:'.$max_images,
+            // 'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
         ];
     }
 }

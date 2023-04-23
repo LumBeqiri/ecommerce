@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\Discount;
 use App\Models\Variant;
+use App\values\DiscountAllocationTypes;
+use App\values\DiscountRuleTypes;
 
 class DiscountService
 {
@@ -31,7 +33,9 @@ class DiscountService
 
             if ($discount_condition_product) {
                 $discount_rule = $variant->product->discount_conditions->first()->discount_rule;
-
+                if ($discount_rule->discount_type === DiscountRuleTypes::FIXED_AMOUNT && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
+                    // $cart->total_cart_price =
+                }
                 $discount_value = $discount_rule->value;
                 $discount_type = $variant->product->discount_conditions->first()->discount_rule->discount_type;
 
@@ -39,16 +43,13 @@ class DiscountService
                     'variant' => $variant->uuid,
                     'value' => $discount_value,
                     'type' => $discount_type,
-                    'allocation' => $discount_rule->allocation,
+                    'allocation' => $discount_allocation,
                 ];
 
                 $variant_discount[] = $temp;
             }
         }
-    }
 
-
-    public function calculateDiscount(Cart $cart){
-        
+        dd($variant_discount);
     }
 }

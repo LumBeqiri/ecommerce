@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('variants/{variant}/medias', [AdminMediaController::class, 'store']);
     Route::delete('variants/{variant}/medias/{media}', [AdminVariantMediaController::class, 'destroy']);
 
+    Route::post('products/{product}/variants', [AdminVariantController::class, 'store']);
     Route::put('variants/{variant}', [AdminVariantController::class, 'update']);
     Route::delete('variants/{variant}', [AdminVariantController::class, 'destroy']);
 
