@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Discount\DiscountController;
+use App\Http\Controllers\Admin\Discount\DiscountController;
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Discount;

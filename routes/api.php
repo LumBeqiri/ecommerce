@@ -16,8 +16,6 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Discount\DiscountConditionController;
-use App\Http\Controllers\Discount\DiscountController;
 use App\Http\Controllers\Discount\DiscountVariantController;
 use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Order\OrderController;
@@ -63,18 +61,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('products/{product}/variants', [SellerVariantController::class, 'store']);
     Route::put('variants/{variant}', [SellerVariantController::class, 'update']);
     Route::delete('variants/{variant}', [SellerVariantController::class, 'destroy']);
-
-    Route::get('discounts', [DiscountController::class, 'index']);
-    Route::post('discounts', [DiscountController::class, 'store']);
-    Route::get('discounts/{discount}', [DiscountController::class, 'show']);
-    Route::put('discounts/{discount}', [DiscountController::class, 'update']);
-    Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
-    Route::get('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'show']);
-    Route::put('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'update']);
-    Route::post('discount-conditions/{discount}', [DiscountConditionController::class, 'store']);
-    Route::delete('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
-    Route::delete('discount-conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
-    Route::delete('discount-conditions/{discount_condition}/product/{customerGroup}', [DiscountConditionController::class, 'removeCustomerGroup']);
 });
 
 //Product Routes

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Discount;
+namespace App\Http\Controllers\Admin\Discount;
 
 use App\Http\Controllers\ApiController;
 use App\Services\DiscountService;
@@ -15,6 +15,7 @@ class DiscountVariantController extends ApiController
         ], [$request->code]);
 
         $cart = $this->authUser()->cart;
-        DiscountService::applyDiscount($cart, $request->code);
+
+        return DiscountService::applyDiscount($cart, $request->code);
     }
 }

@@ -19,6 +19,15 @@ class VariantPriceSeeder extends Seeder
             'variant_id' => 1,
             'region_id' => 1,
         ])->create();
+        VariantPrice::factory([
+            'variant_id' => 2,
+            'region_id' => 1,
+        ])->create();
+
+        VariantPrice::factory([
+            'variant_id' => 3,
+            'region_id' => 1,
+        ])->create();
 
         VariantPrice::factory(Variant::count())->create();
     }

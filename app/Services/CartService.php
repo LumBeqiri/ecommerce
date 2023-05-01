@@ -42,7 +42,7 @@ class CartService
 
             $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
-            if (! $variant->variant_prices->where('region_id', $region->id)->first()) {
+            if (! $variant->variant_prices->where('region_id', $region->id)->count() > 0) {
                 return response()->json(['error' => 'Product not available in your region', 'code' => 422], 422, ['application/json']);
             }
 

@@ -22,7 +22,7 @@ class VariantPriceFactory extends Factory
             'uuid' => $this->faker->uuid(),
             'price' => $this->faker->randomNumber(1, 400),
             'variant_id' => Variant::all()->random()->id,
-            'region_id' => Region::all()->random()->id,
+            'region_id' => 1, //Region::all()->random()->id,
             'min_quantity' => $this->faker->randomNumber(1, 4),
             'max_quantity' => $this->faker->randomNumber(1, 4),
         ];

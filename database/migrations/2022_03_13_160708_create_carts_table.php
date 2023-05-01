@@ -20,6 +20,7 @@ class CreateCartsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->integer('total_cart_price')->nullable();
             $table->boolean('is_closed')->default(false);
+            $table->boolean('has_been_discounted')->default(false);
             $table->foreignIdFor(Region::class, 'region_id')->constrained();
             $table->timestamps();
         });

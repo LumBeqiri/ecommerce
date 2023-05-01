@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Discount;
+namespace App\Http\Controllers\Admin\Discount;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\DiscountRequest;

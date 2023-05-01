@@ -13,7 +13,7 @@ class VariantPriceService
         if ($variantPrice->region->currency->has_cents) {
             return $variantPrice->price / 100;
         }
-        
+
         return $variantPrice->price;
     }
 
