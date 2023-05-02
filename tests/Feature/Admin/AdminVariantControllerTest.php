@@ -34,17 +34,24 @@ it('admin can update variant price', function () {
 
     $user = User::factory()->create(['name' => 'Lum']);
     $user->assignRole('admin');
-    $updated = 230;
+    $price_to_update = 230;
+    $updated_price = null;
+
+    if($region->currency->has_cents){
+        $updated_price =$price_to_update * 100;
+    }else{
+        $updated_price = $price_to_update;
+    }
     login($user);
 
     $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
-        'variant_price' => $updated,
+        'variant_price' => $price_to_update,
         'region' => $region->uuid,
     ]);
 
     $response->assertOk();
 
-    $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated]);
+    $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated_price]);
 });
 
 it('admin can update variant name', function () {

@@ -1,21 +1,23 @@
 <?php
 
-use App\Http\Controllers\Admin\Discount\DiscountController;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Region;
 use App\Models\Country;
+use App\Models\Product;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\DiscountCondition;
-use App\Models\DiscountRule;
-use App\Models\Product;
-use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\User;
+use App\Models\DiscountRule;
+use App\Models\DiscountCondition;
 use App\values\DiscountRuleTypes;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Admin\Discount\DiscountController;
 
 beforeEach(function () {
+    $this->seed(RoleAndPermissionSeeder::class);
     Currency::factory()->count(5)->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
@@ -26,6 +28,8 @@ beforeEach(function () {
 
 it('can store percentage discount without conditions ', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
+
     login($user);
 
     $response = $this->postJson(action([DiscountController::class, 'store']),
@@ -50,6 +54,8 @@ it('can store percentage discount without conditions ', function () {
 
 it('can store fixed discount without conditions ', function ($allocation) {
     $user = User::factory()->create();
+    $user->assignRole('admin');
+
     login($user);
 
     $response = $this->postJson(action([DiscountController::class, 'store']),
@@ -78,6 +84,8 @@ it('can store fixed discount without conditions ', function ($allocation) {
 
 it('can store free shipping discount without conditions ', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
+
     login($user);
 
     $response = $this->postJson(action([DiscountController::class, 'store']),
@@ -102,6 +110,8 @@ it('can store free shipping discount without conditions ', function () {
 
 it('can store percentage discount with conditions', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
+
     Product::factory()->count(5)->create();
     login($user);
 
@@ -141,6 +151,8 @@ it('can store percentage discount with conditions', function () {
 
 it('can update percentage discount', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
+
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
 
@@ -188,6 +200,8 @@ it('can update percentage discount', function () {
 
 it('can delete discount', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
+
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
 
