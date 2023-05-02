@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\DiscountRule;
 use App\Models\User;
+use App\Models\Discount;
+use App\Models\DiscountRule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -33,4 +34,13 @@ class DiscountFactory extends Factory
             'parent_id' => null,
         ];
     }
+
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Discount $discount) {
+            $discount->regions()->attach(1);
+        });
+    }
+
 }

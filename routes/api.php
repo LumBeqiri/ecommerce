@@ -16,7 +16,6 @@ use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Discount\DiscountVariantController;
 use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderSellerController;
@@ -51,7 +50,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::resource('carts', CartController::class);
 
-    Route::post('discount/variant/{variant}/apply_discount', [DiscountVariantController::class, 'apply_discount']);
+    Route::post('apply-discount', [BuyerCartController::class, 'apply_discount']);
 
     Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
     Route::post('store_cart', [BuyerCartController::class, 'store']);

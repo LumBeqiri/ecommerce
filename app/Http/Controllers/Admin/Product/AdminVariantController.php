@@ -82,7 +82,7 @@ class AdminVariantController extends ApiController
                 $variantPrice = VariantPrice::where('variant_id', $variant->id)->where('region_id', $region->id)->firstOrFail();
                 $price = VariantPriceService::priceToSave($request->variant_price, $region);
                 $variantPrice->price = $price;
-                // dd($price);
+
                 $variantPrice->save();
             }
             $variant->save();

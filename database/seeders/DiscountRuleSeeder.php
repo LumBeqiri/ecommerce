@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\DiscountRule;
+use App\values\DiscountAllocationTypes;
+use App\values\DiscountRuleTypes;
 use Illuminate\Database\Seeder;
 
 class DiscountRuleSeeder extends Seeder
@@ -14,6 +16,11 @@ class DiscountRuleSeeder extends Seeder
      */
     public function run()
     {
-        DiscountRule::factory()->count(5)->create();
+        DiscountRule::factory()->create([
+            'discount_type' => DiscountRuleTypes::PERCENTAGE,
+            'value' => 10,
+            'allocation' => DiscountAllocationTypes::ITEM_SPICIFIC
+        ]);
+        DiscountRule::factory()->count(9)->create();
     }
 }

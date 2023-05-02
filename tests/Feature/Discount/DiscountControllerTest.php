@@ -1,20 +1,20 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Region;
+use App\Http\Controllers\Admin\Discount\DiscountController;
 use App\Models\Country;
-use App\Models\Product;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\TaxProvider;
-use App\Models\DiscountRule;
 use App\Models\DiscountCondition;
+use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\TaxProvider;
+use App\Models\User;
 use App\values\DiscountRuleTypes;
+use Carbon\Carbon;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Discount\DiscountController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);

@@ -10,7 +10,9 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Variant;
 use App\Services\CartService;
+use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BuyerCartController extends ApiController
 {
@@ -62,5 +64,16 @@ class BuyerCartController extends ApiController
         }
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
+    }
+
+    public function apply_discount(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ], [$request->code]);
+
+        $cart = $this->authUser()->cart;
+
+        return DiscountService::applyDiscount($cart, $request->code);
     }
 }

@@ -37,9 +37,9 @@ it('admin can update variant price', function () {
     $price_to_update = 230;
     $updated_price = null;
 
-    if($region->currency->has_cents){
-        $updated_price =$price_to_update * 100;
-    }else{
+    if ($region->currency->has_cents) {
+        $updated_price = $price_to_update * 100;
+    } else {
         $updated_price = $price_to_update;
     }
     login($user);
