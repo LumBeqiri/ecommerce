@@ -27,9 +27,11 @@ class ProductController extends ApiController
     public function show(Product $product): JsonResponse
     {
         $product = QueryBuilder::for(Product::class)
-            ->with(['variants.medias'])
             ->where('uuid', $product->uuid)
+            ->allowedIncludes(['variants'])
             ->first();
+
+        // dd($product);
 
         return $this->showOne(new ProductResource($product));
     }

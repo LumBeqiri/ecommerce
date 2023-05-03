@@ -14,10 +14,9 @@ class DiscountSeeder extends Seeder
      */
     public function run()
     {
-
         Discount::factory()->create([
             'discount_rule_id' => 1,
-            'code' => 'lum'
+            'code' => 'lum',
         ]);
 
         Discount::factory(5)->create();

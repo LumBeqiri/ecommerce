@@ -13,7 +13,7 @@ class DiscountService
 {
     public static function applyDiscount(Cart $cart, $discount_code)
     {
-        if($cart->has_been_discounted){
+        if ($cart->has_been_discounted) {
             return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
         }
 
@@ -33,7 +33,6 @@ class DiscountService
         if ($discount_region === null) {
             return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
         }
-
 
         // whole cart discount
         // fixed amount
@@ -64,25 +63,25 @@ class DiscountService
             $product = $variant->product;
 
             $discount_conditions = $product->discount_conditions()->where('discount_rule_id', $discount_rule->id)->get(['operator']);
-     
+
             foreach ($discount_conditions as $discount_condition) {
-                if($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN){
+                if ($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN) {
                     continue;
                 }
                 $discount_value = $discount_rule->value;
                 $discount_type = $discount_rule->discount_type;
-    
+
                 $temp = [
                     'variant' => $variant->uuid,
                     'value' => $discount_value,
                     'type' => $discount_type,
                     // 'allocation' => $discount_allocation,
                 ];
-    
+
                 $variant_discount[] = $temp;
             }
-
         }
+
         return $variant_discount;
     }
 }

@@ -19,7 +19,7 @@ class DiscountRuleSeeder extends Seeder
         DiscountRule::factory()->create([
             'discount_type' => DiscountRuleTypes::PERCENTAGE,
             'value' => 10,
-            'allocation' => DiscountAllocationTypes::ITEM_SPICIFIC
+            'allocation' => DiscountAllocationTypes::ITEM_SPICIFIC,
         ]);
         DiscountRule::factory()->count(9)->create();
     }
