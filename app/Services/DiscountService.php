@@ -38,7 +38,7 @@ class DiscountService
         // fixed amount
         if ($discount_rule->discount_type === DiscountRuleTypes::FIXED_AMOUNT && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
             $cart->total_cart_price -= $discount_rule->value;
-            //  $cart->has_been_discounted = true;
+            $cart->has_been_discounted = true;
             $cart->save();
 
             return response()->json(['message' => 'Discount applied successfully', 'code' => 200], 200);
@@ -48,8 +48,7 @@ class DiscountService
         // percentage
         if ($discount_rule->discount_type === DiscountRuleTypes::PERCENTAGE && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
             $cart->total_cart_price = $cart->total_cart_price - ($cart->total_cart_price * ($discount_rule->value / 100));
-            // $cart->has_been_discounted = true;
-
+            $cart->has_been_discounted = true;
             $cart->save();
 
             return response()->json(['message' => 'Discount applied successfully', 'code' => 200], 200);
@@ -75,7 +74,6 @@ class DiscountService
                     'variant' => $variant->uuid,
                     'value' => $discount_value,
                     'type' => $discount_type,
-                    // 'allocation' => $discount_allocation,
                 ];
 
                 $variant_discount[] = $temp;

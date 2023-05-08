@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
 use App\Http\Controllers\Admin\Discount\DiscountConditionController;
@@ -29,7 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('variants/{variant}/attributes/{attribute}', [AdminVariantAttributeController::class, 'destroy']);
 
     Route::get('variants/{variant}/medias', [AdminVariantMediaController::class, 'index']);
-    Route::post('variants/{variant}/medias', [AdminMediaController::class, 'store']);
+    Route::post('variants/{variant}/medias', [AdminVariantMediaController::class, 'store']);
     Route::delete('variants/{variant}/medias/{media}', [AdminVariantMediaController::class, 'destroy']);
 
     Route::post('products/{product}/variants', [AdminVariantController::class, 'store']);
@@ -40,6 +41,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('carts/{cart}', [AdminCartController::class, 'update']);
     Route::delete('carts/{cart}/variants/{variant}', [AdminCartController::class, 'remove_from_cart']);
     Route::delete('carts/{cart}', [AdminCartController::class, 'destroy']);
+
+    Route::resource('attributes', AdminAttributeController::class);
 
     Route::resource('categories', AdminCategoryController::class);
     Route::put('regions/{region}/updateCountries', [AdminRegionController::class, 'updateCountries']);

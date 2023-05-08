@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Attributes\AttributeController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -23,7 +22,6 @@ use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductOrderController;
-use App\Http\Controllers\Seller\SellerVariantController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Variant\VariantController;
 use Illuminate\Support\Facades\Route;
@@ -56,10 +54,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('store_cart', [BuyerCartController::class, 'store']);
     Route::post('add_to_cart/{variant}', [BuyerCartController::class, 'add_to_cart']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
-
-    Route::post('products/{product}/variants', [SellerVariantController::class, 'store']);
-    Route::put('variants/{variant}', [SellerVariantController::class, 'update']);
-    Route::delete('variants/{variant}', [SellerVariantController::class, 'destroy']);
 });
 
 //Product Routes
@@ -74,11 +68,6 @@ Route::delete('products/deleteCategories/{product}', [ProductCategoryController:
 Route::resource('variants', VariantController::class)->only(['index', 'show']);
 
 // ATTRIUBTE Routes
-
-Route::get('attributes', [AttributeController::class, 'index']);
-Route::get('attributes/{attribute}', [AttributeController::class, 'show']);
-Route::post('attributes', [AttributeController::class, 'store']);
-Route::put('attributes/{attribute}', [AttributeController::class, 'update']);
 
 //Buyer Routes
 

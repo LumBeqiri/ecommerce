@@ -28,10 +28,8 @@ class ProductController extends ApiController
     {
         $product = QueryBuilder::for(Product::class)
             ->where('uuid', $product->uuid)
-            ->allowedIncludes(['variants'])
+            ->allowedIncludes(['variant_prices'])
             ->first();
-
-        // dd($product);
 
         return $this->showOne(new ProductResource($product));
     }
