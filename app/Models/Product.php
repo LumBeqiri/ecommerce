@@ -72,8 +72,6 @@ class Product extends Model
         return $this->morphMany(Media::class, 'mediable');
     }
 
-
-
     public function variant_prices()
     {
         return $this->hasManyThrough(
@@ -85,5 +83,4 @@ class Product extends Model
             'id' // The local key on the intermediate model
         );
     }
-
 }

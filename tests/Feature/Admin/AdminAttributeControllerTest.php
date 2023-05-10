@@ -51,5 +51,5 @@ it('can store attribute', function () {
 
     $response->assertStatus(JsonResponse::HTTP_CREATED);
 
-    $this->assertDatabaseHas(Attribute::class,['product_id' => $product->id, 'attribute_type' => $attribute_type, 'attribute_value' => $attribute_value] );
+    $this->assertDatabaseHas(Attribute::class, ['product_id' => $product->id, 'attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
 });

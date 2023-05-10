@@ -9,7 +9,6 @@ use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
-use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
