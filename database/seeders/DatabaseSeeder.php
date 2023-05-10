@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('attribute_variant')->truncate();
         DB::table('category_product')->truncate();
-        DB::table('order_product')->truncate();
+        DB::table('order_variant')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // in order to not send emails to fake accounts when seeding the db, we call flushEventListenres() method

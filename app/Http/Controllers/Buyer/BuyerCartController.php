@@ -46,7 +46,7 @@ class BuyerCartController extends ApiController
         $variant = Variant::where('uuid', $data['variant_id'])->first();
         $cart = Cart::where('user_id', auth()->id())->first();
 
-        if (! $cart) {
+        if ($cart === null) {
             return $this->errorResponse('Shopping cart missing', 404);
         }
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();

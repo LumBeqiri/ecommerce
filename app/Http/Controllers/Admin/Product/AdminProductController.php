@@ -121,7 +121,6 @@ class AdminProductController extends ApiController
     public function destroy(Product $product): JsonResponse
     {
         $product->categories()->detach();
-        $product->orders()->detach();
         $product->delete();
 
         return $this->showMessage('Product deleted successfully!');

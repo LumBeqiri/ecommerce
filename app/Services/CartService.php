@@ -3,19 +3,21 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Product;
 use App\Models\User;
+use App\Models\Region;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\CartItem;
 use Illuminate\Http\JsonResponse;
 
 class CartService
 {
+    protected static $error_message;
+
     public static function calculateCartPrice(Cart $cart, int $regionId)
     {
         $price = 0;
 
-        // calculate discounts
         foreach ($cart->cart_items as $cartItem) {
             $variant = Variant::find($cartItem->variant_id);
 
@@ -28,7 +30,7 @@ class CartService
         $cart->save();
     }
 
-    public static function saveItemsToCart(mixed $items, User $user)//: Cart|JsonResponse
+    public static function saveItemsToCart(mixed $items, User $user) : Cart|JsonResponse
     {
         $region = $user->country->region;
 
@@ -42,19 +44,8 @@ class CartService
 
             $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
-            if (! $variant->variant_prices->where('region_id', $region->id)->count() > 0) {
-                return response()->json(['error' => 'Product not available in your region', 'code' => 422], 422, ['application/json']);
-            }
-
-            if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
-                return response()->json(['error' => 'Product is not available', 'code' => 404], 404);
-            }
-
-            if ((optional($cart_item)->quantity + $item['quantity']) > $variant->stock) {
-                return response()->json(['error' => 'There are not enough products in stock', 'code' => 422], 422);
-            }
-            if ($variant->publish_status === Product::DRAFT) {
-                return response()->json(['error' => 'There are not enough products in stock', 'code' => 422], 422);
+            if(!self::validateCartItem($item, $variant, $cart, $region)){
+                return CartService::$error_message;
             }
 
             if (isset($cart_item)) {
@@ -83,27 +74,16 @@ class CartService
             $query->where('region_id', $region->id);
         },
         ])->updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
-
+    
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
-
+    
+            if (! self::validateCartItem($item, $variant, $cart, $region)) {
+                continue;
+            }
+    
             $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
-
-            if (! $variant->variant_prices()->where('region_id', $region->id)->exists()) {
-                continue;
-            }
-
-            if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
-                continue;
-            }
-
-            if ($variant->publish_status === Product::DRAFT) {
-                continue;
-            }
-            if ((optional($cart_item)->quantity + $item['quantity']) > $variant->stock) {
-                continue;
-            }
-
+    
             if (isset($cart_item)) {
                 $cart_item->quantity += $item['quantity'];
                 $cart_item->save();
@@ -114,11 +94,42 @@ class CartService
                     'quantity' => $item['quantity'],
                 ]);
             }
-
+    
             $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
             $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
-
+    
         $cart->save();
     }
+
+    private static function validateCartItem(array $item, Variant $variant, Cart $cart, Region $region): bool
+    {
+        if (! $variant->variant_prices()->where('region_id', $region->id)->exists()) {
+            dd('region');
+            CartService::$error_message = response()->json(['error' => 'Product not available in your region', 'code' => 422], 422, ['application/json']);
+            return false;
+        }
+    
+        if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
+            dd('unavialble');
+
+            CartService::$error_message = response()->json(['error' => 'Product is not available', 'code' => 404], 404);
+            return false;
+        }
+    
+        if ($variant->publish_status === Product::DRAFT) {
+            dd('draft');
+
+            CartService::$error_message = response()->json(['error' => 'Product is not available', 'code' => 404], 404);
+            return false;
+        }
+
+        $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+        if(isset($cart_item) && ($cart_item->quantity + $item['quantity'] > $variant->stock)){
+            CartService::$error_message = response()->json(['error' => 'There are not enough products in stock', 'code' => 422], 422);
+            return false;
+        }
+        return true;
+    }
+
 }

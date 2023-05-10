@@ -46,13 +46,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
     Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
 
-    Route::resource('carts', CartController::class);
-
     Route::post('apply-discount', [BuyerCartController::class, 'apply_discount']);
 
     Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
     Route::post('store_cart', [BuyerCartController::class, 'store']);
-    Route::post('add_to_cart/{variant}', [BuyerCartController::class, 'add_to_cart']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
 });
 

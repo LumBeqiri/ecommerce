@@ -20,6 +20,7 @@ class CartResource extends JsonResource
             'buyer' => new UserResource($this->whenLoaded('user')),
             'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
             'total' => $this->total_cart_price,
+            'currency' => $this->region->currency->code,
             'is_closed' => $this->is_closed,
         ];
     }

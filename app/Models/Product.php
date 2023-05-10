@@ -72,11 +72,7 @@ class Product extends Model
         return $this->morphMany(Media::class, 'mediable');
     }
 
-    public function orders(): BelongsToMany
-    {
-        return $this->belongsToMany(Order::class, 'order_product')
-        ->withTimestamps();
-    }
+
 
     public function variant_prices()
     {
@@ -90,12 +86,4 @@ class Product extends Model
         );
     }
 
-    // public function orders(){
-    //     return $this->belongsToMany(Order::class, 'order_product', 'product_id','order_id')
-    //     ->withTimestamps()
-    //     ->withPivot([
-    //         'quantity',
-    //         'total'
-    //     ]);
-    // }
 }
