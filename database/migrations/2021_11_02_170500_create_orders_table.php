@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->string('ship_country');
             $table->float('order_tax')->nullable();
             $table->float('total');
+            $table->foreignId('currency_id')->constrained('currencies');
             $table->dateTime('order_date');
             $table->string('order_shipped')->default(false);
             $table->string('order_email');

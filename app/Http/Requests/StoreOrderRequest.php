@@ -26,10 +26,6 @@ class StoreOrderRequest extends FormRequest
             'ship_address' => 'required|string',
             'ship_city' => 'required|string',
             'ship_country' => 'required|string',
-            'order_tax' => 'nullable|numeric',
-            'total' => 'required|numeric',
-            'order_date' => 'required|date',
-            'order_shipped' => 'required|boolean',
             'order_email' => 'required|email',
             'order_phone' => 'required|string',
         ];

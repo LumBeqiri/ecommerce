@@ -48,7 +48,7 @@ class CartService
                 return $variant->uuid === $item['variant_id'];
             });
 
-            $cart_item = $cart->cart_items->updateOrCreate('variant_id', $variant->id)->first();
+            $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
             if (! self::validateCartItem($item, $variant, $cart, $region)) {
                 return CartService::$error_message;
