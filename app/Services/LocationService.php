@@ -10,10 +10,15 @@ class LocationService
     {
         $ip = '185.190.132.204';
         if (auth('sanctum')->user()) {
-            return auth('sanctum')->user()->country;
+            /** @var \App\Models\User $user */
+            $user = auth('sanctum')->user();
+
+            return $user->country;
         }
         if ($position = Location::get($ip)) {
             return $position->countryName;
         }
+
+        return '';
     }
 }

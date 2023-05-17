@@ -27,7 +27,7 @@ class Order extends Model
         return $this->belongsTo(Buyer::class);
     }
 
-    public function products(): BelongsToMany
+    public function variants(): BelongsToMany
     {
         return $this->belongsToMany(Variant::class)
         ->withTimestamps();

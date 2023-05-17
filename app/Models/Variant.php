@@ -43,11 +43,6 @@ class Variant extends Model
         return $this->hasMany(VariantPrice::class);
     }
 
-    public function region_price()
-    {
-        return $this->variant_prices()->where('region_id', auth()->user()->cart->region_id);
-    }
-
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class)

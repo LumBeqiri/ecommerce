@@ -23,12 +23,4 @@ class VariantPrice extends Model
     {
         return $this->belongsTo(Region::class);
     }
-
-    public function savePrice()
-    {
-        if ($this->region->currency->has_cents) {
-            $this->price *= 100;
-            $this->save();
-        }
-    }
 }

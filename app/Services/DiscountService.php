@@ -8,10 +8,11 @@ use App\Models\Variant;
 use App\values\DiscountAllocationTypes;
 use App\values\DiscountConditionOperatorTypes;
 use App\values\DiscountRuleTypes;
+use Illuminate\Http\JsonResponse;
 
 class DiscountService
 {
-    public static function applyDiscount(Cart $cart, $discount_code)
+    public static function applyDiscount(Cart $cart, string $discount_code): array|JsonResponse
     {
         if ($cart->has_been_discounted) {
             return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);

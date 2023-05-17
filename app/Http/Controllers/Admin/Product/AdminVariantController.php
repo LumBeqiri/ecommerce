@@ -111,24 +111,4 @@ class AdminVariantController extends ApiController
             VariantPrice::create($variant_price);
         }
     }
-
-    /**
-     * @param  array<string, mixed>  $variant_prices
-     */
-    private function updateVariantPrice(array $variant_prices, Variant $variant): void
-    {
-        foreach ($variant_prices as $variant_price) {
-            $product_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;
-            $variant_price['variant_id'] = $variant->id;
-
-            VariantPrice::where('variant_id', $variant->id)
-            ->where('region_id', $variant_price['region_id'])
-            ->update([
-                'region_id' => $variant_price['region_id'],
-                'price' => $variant_price['price'],
-                'min_quantity' => $variant_price['min_quantity'],
-                'max_quantity' => $variant_price['max_quantity'],
-            ]);
-        }
-    }
 }

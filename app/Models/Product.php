@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Product extends Model
@@ -72,7 +73,7 @@ class Product extends Model
         return $this->morphMany(Media::class, 'mediable');
     }
 
-    public function variant_prices()
+    public function variant_prices(): HasManyThrough
     {
         return $this->hasManyThrough(
             VariantPrice::class, // The target model

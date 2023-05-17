@@ -23,6 +23,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
+    // @phpstan-ignore-next-line
     public function store(CartRequest $request)
     {
         $data = $request->validated();
@@ -68,7 +69,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function apply_discount(Request $request)
+    public function apply_discount(Request $request): array|JsonResponse
     {
         $request->validate([
             'code' => 'required|string',

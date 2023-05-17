@@ -59,8 +59,8 @@ class UserController extends ApiController
             $user->city = $request->city;
         }
 
-        if ($request->has('country')) {
-            $user->country = $request->country;
+        if ($request->has('country_id')) {
+            $user->country_id = $request->country_id;
         }
 
         if ($request->has('zip')) {

@@ -11,9 +11,10 @@ use Stevebauman\Location\Facades\Location;
 
 class VariantController extends ApiController
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $ip = '185.190.132.204';
+        $country_name = '';
         if ($position = Location::get($ip)) {
             $country_name = $position->countryName;
         }

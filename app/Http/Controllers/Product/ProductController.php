@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends ApiController
 {
-    public function index(LocationService $locationService)
+    public function index(LocationService $locationService): JsonResponse
     {
         $country_name = $locationService->getCountry();
 
@@ -26,6 +26,7 @@ class ProductController extends ApiController
 
     public function show(Product $product): JsonResponse
     {
+        // @phpstan-ignore-next-line
         $product = QueryBuilder::for(Product::class)
             ->where('uuid', $product->uuid)
             ->allowedIncludes(['variant_prices', 'attributes', 'variants'])
