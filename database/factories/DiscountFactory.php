@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Discount;
 use App\Models\DiscountRule;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -33,12 +32,5 @@ class DiscountFactory extends Factory
             'usage_count' => $this->faker->numberBetween(2, 20),
             'parent_id' => null,
         ];
-    }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (Discount $discount) {
-            $discount->regions()->attach(1);
-        });
     }
 }
