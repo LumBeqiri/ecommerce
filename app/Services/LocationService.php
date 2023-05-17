@@ -16,6 +16,7 @@ class LocationService
             return $user->country;
         }
         if ($position = Location::get($ip)) {
+            // @phpstan-ignore-next-line
             return $position->countryName;
         }
 

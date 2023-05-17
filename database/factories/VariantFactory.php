@@ -54,6 +54,15 @@ class VariantFactory extends Factory
         });
     }
 
+    public function published()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'publish_status' => Product::PUBLISHED,
+            ];
+        });
+    }
+
     public function setUuid(string $uuid)
     {
         return $this->state(function (array $attributes) use ($uuid) {

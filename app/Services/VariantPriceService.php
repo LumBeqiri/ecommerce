@@ -22,9 +22,9 @@ class VariantPriceService
         if ($region->currency->has_cents) {
             $price *= 100;
 
-            return $price;
+            return (int) $price;
         }
 
-        return $price;
+        return (int) $price;
     }
 }

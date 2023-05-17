@@ -16,6 +16,7 @@ class VariantController extends ApiController
         $ip = '185.190.132.204';
         $country_name = '';
         if ($position = Location::get($ip)) {
+            // @phpstan-ignore-next-line
             $country_name = $position->countryName;
         }
         $region_id = Country::select('region_id')->where('name', 'LIKE', '%'.$country_name.'%')->value('region_id');

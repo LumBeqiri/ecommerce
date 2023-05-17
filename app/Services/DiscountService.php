@@ -38,7 +38,14 @@ class DiscountService
         // whole cart discount
         // fixed amount
         if ($discount_rule->discount_type === DiscountRuleTypes::FIXED_AMOUNT && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
-            $cart->total_cart_price -= $discount_rule->value;
+            $value = 0;
+            if ($cart->region !== $discount_region) {
+                return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
+            }
+            if ($discount_region->currency->has_cents) {
+                $value = $discount_rule->value * 100;
+            }
+            $cart->total_cart_price -= (int) $value;
             $cart->has_been_discounted = true;
             $cart->save();
 

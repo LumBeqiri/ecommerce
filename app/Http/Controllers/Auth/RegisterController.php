@@ -22,10 +22,14 @@ class RegisterController extends ApiController
 
         if ($request->hasCookie('cart')) {
             $cookie_cart = $request->cookie('cart');
-            $items = json_decode($cookie_cart, true);
-            if (! empty($items) && array_key_exists('items', $items)) {
-                $items = $items['items'];
-                SaveCookieCartToDB::dispatch($items, $user);
+
+            if (is_string($cookie_cart)) { // Check if $cookie_cart is a string
+                $items = json_decode($cookie_cart, true);
+
+                if (! empty($items) && is_array($items) && array_key_exists('items', $items)) {
+                    $items = $items['items'];
+                    SaveCookieCartToDB::dispatch($items, $user);
+                }
             }
         }
 
