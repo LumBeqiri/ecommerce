@@ -11,12 +11,10 @@ use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
-use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
-    $this->seed(CurrencySeeder::class);
     Notification::fake();
     Bus::fake();
 });
@@ -24,10 +22,13 @@ beforeEach(function () {
 it('can add an item to the cart', function () {
     Currency::factory()->create();
     TaxProvider::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    $seller = User::factory()->create();
+    $region = Region::factory()->create(['id' => 1]);
+    $country = Country::factory()->for($region)->create();
+    $seller = User::factory()->create(['country_id' => $country->id]);
     $buyer = User::factory()->create();
+
+    $buyer->country->region_id = 1;
+    $buyer->save();
 
     $product = Product::factory()->available()->create(['seller_id' => $seller->id]);
     $variant1 = Variant::factory()->available()->published()->for($product)->create(['stock' => 50]);
