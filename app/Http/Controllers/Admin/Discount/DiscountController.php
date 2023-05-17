@@ -31,8 +31,9 @@ class DiscountController extends ApiController
         }
 
         $newDiscount = DB::transaction(function () use ($request) {
+            $region = Region::where('uuid', $request->region)->firstOrFail();
             $discountRule = DiscountRule::create(
-                ['value' => $request->value]
+                ['value' => $request->value, 'region_id' => $region->id]
                 +
                 $request->only([
                     'description',
@@ -59,10 +60,6 @@ class DiscountController extends ApiController
                     'usage_count',
                 ])
             );
-
-            $region = Region::where('uuid', $request->region)->firstOrFail();
-
-            $discount->regions()->attach($region);
 
             if ($request->conditions) {
                 $discountCondition = $discountRule->discount_conditions()->create([
@@ -97,6 +94,7 @@ class DiscountController extends ApiController
         $request->validated();
 
         DB::transaction(function () use ($request, $discount) {
+            $region = Region::where('uuid', $request->region)->firstOrFail();
             if ($request->has('code')) {
                 if ($this->validate_code($request->code)) {
                     return $this->showError('Code '.$request->code.' is already taken!', 422);
@@ -107,6 +105,7 @@ class DiscountController extends ApiController
                 $discount->discount_rule()->update([
                     'description' => $request->description,
                     'value' => $request->value,
+                    'region_id' => $region->id,
                 ]);
             }
 
@@ -121,9 +120,6 @@ class DiscountController extends ApiController
                 'usage_count',
             ]));
             $discount->save();
-
-            $regions = Region::where('uuid', $request->region)->firstOrFail();
-            $discount->regions()->sync($regions);
         });
 
         return $this->showOne(new DiscountResource($discount));

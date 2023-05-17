@@ -140,7 +140,6 @@ it('can store percentage discount with conditions', function () {
 
     $this->assertDatabaseHas(Discount::class, ['code' => $discount_code]);
     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
-    $this->assertDatabaseHas('discount_region', ['discount_id' => $discount_id]);
     $this->assertDatabaseHas(DiscountCondition::class, ['discount_rule_id' => $discount_rule_id]);
 
     $products = Product::all();
@@ -194,8 +193,6 @@ it('can update percentage discount', function () {
          ->not()->toBeNull();
     expect($response->json('is_dynamic'))
         ->toBe($is_dynamic);
-
-    $this->assertDatabaseHas('discount_region', ['discount_id' => $discount->id, 'region_id' => $region->id]);
 });
 
 it('can delete discount', function () {
