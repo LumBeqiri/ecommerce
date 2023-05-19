@@ -26,8 +26,8 @@ class CreateUsersTable extends Migration
             $table->string('shipping_address')->nullable();
             $table->string('phone')->nullable();
             $table->rememberToken();
-            $table->string('verified')->default(User::UNVERIFIED_USER);
-            $table->string('verification_token')->nullable();
+            $table->boolean('verified')->default(User::UNVERIFIED_USER);
+            $table->string('verification_token',100)->nullable();
 
             $table->timestamps();
             $table->softDeletes();
