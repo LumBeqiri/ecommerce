@@ -47,11 +47,11 @@ class BuyerOrderController extends ApiController
             
         }else{
             $order_data['shipping_city'] = $this->user->city;
-            $order_data['shipping_country'] =$this->user->country;
+            $order_data['shipping_country'] =$this->user->country->name;
             $order_data['shipping_address'] = $this->user->shipping_address;
             
         }
-        
+
         unset($order_data['different_shipping_address']);
 
         $order_data['buyer_id'] = auth()->id();
@@ -74,6 +74,9 @@ class BuyerOrderController extends ApiController
             ]);
         }
 
-        return $this->showOne($order->load('order_items'));
+        return $this->showOne(
+            // $order->load('order_items')
+            new OrderResource($order->load('order_items'))
+        );
     }
 }
