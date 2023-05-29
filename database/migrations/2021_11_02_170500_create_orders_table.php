@@ -17,10 +17,10 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('buyer_id')->constrained('users');
-            $table->string('ship_name')->nullable();
-            $table->string('ship_address');
-            $table->string('ship_city');
-            $table->string('ship_country');
+            $table->string('shipping_name')->nullable();
+            $table->string('shipping_address');
+            $table->string('shipping_city');
+            $table->string('shipping_country');
             $table->float('order_tax')->nullable();
             $table->float('total');
             $table->foreignId('currency_id')->constrained('currencies');
