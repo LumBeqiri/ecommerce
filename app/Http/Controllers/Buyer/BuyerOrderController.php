@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 class BuyerOrderController extends ApiController
 {
     protected $user;
+
     public function __construct()
     {
         /**
@@ -21,6 +22,7 @@ class BuyerOrderController extends ApiController
          */
         $this->user = auth()->user();
     }
+
     public function index(Buyer $buyer): JsonResponse
     {
         $orders = $buyer->orders;
@@ -37,19 +39,17 @@ class BuyerOrderController extends ApiController
         }, 'region:id,currency_id', 'region.currency:id,name'])
         ->where('user_id', auth()->id())
         ->first();
-        
+
         $order_data = $request->validated();
-        if($request->input('different_shipping_address')){
+        if ($request->input('different_shipping_address')) {
             $order_data['shipping_name'] = $request->shipping_name;
             $order_data['shipping_city'] = $request->shipping_city;
             $order_data['shipping_country'] = $request->shipping_country;
             $order_data['shipping_address'] = $request->shipping_address;
-            
-        }else{
+        } else {
             $order_data['shipping_city'] = $this->user->city;
-            $order_data['shipping_country'] =$this->user->country->name;
+            $order_data['shipping_country'] = $this->user->country->name;
             $order_data['shipping_address'] = $this->user->shipping_address;
-            
         }
 
         unset($order_data['different_shipping_address']);
@@ -61,7 +61,6 @@ class BuyerOrderController extends ApiController
         $order_data['currency_id'] = $cart->region->currency->id;
 
         $order = Order::create($order_data);
-
 
         foreach ($cart->cart_items as $item) {
             $variant = $item->variant;
