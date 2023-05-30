@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
 use App\Http\Controllers\Admin\Discount\DiscountConditionController;
 use App\Http\Controllers\Admin\Discount\DiscountController;
+use App\Http\Controllers\Admin\Order\AdminOrderController;
 use App\Http\Controllers\Admin\Product\AdminProductController;
 use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
 use App\Http\Controllers\Admin\Product\AdminVariantController;
@@ -49,6 +50,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('regions/{region}/removeCountries', [AdminRegionController::class, 'removeCountries']);
     Route::resource('regions', AdminRegionController::class);
     Route::resource('tax_providers', AdminTaxProviderController::class);
+
+    Route::get('orders', [AdminOrderController::class, 'index']);
+    Route::put('orders/{order}', [AdminOrderController::class, 'update']);
+    Route::delete('orders/{order}', [AdminOrderController::class, 'destroy']);
 
     Route::get('discounts', [DiscountController::class, 'index']);
     Route::post('discounts', [DiscountController::class, 'store']);

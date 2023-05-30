@@ -64,7 +64,6 @@ it('can create an order with unchanged shipping address', function () {
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
 });
 
-
 it('can create an order with changed shipping address', function () {
     Currency::factory()->create();
     TaxProvider::factory()->create();
@@ -91,7 +90,7 @@ it('can create an order with changed shipping address', function () {
         'shipping_city' => $buyer->city,
         'shipping_country' => $buyer->country->name,
         'order_email' => $buyer->email,
-        'order_phone' => $buyer->phone
+        'order_phone' => $buyer->phone,
     ]);
 
     $response->assertOk();
