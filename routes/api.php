@@ -79,8 +79,6 @@ Route::resource('buyers.products', BuyerProductController::class)->only(['index'
 
 Route::resource('buyers.sellers', BuyerSellerController::class);
 
-Route::resource('buyers.orders', BuyerOrderController::class);
-
 // Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
 
 //Category routes

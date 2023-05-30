@@ -74,7 +74,6 @@ class BuyerOrderController extends ApiController
         }
 
         return $this->showOne(
-            // $order->load('order_items')
             new OrderResource($order->load('order_items'))
         );
     }
