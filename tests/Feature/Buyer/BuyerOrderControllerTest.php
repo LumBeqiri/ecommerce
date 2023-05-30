@@ -24,7 +24,7 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('can add an item to the cart', function () {
+it('can create an order with unchanged shipping address', function () {
     Currency::factory()->create();
     TaxProvider::factory()->create();
     $region = Region::factory()->create(['id' => 1]);
@@ -61,5 +61,46 @@ it('can add an item to the cart', function () {
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['user_id' => $buyer->id]);
     $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'uuid' => $order_uuid]);
+    $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
+});
+
+
+it('can create an order with changed shipping address', function () {
+    Currency::factory()->create();
+    TaxProvider::factory()->create();
+    $region = Region::factory()->create(['id' => 1]);
+    Country::factory()->for($region)->create();
+    $buyer = User::factory()->create();
+
+    $buyer->country->region_id = 1;
+    $buyer->save();
+
+    Product::factory()->available()->create();
+    Variant::factory()->available()->published()->create(['stock' => 50]);
+    VariantPrice::factory()->create();
+
+    $cart = Cart::factory()->for($buyer)->create();
+    $cart_item = CartItem::factory()->for($cart)->create();
+
+    login($buyer);
+
+    $response = $this->postJson(action([BuyerOrderController::class, 'store']), [
+        'different_shipping_address' => 1,
+        'shipping_name' => fake()->name,
+        'shipping_address' => $buyer->shipping_address,
+        'shipping_city' => $buyer->city,
+        'shipping_country' => $buyer->country->name,
+        'order_email' => $buyer->email,
+        'order_phone' => $buyer->phone
+    ]);
+
+    $response->assertOk();
+
+    $order_uuid = $response->json('id');
+    $order = Order::where('uuid', $order_uuid)->select('id')->first();
+
+    $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
+    $this->assertDatabaseHas(Cart::class, ['user_id' => $buyer->id]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'uuid' => $order_uuid, 'shipping_city' => $buyer->city]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
 });
