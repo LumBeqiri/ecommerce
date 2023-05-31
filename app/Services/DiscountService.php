@@ -43,8 +43,7 @@ class DiscountService
         ->whereIn('id', $cart->cart_items->pluck('variant_id'))
         ->get();
 
-        if($discount_rule->discount_conditions()->exists()){
-
+        if ($discount_rule->discount_conditions()->exists()) {
         }
         foreach ($variants as $variant) {
             $product = $variant->product;
