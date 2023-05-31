@@ -20,17 +20,13 @@ class DiscountService
             return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
         }
 
-        // $variant_discount = [];
+        $variant_discount = [];
 
         $discount = Discount::with('discount_rule')->where('code', $discount_code)->firstOrFail();
         $discount_rule = $discount->discount_rule;
         $discount_region = $discount_rule->region;
 
-        if ($discount->is_disabled) {
-            return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
-        }
-
-        if ($discount_region === null) {
+        if ($discount->is_disabled || $discount_region === null) {
             return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
         }
 
@@ -39,39 +35,40 @@ class DiscountService
             return self::calculate_whole_cart_discount($discount_rule, $cart, $discount_region);
         }
 
+        // it discounts the whole cart total price with a fixed percentage
         if ($discount_rule->discount_type === DiscountRuleTypes::PERCENTAGE && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
             self::calculate_percentage_cart_discount($discount_rule, $cart);
         }
-        // $variants = Variant::with('product.discount_conditions')
-        // ->whereIn('id', $cart->cart_items->pluck('variant_id'))
-        // ->get();
+        $variants = Variant::with('product.discount_conditions')
+        ->whereIn('id', $cart->cart_items->pluck('variant_id'))
+        ->get();
 
-        // if($discount_rule->discount_conditions()->exists()){
+        if($discount_rule->discount_conditions()->exists()){
 
-        // }
-        // foreach ($variants as $variant) {
-        //     $product = $variant->product;
+        }
+        foreach ($variants as $variant) {
+            $product = $variant->product;
 
-        //     $discount_conditions = $product->discount_conditions()->where('discount_rule_id', $discount_rule->id)->get(['operator']);
+            $discount_conditions = $product->discount_conditions()->where('discount_rule_id', $discount_rule->id)->get(['operator']);
 
-        //     foreach ($discount_conditions as $discount_condition) {
-        //         if ($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN) {
-        //             continue;
-        //         }
-        //         $discount_value = $discount_rule->value;
-        //         $discount_type = $discount_rule->discount_type;
+            foreach ($discount_conditions as $discount_condition) {
+                if ($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN) {
+                    continue;
+                }
+                $discount_value = $discount_rule->value;
+                $discount_type = $discount_rule->discount_type;
 
-        //         $temp = [
-        //             'variant' => $variant->uuid,
-        //             'value' => $discount_value,
-        //             'type' => $discount_type,
-        //         ];
+                $temp = [
+                    'variant' => $variant->uuid,
+                    'value' => $discount_value,
+                    'type' => $discount_type,
+                ];
 
-        //         $variant_discount[] = $temp;
-        //     }
-        // }
+                $variant_discount[] = $temp;
+            }
+        }
 
-        // return $variant_discount;
+        return $variant_discount;
     }
 
     private static function calculate_whole_cart_discount(DiscountRule $discount_rule, Cart $cart, Region $discount_region)
