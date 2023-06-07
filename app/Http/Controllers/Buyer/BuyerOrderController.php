@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Buyer;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Mail\OrderReceipt;
 use App\Models\Buyer;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 
 class BuyerOrderController extends ApiController
 {
@@ -30,7 +32,7 @@ class BuyerOrderController extends ApiController
         return $this->showAll(OrderResource::collection($orders));
     }
 
-    public function store(StoreOrderRequest $request): JsonResponse
+    public function store(StoreOrderRequest $request)
     {
         $region_id = auth()->user()->country->region->id;
 
@@ -72,6 +74,9 @@ class BuyerOrderController extends ApiController
                 'quantity' => $item->quantity,
             ]);
         }
+
+        Mail::to(auth()->user())->send(new OrderReceipt($order));
+        // return (new OrderReceipt($order))->render();
 
         return $this->showOne(
             new OrderResource($order->load('order_items'))
