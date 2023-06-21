@@ -7,16 +7,12 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
-use App\Http\Controllers\Buyer\BuyerProductController;
-use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Order\OrderCategoryController;
 use App\Http\Controllers\Order\OrderController;
-use App\Http\Controllers\Order\OrderSellerController;
 use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
@@ -51,7 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('store_cart', [BuyerCartController::class, 'store']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
 
-    Route::post('orders', [OrderController::class, 'store']);
+    // Route::post('orders', [OrderController::class, 'store']);
 
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });
@@ -75,10 +71,6 @@ Route::resource('buyers', BuyerController::class);
 
 //Route::resource('products.buyers', ProductBuyerController::class)->only(['index']);
 
-Route::resource('buyers.products', BuyerProductController::class)->only(['index']);
-
-Route::resource('buyers.sellers', BuyerSellerController::class);
-
 // Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
 
 //Category routes
@@ -88,12 +80,6 @@ Route::resource('categories.products', CategoryProductController::class);
 Route::get('categories/{category}/subs', [CategoryProductController::class, 'subcats']);
 Route::resource('categories.sellers', CategorySellerController::class);
 Route::resource('categories.orders', CategoryOrderController::class);
-
-//Order Routes
-
-Route::resource('orders', OrderController::class);
-Route::resource('orders.categories', OrderCategoryController::class);
-Route::resource('orders.sellers', OrderSellerController::class);
 
 //User Routes
 
