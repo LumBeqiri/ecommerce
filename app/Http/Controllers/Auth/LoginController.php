@@ -47,6 +47,6 @@ class LoginController extends ApiController
             'token' => $token,
         ];
 
-        return $this->showMessage($response);
+        return $this->showMessage($response)->withCookie(cookie('token',$token,config('sanctum.expiration')));
     }
 }
