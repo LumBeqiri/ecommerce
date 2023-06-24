@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => $password ?: $password = bcrypt('secret'),
             'city' => $this->faker->city(),
-            'country_id' => Country::factory(),
+            'country_id' => Country::all()->random()->id,
             'zip' => 5000,
             'shipping_address' => $this->faker->address(),
             'phone' => '044123456',

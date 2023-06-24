@@ -17,6 +17,6 @@ class CountryController extends ApiController
             ->allowedIncludes('region')
             ->get();
 
-        return $this->showAll($countries);
+        return $this->showAll($countries, paginate:false);
     }
 }

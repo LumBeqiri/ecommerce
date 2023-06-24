@@ -21,7 +21,7 @@ class DiscountFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'code' => $this->faker->word,
-            'seller_id' => User::factory(),
+            'seller_id' => User::all()->random()->id,
             'is_dynamic' => $this->faker->boolean(60),
             'is_disabled' => $this->faker->boolean(60),
             'discount_rule_id' => DiscountRule::all()->random()->id,
