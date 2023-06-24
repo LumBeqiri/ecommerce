@@ -11,6 +11,7 @@ use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
+use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Product\ProductBuyerController;
@@ -52,8 +53,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });
 
+Route::get('countries', [CountryController::class, 'index']);
+
 //Product Routes
-//Route::post('products/delete_categories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 Route::resource('products', ProductController::class);
 Route::resource('products.buyers', ProductBuyerController::class);
 Route::resource('products.categories', ProductCategoryController::class);
