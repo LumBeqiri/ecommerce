@@ -39,31 +39,32 @@ class DiscountService
         if ($discount_rule->discount_type === DiscountRuleTypes::PERCENTAGE && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
             self::calculate_percentage_cart_discount($discount_rule, $cart);
         }
+
         $variants = Variant::with('product.discount_conditions')
         ->whereIn('id', $cart->cart_items->pluck('variant_id'))
         ->get();
 
         if ($discount_rule->discount_conditions()->exists()) {
-        }
-        foreach ($variants as $variant) {
-            $product = $variant->product;
-
-            $discount_conditions = $product->discount_conditions()->where('discount_rule_id', $discount_rule->id)->get(['operator']);
-
-            foreach ($discount_conditions as $discount_condition) {
-                if ($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN) {
-                    continue;
+            foreach ($variants as $variant) {
+                $product = $variant->product;
+                
+                $discount_conditions = $product->discount_conditions()->where('discount_rule_id', $discount_rule->id)->get(['operator']);
+                
+                foreach ($discount_conditions as $discount_condition) {
+                    if ($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN) {
+                        continue;
+                    }
+                    $discount_value = $discount_rule->value;
+                    $discount_type = $discount_rule->discount_type;
+                    
+                    $temp = [
+                        'variant' => $variant->uuid,
+                        'value' => $discount_value,
+                        'type' => $discount_type,
+                    ];
+                    
+                    $variant_discount[] = $temp;
                 }
-                $discount_value = $discount_rule->value;
-                $discount_type = $discount_rule->discount_type;
-
-                $temp = [
-                    'variant' => $variant->uuid,
-                    'value' => $discount_value,
-                    'type' => $discount_type,
-                ];
-
-                $variant_discount[] = $temp;
             }
         }
 

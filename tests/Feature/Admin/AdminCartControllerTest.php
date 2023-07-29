@@ -161,6 +161,7 @@ it('admin can update cart', function () {
 it('admin can delete cart', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
+    Country::factory()->create();
     $user = User::factory()->create();
     $cart = Cart::factory()->for($user)->create();
 

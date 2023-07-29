@@ -27,6 +27,7 @@ it('can upload a product for sale ', function () {
     $region1 = Region::factory()->create();
     $region2 = Region::factory()->create();
     Category::factory()->count(2)->create();
+    Country::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
     $productName = 'water-bottle';
