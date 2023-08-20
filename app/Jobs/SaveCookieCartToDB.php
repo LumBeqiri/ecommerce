@@ -32,6 +32,6 @@ class SaveCookieCartToDB implements ShouldQueue
      */
     public function handle()
     {
-        CartService::saveCookieItemsToCart($this->items, $this->user);
+        // CartService::saveCookieItemsToCart($this->items, $this->user);
     }
 }

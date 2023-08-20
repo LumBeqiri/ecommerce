@@ -34,6 +34,7 @@ class LoginController extends ApiController
                 if (! empty($cart) && array_key_exists('items', $cart)) {
                     $items = $cart['items'];
 
+                    // when guest user logs in
                     // CartService::saveCookieItemsToCart($items); // just for testing/ delete this afterwards
                     // SaveCookieCartToDB::dispatch($items, $user); // keep this one
                 }

@@ -35,9 +35,7 @@ class BuyerCartController extends ApiController
             return $cart;
         }
 
-        // $cart->total_cart_price = CartService::calculatePrice($items);
-
-        // return $cart;
+        CartService::calculateCartPrice($cart);
 
         return $this->showOne(new CartResource($cart));
     }
@@ -52,6 +50,7 @@ class BuyerCartController extends ApiController
         if ($cart === null) {
             return $this->errorResponse('Shopping cart missing', 404);
         }
+
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
         if ($cart_item->quantity < $data['quantity']) {
