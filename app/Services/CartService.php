@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Variant;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class CartService
 {
@@ -77,45 +76,42 @@ class CartService
         return $cart;
     }
 
-    // public static function saveCookieItemsToCart(mixed $items, User $user): void
-    // {
-    //     $region = $user->country->region;
-    //     $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region) {
-    //         $query->where('region_id', $region->id);
-    //     },
-    //     ])->updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
+    public static function saveCookieItemsToCart(mixed $items, User $user): void
+    {
+        $region = $user->country->region;
+        $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region) {
+            $query->where('region_id', $region->id);
+        },
+        ])->updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
 
-    //     foreach ($items as $item) {
-    //         $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
+        foreach ($items as $item) {
+            $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
 
-    //         if (! self::validateCartItem($item, $variant, $cart, $region)) {
-    //             Log::info(CartService::$error_message);
-    //             continue;
-    //         }
+            if (! self::validateCartItem($item, $variant, $cart, $region)) {
+                continue;
+            }
 
-    //         Log::info($variant->id . ' - stock: ' . $item['quantity']);
+            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
-    //         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
+            if (isset($cart_item)) {
+                $cart_item->quantity += $item['quantity'];
+                $cart_item->save();
+            } else {
+                $cart_item = CartItem::create([
+                    'cart_id' => $cart->id,
+                    'variant_id' => $variant->id,
+                    'quantity' => $item['quantity'],
+                ]);
+            }
 
-    //         if (isset($cart_item)) {
-    //             $cart_item->quantity += $item['quantity'];
-    //             $cart_item->save();
-    //         } else {
-    //             $cart_item = CartItem::create([
-    //                 'cart_id' => $cart->id,
-    //                 'variant_id' => $variant->id,
-    //                 'quantity' => $item['quantity'],
-    //             ]);
-    //         }
+            $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
+            $cart->total_cart_price += $variantPrice->price * $item['quantity'];
+        }
 
-    //         $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
-    //         $cart->total_cart_price += $variantPrice->price * $item['quantity'];
-    //     }
+        $cart->save();
 
-    //     $cart->refresh();
-
-    //     $cart->save();
-    // }
+        $cart->refresh();
+    }
 
     private static function validateCartItem(array $item, $variant, $cart, $region): bool
     {

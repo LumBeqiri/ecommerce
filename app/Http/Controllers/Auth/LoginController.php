@@ -36,7 +36,7 @@ class LoginController extends ApiController
 
                     // when guest user logs in
                     // CartService::saveCookieItemsToCart($items); // just for testing/ delete this afterwards
-                    // SaveCookieCartToDB::dispatch($items, $user); // keep this one
+                    SaveCookieCartToDB::dispatch($items, $user); // keep this one
                 }
             }
         }
