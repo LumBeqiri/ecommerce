@@ -18,7 +18,10 @@ class ProductController extends ApiController
 
         $region_id = Country::select('region_id')->where('name', 'LIKE', '%'.$country_name.'%')->value('region_id');
 
-        $products = Product::with(['variant_prices' => fn ($query) => $query->where('region_id', $region_id)])
+        $products = Product::whereHas('variant_prices', function ($query) use ($region_id) {
+            $query->where('region_id', $region_id);
+        })
+        ->with(['variant_prices' => fn($query) => $query->where('region_id', $region_id)])
         ->get();
 
         return $this->showAll(ProductResource::collection($products));
