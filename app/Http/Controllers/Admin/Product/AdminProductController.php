@@ -28,7 +28,7 @@ class AdminProductController extends ApiController
 
     public function show(Product $product): JsonResponse
     {
-        return $this->showOne(new ProductResource($product));
+        return $this->showOne(new ProductResource($product->load(['variants.variant_prices'])));
     }
 
     public function store(StoreProductRequest $request): JsonResponse
