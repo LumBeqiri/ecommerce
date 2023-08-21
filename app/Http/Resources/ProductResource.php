@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\VariantResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Product */
@@ -24,6 +25,7 @@ class ProductResource extends JsonResource
             'status' => $this->status,
             'thumbnail' => $this->thumbnail,
             'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
+            'variants' => VariantResource::collection($this->whenLoaded('variants')),
             'publish_status' => $this->publish_status,
         ];
     }
