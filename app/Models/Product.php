@@ -53,11 +53,6 @@ class Product extends Model
         return $this->hasMany(Variant::class);
     }
 
-    public function attributes(): HasMany
-    {
-        return $this->hasMany(Attribute::class);
-    }
-
     public function seller(): BelongsTo
     {
         return $this->belongsTo(Seller::class);

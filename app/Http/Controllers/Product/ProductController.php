@@ -32,7 +32,7 @@ class ProductController extends ApiController
         // @phpstan-ignore-next-line
         $product = QueryBuilder::for(Product::class)
             ->where('uuid', $product->uuid)
-            ->allowedIncludes(['variant_prices', 'attributes', 'variants'])
+            ->allowedIncludes(['variant_prices', 'variants'])
             ->first();
 
         return $this->showOne(new ProductResource($product));
