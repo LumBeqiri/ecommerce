@@ -16,12 +16,15 @@ use App\Models\VariantPrice;
 use App\Services\VariantPriceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminProductController extends ApiController
 {
     public function index(): JsonResponse
     {
-        $products = Product::all();
+        $products = QueryBuilder::for(Product::class)
+            ->allowedIncludes(['variants','variant_prices'])
+            ->get();
 
         return $this->showAll(ProductResource::collection($products));
     }
