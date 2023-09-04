@@ -24,7 +24,6 @@ class AttributeStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,uuid',
             'attribute_type' => 'required|string|max:150',
             'attribute_value' => 'required|string|max:150|unique:attributes,attribute_value',
         ];

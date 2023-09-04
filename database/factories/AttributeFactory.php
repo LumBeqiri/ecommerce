@@ -21,7 +21,6 @@ class AttributeFactory extends Factory
             'uuid' => $this->faker->uuid(),
             'attribute_type' => $this->faker->word(),
             'attribute_value' => $this->faker->word(),
-            'product_id' => Product::factory(),
         ];
     }
 }

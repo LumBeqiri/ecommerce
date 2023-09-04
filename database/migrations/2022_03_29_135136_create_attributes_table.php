@@ -18,7 +18,6 @@ class CreateAttributesTable extends Migration
             $table->uuid('uuid');
             $table->string('attribute_type')->default('size');
             $table->string('attribute_value');
-            $table->foreignId('product_id')->constrained('products');
             $table->timestamps();
         });
     }
