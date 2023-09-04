@@ -59,12 +59,6 @@ it('can upload a product for sale ', function () {
             'length' => 20,
             'height' => 30,
             'width' => 40,
-            'product_attributes' => [
-                [
-                    'attribute_type' => 'Color',
-                    'attribute_value' => 'Blue',
-                ],
-            ],
             'variant_prices' => [
                 [
                     'region_id' => $region1->uuid,

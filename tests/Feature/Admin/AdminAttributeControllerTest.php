@@ -34,14 +34,11 @@ it('can store attribute', function () {
 
     login($user);
 
-    // Create a product for testing
-    $product = Product::factory()->create();
 
     // Define valid attribute data
     $attribute_type = 'size';
     $attribute_value = 'large';
     $attributeData = [
-        'product_id' => $product->uuid,
         'attribute_type' => $attribute_type,
         'attribute_value' => $attribute_value,
     ];
@@ -51,5 +48,5 @@ it('can store attribute', function () {
 
     $response->assertStatus(JsonResponse::HTTP_CREATED);
 
-    $this->assertDatabaseHas(Attribute::class, ['product_id' => $product->id, 'attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
+    $this->assertDatabaseHas(Attribute::class, [ 'attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
 });
