@@ -19,7 +19,6 @@ class AdminAttributeController extends ApiController
     {
         $data = $request->validated();
 
-        $data['product_id'] = Product::where('uuid', $data['product_id'])->first()->id;
         $attribute = Attribute::create($data);
 
         return $this->showOne($attribute, 201);

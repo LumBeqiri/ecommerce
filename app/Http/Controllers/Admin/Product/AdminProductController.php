@@ -36,6 +36,7 @@ class AdminProductController extends ApiController
         $request->validated();
         $seller = auth()->user();
 
+        
         $product_data = [
             'product_name',
             'product_short_description',
@@ -52,16 +53,16 @@ class AdminProductController extends ApiController
 
             $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
 
-            $attributes = $request->product_attributes;
+            // $attributes = $request->product_attributes;
 
-            foreach ($attributes as $attribute) {
-                Attribute::create([
-                    'attribute_type' => $attribute['attribute_type'],
-                    'attribute_value' => $attribute['attribute_value'],
-                    'product_id' => $product->id,
+            // foreach ($attributes as $attribute) {
+            //     Attribute::create([
+            //         'attribute_type' => $attribute['attribute_type'],
+            //         'attribute_value' => $attribute['attribute_value'],
+            //         'product_id' => $product->id,
 
-                ]);
-            }
+            //     ]);
+            // }
 
             $product->categories()->sync($categories);
 
