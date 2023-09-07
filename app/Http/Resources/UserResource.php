@@ -25,6 +25,7 @@ class UserResource extends JsonResource
             'zip' => $this->zip,
             'shipping_address' => $this->shipping_address,
             'phone' => $this->phone,
+            'role' => $this->getRoleNames()->first()
         ];
     }
 }
