@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\UserPasswordChanged;
 use App\Models\User;

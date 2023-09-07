@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Mail\OrderReceipt;
 use App\Models\Buyer;

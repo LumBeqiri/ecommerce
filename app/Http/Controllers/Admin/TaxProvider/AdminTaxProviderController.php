@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\TaxProvider;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\TaxProviderRequest;
+use App\Http\Requests\TaxProvider\TaxProviderRequest;
 use App\Http\Resources\TaxProviderResource;
 use App\Models\TaxProvider;
 use Illuminate\Http\JsonResponse;

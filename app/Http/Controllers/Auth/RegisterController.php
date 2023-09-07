@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Jobs\SaveCookieCartToDB;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;

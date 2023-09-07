@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Attributes;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\AttributeStoreRequest;
+use App\Http\Requests\Attribute\AttributeStoreRequest;
 use App\Models\Attribute;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;

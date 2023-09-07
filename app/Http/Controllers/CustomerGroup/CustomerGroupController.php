@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\CustomerGroup;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CustomerGroupRequest;
+use App\Http\Requests\CustomerGroup\CustomerGroupRequest;
 use App\Http\Resources\CustomerGroupResource;
 use App\Models\CustomerGroup;
 use App\Models\User;

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CartItemRequest;
-use App\Http\Requests\CartRequest;
+use App\Http\Requests\Cart\CartItemRequest;
+use App\Http\Requests\Cart\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\User;

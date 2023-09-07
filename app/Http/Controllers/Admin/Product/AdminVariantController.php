@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreVariantRequest;
-use App\Http\Requests\UpdateVariantRequest;
+use App\Http\Requests\Variant\StoreVariantRequest;
+use App\Http\Requests\Variant\UpdateVariantRequest;
 use App\Http\Resources\VariantResource;
 use App\Models\Attribute;
 use App\Models\Product;

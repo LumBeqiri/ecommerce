@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Discount;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\DiscountRequest;
-use App\Http\Requests\UpdateDiscountRequest;
+use App\Http\Requests\Discount\DiscountRequest;
+use App\Http\Requests\Discount\UpdateDiscountRequest;
 use App\Http\Resources\DiscountResource;
 use App\Models\Discount;
 use App\Models\DiscountRule;
