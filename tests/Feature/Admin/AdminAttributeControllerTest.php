@@ -34,7 +34,6 @@ it('can store attribute', function () {
 
     login($user);
 
-
     // Define valid attribute data
     $attribute_type = 'size';
     $attribute_value = 'large';
@@ -48,5 +47,5 @@ it('can store attribute', function () {
 
     $response->assertStatus(JsonResponse::HTTP_CREATED);
 
-    $this->assertDatabaseHas(Attribute::class, [ 'attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
+    $this->assertDatabaseHas(Attribute::class, ['attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
 });

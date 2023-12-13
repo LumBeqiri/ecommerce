@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\MediasRequest;
+use App\Http\Requests\Media\MediasRequest;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\VariantResource;
 use App\Models\Media;

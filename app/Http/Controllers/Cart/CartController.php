@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CartRequest;
+// use App\Http\Requests\CartRequest;
+use App\Http\Requests\Cart\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use Illuminate\Http\JsonResponse;

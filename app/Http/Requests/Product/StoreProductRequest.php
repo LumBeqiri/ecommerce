@@ -24,14 +24,13 @@ class StoreProductRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
             'product_name' => 'required|string|max:255',
             'product_short_description' => 'string|max:256',
             'product_long_description' => 'string| max:900',
             'categories' => 'required',
-            'status' => 'required|string|in:'. Product::UNAVAILABLE_PRODUCT.','.Product::AVAILABLE_PRODUCT,
-            'publish_status' => 'required|string|in:'. Product::DRAFT.','.Product::PUBLISHED,
+            'status' => 'required|string|in:'.Product::UNAVAILABLE_PRODUCT.','.Product::AVAILABLE_PRODUCT,
+            'publish_status' => 'required|string|in:'.Product::DRAFT.','.Product::PUBLISHED,
             //rules for variant model
             'sku' => 'required|unique:variants',
             'barcode' => 'nullable|string|max:255|unique:variants',

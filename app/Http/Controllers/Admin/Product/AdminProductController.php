@@ -23,7 +23,7 @@ class AdminProductController extends ApiController
     public function index(): JsonResponse
     {
         $products = QueryBuilder::for(Product::class)
-            ->allowedIncludes(['variants','variant_prices'])
+            ->allowedIncludes(['variants', 'variant_prices'])
             ->get();
 
         return $this->showAll(ProductResource::collection($products));
@@ -39,7 +39,6 @@ class AdminProductController extends ApiController
         $request->validated();
         $seller = auth()->user();
 
-        
         $product_data = [
             'product_name',
             'product_short_description',

@@ -21,7 +21,7 @@ class ProductController extends ApiController
         $products = Product::whereHas('variant_prices', function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
         })
-        ->with(['variant_prices' => fn($query) => $query->where('region_id', $region_id)])
+        ->with(['variant_prices' => fn ($query) => $query->where('region_id', $region_id)])
         ->get();
 
         return $this->showAll(ProductResource::collection($products));
