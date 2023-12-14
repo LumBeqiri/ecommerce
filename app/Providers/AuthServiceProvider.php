@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
-use App\Models\CustomerGroup;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Policies\CustomerGroupPolicy;
+use App\Models\CustomerGroup;
 use App\Policies\ProductPolicy;
 use App\Policies\VariantPolicy;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Policies\CustomerGroupPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+
+        // Gate::define('viewPulse', function (User $user) {
+        //     return true;//$user->isAdmin();
+        // });
+
 
         Gate::before(function ($user, $abilty) {
             return $user->hasRole('admin') ? true : null;
