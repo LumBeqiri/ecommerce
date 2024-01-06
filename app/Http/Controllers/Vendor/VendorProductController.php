@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Category;
-use App\Models\Attribute;
-use App\Models\VariantPrice;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Services\VariantPriceService;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use App\Models\Vendor;
+use App\Services\VariantPriceService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class VendorProductController extends ApiController
 {
@@ -26,7 +26,7 @@ class VendorProductController extends ApiController
         $vendor = Vendor::where('user_id', auth()->id())->first();
         $products = QueryBuilder::for(Product::class)
             ->allowedIncludes(['variants', 'variant_prices'])
-            ->where('vendor_id',$vendor->id)
+            ->where('vendor_id', $vendor->id)
             ->get();
 
         return $this->showAll(ProductResource::collection($products));
@@ -34,10 +34,11 @@ class VendorProductController extends ApiController
 
     public function show(Product $product): JsonResponse
     {
-        $vendor = Vendor::where('user_id',auth()->id())->first();
-        if($product->vendor_id != $vendor->id ){
+        $vendor = Vendor::where('user_id', auth()->id())->first();
+        if ($product->vendor_id != $vendor->id) {
             abort('401', 'Unauthorized access!');
         }
+
         return $this->showOne(new ProductResource($product->load(['variants.variant_prices'])));
     }
 

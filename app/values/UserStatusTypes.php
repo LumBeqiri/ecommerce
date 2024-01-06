@@ -1,7 +1,10 @@
 <?php
+
 namespace App\values;
 
-class UserStatusTypes{
+class UserStatusTypes
+{
     const ACTIVE = 'active';
+
     const INACTIVE = 'inactive';
 }

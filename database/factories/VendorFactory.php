@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\User;
 use App\Models\Vendor;
-use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class VendorFactory extends Factory
 {
     protected $model = Vendor::class;
+
     /**
      * Define the model's default state.
      *

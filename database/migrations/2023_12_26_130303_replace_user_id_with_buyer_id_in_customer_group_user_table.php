@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('customer_group_user', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
-            
+
             $table->foreignId('buyer_id')->constrained('buyers');
         });
     }

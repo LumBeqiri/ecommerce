@@ -16,13 +16,12 @@ class Staff extends Model
 
     protected $table = 'staff';
 
-
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function vendor() : BelongsTo
+    public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
     }

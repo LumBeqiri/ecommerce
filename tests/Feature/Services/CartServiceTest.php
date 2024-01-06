@@ -2,7 +2,6 @@
 
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Product;
 use App\Models\Region;

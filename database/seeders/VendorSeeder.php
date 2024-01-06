@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Vendor;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VendorSeeder extends Seeder
 {

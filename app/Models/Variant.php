@@ -46,6 +46,6 @@ class Variant extends Model
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class)
-        ->withTimestamps();
+            ->withTimestamps();
     }
 }

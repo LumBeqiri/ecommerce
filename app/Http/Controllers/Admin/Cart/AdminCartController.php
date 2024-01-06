@@ -28,7 +28,6 @@ class AdminCartController extends ApiController
             ->allowedIncludes('buyer', 'cart_items')
             ->first();
 
- 
         return $this->showOne(new CartResource($cartResult));
     }
 

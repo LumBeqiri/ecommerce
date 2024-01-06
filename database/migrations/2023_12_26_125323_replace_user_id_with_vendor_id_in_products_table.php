@@ -20,7 +20,7 @@ return new class extends Migration
                 // Drop the user_id column
                 $table->dropColumn('user_id');
             }
-        
+
             // Add vendor_id column and foreign key
             $table->foreignId('vendor_id')->constrained('vendors');
         });

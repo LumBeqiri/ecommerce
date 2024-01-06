@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
+use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Models\Country;
 use App\Models\Currency;
-use App\Models\TaxProvider;
 use App\Models\CustomerGroup;
+use App\Models\Region;
+use App\Models\TaxProvider;
+use App\Models\User;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 
 beforeEach(function () {
     Currency::factory()->count(5)->create();
@@ -73,7 +73,7 @@ it('can not show customer group of another seller', function () {
     $user = User::factory()->create();
     User::factory()->count(2)->create();
     $customerGroup = CustomerGroup::factory()
-    ->for($user)->create();
+        ->for($user)->create();
     $userThatDoesntOwnCustomerGroups = User::factory()->create();
 
     login($userThatDoesntOwnCustomerGroups);
@@ -104,7 +104,7 @@ it('can not delete customer group of another seller', function () {
     $user = User::factory()->create();
     User::factory()->count(2)->create();
     $customerGroup = CustomerGroup::factory()
-    ->for($user)->create();
+        ->for($user)->create();
     $userThatDoesntOwnCustomerGroups = User::factory()->create();
 
     login($userThatDoesntOwnCustomerGroups);

@@ -12,11 +12,11 @@ class CategorySellerController extends ApiController
     public function index(Category $category): JsonResponse
     {
         $sellers = $category->products()
-        ->with('seller')
-        ->get()
-        ->pluck('seller')
-        ->unique('id')
-        ->values();
+            ->with('seller')
+            ->get()
+            ->pluck('seller')
+            ->unique('id')
+            ->values();
 
         return $this->showAll(UserResource::collection($sellers));
     }
