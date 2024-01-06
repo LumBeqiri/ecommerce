@@ -25,10 +25,10 @@ beforeEach(function () {
 });
 
 it('admin can update order', function () {
+    $user = User::factory()->create(['email' => 'lumadmin@example.com']);
     $buyer = Buyer::factory()->create();
-    $user = User::factory()->create(['name' => 'Lum']);
     $order = Order::factory()->for($buyer)->create();
-
+    
     $user->assignRole('admin');
     $updatedName = 'new name';
     $updatedAddress = 'new address';
@@ -49,14 +49,13 @@ it('admin can update order', function () {
 });
 
 it('admin can delete order', function () {
+    User::factory()->create();
     $buyer = Buyer::factory()->create();
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $order = Order::factory()->for($buyer)->create();
 
+
     $user->assignRole('admin');
-    $updatedName = 'new name';
-    $updatedAddress = 'new address';
-    $updatedCountry = 'new country';
 
     login($user);
 

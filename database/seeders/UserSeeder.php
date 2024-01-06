@@ -18,20 +18,16 @@ class UserSeeder extends Seeder
 
         $adminUser = User::factory()->create([
             'uuid' => 'f4e367e1-aefe-33de-8e38-5f8b2ef1bead',
-            'name' => 'Lum Beqiri',
             'email' => 'lum@gmail.com',
             'password' => bcrypt('123123123'),
-            'country_id' => 120,
         ]);
 
         $adminUser->assignRole('admin');
 
         User::factory()->create([
             'uuid' => '0eaf6d30-9b51-11ed-a8fc-0242ac120002',
-            'name' => 'Drin Beqiri',
             'email' => 'drin@gmail.com',
             'password' => bcrypt('123123123'),
-            'country_id' => 3,
         ]);
 
         User::factory($usersQuantity)->create();

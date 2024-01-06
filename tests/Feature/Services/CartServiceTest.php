@@ -10,6 +10,7 @@ use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Models\Vendor;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
@@ -23,8 +24,8 @@ it('saves cookie items to cart', function ($status) {
     Currency::factory()->create();
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
-    $country = Country::factory()->for($region)->create();
-    $user = User::factory()->create(['country_id' => $country]);
+    $user = User::factory()->create();
+    Vendor::factory()->create();
     Product::factory()->available()->create();
 
     $variant1 = Variant::factory()->create(['status' => Product::AVAILABLE_PRODUCT, 'stock' => 5, 'publish_status' => $status]);

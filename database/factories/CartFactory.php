@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Buyer;
 use App\Models\Region;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +21,7 @@ class CartFactory extends Factory
     {
         return [
             'uuid' => $this->faker->uuid(),
-            'user_id' => User::all()->random()->id,
+            'buyer_id' => Buyer::all()->random()->id,
             'total_cart_price' => $this->faker->numberBetween(3, 40),
             'region_id' => Region::all()->random()->id,
         ];

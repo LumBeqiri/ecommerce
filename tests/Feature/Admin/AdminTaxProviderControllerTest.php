@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
+use App\Models\User;
+use App\Models\Region;
 use App\Models\Country;
 use App\Models\Currency;
-use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\User;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
 
 beforeEach(function () {
     Notification::fake();
@@ -21,7 +22,7 @@ beforeEach(function () {
 
 it('can return a list of tax providers', function () {
     TaxProvider::factory()->create();
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);
@@ -33,7 +34,7 @@ it('can return a list of tax providers', function () {
 
 it('can show a tax providers', function () {
     $TaxProvider = TaxProvider::factory()->create();
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);
@@ -44,7 +45,7 @@ it('can show a tax providers', function () {
 });
 
 it('can store a tax provider', function () {
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);
@@ -63,7 +64,7 @@ it('can store a tax provider', function () {
 
 it('can update a tax provider', function () {
     $taxProvider = TaxProvider::factory()->create();
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);
@@ -82,7 +83,7 @@ it('can update a tax provider', function () {
 
 it('can delete a tax provider', function () {
     $taxProvider = TaxProvider::factory()->create();
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);

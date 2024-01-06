@@ -37,7 +37,7 @@ it('admin can show categories', function () {
 it('admin can update category name', function () {
     $category = Category::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lumadin@example.com']);
     $user->assignRole('admin');
     $updatedName = 'new name';
 
@@ -55,7 +55,7 @@ it('admin can update category name', function () {
 it('admin can update category slug', function () {
     $category = Category::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lumadin@example.com']);
     $user->assignRole('admin');
     $updatedSlug = 'new-slug';
 
@@ -73,7 +73,7 @@ it('admin can update category slug', function () {
 it('admin can update category description', function () {
     $category = Category::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lumadin@example.com']);
     $user->assignRole('admin');
     $updatedDescription = 'new-slug';
 
@@ -92,7 +92,7 @@ it('admin can update category parent', function () {
     $childCategory = Category::factory()->create();
     $parentCategory = Category::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lumadin@example.com']);
     $user->assignRole('admin');
 
     login($user);
@@ -110,7 +110,7 @@ it('admin can delete category', function () {
     $parentCategory = Category::factory()->create();
     $childCategory = Category::factory()->create(['parent_id' => $parentCategory->id]);
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lumadin@example.com']);
     $user->assignRole('admin');
 
     login($user);

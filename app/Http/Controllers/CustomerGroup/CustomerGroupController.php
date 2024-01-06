@@ -15,7 +15,7 @@ class CustomerGroupController extends ApiController
 {
     public function index(): JsonResponse
     {
-        $customerGroups = CustomerGroup::where('user_id', auth()->id())->get();
+        $customerGroups = CustomerGroup::where('buyer_id', auth()->id())->get();
 
         return $this->showAll(CustomerGroupResource::collection($customerGroups));
     }

@@ -56,6 +56,7 @@ class DatabaseSeeder extends Seeder
         $this->call([RegionSeeder::class]);
         $this->call([CountrySeeder::class]);
         $this->call([UserSeeder::class]);
+        $this->call([VendorSeeder::class]);
         $this->call([DiscountRuleSeeder::class]);
         $this->call([DiscountSeeder::class]);
         $this->call([CategorySeeder::class]);

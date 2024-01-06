@@ -39,7 +39,7 @@ class BuyerOrderController extends ApiController
         $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
         }, 'region:id,currency_id', 'region.currency:id,name'])
-        ->where('user_id', auth()->id())
+        ->where('buyer_id', auth()->id())
         ->first();
 
         $order_data = $request->validated();

@@ -19,24 +19,17 @@ class BuyerFactory extends Factory
 
     public function definition()
     {
-        static $password;
 
         return [
-            'uuid' => $this->faker->uuid(),
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'password' => $password ?: $password = bcrypt('secret'),
-            'city' => $this->faker->city(),
+            'uuid' => $this->faker->uuid,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'city' => $this->faker->city,
             'country_id' => Country::all()->random()->id,
             'zip' => 5000,
-            'shipping_address' => $this->faker->address(),
-            'phone' => '044123456',
-            'remember_token' => Str::random(10),
-            'verified' => $this->faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
-            'verification_token' => User::VERIFIED_USER ? null : User::generateVerificationCode(),
-
+            'shipping_address' => $this->faker->address,
+            'phone' => $this->faker->phoneNumber,
+            'user_id' => User::all()->random()->id,
         ];
     }
 
