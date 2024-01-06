@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-          // Drop existing foreign key constraint
-          Schema::table('orders', function (Blueprint $table) {
+        // Drop existing foreign key constraint
+        Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['buyer_id']);
         });
 
@@ -25,7 +25,7 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->foreignId('buyer_id')->constrained('buyers');
         });
-        
+
     }
 
     /**

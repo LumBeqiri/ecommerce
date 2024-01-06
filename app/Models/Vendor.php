@@ -14,15 +14,14 @@ class Vendor extends Model
     use HasFactory;
     use HasUuid;
     use SoftDeletes;
-    
-    public function user() : BelongsTo
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function staff() : HasMany
+    public function staff(): HasMany
     {
         return $this->hasMany(Staff::class);
     }
-
 }

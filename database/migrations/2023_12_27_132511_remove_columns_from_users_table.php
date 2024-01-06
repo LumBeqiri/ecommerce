@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['country_id']);
-            $table->dropColumn(['name','city', 'country_id', 'zip', 'shipping_address', 'phone']);
+            $table->dropColumn(['name', 'city', 'country_id', 'zip', 'shipping_address', 'phone']);
         });
     }
 

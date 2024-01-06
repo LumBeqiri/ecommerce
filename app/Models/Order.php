@@ -29,7 +29,7 @@ class Order extends Model
     public function variants(): BelongsToMany
     {
         return $this->belongsToMany(Variant::class)
-        ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function cart(): HasOne

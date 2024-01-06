@@ -21,9 +21,9 @@ return new class extends Migration
             $table->boolean('status')->default(0);
             $table->date('approval_date')->nullable();
             $table->string('website')->nullable();
-        
+
             $table->timestamps();
-            
+
             $table->softDeletes();
         });
     }

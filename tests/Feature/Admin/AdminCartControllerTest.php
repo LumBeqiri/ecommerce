@@ -1,21 +1,20 @@
 <?php
 
-use App\Models\Cart;
-use App\Models\User;
+use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Models\Buyer;
-use App\Models\Region;
-use App\Models\Seller;
-use App\Models\Vendor;
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
-use App\Models\CartItem;
+use App\Models\Region;
 use App\Models\TaxProvider;
-use Illuminate\Support\Facades\Bus;
+use App\Models\User;
+use App\Models\Variant;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Cart\AdminCartController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     Notification::fake();
@@ -35,11 +34,9 @@ it('admin can show carts', function () {
 
     Cart::factory()->count(1)->create();
 
-    
     $user->assignRole('admin');
     Vendor::factory()->create();
     Product::factory()->create();
-
 
     login($user);
 
@@ -62,7 +59,6 @@ it('admin can show carts with items', function () {
     CartItem::factory()->count(5)->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
-
 
     Product::factory()->create();
 
@@ -102,19 +98,19 @@ it('admin can show cart with user', function () {
     Region::factory()->create();
     Country::factory()->create();
     Vendor::factory()->create();
-    
+
     User::factory()->create();
     Buyer::factory()->create();
     Product::factory()->count(5)->create();
     Variant::factory()->count(5)->create();
     Cart::factory()->create();
     CartItem::factory()->count(5)->create();
-    
+
     $user = User::factory()->create();
     $user->assignRole('admin');
-    
+
     Product::factory()->create();
-    
+
     login($user);
 
     $response = $this->getJson('admin/carts?include=buyer', ['cart' => Cart::inRandomOrder()->first()->uuid]);
@@ -136,7 +132,7 @@ it('admin can show cart with cart items', function () {
     $user = User::factory()->create();
     $user->assignRole('admin');
     Product::factory()->create([
-        'vendor_id' => Vendor::factory()->create()->id
+        'vendor_id' => Vendor::factory()->create()->id,
     ]);
 
     login($user);
@@ -159,7 +155,7 @@ it('admin can update cart', function () {
     CartItem::factory()->for($cart)->for($variant)->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
-    
+
     Product::factory()->create();
 
     login($user);
@@ -207,25 +203,25 @@ it('admin can remove item qty from cart', function () {
     $product = Product::factory()->for($vendor)->create();
     $variant = Variant::factory()->for($product)->create();
     $cart = Cart::factory()->create([
-        'buyer_id' => Buyer::factory()->create()->id
+        'buyer_id' => Buyer::factory()->create()->id,
     ]);
     $cart_item = CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant->id,
         'quantity' => $initialAmount,
     ]);
-    
+
     $user = User::factory()->create();
     $user->assignRole('admin');
-    
+
     login($user);
-    
+
     $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid, [
         'quantity' => $amountToBeRemoved,
     ]);
-    
+
     $response->assertOk();
-    
+
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'quantity' => $amountLeft]);
 });
 
@@ -239,21 +235,21 @@ it('admin can remove item from cart completely', function () {
     $product = Product::factory()->for($vendor)->create();
     $variant = Variant::factory()->for($product)->create();
     $cart = Cart::factory()->create([
-        'buyer_id' => Buyer::factory()->create()->id
+        'buyer_id' => Buyer::factory()->create()->id,
     ]);
     $cart_item = CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant->id,
         'quantity' => $initialAmount,
     ]);
-    
+
     $user = User::factory()->create();
     $user->assignRole('admin');
-    
+
     login($user);
-    
+
     $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid);
-    
+
     $response->assertOk();
 
     $this->assertDatabaseMissing(CartItem::class, ['id' => $cart_item->id]);

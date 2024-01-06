@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('city')->nullable();
             $table->string('status')->nullable();
-            $table->string('notes',500)->nullable();
+            $table->string('notes', 500)->nullable();
             $table->string('address')->nullable();
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->foreignId('country_id')->constrained('countries');

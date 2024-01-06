@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             // Drop foreign key constraint
             $table->dropForeign(['seller_id']);
-            
+
             // Drop the 'selled_id' column
             $table->dropColumn('seller_id');
         });

@@ -1,17 +1,17 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Currency;
 use App\Models\Attribute;
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Product;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Vendor;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function () {
     Notification::fake();
@@ -34,7 +34,7 @@ it('can store attribute', function () {
     $user->assignRole('admin');
 
     Product::factory()->create();
-    
+
     login($user);
 
     // Define valid attribute data

@@ -41,8 +41,8 @@ class DiscountService
         }
 
         $variants = Variant::with('product.discount_conditions')
-        ->whereIn('id', $cart->cart_items->pluck('variant_id'))
-        ->get();
+            ->whereIn('id', $cart->cart_items->pluck('variant_id'))
+            ->get();
 
         if ($discount_rule->discount_conditions()->exists()) {
             foreach ($variants as $variant) {

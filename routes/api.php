@@ -13,7 +13,6 @@ use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
@@ -41,7 +40,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
     Route::post('store_cart', [BuyerCartController::class, 'store']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
-    
+
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });
 

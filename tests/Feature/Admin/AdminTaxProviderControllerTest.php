@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
+use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
 use App\Models\Country;
 use App\Models\Currency;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
 
 beforeEach(function () {
     Notification::fake();

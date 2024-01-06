@@ -21,7 +21,7 @@ class Category extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)
-        ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function subcategory(): HasMany

@@ -33,7 +33,7 @@ it('can upload a product for sale ', function () {
     $user->assignRole('admin');
     $productName = 'water-bottle';
     Vendor::factory()->create([
-        'user_id' => $user->id
+        'user_id' => $user->id,
     ]);
 
     login($user);

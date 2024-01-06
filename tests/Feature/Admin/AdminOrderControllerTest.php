@@ -28,7 +28,7 @@ it('admin can update order', function () {
     $user = User::factory()->create(['email' => 'lumadmin@example.com']);
     $buyer = Buyer::factory()->create();
     $order = Order::factory()->for($buyer)->create();
-    
+
     $user->assignRole('admin');
     $updatedName = 'new name';
     $updatedAddress = 'new address';
@@ -53,7 +53,6 @@ it('admin can delete order', function () {
     $buyer = Buyer::factory()->create();
     $user = User::factory()->create(['email' => 'lum@test.com']);
     $order = Order::factory()->for($buyer)->create();
-
 
     $user->assignRole('admin');
 

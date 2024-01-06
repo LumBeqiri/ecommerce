@@ -17,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
     use HasUuid;
 
     public const VERIFIED_USER = '1';
@@ -91,17 +91,17 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function buyer() : HasOne
+    public function buyer(): HasOne
     {
         return $this->hasOne(Buyer::class);
     }
 
-    public function staff() : HasOne
+    public function staff(): HasOne
     {
         return $this->hasOne(Staff::class);
     }
 
-    public function vendor() : HasOne
+    public function vendor(): HasOne
     {
         return $this->hasOne(Vendor::class);
     }

@@ -45,7 +45,7 @@ class ProductThumbnailController extends ApiController
 
         try {
             Storage::disk('images')->delete($thumbnail);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
         }
 
         $product->thumbnail = null;

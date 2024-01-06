@@ -1,24 +1,24 @@
 <?php
 
-use App\Models\Cart;
-use App\Models\User;
+use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Models\Buyer;
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\TaxProvider;
 use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Models\Vendor;
+use App\values\DiscountAllocationTypes;
 use App\values\DiscountRuleTypes;
 use Illuminate\Support\Facades\Bus;
-use App\values\DiscountAllocationTypes;
 use Illuminate\Support\Facades\Notification;
-use App\Http\Controllers\Buyer\BuyerCartController;
 
 beforeEach(function () {
     Notification::fake();
@@ -41,7 +41,7 @@ it('can add an item to the cart', function () {
     $variant1 = Variant::factory()->available()->published()->for($product)->create(['stock' => 50]);
     VariantPrice::factory()->for($variant1)->create();
     $quantity = 2;
-    
+
     login($buyer);
 
     $items_json = [
@@ -74,11 +74,10 @@ it('can remove an item from the cart', function () {
     $inCart = 20;
     $toRemove = 10;
     $itemsLeft = $inCart - $toRemove;
-    
+
     $vendor = Vendor::factory()->create();
     $product = Product::factory()->for($vendor)->available()->create();
     $variant = Variant::factory()->available()->for($product)->create(['stock' => $stock]);
-
 
     login($buyer);
 

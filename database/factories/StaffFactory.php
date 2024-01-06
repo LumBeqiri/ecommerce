@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
-use App\Models\Staff;
-use App\Models\Vendor;
 use App\Models\Country;
+use App\Models\Staff;
+use App\Models\User;
+use App\Models\Vendor;
 use App\values\UserStatusTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class StaffFactory extends Factory
 {
-
     protected $model = Staff::class;
+
     /**
      * Define the model's default state.
      *

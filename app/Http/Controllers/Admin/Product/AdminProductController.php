@@ -2,22 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Category;
-use App\Models\Attribute;
-use App\Models\VariantPrice;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Services\VariantPriceService;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Http\JsonResponse;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminProductController extends ApiController
 {
@@ -34,7 +25,6 @@ class AdminProductController extends ApiController
     {
         return $this->showOne(new ProductResource($product->load(['variants.variant_prices'])));
     }
-
 
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
