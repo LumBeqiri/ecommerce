@@ -30,17 +30,10 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
-        'city',
-        'country_id',
-        'zip',
-        'shipping_address',
-        'phone',
         'verified',
         'verification_token',
-        'admin',
     ];
 
     /**
@@ -83,7 +76,6 @@ class User extends Authenticatable
         return $this->belongsToMany(CustomerGroup::class);
     }
 
-    // seller/store has many groups
     public function customerGroup(): HasMany
     {
         return $this->hasMany(CustomerGroup::class);
@@ -97,5 +89,20 @@ class User extends Authenticatable
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function buyer() : HasOne
+    {
+        return $this->hasOne(Buyer::class);
+    }
+
+    public function staff() : HasOne
+    {
+        return $this->hasOne(Staff::class);
+    }
+
+    public function vendor() : HasOne
+    {
+        return $this->hasOne(Vendor::class);
     }
 }

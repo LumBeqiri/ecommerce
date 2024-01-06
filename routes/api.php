@@ -24,15 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
 
-// Route::resource('products.categories', ProductController::class)->only([
-    //     'index','update', 'destroy'
-// ]);
-
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
-
-//Cart
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
@@ -47,35 +41,21 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
     Route::post('store_cart', [BuyerCartController::class, 'store']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
-
-    // Route::post('orders', [OrderController::class, 'store']);
-
+    
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });
 
 Route::get('countries', [CountryController::class, 'index']);
 
-//Product Routes
 Route::resource('products', ProductController::class);
 Route::resource('products.buyers', ProductBuyerController::class);
 Route::resource('products.categories', ProductCategoryController::class);
 Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
-// VARIANT Routes
 Route::resource('variants', VariantController::class)->only(['index', 'show']);
 
-// ATTRIUBTE Routes
-
-//Buyer Routes
-
 Route::resource('buyers', BuyerController::class);
-
-//Route::resource('products.buyers', ProductBuyerController::class)->only(['index']);
-
-// Route::get('buyer_cart', [ProductCartController::class, 'getCart']);
-
-//Category routes
 
 Route::resource('categories.buyers', CategoryBuyerController::class);
 Route::resource('categories.products', CategoryProductController::class);
@@ -83,11 +63,7 @@ Route::get('categories/{category}/subs', [CategoryProductController::class, 'sub
 Route::resource('categories.sellers', CategorySellerController::class);
 Route::resource('categories.orders', CategoryOrderController::class);
 
-//User Routes
-
 Route::resource('users', UserController::class);
-
-//Verify account
 
 Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']);
 Route::name('resend')->get('users/{user}/resend', [UserController::class, 'resend']);

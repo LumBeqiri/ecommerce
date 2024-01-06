@@ -16,7 +16,7 @@ class AdminCartController extends ApiController
     public function index(): JsonResponse
     {
         $carts = QueryBuilder::for(Cart::class)
-            ->allowedIncludes('user', 'cart_items')
+            ->allowedIncludes('buyer', 'cart_items')
             ->get();
 
         return $this->showAll(CartResource::collection($carts));
@@ -25,9 +25,10 @@ class AdminCartController extends ApiController
     public function show(Cart $cart): JsonResponse
     {
         $cartResult = QueryBuilder::for($cart)
-            ->allowedIncludes('user', 'cart_items')
+            ->allowedIncludes('buyer', 'cart_items')
             ->first();
 
+ 
         return $this->showOne(new CartResource($cartResult));
     }
 

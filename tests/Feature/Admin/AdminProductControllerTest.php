@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Http\UploadedFile;
@@ -31,10 +32,11 @@ it('can upload a product for sale ', function () {
     $user = User::factory()->create();
     $user->assignRole('admin');
     $productName = 'water-bottle';
+    Vendor::factory()->create([
+        'user_id' => $user->id
+    ]);
 
     login($user);
-
-    // $file = UploadedFile::fake()->image('avatar.jpg');
 
     $response = $this->postJson(action([AdminProductController::class, 'store']),
         [
@@ -86,9 +88,10 @@ it('admin can update product name', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     $product = Product::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updatedName = 'new name';
     login($user);
@@ -107,9 +110,11 @@ it('admin can update product short description', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
+
     $product = Product::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updatedDescription = 'new description';
     login($user);
@@ -128,9 +133,10 @@ it('admin can update product long description', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     $product = Product::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updatedDescription = 'new description';
     login($user);
@@ -148,11 +154,11 @@ it('admin can delete product', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     $product = Product::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);
@@ -169,9 +175,10 @@ it('admin can update product status', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     $product = Product::factory()->unavailable()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updatedStatus = Product::AVAILABLE_PRODUCT;
     login($user);
@@ -190,11 +197,12 @@ it('can upload product thumbnail', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->create();
+    Vendor::factory()->create();
     $product = Product::factory(['thumbnail' => ''])->create();
 
     $file = UploadedFile::fake()->image('avatar.jpg');
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
 
     login($user);

@@ -1,15 +1,17 @@
 <?php
 
-use App\Models\Attribute;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
 use App\Models\User;
+use App\Models\Region;
+use App\Models\Vendor;
+use App\Models\Country;
+use App\Models\Product;
+use App\Models\Currency;
+use App\Models\Attribute;
+use App\Models\TaxProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function () {
     Notification::fake();
@@ -25,13 +27,14 @@ it('can store attribute', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
+    Vendor::factory()->create();
 
     $user = User::factory()->create();
 
     $user->assignRole('admin');
 
     Product::factory()->create();
-
+    
     login($user);
 
     // Define valid attribute data
@@ -42,7 +45,6 @@ it('can store attribute', function () {
         'attribute_value' => $attribute_value,
     ];
 
-    // Test attribute creation
     $response = $this->postJson(route('attributes.store'), $attributeData);
 
     $response->assertStatus(JsonResponse::HTTP_CREATED);

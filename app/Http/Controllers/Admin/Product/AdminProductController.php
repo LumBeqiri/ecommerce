@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use App\Models\Attribute;
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\Region;
+use App\Models\Vendor;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Category;
+use App\Models\Attribute;
 use App\Models\VariantPrice;
-use App\Services\VariantPriceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Services\VariantPriceService;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
 
 class AdminProductController extends ApiController
 {
@@ -34,63 +35,6 @@ class AdminProductController extends ApiController
         return $this->showOne(new ProductResource($product->load(['variants.variant_prices'])));
     }
 
-    public function store(StoreProductRequest $request): JsonResponse
-    {
-        $request->validated();
-        $seller = auth()->user();
-
-        $product_data = [
-            'product_name',
-            'product_short_description',
-            'product_long_description',
-            'seller_id',
-            'status',
-            'publish_status',
-            'discountable',
-            'origin_country',
-        ];
-
-        $variant = DB::transaction(function () use ($request, $product_data, $seller) {
-            $product = Product::create($request->only($product_data) + ['seller_id' => $seller->id]);
-
-            $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
-
-            // $attributes = $request->product_attributes;
-
-            // foreach ($attributes as $attribute) {
-            //     Attribute::create([
-            //         'attribute_type' => $attribute['attribute_type'],
-            //         'attribute_value' => $attribute['attribute_value'],
-            //         'product_id' => $product->id,
-
-            //     ]);
-            // }
-
-            $product->categories()->sync($categories);
-
-            $variant_data = $request->except(['categories', 'product_attributes', 'variant_prices', ...$product_data]);
-
-            $variant = Variant::create($variant_data + ['product_id' => $product->id]);
-
-            foreach ($request->variant_prices as $variant_price) {
-                $region = Region::where('uuid', $variant_price['region_id'])->first();
-
-                $price = VariantPriceService::priceToSave($variant_price['price'], $region);
-
-                VariantPrice::create([
-                    'price' => $price,
-                    'variant_id' => $variant->id,
-                    'region_id' => $region->id,
-                    'max_quantity' => $variant_price['max_quantity'],
-                    'min_quantity' => $variant_price['min_quantity'],
-                ]);
-            }
-
-            return $variant;
-        });
-
-        return $this->showOne(new VariantResource($variant));
-    }
 
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {

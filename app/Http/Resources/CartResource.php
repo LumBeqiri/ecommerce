@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\BuyerResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Cart */
@@ -17,7 +18,7 @@ class CartResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'buyer' => new UserResource($this->whenLoaded('user')),
+            'buyer' => new BuyerResource($this->whenLoaded('buyer')),
             'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
             'total' => $this->total_cart_price,
             'currency' => $this->region->currency->code,

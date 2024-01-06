@@ -22,15 +22,9 @@ class UserFactory extends Factory
 
         return [
             'uuid' => $this->faker->uuid(),
-            'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => $password ?: $password = bcrypt('secret'),
-            'city' => $this->faker->city(),
-            'country_id' => Country::all()->random()->id,
-            'zip' => 5000,
-            'shipping_address' => $this->faker->address(),
-            'phone' => '044123456',
             'remember_token' => Str::random(10),
             'verified' => $this->faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
             'verification_token' => User::VERIFIED_USER ? null : User::generateVerificationCode(),

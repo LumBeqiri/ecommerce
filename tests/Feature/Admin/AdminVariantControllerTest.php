@@ -8,6 +8,7 @@ use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
@@ -25,6 +26,7 @@ it('admin can update variant price', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
 
     TaxProvider::factory()->create();
@@ -32,7 +34,7 @@ it('admin can update variant price', function () {
     $variant = Variant::factory()->create(['id' => 3]);
     VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $price_to_update = 230;
     $updated_price = null;
@@ -60,10 +62,11 @@ it('admin can update variant name', function () {
     Country::factory()->create();
 
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updatedName = 'new name';
     login($user);
@@ -82,10 +85,11 @@ it('admin can update variant sku', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updated = 'new sku';
     login($user);
@@ -104,10 +108,11 @@ it('admin can update variant short description', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updated = 'new sku';
     login($user);
@@ -126,10 +131,11 @@ it('admin can update variant long description', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updated = 'new sku';
     login($user);
@@ -148,10 +154,11 @@ it('admin can not update variant with negative price', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create();
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updated = -230;
     login($user);
@@ -168,10 +175,11 @@ it('admin can update variant stock', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create(['stock' => 5]);
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updated = 23;
     login($user);
@@ -190,10 +198,11 @@ it('admin can not update variant with negative stock value', function () {
     Region::factory()->create();
     Country::factory()->create();
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create(['stock' => 5]);
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');
     $updated = -23;
     login($user);
@@ -211,10 +220,11 @@ it('admin can delete variant', function () {
     Country::factory()->create();
 
     User::factory()->count(10)->create();
+    Vendor::factory()->create();
     Product::factory()->count(10)->create();
     $variant = Variant::factory()->create(['stock' => 5]);
 
-    $user = User::factory()->create(['name' => 'Lum']);
+    $user = User::factory()->create();
     $user->assignRole('admin');
 
     login($user);

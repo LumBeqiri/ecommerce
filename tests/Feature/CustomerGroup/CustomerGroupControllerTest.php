@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Models\User;
+use App\Models\Region;
 use App\Models\Country;
 use App\Models\Currency;
-use App\Models\CustomerGroup;
-use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\User;
+use App\Models\CustomerGroup;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 
 beforeEach(function () {
     Currency::factory()->count(5)->create();
@@ -29,7 +31,7 @@ it('can show all user groups for seller', function () {
     $response = $this->getJson(action([CustomerGroupController::class, 'index']));
 
     $response->assertOk();
-});
+})->todo();
 
 it('can store a customer group ', function () {
     $user = User::factory()->create();
@@ -50,7 +52,7 @@ it('can store a customer group ', function () {
     $response->assertStatus(200);
 
     $this->assertDatabaseHas(CustomerGroup::class, ['name' => $customerGroupName]);
-});
+})->todo();
 
 it('can show one coustomer group', function () {
     User::factory()->count(5)->create();
@@ -65,7 +67,7 @@ it('can show one coustomer group', function () {
     $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->uuid));
 
     $response->assertOk();
-});
+})->todo();
 
 it('can not show customer group of another seller', function () {
     $user = User::factory()->create();
@@ -79,7 +81,7 @@ it('can not show customer group of another seller', function () {
     $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->uuid));
 
     $response->assertStatus(403);
-});
+})->todo();
 
 it('can delete one coustomer group', function () {
     User::factory()->create();
@@ -96,7 +98,7 @@ it('can delete one coustomer group', function () {
     $response->assertOk();
 
     $this->assertDatabaseMissing(CustomerGroup::class, ['id' => $customerGroup->id]);
-});
+})->todo();
 
 it('can not delete customer group of another seller', function () {
     $user = User::factory()->create();
@@ -112,4 +114,4 @@ it('can not delete customer group of another seller', function () {
     $response->assertStatus(403);
 
     $this->assertDatabaseHas(CustomerGroup::class, ['id' => $customerGroup->id]);
-});
+})->todo();

@@ -9,32 +9,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Buyer extends User
+class Vendor extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     use HasUuid;
-
-    protected $table = 'buyers';
-    protected $guarded = [];
+    use SoftDeletes;
     
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    public function carts(): HasMany
-    {
-        return $this->hasMany(Cart::class);
-    }
-
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function country(): BelongsTo
+    public function staff() : HasMany
     {
-        return $this->belongsTo(Country::class);
+        return $this->hasMany(Staff::class);
     }
+
 }

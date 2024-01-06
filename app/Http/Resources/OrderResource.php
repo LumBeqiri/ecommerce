@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\BuyerResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Order */
@@ -17,7 +18,7 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'buyer' => new UserResource($this->buyer),
+            'buyer' => new BuyerResource($this->buyer),
             'shipping_name' => $this->shipping_name,
             'shipping_address' => $this->shipping_address,
             'shipping_city' => $this->shipping_city,

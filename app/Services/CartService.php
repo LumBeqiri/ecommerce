@@ -36,7 +36,7 @@ class CartService
         /**
          * @var Cart $cart
          */
-        $cart = Cart::with('cart_items')->updateOrCreate(['user_id' => auth()->id()], ['region_id' => $region->id]);
+        $cart = Cart::with('cart_items')->updateOrCreate(['buyer_id' => auth()->id()], ['region_id' => $region->id]);
 
         $variant_ids = array_column($items, 'variant_id');
 
@@ -82,7 +82,7 @@ class CartService
         $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
         },
-        ])->updateOrCreate(['user_id' => $user->id], ['region_id' => $region->id]);
+        ])->updateOrCreate(['buyer_id' => $user->id], ['region_id' => $region->id]);
 
         foreach ($items as $item) {
             $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
