@@ -56,7 +56,7 @@ class VendorProductController extends ApiController
             'product_id' => $product->id,            
             ]);
        
-        return $this->showOne(new VariantResource($variant));
+        return $this->showOne(new ProductResource($product));
     }
 
     public function update(UpdateProductRequest $request, Product $product): JsonResponse

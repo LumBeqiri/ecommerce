@@ -24,8 +24,6 @@ class ProductFactory extends Factory
         return [
             'uuid' => $this->faker->uuid(),
             'product_name' => $this->faker->name,
-            'product_long_description' => $this->faker->paragraph(1),
-            'product_short_description' => $this->faker->paragraph(1),
             'vendor_id' => Vendor::all()->random()->id,
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
             'publish_status' => $this->faker->randomElement([Product::PUBLISHED, Product::DRAFT]),

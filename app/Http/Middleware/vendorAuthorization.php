@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class vendorAuthorization
+class VendorAuthorization
 {
     /**
      * Handle an incoming request.
@@ -15,6 +15,10 @@ class vendorAuthorization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if ($request->user() && $request->user()->hasRole('vendor')) {
+            return $next($request);
+        }
+
+        return response('Unauthorized', 403);
     }
 }

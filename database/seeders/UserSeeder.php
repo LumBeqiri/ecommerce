@@ -24,12 +24,13 @@ class UserSeeder extends Seeder
 
         $adminUser->assignRole('admin');
 
-        User::factory()->create([
+        $vendor = User::factory()->create([
             'uuid' => '0eaf6d30-9b51-11ed-a8fc-0242ac120002',
             'email' => 'drin@gmail.com',
             'password' => bcrypt('123123123'),
         ]);
 
+        $vendor->assignRole('vendor');
         User::factory($usersQuantity)->create();
     }
 }

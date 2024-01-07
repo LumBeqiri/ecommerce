@@ -42,8 +42,6 @@ it('can upload a product for sale ', function () {
         [
             'product_name' => $productName,
             'variant_name' => 'Example variant',
-            'product_short_description' => 'A short description of the product',
-            'product_long_description' => 'A longer description of the product with a maximum of 900 characters',
             'categories' => ['8213cb3b-a535-3606-b367-f7da47b2f231', '520742a6-cc3c-3ff2-a332-37ffb877e414', '1c21660d-abcf-3ab6-8418-0e67e56dd796'],
             'status' => 'available',
             'publish_status' => 'published',
@@ -105,50 +103,6 @@ it('admin can update product name', function () {
     $this->assertDatabaseHas(Product::class, ['product_name' => $updatedName]);
 });
 
-it('admin can update product short description', function () {
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    User::factory()->count(10)->create();
-    Vendor::factory()->create();
-
-    $product = Product::factory()->create();
-
-    $user = User::factory()->create(['email' => 'lum@test.com']);
-    $user->assignRole('admin');
-    $updatedDescription = 'new description';
-    login($user);
-
-    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->uuid), [
-        'product_short_description' => $updatedDescription,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(Product::class, ['product_short_description' => $updatedDescription]);
-});
-
-it('admin can update product long description', function () {
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    User::factory()->count(10)->create();
-    Vendor::factory()->create();
-    $product = Product::factory()->create();
-
-    $user = User::factory()->create(['email' => 'lum@test.com']);
-    $user->assignRole('admin');
-    $updatedDescription = 'new description';
-    login($user);
-
-    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->uuid), [
-        'product_long_description' => $updatedDescription,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(Product::class, ['product_long_description' => $updatedDescription]);
-});
 
 it('admin can delete product', function () {
     TaxProvider::factory()->create();

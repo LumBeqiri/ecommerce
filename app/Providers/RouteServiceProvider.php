@@ -53,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
                 Route::prefix('vendor')
                 // middleware vendorAuthorization created 
                 // TODO: Logic implement
-                ->middleware(['api', 'vendorAuthorization'])
+                ->middleware(['api', 'VendorAuthorization'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/vendor.php'));
         });

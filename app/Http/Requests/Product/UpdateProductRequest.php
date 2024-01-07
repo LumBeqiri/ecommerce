@@ -26,8 +26,6 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'product_name' => 'sometimes|string|max:255',
-            'product_short_description' => 'string|max:256',
-            'product_long_description' => 'string| max:900',
             'categories' => 'sometimes|array',
             'status' => 'sometimes|string|in:'.Product::UNAVAILABLE_PRODUCT.','.Product::AVAILABLE_PRODUCT,
             'publish_status' => 'sometimes|string|in:'.Product::DRAFT.','.Product::PUBLISHED,
