@@ -6,19 +6,12 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Region;
 use App\Models\Variant;
-use App\Models\VariantPrice;
 use App\Models\Vendor;
 use App\Services\ProductService;
-use App\Services\VariantPriceService;
-use App\values\UserTypes;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class VendorProductController extends ApiController
@@ -46,16 +39,16 @@ class VendorProductController extends ApiController
 
     public function store(StoreProductRequest $request, ProductService $productService): JsonResponse
     {
-        
+
         $productData = $request->validated();
 
         $product = $productService->createProduct($productData);
 
         $variant = Variant::create([
             'variant_name' => $request->input('product_name'),
-            'product_id' => $product->id,            
-            ]);
-       
+            'product_id' => $product->id,
+        ]);
+
         return $this->showOne(new ProductResource($product));
     }
 

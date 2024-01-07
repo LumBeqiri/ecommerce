@@ -103,7 +103,6 @@ it('admin can update product name', function () {
     $this->assertDatabaseHas(Product::class, ['product_name' => $updatedName]);
 });
 
-
 it('admin can delete product', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();

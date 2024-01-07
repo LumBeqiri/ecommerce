@@ -1,16 +1,15 @@
-<?php 
+<?php
+
 namespace App\Services;
 
-use App\Models\Vendor;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Vendor;
 use Illuminate\Support\Arr;
 
-
-class ProductService{
-
-
-    public function createProduct($data) : Product
+class ProductService
+{
+    public function createProduct($data): Product
     {
         $vendor = Vendor::where('user_id', auth()->user()->id)->firstOrFail();
 
@@ -19,9 +18,9 @@ class ProductService{
         $categories = Category::whereIn('uuid', $categoriesUuids)->get();
 
         $product = Product::create(
-            Arr::except($data,'categories') + ['vendor_id' => $vendor->id]
+            Arr::except($data, 'categories') + ['vendor_id' => $vendor->id]
         );
-        
+
         $product->categories()->sync($categories);
 
         return $product;
