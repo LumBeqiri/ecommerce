@@ -25,12 +25,12 @@ class StoreVariantRequest extends FormRequest
     public function rules()
     {
         return [
-            //rules for variant model
             'variant_name' => 'required|string|max:255',
             'sku' => 'string|max:255|required|unique:variants',
             'barcode' => 'nullable|string|max:255|unique:variants',
             'ean' => 'nullable|string|max:255|unique:variants',
             'upc' => 'nullable|string|max:255|unique:variants',
+            'product_id' => 'required|exists:products,uuid',
             'variant_short_description' => 'string|max:255',
             'variant_long_description' => 'string| max:255',
             'stock' => 'required|integer|min:0',
@@ -44,9 +44,9 @@ class StoreVariantRequest extends FormRequest
             'height' => 'nullable|integer|min:0',
             'width' => 'nullable|integer|min:0',
             //rules for product_prices
-            'variant_prices' => 'required|array',
-            'variant_prices.*.region_id' => 'required|exists:regions,uuid',
-            'variant_prices.*.price' => 'required|integer|min:1',
+            // 'variant_prices' => 'required|array',
+            // 'variant_prices.*.region_id' => 'required|exists:regions,uuid',
+            // 'variant_prices.*.price' => 'required|integer|min:1',
         ];
     }
 }

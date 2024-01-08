@@ -26,13 +26,17 @@ class ProductService
         return $product;
     }
 
-    public function updateProduct($productId, $data)
+    public function updateProduct(Product $product, $data) : Product
     {
-        // Common logic for product update
-    }
+        $updateProductData = Arr::except($data,'categories');
+        $product->fill($updateProductData);
 
-    public function deleteProduct($productId)
-    {
-        // Common logic for product deletion
+        if (Arr::has($data, 'categories')) {
+            $categories = Category::all()->whereIn('uuid', $data['categories'])->pluck('id');
+            $product->categories()->sync($categories);
+        }
+
+        $product->save();
+        return $product;
     }
 }

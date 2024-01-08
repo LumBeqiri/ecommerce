@@ -29,7 +29,9 @@ class VendorProductController extends ApiController
 
     public function show(Product $product): JsonResponse
     {
-        $vendor = Vendor::where('user_id', auth()->id())->first();
+        $this->authorize('view', $product);
+
+        $vendor = Vendor::where('user_id', auth()->id())->firstOrFail();
         if ($product->vendor_id != $vendor->id) {
             abort('401', 'Unauthorized access!');
         }
@@ -44,7 +46,7 @@ class VendorProductController extends ApiController
 
         $product = $productService->createProduct($productData);
 
-        $variant = Variant::create([
+        Variant::create([
             'variant_name' => $request->input('product_name'),
             'product_id' => $product->id,
         ]);
@@ -52,33 +54,14 @@ class VendorProductController extends ApiController
         return $this->showOne(new ProductResource($product));
     }
 
-    public function update(UpdateProductRequest $request, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product, ProductService $productService): JsonResponse
     {
-        $request->validated();
 
         $this->authorize('update', $product);
 
-        $product->fill($request->except(['categories']));
-
-        if ($request->has('categories')) {
-            $categories = Category::all()->whereIn('uuid', $request->categories)->pluck('id');
-            abort_if(count($categories) > 5, 422, 'Only 5 categories per product');
-            $product->categories()->sync($categories);
-        }
-
-        $product->save();
+        $product = $productService->updateProduct($product,$request->validated());
 
         return $this->showOne(new ProductResource($product));
-    }
-
-    protected function removeCategories(int $start_id, int $end_id): void
-    {
-        $products = Product::all();
-        foreach ($products as $product) {
-            if ($product->id >= $start_id && $product->id <= $end_id) {
-                $product->categories()->detach();
-            }
-        }
     }
 
     public function destroy(Product $product): JsonResponse
