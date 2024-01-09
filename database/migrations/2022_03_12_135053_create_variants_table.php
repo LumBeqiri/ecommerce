@@ -35,8 +35,10 @@ class CreateVariantsTable extends Migration
             $table->integer('length')->nullable();
             $table->integer('height')->nullable();
             $table->integer('width')->nullable();
-
             $table->timestamps();
+
+            $table->softDeletes();
+
         });
     }
 
