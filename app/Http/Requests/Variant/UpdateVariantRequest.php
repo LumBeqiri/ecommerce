@@ -28,7 +28,7 @@ class UpdateVariantRequest extends FormRequest
 
         return [
             'variant_name' => 'sometimes|string|max:255',
-            'sku' => 'sometimes',
+            'sku' => 'sometimes|string|max:255',
             'variant_short_description' => 'sometimes|string|max:256',
             'variant_long_description' => 'sometimes|string| max:900',
             'stock' => 'sometimes|required|integer|min:1',

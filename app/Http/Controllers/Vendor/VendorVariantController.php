@@ -46,14 +46,14 @@ class VendorVariantController extends ApiController
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
 
-    // public function destroy(Variant $variant): JsonResponse
-    // {
-    //     $this->authorize('delete', $variant);
+    public function destroy(Variant $variant): JsonResponse
+    {
+        $this->authorize('delete', $variant);
 
-    //     $variant->delete();
+        $variant->delete();
 
-    //     return $this->showOne(new VariantResource($variant));
-    // }
+        return $this->showOne(new VariantResource($variant));
+    }
 
     // /**
     //  * @param  array<string, mixed>  $variant_prices

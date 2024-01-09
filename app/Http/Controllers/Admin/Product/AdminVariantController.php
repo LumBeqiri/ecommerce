@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Variant\StoreVariantRequest;
-use App\Http\Requests\Variant\UpdateVariantRequest;
-use App\Http\Resources\VariantResource;
-use App\Models\Attribute;
-use App\Models\Product;
 use App\Models\Region;
+use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Attribute;
+use Illuminate\Support\Arr;
 use App\Models\VariantPrice;
-use App\Services\UploadImageService;
-use App\Services\VariantPriceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Services\UploadImageService;
+use App\Services\VariantPriceService;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\Variant\StoreVariantRequest;
+use App\Http\Requests\Variant\UpdateVariantRequest;
 
 class AdminVariantController extends ApiController
 {
@@ -52,41 +53,11 @@ class AdminVariantController extends ApiController
     public function update(UpdateVariantRequest $request, Variant $variant): JsonResponse
     {
         $this->authorize('update', $variant);
-        $request->validated();
 
-        $images = $request->medias;
-
-        // if ($request->has('medias')) {
-        //     $request_images = count($request->file('medias'));
-
-        //     abort_if($request_images > 1, 422, 'Can not update more than 1 image per variant');
-
-        //     UploadImageService::upload($variant, $images, Variant::class);
-        // }
-
-        DB::transaction(function () use ($variant, $request) {
-            $variant->fill($request->except(['categories', 'attributes', 'product_id', 'variant_price', 'region']));
-
-            if ($request->has('product_id')) {
-                $product = Product::where('uuid', $request->product_id)->firstOrFail();
-                $variant->product_id = $product->id;
-            }
-
-            if ($request->has('attributes')) {
-                $attributes = Attribute::all()->whereIn('uuid', $request->attributes)->pluck('id');
-                $variant->attributes()->sync($attributes);
-            }
-
-            if ($request->has('variant_price')) {
-                $region = Region::where('uuid', $request->region)->firstOrFail();
-                $variantPrice = VariantPrice::where('variant_id', $variant->id)->where('region_id', $region->id)->firstOrFail();
-                $price = VariantPriceService::priceToSave($request->variant_price, $region);
-                $variantPrice->price = $price;
-
-                $variantPrice->save();
-            }
-            $variant->save();
-        });
+        $updateVariantData = $request->validated();
+        
+        $variant->fill(Arr::except($updateVariantData,'product_id'));
+        $variant->save();
 
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }

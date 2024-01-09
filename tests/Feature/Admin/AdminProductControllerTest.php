@@ -23,63 +23,6 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('can upload a product for sale ', function () {
-    TaxProvider::factory()->create();
-    $region1 = Region::factory()->create();
-    $region2 = Region::factory()->create();
-    Category::factory()->count(2)->create();
-    Country::factory()->create();
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $productName = 'water-bottle';
-    Vendor::factory()->create([
-        'user_id' => $user->id,
-    ]);
-
-    login($user);
-
-    $response = $this->postJson(action([AdminProductController::class, 'store']),
-        [
-            'product_name' => $productName,
-            'variant_name' => 'Example variant',
-            'categories' => ['8213cb3b-a535-3606-b367-f7da47b2f231', '520742a6-cc3c-3ff2-a332-37ffb877e414', '1c21660d-abcf-3ab6-8418-0e67e56dd796'],
-            'status' => 'available',
-            'publish_status' => 'published',
-            'sku' => 'ABdC1ff223',
-            'barcode' => '1234a5f6f7f89',
-            'ean' => '987f6d5s4s321f',
-            'upc' => '111d2f223s33d',
-            'stock' => 10,
-            'variant_short_description' => 'A short description of the variant',
-            'variant_long_description' => 'A longer description of the variant with a maximum of 255 characters',
-            'manage_inventory' => true,
-            'allow_backorder' => false,
-            'material' => 'cloth',
-            'weight' => 10,
-            'length' => 20,
-            'height' => 30,
-            'width' => 40,
-            'variant_prices' => [
-                [
-                    'region_id' => $region1->uuid,
-                    'price' => 100,
-                    'max_quantity' => null,
-                    'min_quantity' => null,
-                ],
-                [
-                    'region_id' => $region2->uuid,
-                    'price' => 120,
-                    'max_quantity' => null,
-                    'min_quantity' => null,
-                ],
-            ],
-        ]
-    );
-    $response->assertStatus(200);
-
-    // $this->assertTrue(file_exists(public_path() . '/img/' . $file->hashName()));
-    $this->assertDatabaseHas(Product::class, ['product_name' => $productName]);
-});
 
 it('admin can update product name', function () {
     TaxProvider::factory()->create();

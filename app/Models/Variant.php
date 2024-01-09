@@ -16,7 +16,7 @@ class Variant extends Model
 {
     use HasFactory;
     use HasUuid;
-    use SoftDeletes;
+    use SoftDeletes; 
 
     protected $guarded = [];
 
