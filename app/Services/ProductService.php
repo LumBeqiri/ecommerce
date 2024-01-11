@@ -26,9 +26,9 @@ class ProductService
         return $product;
     }
 
-    public function updateProduct(Product $product, $data) : Product
+    public function updateProduct(Product $product, $data): Product
     {
-        $updateProductData = Arr::except($data,'categories');
+        $updateProductData = Arr::except($data, 'categories');
         $product->fill($updateProductData);
 
         if (Arr::has($data, 'categories')) {
@@ -37,6 +37,7 @@ class ProductService
         }
 
         $product->save();
+
         return $product;
     }
 }

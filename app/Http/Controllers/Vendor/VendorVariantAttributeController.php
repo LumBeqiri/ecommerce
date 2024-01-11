@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Models\Vendor;
-use App\Models\Product;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Variant\StoreVariantRequest;
+use App\Http\Requests\Variant\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
 use App\Models\Variant;
-use App\Models\Category;
-use App\Services\ProductService;
 use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Variant\StoreVariantRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
-use App\Http\Requests\Variant\UpdateVariantRequest;
 
 class VendorVariantAttributeController extends ApiController
 {
     public function index(Variant $variant): JsonResponse
     {
         $this->authorize('view', $variant);
+
         return $this->showAll(new VariantResource($variant->load('attributes')));
     }
 
@@ -36,7 +29,7 @@ class VendorVariantAttributeController extends ApiController
     public function update(UpdateVariantRequest $request, Variant $variant): JsonResponse
     {
         $this->authorize('update', $variant);
-        
+
         $variant->fill($request->validated());
         $variant->save();
 

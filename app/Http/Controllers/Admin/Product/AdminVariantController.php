@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Models\Region;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Attribute;
-use Illuminate\Support\Arr;
-use App\Models\VariantPrice;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Services\UploadImageService;
-use App\Services\VariantPriceService;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
 use App\Http\Requests\Variant\StoreVariantRequest;
 use App\Http\Requests\Variant\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
+use App\Models\Attribute;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class AdminVariantController extends ApiController
 {
@@ -55,8 +53,8 @@ class AdminVariantController extends ApiController
         $this->authorize('update', $variant);
 
         $updateVariantData = $request->validated();
-        
-        $variant->fill(Arr::except($updateVariantData,'product_id'));
+
+        $variant->fill(Arr::except($updateVariantData, 'product_id'));
         $variant->save();
 
         return $this->showOne(new VariantResource($variant->load('variant_prices')));

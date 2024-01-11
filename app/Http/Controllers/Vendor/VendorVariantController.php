@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Models\Vendor;
-use App\Models\Product;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Variant\StoreVariantRequest;
+use App\Http\Requests\Variant\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
 use App\Models\Variant;
-use App\Models\Category;
-use App\Services\ProductService;
 use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Variant\StoreVariantRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
-use App\Http\Requests\Variant\UpdateVariantRequest;
 
 class VendorVariantController extends ApiController
 {
-
-    public function show(Variant $variant){
+    public function show(Variant $variant)
+    {
         return $this->showOne(new VariantResource($variant->load(['variant_prices', 'attributes'])));
     }
 
@@ -35,7 +27,7 @@ class VendorVariantController extends ApiController
     public function update(UpdateVariantRequest $request, Variant $variant): JsonResponse
     {
         $this->authorize('update', $variant);
-        
+
         $variantUpdateData = $request->validated();
 
         $variant->fill($variantUpdateData);
@@ -49,7 +41,7 @@ class VendorVariantController extends ApiController
         $this->authorize('delete', $variant);
 
         $message = '';
-        $variant->delete() ? ($message = 'Variant deleted successfully!') : ($message = 'Variant was not deleted!') ;
+        $variant->delete() ? ($message = 'Variant deleted successfully!') : ($message = 'Variant was not deleted!');
 
         return $this->showMessage($message);
     }

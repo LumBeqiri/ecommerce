@@ -51,7 +51,6 @@ it('admin can update variant price', function () {
         'region' => $region->uuid,
     ]);
 
-
     $response->assertOk();
 
     $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated_price]);
@@ -182,7 +181,7 @@ it('admin can update variant stock', function () {
     User::factory()->count(10)->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
-    $variant = Variant::factory()->create(['product_id' => $product->id,'stock' => 5]);
+    $variant = Variant::factory()->create(['product_id' => $product->id, 'stock' => 5]);
 
     $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\Product\AdminProductController;
 use App\Http\Controllers\Product\ProductThumbnailController;
-use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Region;
@@ -22,7 +21,6 @@ beforeEach(function () {
     Notification::fake();
     Bus::fake();
 });
-
 
 it('admin can update product name', function () {
     TaxProvider::factory()->create();

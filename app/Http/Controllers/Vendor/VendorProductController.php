@@ -59,7 +59,7 @@ class VendorProductController extends ApiController
 
         $this->authorize('update', $product);
 
-        $product = $productService->updateProduct($product,$request->validated());
+        $product = $productService->updateProduct($product, $request->validated());
 
         return $this->showOne(new ProductResource($product));
     }

@@ -60,7 +60,7 @@ class VariantPolicy
      */
     public function delete(User $user, Variant $variant)
     {
-        
+
         return $user->id === $variant->product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
