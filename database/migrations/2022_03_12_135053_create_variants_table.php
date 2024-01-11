@@ -21,11 +21,11 @@ class CreateVariantsTable extends Migration
             $table->string('variant_name');
             $table->string('variant_short_description', 255)->nullable();
             $table->string('variant_long_description', 1000)->nullable();
-            $table->integer('stock')->unsigned();
-            $table->boolean('manage_inventory');
+            $table->integer('stock')->unsigned()->default(0);
+            $table->boolean('manage_inventory')->nullable();
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
             $table->string('publish_status')->default(Product::DRAFT);
-            $table->string('sku');
+            $table->string('sku')->nullable();
             $table->string('barcode')->nullable();
             $table->string('ean')->nullable();
             $table->string('upc')->nullable();
@@ -35,8 +35,10 @@ class CreateVariantsTable extends Migration
             $table->integer('length')->nullable();
             $table->integer('height')->nullable();
             $table->integer('width')->nullable();
-
             $table->timestamps();
+
+            $table->softDeletes();
+
         });
     }
 

@@ -17,6 +17,7 @@ use App\Http\Controllers\Product\ProductThumbnailController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
     Route::resource('users', AdminUserController::class);
     Route::get('products', [AdminProductController::class, 'index']);
     Route::post('products', [AdminProductController::class, 'store']);

@@ -28,7 +28,9 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        //
+        return $user->id === $product->vendor->user_id
+        ? Response::allow()
+        : Response::deny('You do not own this product.');
     }
 
     /**
@@ -48,7 +50,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-        return $user->id === $product->seller_id
+        return $user->id === $product->vendor->user_id
             ? Response::allow()
             : Response::deny('You do not own this product.');
     }

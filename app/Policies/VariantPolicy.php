@@ -48,7 +48,7 @@ class VariantPolicy
      */
     public function update(User $user, Variant $variant)
     {
-        return $user->id === $variant->product->seller_id
+        return $user->id === $variant->product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }
@@ -60,7 +60,8 @@ class VariantPolicy
      */
     public function delete(User $user, Variant $variant)
     {
-        return $user->id === $variant->product->seller_id
+
+        return $user->id === $variant->product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }

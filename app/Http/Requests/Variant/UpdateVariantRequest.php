@@ -28,16 +28,15 @@ class UpdateVariantRequest extends FormRequest
 
         return [
             'variant_name' => 'sometimes|string|max:255',
-            'region' => 'sometimes|exists:regions,uuid',
-            'sku' => 'sometimes',
-            'variant_price' => 'sometimes|required|numeric|min:0| max:100000000',
-            'short_desc' => 'sometimes|string|max:256',
-            'long_desc' => 'sometimes|string| max:900',
+            'sku' => 'sometimes|string|max:255',
+            'variant_short_description' => 'sometimes|string|max:256',
+            'variant_long_description' => 'sometimes|string| max:900',
             'stock' => 'sometimes|required|integer|min:1',
-            'attributes' => 'array',
-            'attributes.*' => 'required|max:150|string|exists:attributes,uuid',
-            'product_id' => 'exists:products,uuid',
+            'manage_inventory' => 'sometimes|boolean',
+            // 'attributes' => 'array',
+            // 'attributes.*' => 'required|max:150|string|exists:attributes,uuid',
             'status' => 'in:'.Product::AVAILABLE_PRODUCT.','.Product::UNAVAILABLE_PRODUCT,
+            'publish_status' => 'in:'.Product::PUBLISHED.','.Product::DRAFT,
             // 'medias' => 'max:'.$max_images,
             // 'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
         ];
