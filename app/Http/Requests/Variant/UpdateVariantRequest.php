@@ -35,7 +35,6 @@ class UpdateVariantRequest extends FormRequest
             'manage_inventory' => 'sometimes|boolean',
             // 'attributes' => 'array',
             // 'attributes.*' => 'required|max:150|string|exists:attributes,uuid',
-            'product_id' => 'required|exists:products,uuid',
             'status' => 'in:'. Product::AVAILABLE_PRODUCT . ','.Product::UNAVAILABLE_PRODUCT,
             'publish_status' => 'in:'.Product::PUBLISHED.','.Product::DRAFT,
             // 'medias' => 'max:'.$max_images,

@@ -18,11 +18,12 @@ use App\Http\Requests\Variant\StoreVariantRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Requests\Variant\UpdateVariantRequest;
 
-class VendorVariantController extends ApiController
+class VendorVariantAttributeController extends ApiController
 {
-
-    public function show(Variant $variant){
-        return $this->showOne(new VariantResource($variant->load(['variant_prices', 'attributes'])));
+    public function index(Variant $variant): JsonResponse
+    {
+        $this->authorize('view', $variant);
+        return $this->showAll(new VariantResource($variant->load('attributes')));
     }
 
     public function store(StoreVariantRequest $request, VariantService $variantService): JsonResponse
@@ -36,9 +37,7 @@ class VendorVariantController extends ApiController
     {
         $this->authorize('update', $variant);
         
-        $variantUpdateData = $request->validated();
-
-        $variant->fill($variantUpdateData);
+        $variant->fill($request->validated());
         $variant->save();
 
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
@@ -48,10 +47,9 @@ class VendorVariantController extends ApiController
     {
         $this->authorize('delete', $variant);
 
-        $message = '';
-        $variant->delete() ? ($message = 'Variant deleted successfully!') : ($message = 'Variant was not deleted!') ;
+        $variant->delete();
 
-        return $this->showMessage($message);
+        return $this->showOne(new VariantResource($variant));
     }
 
     // /**
