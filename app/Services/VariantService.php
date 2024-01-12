@@ -15,13 +15,7 @@ class VariantService
         return $newVariant;
     }
 
-    public function updateProduct(Variant $product, $data)
-    {
-
-    }
-
-    public function deleteProduct($productId)
-    {
-        // Common logic for product deletion
+    public function addVariantAttributes(Variant $variant, array $attributeIds){
+        $variant->attributes()->sync($attributeIds);
     }
 }

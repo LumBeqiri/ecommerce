@@ -16,6 +16,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('variants/{variant}', [VendorVariantController::class, 'show']);
     Route::put('variants/{variant}', [VendorVariantController::class, 'update']);
     Route::delete('variants/{variant}', [VendorVariantController::class, 'destroy']);
+
     Route::get('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'index']);
+    Route::put('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'update']);
 
 });
