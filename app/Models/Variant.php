@@ -32,7 +32,7 @@ class Variant extends Model
 
     public function attributes(): BelongsToMany
     {
-        return $this->belongsToMany(Attribute::class);
+        return $this->belongsToMany(Attribute::class)->withTimestamps();
     }
 
     public function cart_item(): HasOne

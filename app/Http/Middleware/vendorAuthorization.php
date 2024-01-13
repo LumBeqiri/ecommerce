@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class VendorAuthorization
+class vendorAuthorization
 {
     /**
      * Handle an incoming request.

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Variant\StoreVariantRequest;
-use App\Http\Requests\Variant\UpdateVariantRequest;
-use App\Http\Resources\VariantResource;
 use App\Models\Variant;
+use App\Models\Attribute;
 use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\Variant\VariantAttributeRequest;
 
 class VendorVariantAttributeController extends ApiController
 {
@@ -19,41 +19,18 @@ class VendorVariantAttributeController extends ApiController
         return $this->showAll(new VariantResource($variant->load('attributes')));
     }
 
-    public function store(StoreVariantRequest $request, VariantService $variantService): JsonResponse
-    {
-        $newVariant = $variantService->createVariant($request->validated());
 
-        return $this->showOne(new VariantResource($newVariant));
-    }
-
-    public function update(UpdateVariantRequest $request, Variant $variant): JsonResponse
+    public function update(VariantAttributeRequest $request, Variant $variant,VariantService $variantService): JsonResponse
     {
         $this->authorize('update', $variant);
 
-        $variant->fill($request->validated());
-        $variant->save();
+        $attributeIds = Attribute::whereIn('uuid', $request->input('attributes'))->pluck('id')->toArray();
+
+        $variantService->addVariantAttributes($variant,$attributeIds);
+
+        $variant->refresh();
 
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
 
-    public function destroy(Variant $variant): JsonResponse
-    {
-        $this->authorize('delete', $variant);
-
-        $variant->delete();
-
-        return $this->showOne(new VariantResource($variant));
-    }
-
-    // /**
-    //  * @param  array<string, mixed>  $variant_prices
-    //  */
-    // private function createVariantPrice(array $variant_prices, Variant $newVariant): void
-    // {
-    //     foreach ($variant_prices as $variant_price) {
-    //         $variant_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;
-    //         $variant_price['variant_id'] = $newVariant->id;
-    //         VariantPrice::create($variant_price);
-    //     }
-    // }
 }
