@@ -15,7 +15,8 @@ class VariantService
         return $newVariant;
     }
 
-    public function addVariantAttributes(Variant $variant, array $attributeIds){
+    public function addVariantAttributes(Variant $variant, array $attributeIds)
+    {
         $variant->attributes()->sync($attributeIds);
     }
 }
