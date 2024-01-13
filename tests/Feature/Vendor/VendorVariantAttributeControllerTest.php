@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Attribute;
 use App\Models\TaxProvider;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Bus;
 use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Notification;
@@ -22,7 +23,7 @@ use App\Http\Controllers\Vendor\VendorVariantAttributeController;
         Bus::fake();
     });
 
-    it('vendor can update variant name and add variant attributes', function () {
+    it('vendor can add variant attributes', function () {
         TaxProvider::factory()->create();
         Region::factory()->create();
         Country::factory()->create();
@@ -52,6 +53,37 @@ use App\Http\Controllers\Vendor\VendorVariantAttributeController;
                 'attribute_id' => $attributeId,
             ]);
         }
+
     });
     
+
+
+    it('vendor can remove variant attributes', function () {
+        TaxProvider::factory()->create();
+        Region::factory()->create();
+        Country::factory()->create();
+    
+        $user = User::factory()->create();
+        $vendor = Vendor::factory()->create(['user_id' => $user->id]);
+        $product = Product::factory()->create(['vendor_id' => $vendor->id]);
+        $variant = Variant::factory()->create(['product_id' => $product->id]);
+        $attribute1 = Attribute::factory()->create();
+        $attribute2 = Attribute::factory()->create();
+    
+        $variant->attributes()->sync([$attribute1->id, $attribute2->id]);
+        
+        $user->assignRole('vendor');
+        $attributeUuids = []; 
+
+        login($user);
+    
+        $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->uuid), [
+            'attributes' => $attributeUuids,
+        ]);
+    
+        $response->assertOk();
+
+        expect(DB::table('attribute_variant')->count())->toBe(0);
+
+    });
 
