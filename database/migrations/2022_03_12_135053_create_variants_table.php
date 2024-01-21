@@ -31,18 +31,18 @@ class CreateVariantsTable extends Migration
             $table->string('upc')->nullable();
             $table->boolean('allow_backorder')->nullable();
             $table->string('material', 255)->nullable();
-            
+
             $table->integer('weight')->nullable();
-            $table->string('weight_unit')->nullable(); 
-        
+            $table->string('weight_unit')->nullable();
+
             $table->integer('length')->nullable();
-            $table->string('length_unit')->nullable(); 
-        
+            $table->string('length_unit')->nullable();
+
             $table->integer('height')->nullable();
-            $table->string('height_unit')->nullable(); 
-        
+            $table->string('height_unit')->nullable();
+
             $table->integer('width')->nullable();
-            $table->string('width_unit')->nullable(); 
+            $table->string('width_unit')->nullable();
             $table->timestamps();
 
             $table->softDeletes();

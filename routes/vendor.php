@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Vendor\VendorProductController;
+use App\Http\Controllers\Vendor\VendorVariantAttributeController;
 use App\Http\Controllers\Vendor\VendorVariantController;
 use App\Http\Controllers\Vendor\VendorVariantPriceController;
-use App\Http\Controllers\Vendor\VendorVariantAttributeController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -20,9 +20,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'index']);
     Route::put('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'update']);
-    
+
     Route::post('variants/{variant}/prices', [VendorVariantPriceController::class, 'store']);
     Route::put('variants/{variant}/prices/{variantPrice}', [VendorVariantPriceController::class, 'update']);
-
 
 });
