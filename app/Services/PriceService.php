@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Brick\Money\Money;
 use App\Models\VariantPrice;
 
 class PriceService
@@ -16,8 +17,8 @@ class PriceService
         return $variantPrice->price;
     }
 
-    public static function priceToSave($priceInEuro): int
+    public static function priceToSave(Money $money): int
     {
-        return $priceInEuro * 100;
+        return $money->getMinorAmount()->toInt();
     }
 }
