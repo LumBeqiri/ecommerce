@@ -43,10 +43,7 @@ class StoreVariantRequest extends FormRequest
             'length' => 'nullable|integer|min:0',
             'height' => 'nullable|integer|min:0',
             'width' => 'nullable|integer|min:0',
-            //rules for product_prices
-            // 'variant_prices' => 'required|array',
-            // 'variant_prices.*.region_id' => 'required|exists:regions,uuid',
-            // 'variant_prices.*.price' => 'required|integer|min:1',
+           
         ];
     }
 }

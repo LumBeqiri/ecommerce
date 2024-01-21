@@ -46,15 +46,4 @@ class VendorVariantController extends ApiController
         return $this->showMessage($message);
     }
 
-    // /**
-    //  * @param  array<string, mixed>  $variant_prices
-    //  */
-    // private function createVariantPrice(array $variant_prices, Variant $newVariant): void
-    // {
-    //     foreach ($variant_prices as $variant_price) {
-    //         $variant_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;
-    //         $variant_price['variant_id'] = $newVariant->id;
-    //         VariantPrice::create($variant_price);
-    //     }
-    // }
 }

@@ -25,7 +25,7 @@ class RegionRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'currency_id' => 'exists:currencies,id',
+            'currency_id' => 'required|exists:currencies,id',
             'tax_rate' => 'integer|max:100',
             'tax_code' => 'string|max:255',
             'tax_provider_id' => 'exists:tax_providers,id',
