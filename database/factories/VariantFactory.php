@@ -34,9 +34,13 @@ class VariantFactory extends Factory
             'allow_backorder' => $this->faker->boolean,
             'material' => $this->faker->word,
             'weight' => $this->faker->randomNumber(1, 6),
+            'weight_unit' => $this->faker->randomElement(['kg', 'lb']),
             'length' => $this->faker->randomNumber(1, 6),
+            'length_unit' => $this->faker->randomElement(['cm', 'in']),
             'height' => $this->faker->randomNumber(1, 6),
+            'height_unit' => $this->faker->randomElement(['cm', 'in']),
             'width' => $this->faker->randomNumber(1, 6),
+            'width_unit' => $this->faker->randomElement(['cm', 'in']),
         ];
     }
 
