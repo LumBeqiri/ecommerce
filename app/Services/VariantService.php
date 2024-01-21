@@ -23,9 +23,9 @@ class VariantService
         $variant->attributes()->sync($attributeIds);
     }
 
-    public function addVariantPrice(Variant $variant, array $data) : VariantPrice
+    public function addVariantPrice(Variant $variant, array $data): VariantPrice
     {
-        $region = Region::where('uuid',$data['region_id'])->first();
+        $region = Region::where('uuid', $data['region_id'])->first();
         $money = Money::of($data['price'], $region->currency->code);
 
         $variantPrice = VariantPrice::create([
@@ -39,12 +39,12 @@ class VariantService
         return $variantPrice;
     }
 
-    public function updateVariantPrice(Variant $variant,VariantPrice $variantPrice, array $data) : Variant
+    public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, array $data): Variant
     {
-        $region = Region::where('uuid',$data['region_id'])->first();
+        $region = Region::where('uuid', $data['region_id'])->first();
         $money = Money::of($data['price'], $region->currency->code);
 
-        $variantPrice = VariantPrice::where('id',$variantPrice->id)->where('variant_id',$variant->id)->update([
+        $variantPrice = VariantPrice::where('id', $variantPrice->id)->where('variant_id', $variant->id)->update([
             'price' => $money->getMinorAmount()->toInt(),
             'region_id' => $region->id,
             'variant_id' => $variant->id,

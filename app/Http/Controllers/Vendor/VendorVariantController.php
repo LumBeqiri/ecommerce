@@ -45,5 +45,4 @@ class VendorVariantController extends ApiController
 
         return $this->showMessage($message);
     }
-
 }

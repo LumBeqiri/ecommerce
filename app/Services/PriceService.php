@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Brick\Money\Money;
 use App\Models\VariantPrice;
+use Brick\Money\Money;
 
 class PriceService
 {

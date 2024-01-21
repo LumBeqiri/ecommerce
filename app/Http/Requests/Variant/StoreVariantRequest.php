@@ -43,7 +43,7 @@ class StoreVariantRequest extends FormRequest
             'length' => 'nullable|integer|min:0',
             'height' => 'nullable|integer|min:0',
             'width' => 'nullable|integer|min:0',
-           
+
         ];
     }
 }
