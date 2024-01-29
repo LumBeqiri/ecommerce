@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\CustomerGroup;
 use App\Models\Product;
-use App\Models\User;
 use App\Models\Variant;
 use App\Policies\CustomerGroupPolicy;
 use App\Policies\ProductPolicy;
