@@ -48,7 +48,7 @@ class VariantPolicy
      */
     public function update(User $user, Variant $variant)
     {
-        return $user->id === $variant->product->vendor->user_id
+        return $user->hasPermissionTo('update products') && $user->staff->vendor_id == $variant->product->vendor_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }
@@ -61,7 +61,7 @@ class VariantPolicy
     public function delete(User $user, Variant $variant)
     {
 
-        return $user->id === $variant->product->vendor->user_id
+        return $user->hasPermissionTo('delete products') && $user->staff->vendor_id == $variant->product->vendor_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }

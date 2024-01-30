@@ -28,7 +28,8 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        return $user->id === $product->vendor->user_id
+        
+        return $user->hasPermissionTo('view products') && $user->staff->vendor_id == $product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }
@@ -50,7 +51,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-        return $user->id === $product->vendor->user_id
+        return $user->hasPermissionTo('update products') && $user->staff->vendor_id == $product->vendor->user_id
             ? Response::allow()
             : Response::deny('You do not own this product.');
     }
@@ -62,7 +63,9 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product)
     {
-        return $user->id === $product->seller->id;
+        return $user->hasPermissionTo('delete products') && $user->staff->vendor_id == $product->vendor->user_id
+        ? Response::allow()
+        : Response::deny('You do not own this product.');
     }
 
     /**
