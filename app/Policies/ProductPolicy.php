@@ -51,7 +51,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-        return $user->hasPermissionTo('update products') && $user->staff->vendor_id == $product->vendor->user_id
+        return $user->hasPermissionTo('update-products') && $user->staff->vendor_id == $product->vendor->user_id
             ? Response::allow()
             : Response::deny('You do not own this product.');
     }
