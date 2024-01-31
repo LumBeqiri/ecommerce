@@ -25,4 +25,5 @@ class Staff extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
 }
