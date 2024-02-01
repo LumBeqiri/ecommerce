@@ -28,7 +28,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        
+
         return $user->hasPermissionTo('view-products') && $user->staff->vendor_id == $product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
@@ -67,5 +67,4 @@ class ProductPolicy
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }
-
 }

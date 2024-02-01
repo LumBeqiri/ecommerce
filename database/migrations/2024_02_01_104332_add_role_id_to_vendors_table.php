@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('vendors', function (Blueprint $table) {
             $table->foreignId('role_id')->constrained('roles');
-            
+
         });
     }
 

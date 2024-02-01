@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Models\Category;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
 
 class AdminProductController extends ApiController
 {

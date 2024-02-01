@@ -6,7 +6,6 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Vendor;
@@ -73,5 +72,4 @@ class VendorProductController extends ApiController
 
         return $this->showMessage('Product deleted successfully!');
     }
-
 }
