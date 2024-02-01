@@ -66,16 +66,12 @@ class VendorProductController extends ApiController
 
     public function destroy(Product $product): JsonResponse
     {
+        $this->authorize('delete', $product);
+
         $product->categories()->detach();
         $product->delete();
 
         return $this->showMessage('Product deleted successfully!');
     }
 
-    public function delete_product_category(Product $product, Category $category): JsonResponse
-    {
-        $product->categories()->detach($category);
-
-        return $this->showMessage('Category removed successfully!');
-    }
 }
