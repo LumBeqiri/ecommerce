@@ -28,8 +28,8 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        
-        return $user->hasPermissionTo('view products') && $user->staff->vendor_id == $product->vendor->user_id
+
+        return $user->hasPermissionTo('view-products') && $user->staff->vendor_id == $product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }
@@ -63,28 +63,8 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product)
     {
-        return $user->hasPermissionTo('delete products') && $user->staff->vendor_id == $product->vendor->user_id
+        return $user->hasPermissionTo('delete-products') && $user->staff->vendor_id == $product->vendor->user_id
         ? Response::allow()
         : Response::deny('You do not own this product.');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Product $product)
-    {
-        //
     }
 }

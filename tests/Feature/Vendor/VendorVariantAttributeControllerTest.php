@@ -35,6 +35,7 @@ it('vendor can add variant attributes', function () {
     $attribute2 = Attribute::factory()->create();
 
     $user->assignRole('vendor');
+    $user->givePermissionTo('update-products');
     $attributeUuids = [$attribute1->uuid, $attribute2->uuid];
 
     login($user);

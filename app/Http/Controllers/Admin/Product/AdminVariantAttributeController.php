@@ -3,61 +3,24 @@
 namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Variant\VariantAttributeRequest;
 use App\Http\Resources\VariantResource;
 use App\Models\Attribute;
 use App\Models\Variant;
-use Illuminate\Database\Eloquent\Collection;
+use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AdminVariantAttributeController extends ApiController
 {
-    public function store(Request $request, Variant $variant): JsonResponse
+    public function update(VariantAttributeRequest $request, Variant $variant, VariantService $variantService): JsonResponse
     {
-        $data = $request->validate([
-            'product_attributes' => 'array',
-            'product_attributes.*' => 'required|string|exists:attributes,uuid',
-        ]);
 
-        $attributes = Attribute::whereIn('uuid', $data['product_attributes'])->get();
+        $attributeIds = Attribute::whereIn('uuid', $request->input('attributes'))->pluck('id')->toArray();
 
-        abort_if($this->duplicateAttribute($variant, $attributes), 422, 'Cannot have the same attribute type more than once');
+        $variantService->addVariantAttributes($variant, $attributeIds);
 
-        $variant->attributes()->sync($attributes->pluck('id'));
+        $variant->refresh();
 
-        return $this->showOne(new VariantResource($variant->load(['attributes'])));
-    }
-
-    public function show(Variant $variant): JsonResponse
-    {
-        return $this->showOne($variant->load('attributes'));
-    }
-
-    public function destroy(Variant $variant, Attribute $attribute): JsonResponse
-    {
-        $variant->attributes()->detach($attribute);
-
-        return $this->showMessage('Attribute removed successfully!');
-    }
-
-    private function duplicateAttribute(Variant $variant, Collection $attributes): bool
-    {
-        // in order to use duplicates(),
-        // we transform our eloquent collection in a Illuminate/Support/Collection
-
-        $attributes_collection = collect($attributes);
-        $attributes_collection = $attributes_collection->duplicates('attribute_type');
-
-        if (count($attributes_collection) !== 0) {
-            return true;
-        }
-
-        foreach ($attributes as $attribute) {
-            if ($variant->attributes()->where('attribute_type', $attribute['attribute_type'])->exists()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
 }

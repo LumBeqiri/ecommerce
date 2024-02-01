@@ -23,7 +23,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-products', 'guard_name' => 'api']);
         Permission::create(['name' => 'update-products', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-products', 'guard_name' => 'api']);
-        
+
         Permission::create(['name' => 'create-variants', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-variants', 'guard_name' => 'api']);
         Permission::create(['name' => 'update-variants', 'guard_name' => 'api']);

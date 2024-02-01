@@ -12,33 +12,20 @@ class VariantPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, Variant $variant)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can create models.
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
     {
-        //
+        if ($user->hasRole('vendor')) {
+            return Response::allow();
+        }
+
+        return $user->hasPermissionTo('create-products')
+        ? Response::allow()
+        : Response::deny('You do not have permission to update this variant.');
+
     }
 
     /**
@@ -48,9 +35,18 @@ class VariantPolicy
      */
     public function update(User $user, Variant $variant)
     {
-        return $user->hasPermissionTo('update-products') && $user->staff->vendor_id == $variant->product->vendor_id
-        ? Response::allow()
-        : Response::deny('You do not own this product.');
+
+        if ($user->hasRole('vendor')) {
+            // Vendor can update own variants
+            return $user->id === $variant->product->vendor->user_id
+                ? Response::allow()
+                : Response::deny('You do not own this variant.');
+        }
+
+        // For staff members
+        return $user->hasPermissionTo('update-products') && $user->staff->vendor_id === $variant->product->vendor_id
+            ? Response::allow()
+            : Response::deny('You do not have permission to update this variant.');
     }
 
     /**
@@ -60,6 +56,13 @@ class VariantPolicy
      */
     public function delete(User $user, Variant $variant)
     {
+
+        if ($user->hasRole('vendor')) {
+            // Vendor can update own variants
+            return $user->id === $variant->product->vendor->user_id
+                ? Response::allow()
+                : Response::deny('You do not own this variant.');
+        }
 
         return $user->hasPermissionTo('delete-products') && $user->staff->vendor_id == $variant->product->vendor_id
         ? Response::allow()

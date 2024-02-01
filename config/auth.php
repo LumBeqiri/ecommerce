@@ -35,7 +35,7 @@ return [
     |
     */
     'guards' => [
-        
+
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
@@ -44,7 +44,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ]
+        ],
 
     ],
 

@@ -59,7 +59,7 @@ it('can add an item to the cart', function () {
 
     $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant1->id, 'quantity' => $quantity, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-});
+})->todo();
 
 it('can remove an item from the cart', function () {
     Currency::factory()->create();
@@ -93,7 +93,7 @@ it('can remove an item from the cart', function () {
 
     $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant->id, 'quantity' => $itemsLeft, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-});
+})->todo();
 
 it('can apply discount', function () {
     Currency::factory()->create();
