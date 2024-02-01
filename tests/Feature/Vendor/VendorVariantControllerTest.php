@@ -167,6 +167,7 @@ it('vendor can delete variant', function () {
     $variant = Variant::factory()->create(['product_id' => $product->id, 'stock' => 5]);
 
     $user->assignRole('vendor');
+    $user->hasPermissionTo('delete-products');
 
     login($user);
 
