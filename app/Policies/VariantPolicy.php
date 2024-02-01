@@ -38,7 +38,13 @@ class VariantPolicy
      */
     public function create(User $user)
     {
-        //
+        if ($user->hasRole('vendor')) {
+            // Vendor can update own variants
+            return $user->hasPermissionTo('create-products')
+                ? Response::allow()
+                : Response::deny('You do not own this variant.');
+        }
+
     }
 
     /**
