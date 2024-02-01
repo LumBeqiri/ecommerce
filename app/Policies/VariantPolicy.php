@@ -12,26 +12,6 @@ class VariantPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, Variant $variant)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can create models.
      *
      * @return \Illuminate\Auth\Access\Response|bool
@@ -39,11 +19,12 @@ class VariantPolicy
     public function create(User $user)
     {
         if ($user->hasRole('vendor')) {
-            // Vendor can update own variants
-            return $user->hasPermissionTo('create-products')
-                ? Response::allow()
-                : Response::deny('You do not own this variant.');
+            return Response::allow();
         }
+
+        return $user->hasPermissionTo('create-products')
+        ? Response::allow()
+        : Response::deny('You do not have permission to update this variant.');
 
     }
 
@@ -63,7 +44,7 @@ class VariantPolicy
         }
 
         // For staff members
-        return $user->hasPermissionTo('update-variants') && $user->staff->vendor_id === $variant->product->vendor_id
+        return $user->hasPermissionTo('update-products') && $user->staff->vendor_id === $variant->product->vendor_id
             ? Response::allow()
             : Response::deny('You do not have permission to update this variant.');
     }
