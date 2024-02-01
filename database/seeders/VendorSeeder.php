@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Vendor;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class VendorSeeder extends Seeder
 {
@@ -15,8 +16,13 @@ class VendorSeeder extends Seeder
     {
         $faker = Faker::create();
 
+        $roles = ['manager', 'vendor', 'employee'];
+
         foreach (range(1, 50) as $index) {
-            Vendor::create([
+            $roleName = $faker->randomElement($roles); // Fetch a random role name
+            $role = Role::where('name', $roleName)->first(); // Fetch the role by name
+
+            $vendorData = [
                 'uuid' => $faker->uuid,
                 'vendor_name' => $faker->company,
                 'city' => $faker->city,
@@ -25,7 +31,10 @@ class VendorSeeder extends Seeder
                 'status' => $faker->boolean,
                 'approval_date' => $faker->date,
                 'website' => $faker->url,
-            ]);
+                'role_id' => $role->id, // Assign the fetched role_id
+            ];
+
+            Vendor::create($vendorData);
         }
     }
 }
