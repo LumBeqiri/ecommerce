@@ -49,7 +49,6 @@ Route::get('countries', [CountryController::class, 'index']);
 Route::resource('products', ProductController::class);
 Route::resource('products.buyers', ProductBuyerController::class);
 Route::resource('products.categories', ProductCategoryController::class);
-Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
 Route::resource('variants', VariantController::class)->only(['index', 'show']);
