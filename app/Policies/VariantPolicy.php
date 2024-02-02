@@ -68,5 +68,4 @@ class VariantPolicy
         ? Response::allow()
         : Response::deny('You do not own this product.');
     }
-
 }

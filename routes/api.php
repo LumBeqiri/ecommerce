@@ -16,7 +16,6 @@ use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Product\ProductOrderController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Variant\VariantController;
 use Illuminate\Support\Facades\Route;
@@ -49,7 +48,6 @@ Route::get('countries', [CountryController::class, 'index']);
 Route::resource('products', ProductController::class);
 Route::resource('products.buyers', ProductBuyerController::class);
 Route::resource('products.categories', ProductCategoryController::class);
-Route::resource('products.orders', ProductOrderController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
 Route::resource('variants', VariantController::class)->only(['index', 'show']);
