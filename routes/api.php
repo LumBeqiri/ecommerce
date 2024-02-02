@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
 
+Route::post('register-buyer', RegisterBuyerController::class)->name('register-buyer');
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 Route::post('forgot_password', [ForgotPasswordController::class, 'reset_link'])->name('reset.link');
 Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'])->name('password.reset');
