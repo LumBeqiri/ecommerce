@@ -69,23 +69,4 @@ class VariantPolicy
         : Response::deny('You do not own this product.');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Variant $variant)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Variant $variant)
-    {
-        //
-    }
 }
