@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
 use App\Models\Vendor;
-use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,12 +16,12 @@ class ProductService
 
         /** @var User $user */
         $user = Auth::user();
-        
-        if($user->staff){
+
+        if ($user->staff) {
             $vendor = auth()->user()->staff->vendor_id;
         }
 
-        if($user->hasRole('vendor')){
+        if ($user->hasRole('vendor')) {
             $vendor = Vendor::where('user_id', auth()->user()->id)->firstOrFail();
         }
 
