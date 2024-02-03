@@ -1,19 +1,18 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Vendor;
+use App\Http\Controllers\Vendor\VendorVariantPriceController;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
-use Illuminate\Support\Facades\Bus;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Vendor\VendorVariantController;
-use App\Http\Controllers\Vendor\VendorVariantPriceController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -43,15 +42,13 @@ it('vendor can create variant pricing', function () {
         'region_id' => $region->uuid,
         'price' => $price,
         'min_quantity' => $min_quantity,
-        'max_quantity' => $max_quantity
+        'max_quantity' => $max_quantity,
     ]);
 
     $response->assertOk();
 
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
-
-
 
 it('vendor can update variant pricing', function () {
     TaxProvider::factory()->create();
@@ -63,7 +60,7 @@ it('vendor can update variant pricing', function () {
     $vendor = Vendor::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
-    $variantPrice = VariantPrice::factory()->create(['variant_id'=> $variant->id, 'region_id' => $region->id]);
+    $variantPrice = VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
 
     $user->assignRole('vendor');
     login($user);
@@ -78,10 +75,10 @@ it('vendor can update variant pricing', function () {
             'region_id' => $region2->uuid,
             'price' => $price,
             'min_quantity' => $min_quantity,
-            'max_quantity' => $max_quantity
+            'max_quantity' => $max_quantity,
         ]
     );
-    
+
     $response->assertOk();
 
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region2->id]);
@@ -97,7 +94,7 @@ it('vendor can not update variant pricing of another vendor', function () {
     $vendor = Vendor::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
-    $variantPrice = VariantPrice::factory()->create(['variant_id'=> $variant->id, 'region_id' => $region->id]);
+    $variantPrice = VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
 
     $user2 = User::factory()->create();
 
@@ -114,20 +111,14 @@ it('vendor can not update variant pricing of another vendor', function () {
             'region_id' => $region2->uuid,
             'price' => $price,
             'min_quantity' => $min_quantity,
-            'max_quantity' => $max_quantity
+            'max_quantity' => $max_quantity,
         ]
     );
-    
+
     $response->assertForbidden();
 
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
-
-
-
-
-
-
 
 it('vendor can delete variant pricing', function () {
     TaxProvider::factory()->create();
@@ -138,7 +129,7 @@ it('vendor can delete variant pricing', function () {
     $vendor = Vendor::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
-    $variantPrice = VariantPrice::factory()->create(['variant_id'=> $variant->id, 'region_id' => $region->id]);
+    $variantPrice = VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
 
     $user->assignRole('vendor');
     login($user);
@@ -153,15 +144,14 @@ it('vendor can delete variant pricing', function () {
             'region_id' => $region->uuid,
             'price' => $price,
             'min_quantity' => $min_quantity,
-            'max_quantity' => $max_quantity
+            'max_quantity' => $max_quantity,
         ]
     );
-    
+
     $response->assertOk();
 
     $this->assertDatabaseMissing(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
-
 
 it('vendor can not delete variant pricing of another vendor', function () {
     TaxProvider::factory()->create();
@@ -172,8 +162,7 @@ it('vendor can not delete variant pricing of another vendor', function () {
     $vendor = Vendor::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
-    $variantPrice = VariantPrice::factory()->create(['variant_id'=> $variant->id, 'region_id' => $region->id]);
-
+    $variantPrice = VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
 
     $user2 = User::factory()->create();
     $vendor2 = Vendor::factory()->create(['user_id' => $user2->id]);
@@ -191,10 +180,10 @@ it('vendor can not delete variant pricing of another vendor', function () {
             'region_id' => $region->uuid,
             'price' => $price,
             'min_quantity' => $min_quantity,
-            'max_quantity' => $max_quantity
+            'max_quantity' => $max_quantity,
         ]
     );
-    
+
     $response->assertForbidden();
 
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
