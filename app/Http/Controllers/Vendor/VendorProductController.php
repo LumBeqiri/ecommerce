@@ -67,5 +67,4 @@ class VendorProductController extends ApiController
 
         return $this->showMessage('Product deleted successfully!');
     }
-    
 }
