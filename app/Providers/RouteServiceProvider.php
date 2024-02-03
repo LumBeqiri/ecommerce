@@ -58,7 +58,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::prefix('staff')
                 ->middleware('api')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/vendor.php'));
+                ->group(base_path('routes/staff.php'));
         });
     }
 
