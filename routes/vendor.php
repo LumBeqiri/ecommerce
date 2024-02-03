@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\Staff\RegisterStaffController;
 use App\Http\Controllers\Vendor\VendorProductController;
 use App\Http\Controllers\Vendor\VendorVariantAttributeController;
 use App\Http\Controllers\Vendor\VendorVariantController;
@@ -23,5 +24,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('variants/{variant}/prices', [VendorVariantPriceController::class, 'store']);
     Route::put('variants/{variant}/prices/{variantPrice}', [VendorVariantPriceController::class, 'update']);
+
+    Route::post('register-staff', RegisterStaffController::class)->name('register-staff');
 
 });
