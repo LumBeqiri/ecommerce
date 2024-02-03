@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Vendor\StaffProductController;
-use App\Http\Controllers\Vendor\StaffVariantAttributeController;
-use App\Http\Controllers\Vendor\StaffVariantController;
-use App\Http\Controllers\Vendor\StaffVariantPriceController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Staff\StaffProductController;
+use App\Http\Controllers\Staff\StaffVariantController;
+use App\Http\Controllers\Staff\StaffVariantPriceController;
+use App\Http\Controllers\Staff\StaffVariantAttributeController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 

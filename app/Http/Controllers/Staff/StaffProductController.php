@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vendor;
+namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Product\StoreProductRequest;
@@ -29,11 +29,6 @@ class StaffProductController extends ApiController
     public function show(Product $product): JsonResponse
     {
         $this->authorize('view', $product);
-
-        $vendor = Vendor::where('user_id', auth()->id())->firstOrFail();
-        if ($product->vendor_id != $vendor->id) {
-            abort('401', 'Unauthorized access!');
-        }
 
         return $this->showOne(new ProductResource($product->load(['variants.variant_prices'])));
     }

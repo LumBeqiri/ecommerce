@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vendor;
+namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Variant\VariantAttributeRequest;
