@@ -30,11 +30,6 @@ class VendorProductController extends ApiController
     {
         $this->authorize('view', $product);
 
-        $vendor = Vendor::where('user_id', auth()->id())->firstOrFail();
-        if ($product->vendor_id != $vendor->id) {
-            abort('401', 'Unauthorized access!');
-        }
-
         return $this->showOne(new ProductResource($product->load(['variants.variant_prices'])));
     }
 
@@ -72,4 +67,5 @@ class VendorProductController extends ApiController
 
         return $this->showMessage('Product deleted successfully!');
     }
+    
 }
