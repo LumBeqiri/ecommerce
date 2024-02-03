@@ -1,17 +1,15 @@
 <?php
 
-use App\Models\User;
+use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
 use App\Models\Buyer;
-use App\Models\Region;
 use App\Models\Country;
 use App\Models\Currency;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\Users\AdminUserController;
-use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -22,7 +20,6 @@ beforeEach(function () {
     Region::factory()->create();
     Country::factory()->create();
 });
-
 
 it('admin can update buyer first name and last name', function () {
     Country::factory()->create();
@@ -56,7 +53,6 @@ it('admin can update buyer city', function () {
     $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->uuid), [
         'city' => $updated,
     ]);
-
 
     $response->assertOk();
 
@@ -98,4 +94,3 @@ it('admin can update buyer phone', function () {
 
     $this->assertDatabaseHas(Buyer::class, ['phone' => $updated]);
 });
-

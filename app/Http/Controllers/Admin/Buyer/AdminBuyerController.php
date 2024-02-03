@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Admin\Buyer;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Auth\UpdateBuyerRequest;
-use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Resources\BuyerResource;
-use App\Http\Resources\UserResource;
 use App\Models\Buyer;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class AdminBuyerController extends ApiController
