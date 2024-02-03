@@ -48,17 +48,18 @@ it('staff can update product name', function () {
 it('staff can not update product name of another vendor', function () {
     $oldName = 'old-name';
     $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
-    $product = Product::factory()->create(['vendor_id' => $vendor->id, 'product_name' => $oldName]);
+    $vendor  = Vendor::factory()->create();
+    $vendor2  = Vendor::factory()->create();
 
-    $user2 = User::factory()->create();
-    $vendor2 = Vendor::factory()->create(['user_id' => $user2->id]);
+    Staff::factory()->create(['user_id' => $user->id,'vendor_id' => $vendor->id]);
+    $product = Product::factory()->create(['vendor_id' => $vendor2->id, 'product_name' => $oldName]);
 
-    $user2->assignRole('vendor');
+    $user->givePermissionTo('update-products');
+    $user->assignRole('manager');
     $updatedName = 'new name';
-    login($user2);
+    login($user);
 
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([StaffProductController::class, 'update'], $product->uuid), [
         'product_name' => $updatedName,
     ]);
 
@@ -67,76 +68,50 @@ it('staff can not update product name of another vendor', function () {
     $this->assertDatabaseHas(Product::class, ['product_name' => $oldName]);
 });
 
-it('vendor can update product status', function () {
 
-    $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
-    $product = Product::factory()->create(['vendor_id' => $vendor->id, 'status' => Product::AVAILABLE_PRODUCT]);
 
-    $user->assignRole('vendor');
-    $updatedValue = Product::UNAVAILABLE_PRODUCT;
-    login($user);
 
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
-        'status' => $updatedValue,
-    ]);
+it('staff can delete product', function () {
 
-    $response->assertOk();
+    $staffUser = User::factory()->create();
+    $vendorUser = User::factory()->create();
 
-    $this->assertDatabaseHas(Product::class, ['status' => $updatedValue]);
-});
-
-it('vendor can update product', function () {
-
-    $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
-    $product = Product::factory()->create(['vendor_id' => $vendor->id, 'status' => Product::AVAILABLE_PRODUCT]);
-
-    $user->assignRole('vendor');
-    $updatedValue = Product::UNAVAILABLE_PRODUCT;
-    login($user);
-
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
-        'status' => $updatedValue,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(Product::class, ['status' => $updatedValue]);
-});
-
-it('vendor can delete product', function () {
-
-    $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
+    $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
+    $staff = Staff::factory()->create(['user_id' => $staffUser->id,'vendor_id' =>$vendor->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
 
-    $user->assignRole('vendor');
-    $user->hasPermissionTo('delete-products');
+    $staffUser->assignRole('manager');
+    $staffUser->givePermissionTo('delete-products');
 
-    login($user);
+    login($staffUser);
 
-    $response = $this->deleteJson(action([VendorProductController::class, 'destroy'], $product->uuid));
+    $response = $this->deleteJson(action([StaffProductController::class, 'destroy'], $product->uuid));
 
     $response->assertOk();
 
     $this->assertSoftDeleted(Product::class, ['id' => $product->id]);
 });
 
-it('vendor can not delete product of another vendor', function () {
+it('staff can not  delete product of another vendor', function () {
 
-    $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
-    $product = Product::factory()->create(['vendor_id' => $vendor->id]);
+    $staffUser = User::factory()->create();
+    $vendorUser = User::factory()->create();
+    $anotherVendorUser = User::factory()->create();
 
-    $user2 = User::factory()->create();
-    $user2->assignRole('vendor');
-    $user2->hasPermissionTo('delete-products');
+    $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
+    $anotherVendor = Vendor::factory()->create(['user_id' => $anotherVendorUser->id]);
+    $staff = Staff::factory()->create(['user_id' => $staffUser->id,'vendor_id' =>$vendor->id]);
+    $product = Product::factory()->create(['vendor_id' => $anotherVendor->id]);
 
-    login($user2);
+    $staffUser->assignRole('manager');
+    $staffUser->givePermissionTo('delete-products');
 
-    $response = $this->deleteJson(action([VendorProductController::class, 'destroy'], $product->uuid));
+    login($staffUser);
+
+    $response = $this->deleteJson(action([StaffProductController::class, 'destroy'], $product->uuid));
 
     $response->assertForbidden();
 
+    $this->assertDatabaseHas(Product::class, ['id' => $product->id, 'deleted_at' => null]);
 });
+
