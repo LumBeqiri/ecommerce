@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\Auth\Buyer\RegisterStaffController;
-use App\Http\Controllers\Vendor\VendorProductController;
-use App\Http\Controllers\Vendor\VendorVariantAttributeController;
-use App\Http\Controllers\Vendor\VendorVariantController;
-use App\Http\Controllers\Vendor\VendorVariantPriceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Vendor\VendorProductController;
+use App\Http\Controllers\Vendor\VendorVariantController;
+use App\Http\Controllers\Auth\Staff\RegisterStaffController;
+use App\Http\Controllers\Vendor\VendorVariantPriceController;
+use App\Http\Controllers\Vendor\VendorVariantAttributeController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 

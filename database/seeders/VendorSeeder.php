@@ -15,13 +15,8 @@ class VendorSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-
-        $roles = ['manager', 'vendor', 'employee'];
-
+        
         foreach (range(1, 50) as $index) {
-            $roleName = $faker->randomElement($roles); // Fetch a random role name
-            $role = Role::where('name', $roleName)->first(); // Fetch the role by name
-
             $vendorData = [
                 'uuid' => $faker->uuid,
                 'vendor_name' => $faker->company,
@@ -31,7 +26,6 @@ class VendorSeeder extends Seeder
                 'status' => $faker->boolean,
                 'approval_date' => $faker->date,
                 'website' => $faker->url,
-                'role_id' => $role->id, // Assign the fetched role_id
             ];
 
             Vendor::create($vendorData);

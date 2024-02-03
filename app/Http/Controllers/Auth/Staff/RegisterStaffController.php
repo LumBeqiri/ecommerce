@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Buyer;
+namespace App\Http\Controllers\Auth\Staff;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Auth\RegisterStaffRequest;
@@ -18,6 +18,7 @@ class RegisterStaffController extends ApiController
     {
         $response = null;
         DB::beginTransaction();
+
         try {
 
             $data = $request->validated();
@@ -42,7 +43,6 @@ class RegisterStaffController extends ApiController
                 'country_id' => $request->input('country_id'),
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),
-                'role_id' => $request->input('role_id'),
                 'user_id' => $user->id,
             ]);
 
