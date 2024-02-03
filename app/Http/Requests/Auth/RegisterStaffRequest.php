@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterStaffRequest extends FormRequest
@@ -36,7 +37,11 @@ class RegisterStaffRequest extends FormRequest
             'country_id' => 'required|exists:countries,id',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'role_id' => 'required|exists:roles,id',
+            'role' => [
+                'required',
+                'string',
+                Rule::in(['employee', 'manager']),
+            ],
         ];
     }
 }

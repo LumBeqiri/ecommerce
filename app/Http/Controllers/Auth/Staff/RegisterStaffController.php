@@ -30,10 +30,12 @@ class RegisterStaffController extends ApiController
                 'password' => $data['password'],
             ]);
 
+            $user->assignRole($request->input('role'));
+
             $staff = Staff::create([
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
-                'position' => $request->input('position'),
+                'position' => $request->input('role'),
                 'phone' => $request->input('phone'),
                 'city' => $request->input('city'),
                 'status' => $request->input('status'),
@@ -57,9 +59,7 @@ class RegisterStaffController extends ApiController
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-
             return $this->showError(message: $e->getMessage());
-
         }
 
         return $this->showMessage($response, 201);

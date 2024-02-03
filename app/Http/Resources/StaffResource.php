@@ -28,7 +28,6 @@ class StaffResource extends JsonResource
             'country_id' => $this->country_id,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
-            'role_id' => $this->role_id,
             'user_id' => new UserResource($this->user),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
