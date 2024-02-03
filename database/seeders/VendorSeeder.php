@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Vendor;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 
 class VendorSeeder extends Seeder
 {
@@ -15,7 +14,7 @@ class VendorSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        
+
         foreach (range(1, 50) as $index) {
             $vendorData = [
                 'uuid' => $faker->uuid,

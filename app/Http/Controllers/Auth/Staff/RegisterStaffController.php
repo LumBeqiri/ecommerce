@@ -59,6 +59,7 @@ class RegisterStaffController extends ApiController
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
+
             return $this->showError(message: $e->getMessage());
         }
 
