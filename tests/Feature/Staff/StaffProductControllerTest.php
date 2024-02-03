@@ -73,7 +73,7 @@ it('staff can delete product', function () {
     $vendorUser = User::factory()->create();
 
     $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
-    $staff = Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
+    Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
 
     $staffUser->assignRole('manager');
@@ -96,7 +96,7 @@ it('staff can not  delete product of another vendor', function () {
 
     $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
     $anotherVendor = Vendor::factory()->create(['user_id' => $anotherVendorUser->id]);
-    $staff = Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
+    Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
     $product = Product::factory()->create(['vendor_id' => $anotherVendor->id]);
 
     $staffUser->assignRole('manager');
