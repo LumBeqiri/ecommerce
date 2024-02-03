@@ -161,3 +161,41 @@ it('vendor can delete variant pricing', function () {
 
     $this->assertDatabaseMissing(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
+
+
+it('vendor can not delete variant pricing of another vendor', function () {
+    TaxProvider::factory()->create();
+    $region = Region::factory()->create();
+    Country::factory()->create();
+
+    $user = User::factory()->create();
+    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
+    $product = Product::factory()->create(['vendor_id' => $vendor->id]);
+    $variant = Variant::factory()->create(['product_id' => $product->id]);
+    $variantPrice = VariantPrice::factory()->create(['variant_id'=> $variant->id, 'region_id' => $region->id]);
+
+
+    $user2 = User::factory()->create();
+    $vendor2 = Vendor::factory()->create(['user_id' => $user2->id]);
+
+    $user2->assignRole('vendor');
+    login($user2);
+
+    $price = 120;
+    $max_quantity = 5;
+    $min_quantity = 2;
+
+    $response = $this->deleteJson(
+        action([VendorVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid]),
+        [
+            'region_id' => $region->uuid,
+            'price' => $price,
+            'min_quantity' => $min_quantity,
+            'max_quantity' => $max_quantity
+        ]
+    );
+    
+    $response->assertForbidden();
+
+    $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
+});
