@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
+use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
 use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
 use App\Http\Controllers\Admin\Discount\DiscountConditionController;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::resource('users', AdminUserController::class);
+    Route::put('buyers/{buyer}', [AdminBuyerController::class, 'update']);
     Route::get('products', [AdminProductController::class, 'index']);
     Route::post('products', [AdminProductController::class, 'store']);
     Route::get('products/{product}', [AdminProductController::class, 'show']);

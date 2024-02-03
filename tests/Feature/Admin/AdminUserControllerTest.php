@@ -42,12 +42,7 @@ it('admin can create user', function () {
 
     $response = $this->postJson(action([AdminUserController::class, 'store']), [
         'name' => $this->faker()->name(),
-        'city' => $this->faker()->city(),
-        'country_id' => Country::inRandomOrder()->first()->id,
-        'zip' => $this->faker()->numberBetween(10000, 100000),
-        'phone' => $this->faker()->phoneNumber(),
         'email' => $this->faker()->email(),
-        'shipping_address' => $this->faker()->streetAddress(),
         'password' => $password,
         'password_confirmation' => $password,
     ]);
@@ -58,74 +53,6 @@ it('admin can create user', function () {
 
     $this->assertDatabaseHas(User::class, ['uuid' => $user_id]);
 });
-
-// Name field has been moved to Buyer model
-// Test if the field 'name' has been changed in the Buyer model
-it('admin can update user name', function () {
-    $userA = User::factory()->create(['email' => 'lum@test.com']);
-    $admin = User::factory()->create(['email' => 'jon@test.com']);
-    $admin->assignRole('admin');
-    $updated = 'new name';
-    login($admin);
-
-    $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
-        'name' => $updated,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(User::class, ['name' => $updated]);
-})->todo();
-
-it('admin can update user city', function () {
-    $userA = User::factory()->create(['city' => 'Amber']);
-    $user = User::factory()->create(['email' => 'lum@test.com']);
-    $user->assignRole('admin');
-    $updated = 'Tirana';
-    login($user);
-
-    $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
-        'city' => $updated,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(User::class, ['city' => $updated]);
-})->todo();
-
-it('admin can update user country', function () {
-    $old_country = Country::factory()->create();
-    $userA = User::factory()->create(['country_id' => $old_country->id]);
-    $user = User::factory()->create(['email' => 'lum@test.com']);
-    $user->assignRole('admin');
-    $new_country = Country::factory()->create();
-
-    login($user);
-
-    $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
-        'country_id' => $new_country->id,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(User::class, ['country_id' => $new_country->id]);
-})->todo();
-
-it('admin can update user phone', function () {
-    $userA = User::factory()->create(['phone' => '03212']);
-    $user = User::factory()->create(['email' => 'lum@test.com']);
-    $user->assignRole('admin');
-    $updated = '123456';
-    login($user);
-
-    $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
-        'phone' => $updated,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(User::class, ['phone' => $updated]);
-})->todo();
 
 it('admin can change user password', function () {
     $userA = User::factory()->create();
