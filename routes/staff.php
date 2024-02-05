@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Vendor\StaffProductController;
-use App\Http\Controllers\Vendor\StaffVariantAttributeController;
-use App\Http\Controllers\Vendor\StaffVariantController;
-use App\Http\Controllers\Vendor\StaffVariantPriceController;
+use App\Http\Controllers\Staff\StaffProductController;
+use App\Http\Controllers\Staff\StaffVariantAttributeController;
+use App\Http\Controllers\Staff\StaffVariantController;
+use App\Http\Controllers\Staff\StaffVariantPriceController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -23,5 +23,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('variants/{variant}/prices', [StaffVariantPriceController::class, 'store']);
     Route::put('variants/{variant}/prices/{variantPrice}', [StaffVariantPriceController::class, 'update']);
+    Route::delete('variants/{variant}/prices/{variantPrice}', [StaffVariantPriceController::class, 'destroy']);
 
 });

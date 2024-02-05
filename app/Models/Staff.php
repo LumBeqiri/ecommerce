@@ -16,6 +16,8 @@ class Staff extends Model
 
     protected $table = 'staff';
 
+    protected $guarded = [];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

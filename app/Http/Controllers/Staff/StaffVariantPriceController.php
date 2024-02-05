@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vendor;
+namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Variant\StoreVariantPriceRequest;
@@ -42,7 +42,7 @@ class StaffVariantPriceController extends ApiController
 
         abort_if($variant->id != $variantPrice->variant_id, 422, "Pricing doesn't belong to the product variant");
 
-        $variant->delete();
+        $variantPrice->delete();
 
         return $this->showMessage('Variant Pricing deleted successfully!');
     }
