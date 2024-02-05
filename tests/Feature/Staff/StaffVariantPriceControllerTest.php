@@ -1,20 +1,19 @@
 <?php
 
-use App\Models\User;
-use App\Models\Staff;
-use App\Models\Region;
-use App\Models\Vendor;
+use App\Http\Controllers\Staff\StaffVariantPriceController;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Region;
+use App\Models\Staff;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
-use Illuminate\Support\Facades\Bus;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Staff\StaffVariantPriceController;
-use App\Http\Controllers\Vendor\VendorVariantPriceController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -56,8 +55,6 @@ it('staff can create variant pricing', function () {
 
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
-
-
 
 it('staff can update variant pricing', function () {
     TaxProvider::factory()->create();
@@ -109,7 +106,6 @@ it('staff can not update variant pricing of another vendor', function () {
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
     $variantPrice = VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
-
 
     $vendorUser2 = User::factory()->create();
     $vendor2 = Vendor::factory()->create(['user_id' => $vendorUser2->id]);
@@ -164,7 +160,6 @@ it('staff can delete variant pricing', function () {
         action([StaffVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid])
     );
 
-
     $response->assertOk();
 
     $this->assertDatabaseMissing(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
@@ -191,7 +186,6 @@ it('staff can not delete variant pricing of another vendor', function () {
     $staffUser->givePermissionTo('update-products');
 
     login($staffUser);
-
 
     $response = $this->deleteJson(
         action([StaffVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid])

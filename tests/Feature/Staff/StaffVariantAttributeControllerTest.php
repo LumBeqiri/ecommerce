@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Vendor\VendorVariantAttributeController;
+use App\Http\Controllers\Staff\StaffVariantAttributeController;
 use App\Models\Attribute;
 use App\Models\Country;
 use App\Models\Product;
@@ -15,7 +15,6 @@ use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
-use App\Http\Controllers\Staff\StaffVariantAttributeController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
