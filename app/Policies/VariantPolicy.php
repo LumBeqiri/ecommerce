@@ -35,7 +35,6 @@ class VariantPolicy
      */
     public function update(User $user, Variant $variant)
     {
-
         if ($user->hasRole('vendor')) {
             // Vendor can update own variants
             return $user->id === $variant->product->vendor->user_id

@@ -23,5 +23,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('variants/{variant}/prices', [StaffVariantPriceController::class, 'store']);
     Route::put('variants/{variant}/prices/{variantPrice}', [StaffVariantPriceController::class, 'update']);
+    Route::delete('variants/{variant}/prices/{variantPrice}', [StaffVariantPriceController::class, 'destroy']);
 
 });

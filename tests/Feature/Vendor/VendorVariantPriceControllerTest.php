@@ -134,18 +134,8 @@ it('vendor can delete variant pricing', function () {
     $user->assignRole('vendor');
     login($user);
 
-    $price = 120;
-    $max_quantity = 5;
-    $min_quantity = 2;
-
     $response = $this->deleteJson(
-        action([VendorVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid]),
-        [
-            'region_id' => $region->uuid,
-            'price' => $price,
-            'min_quantity' => $min_quantity,
-            'max_quantity' => $max_quantity,
-        ]
+        action([VendorVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid])
     );
 
     $response->assertOk();
@@ -170,18 +160,8 @@ it('vendor can not delete variant pricing of another vendor', function () {
     $user2->assignRole('vendor');
     login($user2);
 
-    $price = 120;
-    $max_quantity = 5;
-    $min_quantity = 2;
-
     $response = $this->deleteJson(
-        action([VendorVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid]),
-        [
-            'region_id' => $region->uuid,
-            'price' => $price,
-            'min_quantity' => $min_quantity,
-            'max_quantity' => $max_quantity,
-        ]
+        action([VendorVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid])
     );
 
     $response->assertForbidden();

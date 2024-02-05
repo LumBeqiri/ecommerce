@@ -5,6 +5,7 @@ use App\Models\Attribute;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Region;
+use App\Models\Staff;
 use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
@@ -14,6 +15,7 @@ use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\Staff\StaffVariantAttributeController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -22,25 +24,29 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('vendor can add variant attributes', function () {
+it('staff can add variant attributes', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
 
-    $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
+    $vendorUser = User::factory()->create();
+    $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
+
+    $staffUser = User::factory()->create();
+    Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
+
     $attribute1 = Attribute::factory()->create();
     $attribute2 = Attribute::factory()->create();
 
-    $user->assignRole('vendor');
-    $user->givePermissionTo('update-products');
+    $staffUser->assignRole('manager');
+    $staffUser->givePermissionTo('update-products');
     $attributeUuids = [$attribute1->uuid, $attribute2->uuid];
 
-    login($user);
+    login($staffUser);
 
-    $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([StaffVariantAttributeController::class, 'update'], $variant->uuid), [
         'attributes' => $attributeUuids,
     ]);
 
@@ -56,26 +62,31 @@ it('vendor can add variant attributes', function () {
 
 });
 
-it('vendor can remove variant attributes', function () {
+it('staff can remove variant attributes', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
 
-    $user = User::factory()->create();
-    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
+    $vendorUser = User::factory()->create();
+    $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
+
+    $staffUser = User::factory()->create();
+    Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
+
+    $staffUser->assignRole('manager');
+    $staffUser->givePermissionTo('update-products');
+
     $attribute1 = Attribute::factory()->create();
     $attribute2 = Attribute::factory()->create();
 
     $variant->attributes()->sync([$attribute1->id, $attribute2->id]);
-
-    $user->assignRole('vendor');
     $attributeUuids = [];
 
-    login($user);
+    login($staffUser);
 
-    $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([StaffVariantAttributeController::class, 'update'], $variant->uuid), [
         'attributes' => $attributeUuids,
     ]);
 
