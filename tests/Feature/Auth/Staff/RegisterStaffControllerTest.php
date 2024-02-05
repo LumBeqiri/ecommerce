@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
 use App\Models\Country;
 use App\Models\Currency;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
 use App\Models\Vendor;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function () {
     Notification::fake();
@@ -26,9 +26,9 @@ it('vendor can register staff user', function () {
 
     $vendorUser = User::factory()->create();
     $vendor = Vendor::factory()->create([
-        'user_id' => $vendorUser->id
+        'user_id' => $vendorUser->id,
     ]);
-    
+
     $vendorUser->assignRole('vendor');
 
     login($vendorUser);
@@ -53,6 +53,6 @@ it('vendor can register staff user', function () {
         'password' => $password,
         'password_confirmation' => $password,
     ]);
-    
+
     $response->assertStatus(201);
 });
