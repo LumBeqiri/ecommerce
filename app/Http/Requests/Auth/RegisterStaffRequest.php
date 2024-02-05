@@ -42,6 +42,7 @@ class RegisterStaffRequest extends FormRequest
                 'string',
                 Rule::in(['employee', 'manager']),
             ],
+            'password' => 'required|min:8|confirmed',
         ];
     }
 }
