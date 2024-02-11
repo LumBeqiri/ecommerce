@@ -1,18 +1,18 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Currency;
+use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 use App\Models\Attribute;
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Product;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Vendor;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 
 beforeEach(function () {
     Notification::fake();
@@ -26,14 +26,13 @@ beforeEach(function () {
 
 it('can store attribute', function () {
 
-    
     $user = User::factory()->create();
-    
+
     $user->assignRole('admin');
 
     Vendor::factory()->create([
         'country_id' => Country::first()->id,
-        'user_id' => $user->id
+        'user_id' => $user->id,
     ]);
 
     Product::factory()->create();
@@ -48,7 +47,7 @@ it('can store attribute', function () {
         'attribute_value' => $attribute_value,
     ];
 
-    $response = $this->postJson(action([AdminAttributeController::class, 'store']),$attributeData);
+    $response = $this->postJson(action([AdminAttributeController::class, 'store']), $attributeData);
 
     $response->assertStatus(JsonResponse::HTTP_CREATED);
 

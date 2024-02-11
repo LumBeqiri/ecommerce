@@ -1,19 +1,18 @@
 <?php
 
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Vendor;
+use App\Http\Controllers\Admin\Product\AdminVariantPriceController;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
-use Illuminate\Support\Facades\Bus;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Product\AdminVariantController;
-use App\Http\Controllers\Admin\Product\AdminVariantPriceController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
