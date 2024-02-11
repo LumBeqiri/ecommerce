@@ -28,8 +28,8 @@ class VendorFactory extends Factory
             'country_id' => Country::factory(),
             'user_id' => User::factory(),
             'status' => $this->faker->boolean,
-            'approval_date' => $this->faker->optional()->date,
-            'website' => $this->faker->optional()->url,
+            'approval_date' => $this->faker->date,
+            'website' => $this->faker->url,
         ];
     }
 }

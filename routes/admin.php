@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
-use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
-use App\Http\Controllers\Admin\Cart\AdminCartController;
-use App\Http\Controllers\Admin\Category\AdminCategoryController;
-use App\Http\Controllers\Admin\Discount\DiscountConditionController;
-use App\Http\Controllers\Admin\Discount\DiscountController;
-use App\Http\Controllers\Admin\Order\AdminOrderController;
-use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
-use App\Http\Controllers\Admin\Product\AdminVariantController;
-use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
-use App\Http\Controllers\Admin\Region\AdminRegionController;
-use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
-use App\Http\Controllers\Admin\Users\AdminUserController;
-use App\Http\Controllers\Product\ProductThumbnailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Cart\AdminCartController;
+use App\Http\Controllers\Admin\Users\AdminUserController;
+use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
+use App\Http\Controllers\Admin\Order\AdminOrderController;
+use App\Http\Controllers\Admin\Discount\DiscountController;
+use App\Http\Controllers\Admin\Region\AdminRegionController;
+use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Http\Controllers\Admin\Product\AdminProductController;
+use App\Http\Controllers\Admin\Product\AdminVariantController;
+use App\Http\Controllers\Admin\Category\AdminCategoryController;
+use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
+use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
+use App\Http\Controllers\Admin\Product\AdminVariantPriceController;
+use App\Http\Controllers\Admin\Discount\DiscountConditionController;
+use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
+use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -41,6 +42,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('products/{product}/variants', [AdminVariantController::class, 'store']);
     Route::put('variants/{variant}', [AdminVariantController::class, 'update']);
     Route::delete('variants/{variant}', [AdminVariantController::class, 'destroy']);
+
+    Route::post('variants/{variant}/prices', [AdminVariantPriceController::class, 'store']);
+    Route::put('variants/{variant}/prices/{variantPrice}', [AdminVariantPriceController::class, 'update']);
+    Route::delete('variants/{variant}/prices/{variantPrice}', [AdminVariantPriceController::class, 'destroy']);
 
     Route::get('carts', [AdminCartController::class, 'index']);
     Route::put('carts/{cart}', [AdminCartController::class, 'update']);

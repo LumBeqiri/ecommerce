@@ -54,5 +54,6 @@ it('vendor can register staff user', function () {
         'password_confirmation' => $password,
     ]);
 
+
     $response->assertStatus(201);
 });

@@ -1,22 +1,23 @@
 <?php
 
-use App\Models\Attribute;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
 use App\Models\User;
+use App\Models\Region;
 use App\Models\Vendor;
-use Database\Seeders\RoleAndPermissionSeeder;
+use App\Models\Country;
+use App\Models\Product;
+use App\Models\Currency;
+use App\Models\Attribute;
+use App\Models\TaxProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
-    Currency::factory()->count(5)->create();
+    Currency::factory()->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -24,14 +25,16 @@ beforeEach(function () {
 });
 
 it('can store attribute', function () {
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    Vendor::factory()->create();
 
+    
     $user = User::factory()->create();
-
+    
     $user->assignRole('admin');
+
+    Vendor::factory()->create([
+        'country_id' => Country::first()->id,
+        'user_id' => $user->id
+    ]);
 
     Product::factory()->create();
 
@@ -45,7 +48,7 @@ it('can store attribute', function () {
         'attribute_value' => $attribute_value,
     ];
 
-    $response = $this->postJson(route('attributes.store'), $attributeData);
+    $response = $this->postJson(action([AdminAttributeController::class, 'store']),$attributeData);
 
     $response->assertStatus(JsonResponse::HTTP_CREATED);
 

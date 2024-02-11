@@ -21,40 +21,6 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('admin can update variant price', function () {
-    TaxProvider::factory()->create();
-    Region::factory()->create();
-    Country::factory()->create();
-    User::factory()->count(10)->create();
-    Vendor::factory()->create();
-    Product::factory()->count(10)->create();
-
-    TaxProvider::factory()->create();
-    $region = Region::factory()->create(['id' => 12]);
-    $variant = Variant::factory()->create(['id' => 3]);
-    VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
-
-    $user = User::factory()->create(['email' => 'lum@test.com']);
-    $user->assignRole('admin');
-    $price_to_update = 230;
-    $updated_price = null;
-
-    if ($region->currency->has_cents) {
-        $updated_price = $price_to_update * 100;
-    } else {
-        $updated_price = $price_to_update;
-    }
-    login($user);
-
-    $response = $this->putJson(action([AdminVariantController::class, 'update'], $variant->uuid), [
-        'variant_price' => $price_to_update,
-        'region' => $region->uuid,
-    ]);
-
-    $response->assertOk();
-
-    $this->assertDatabaseHas(VariantPrice::class, ['price' => $updated_price]);
-})->todo();
 
 it('admin can update variant name', function () {
     TaxProvider::factory()->create();
