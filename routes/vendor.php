@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\Staff\RegisterStaffController;
+use App\Http\Controllers\Vendor\VendorPermissionManagerController;
 use App\Http\Controllers\Vendor\VendorProductController;
 use App\Http\Controllers\Vendor\VendorVariantAttributeController;
 use App\Http\Controllers\Vendor\VendorVariantController;
@@ -25,6 +26,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('variants/{variant}/prices', [VendorVariantPriceController::class, 'store']);
     Route::put('variants/{variant}/prices/{variantPrice}', [VendorVariantPriceController::class, 'update']);
     Route::delete('variants/{variant}/prices/{variantPrice}', [VendorVariantPriceController::class, 'destroy']);
+
+    Route::get('user-permissions', [VendorPermissionManagerController::class, 'index']);
+    Route::put('users/{user}/permissions', [VendorPermissionManagerController::class, 'update']);
+    Route::delete('users/{user}/permissions/{permission}', [VendorPermissionManagerController::class, 'destroy']);
 
     Route::post('register-staff', RegisterStaffController::class)->name('register-staff');
 
