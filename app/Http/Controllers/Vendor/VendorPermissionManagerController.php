@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Permission\UpdateUserPermission;
-use App\Http\Resources\PermissionResource;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Staff;
+use App\Models\Vendor;
+use App\Http\Resources\UserResource;
+use App\Http\Controllers\ApiController;
 use Spatie\Permission\Models\Permission;
+use App\Http\Resources\PermissionResource;
+use App\Http\Requests\Permission\UpdateUserPermission;
 
 class VendorPermissionManagerController extends ApiController
 {
@@ -24,20 +26,33 @@ class VendorPermissionManagerController extends ApiController
      */
     public function update(UpdateUserPermission $request, User $user)
     {
+        $vendor = Vendor::findOrFail(auth()->id());
+    
+        abort_if(!$vendor->staff()->where('user_id', $user->id)->exists(), 422, 'Cannot update this staff');
+    
         $validatedData = $request->validated();
 
         $permissionIds = $validatedData['permissions'];
-
+    
         $user->permissions()->sync($permissionIds);
         $user->save();
-
+    
         return new UserResource($user);
     }
 
-    public function destroy(User $user, Permission $permission)
+    public function destroy(User $user, $permission_id)
     {
-        $user->permissions()->detach($permission);
 
+        $permission = Permission::findOrFail($permission_id);
+
+        $vendor = Vendor::where('user_id',auth()->user()->id)->firstOrFail();
+    
+
+        abort_if(!$vendor->staff()->where('user_id', $user->id)->exists(), 422, 'Cannot remove permission for this staff');
+    
+        $user->permissions()->detach($permission->id);
+    
         return $this->showMessage(['Permission removed successfully']);
     }
+    
 }

@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('user-permissions', [VendorPermissionManagerController::class, 'index']);
     Route::put('users/{user}/permissions', [VendorPermissionManagerController::class, 'update']);
-    Route::delete('users/{user}/permissions/{permission}', [VendorPermissionManagerController::class, 'destroy']);
+    Route::delete('users/{user}/permissions/{permission_id}', [VendorPermissionManagerController::class, 'destroy']);
 
     Route::post('register-staff', RegisterStaffController::class)->name('register-staff');
 
