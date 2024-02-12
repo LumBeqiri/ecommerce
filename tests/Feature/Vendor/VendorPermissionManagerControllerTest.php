@@ -1,21 +1,16 @@
 <?php
 
-use App\Models\User;
-use App\Models\Staff;
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Attribute;
-use App\Models\TaxProvider;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Bus;
-use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Vendor\VendorVariantAttributeController;
 use App\Http\Controllers\Vendor\VendorPermissionManagerController;
+use App\Models\Country;
+use App\Models\Region;
+use App\Models\Staff;
+use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Vendor;
+use Database\Seeders\CurrencySeeder;
+use Database\Seeders\RoleAndPermissionSeeder;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Permission;
 
 beforeEach(function () {
@@ -41,13 +36,12 @@ it('vendor can create a permission for user', function () {
     login($vendorUser);
 
     $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->uuid), [
-        'permissions' => [1,2],
+        'permissions' => [1, 2],
     ]);
 
     $response->assertOk();
 
 });
-
 
 it('vendor can not create a permission for user not part of vendor', function () {
 
@@ -65,14 +59,12 @@ it('vendor can not create a permission for user not part of vendor', function ()
     login($vendorUser);
 
     $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->uuid), [
-        'permissions' => [1,2],
+        'permissions' => [1, 2],
     ]);
 
     $response->assertStatus(422);
 
 });
-
-
 
 it('vendor can delete a permission for user', function () {
     // Create a vendor user
@@ -88,15 +80,13 @@ it('vendor can delete a permission for user', function () {
 
     // Log in as the vendor user
     login($vendorUser);
-    $permission_id = Permission::where('name','create-users')->first()->id;
+    $permission_id = Permission::where('name', 'create-users')->first()->id;
 
-    $staffUser->givePermissionTo(['create-users','edit-users']);
+    $staffUser->givePermissionTo(['create-users', 'edit-users']);
 
-
-    $response = $this->deleteJson(action([VendorPermissionManagerController::class, 'destroy'], [$staffUser->uuid, 'permission_id' =>$permission_id]));
-
+    $response = $this->deleteJson(action([VendorPermissionManagerController::class, 'destroy'], [$staffUser->uuid, 'permission_id' => $permission_id]));
 
     $response->assertOk();
 
-    $this->assertDatabaseMissing('model_has_permissions',['model_id' => $staffUser->id, 'permission_id' => $permission_id]);
+    $this->assertDatabaseMissing('model_has_permissions', ['model_id' => $staffUser->id, 'permission_id' => $permission_id]);
 });
