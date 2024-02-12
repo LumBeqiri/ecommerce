@@ -60,7 +60,7 @@ it('admin can delete product', function () {
     $response = $this->deleteJson(action([AdminProductController::class, 'destroy'], $product->uuid));
 
     $response->assertOk();
-    
+
     $this->assertSoftDeleted(Product::class, ['id' => $product->id]);
 });
 

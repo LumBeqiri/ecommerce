@@ -7,7 +7,6 @@ use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
-use App\Models\VariantPrice;
 use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
@@ -20,7 +19,6 @@ beforeEach(function () {
     Notification::fake();
     Bus::fake();
 });
-
 
 it('admin can update variant name', function () {
     TaxProvider::factory()->create();
