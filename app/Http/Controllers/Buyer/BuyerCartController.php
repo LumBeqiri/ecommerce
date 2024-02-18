@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Buyer;
 
+use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Cart\CartItemRequest;
 use App\Http\Requests\Cart\CartRequest;
@@ -76,6 +77,10 @@ class BuyerCartController extends ApiController
 
         $cart = $this->authUser()->cart;
 
-        return DiscountService::applyDiscount($cart, $request->code);
+        try{
+            DiscountService::applyDiscount($cart, $request->code);
+        }catch(DiscountException $ex){
+            return $this->showError($ex->getMessage(),$ex->getCode());
+        } 
     }
 }
