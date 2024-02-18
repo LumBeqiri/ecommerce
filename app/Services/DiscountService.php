@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\DiscountException;
 use App\Models\Cart;
 use App\Models\Discount;
 use App\Models\DiscountRule;
@@ -14,10 +15,11 @@ use Illuminate\Http\JsonResponse;
 
 class DiscountService
 {
-    public static function applyDiscount(Cart $cart, string $discount_code): array|JsonResponse
+    public static function applyDiscount(Cart $cart, string $discount_code)
     {
         if ($cart->has_been_discounted) {
-            return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
+            throw new DiscountException("Cart already discounted!", 422);
+           
         }
 
         $variant_discount = [];
@@ -27,7 +29,7 @@ class DiscountService
         $discount_region = $discount_rule->region;
 
         if ($discount->is_disabled || $discount_region === null) {
-            return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
+            throw new DiscountException('Discount is not applicable', 422);
         }
 
         // it discounts the whole cart total price with a fixed amount
@@ -73,9 +75,9 @@ class DiscountService
 
     private static function calculate_whole_cart_discount(DiscountRule $discount_rule, Cart $cart, Region $discount_region)
     {
-        $value = 0;
+        
         if ($cart->region->id !== $discount_region->id) {
-            return response()->json(['error' => 'Discount is not applicable', 'code' => 422], 422);
+            throw new DiscountException('Discount is not applicable', 422);
         }
         if ($discount_region->currency->has_cents) {
             $value = $discount_rule->value * 100;
@@ -91,7 +93,7 @@ class DiscountService
         $cart->has_been_discounted = true;
         $cart->save();
 
-        return response()->json(['message' => 'Discount applied successfully', 'code' => 200], 200);
+        return $cart;
     }
 
     private static function calculate_percentage_cart_discount(DiscountRule $discount_rule, Cart $cart)
@@ -103,6 +105,6 @@ class DiscountService
         $cart->has_been_discounted = true;
         $cart->save();
 
-        return response()->json(['message' => 'Discount applied successfully', 'code' => 200], 200);
+        return $cart;
     }
 }
