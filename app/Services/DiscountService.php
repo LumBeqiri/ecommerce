@@ -9,9 +9,8 @@ use App\Models\DiscountRule;
 use App\Models\Region;
 use App\Models\Variant;
 use App\values\DiscountAllocationTypes;
-use App\values\DiscountConditionOperatorTypes;
+use App\values\DiscountOperatorTypes;
 use App\values\DiscountRuleTypes;
-use Illuminate\Http\JsonResponse;
 
 class DiscountService
 {
@@ -39,35 +38,38 @@ class DiscountService
 
         // it discounts the whole cart total price with a fixed percentage
         if ($discount_rule->discount_type === DiscountRuleTypes::PERCENTAGE && $discount_rule->allocation === DiscountAllocationTypes::TOTAL_AMOUNT) {
-            self::calculate_percentage_cart_discount($discount_rule, $cart);
+            return self::calculate_percentage_cart_discount($discount_rule, $cart);
         }
 
-        $variants = Variant::with('product.discount_conditions')
+        $variants = Variant::withWhereHas('product.discount', function ($query) {
+                $query->where('operator',DiscountOperatorTypes::IN);
+            })
             ->whereIn('id', $cart->cart_items->pluck('variant_id'))
             ->get();
 
-        if ($discount_rule->discount_conditions()->exists()) {
-            foreach ($variants as $variant) {
-                $product = $variant->product;
+        foreach ($variants as $variant) {
+            $product = $variant->product;
 
-                $discount_conditions = $product->discount_conditions()->where('discount_rule_id', $discount_rule->id)->get(['operator']);
-
-                foreach ($discount_conditions as $discount_condition) {
-                    if ($discount_condition->operator === DiscountConditionOperatorTypes::NOT_IN) {
-                        continue;
-                    }
-                    $discount_value = $discount_rule->value;
-                    $discount_type = $discount_rule->discount_type;
-
-                    $temp = [
-                        'variant' => $variant->uuid,
-                        'value' => $discount_value,
-                        'type' => $discount_type,
-                    ];
-
-                    $variant_discount[] = $temp;
-                }
+            if(!$product->discount){
+                continue;
             }
+
+            $discount_value = $discount_rule->value;
+            $discount_type = $discount_rule->discount_type;
+
+            $old_price = $variant->price()->where('region_id',$discount_region->id)->first();
+            
+            // maybe use the static function to apply the discount and return information about new and old price
+            if($discount_type){}
+
+            $temp = [
+                'variant' => $variant->uuid,
+                'value' => $discount_value,
+                'type' => $discount_type,
+            ];
+
+            $variant_discount[] = $temp;
+
         }
 
         return $variant_discount;
@@ -75,7 +77,7 @@ class DiscountService
 
     private static function calculate_whole_cart_discount(DiscountRule $discount_rule, Cart $cart, Region $discount_region)
     {
-        
+
         if ($cart->region->id !== $discount_region->id) {
             throw new DiscountException('Discount is not applicable', 422);
         }
@@ -106,5 +108,11 @@ class DiscountService
         $cart->save();
 
         return $cart;
+    }
+
+
+    private static function apply_discount_to_cart_variants()
+    {
+
     }
 }
