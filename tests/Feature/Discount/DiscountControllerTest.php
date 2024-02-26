@@ -4,7 +4,6 @@
 // use App\Models\Country;
 // use App\Models\Currency;
 // use App\Models\Discount;
-// use App\Models\DiscountCondition;
 // use App\Models\DiscountRule;
 // use App\Models\Product;
 // use App\Models\Region;
@@ -108,45 +107,7 @@
 //     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
 // });
 
-// it('can store percentage discount with conditions', function () {
-//     $user = User::factory()->create();
-//     $user->assignRole('admin');
 
-//     Product::factory()->count(5)->create();
-//     login($user);
-
-//     $response = $this->postJson(action([DiscountController::class, 'store']),
-//         [
-//             'code' => 'LCX',
-//             'discount_type' => 'percentage',
-//             'region' => Region::first()->uuid,
-//             'value' => 23.2,
-//             'description' => 'hello',
-//             'conditions' => true,
-//             'operator' => 'in',
-//             'model_type' => 'product',
-//             'products' => Product::all()->pluck('uuid'),
-//         ]
-//     );
-
-//     $response->assertStatus(200);
-
-//     $discount_rule_uuid = $response->json('discount_rule.id');
-//     $discount_code = $response->json('code');
-//     $discount_uuid = $response->json('uuid');
-
-//     $discount_id = Discount::where('uuid', $discount_uuid)->firstOrFail()->value('id');
-//     $discount_rule_id = DiscountRule::where('uuid', $discount_rule_uuid)->firstOrFail()->value('id');
-
-//     $this->assertDatabaseHas(Discount::class, ['code' => $discount_code]);
-//     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
-//     $this->assertDatabaseHas(DiscountCondition::class, ['discount_rule_id' => $discount_rule_id]);
-
-//     $products = Product::all();
-//     foreach ($products as $product) {
-//         $this->assertDatabaseHas('discount_condition_product', ['product_id' => $product->id]);
-//     }
-// });
 
 // it('can update percentage discount', function () {
 //     $user = User::factory()->create();

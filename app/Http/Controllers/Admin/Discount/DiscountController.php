@@ -17,7 +17,7 @@ class DiscountController extends ApiController
 {
     public function index(): JsonResponse
     {
-        $discounts = Discount::with(['discount_rule.discount_conditions.products', 'discount_rule.discount_conditions.customer_groups'])->get();
+        $discounts = Discount::with(['discount_rule.products', 'discount_rule.customer_groups'])->get();
 
         return $this->showAll(DiscountResource::collection($discounts));
     }
@@ -62,19 +62,13 @@ class DiscountController extends ApiController
             );
 
             if ($request->conditions) {
-                $discountCondition = $discountRule->discount_conditions()->create([
-                    'model_type' => $request->model_type,
-                    'operator' => $request->operator,
-                    'metadata' => $request->metadata ?? null,
-                ]);
+
 
                 if ($request->has('products')) {
                     $products = Product::whereIn('uuid', $request->products)->pluck('id');
-                    $discountCondition->products()->attach($products);
                 }
                 if ($request->has('customer_group')) {
                     $products = Product::whereIn('uuid', $request->products)->pluck('id');
-                    $discountCondition->products()->attach($products);
                 }
             }
 
@@ -86,7 +80,7 @@ class DiscountController extends ApiController
 
     public function show(Discount $discount): JsonResponse
     {
-        return $this->showOne(new DiscountResource($discount->load('discount_rule.discount_condition')));
+        return $this->showOne(new DiscountResource($discount->load('discount_rule')));
     }
 
     public function update(UpdateDiscountRequest $request, Discount $discount): JsonResponse

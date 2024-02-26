@@ -22,11 +22,6 @@ class DiscountRule extends Model
         return $this->hasOne(Discount::class);
     }
 
-    public function discount_conditions(): HasMany
-    {
-        return $this->hasMany(DiscountCondition::class);
-    }
-
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);

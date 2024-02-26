@@ -40,10 +40,6 @@ class Product extends Model
         return $this->belongsToMany(DiscountRule::class);
     }
 
-    public function discount_conditions(): BelongsToMany
-    {
-        return $this->belongsToMany(DiscountCondition::class);
-    }
 
     public function categories(): BelongsToMany
     {
