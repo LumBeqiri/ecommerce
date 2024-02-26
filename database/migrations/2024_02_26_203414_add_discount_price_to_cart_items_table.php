@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cart_items', function (Blueprint $table) {
-            $table->integer('price')->nullable();
+            $table->integer('discounted_price')->nullable();
             $table->foreignId('currency_id')->nullable()->constrained();
         });
     }
