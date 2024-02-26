@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\DiscountException;
+use App\Http\Resources\VariantResource;
 use App\Models\Cart;
 use App\Models\Discount;
 use App\Models\DiscountRule;
@@ -18,7 +19,6 @@ class DiscountService
     {
         if ($cart->has_been_discounted) {
             throw new DiscountException("Cart already discounted!", 422);
-           
         }
 
         $variant_discount = [];
@@ -42,34 +42,29 @@ class DiscountService
         }
 
         $variants = Variant::withWhereHas('product.discount', function ($query) {
-                $query->where('operator',DiscountOperatorTypes::IN);
-            })
+            $query->where('operator', DiscountOperatorTypes::IN);
+        })
             ->whereIn('id', $cart->cart_items->pluck('variant_id'))
             ->get();
 
         foreach ($variants as $variant) {
             $product = $variant->product;
 
-            if(!$product->discount){
+            if (!$product->discount) {
                 continue;
             }
 
             $discount_value = $discount_rule->value;
             $discount_type = $discount_rule->discount_type;
 
-            $old_price = $variant->price()->where('region_id',$discount_region->id)->first();
-            
-            // maybe use the static function to apply the discount and return information about new and old price
-            if($discount_type){}
 
             $temp = [
-                'variant' => $variant->uuid,
+                'variant' => new VariantResource($variant),
                 'value' => $discount_value,
                 'type' => $discount_type,
             ];
 
             $variant_discount[] = $temp;
-
         }
 
         return $variant_discount;
@@ -113,6 +108,5 @@ class DiscountService
 
     private static function apply_discount_to_cart_variants()
     {
-
     }
 }

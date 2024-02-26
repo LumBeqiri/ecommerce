@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Buyer;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -24,13 +26,31 @@ class UserSeeder extends Seeder
 
         $adminUser->assignRole('admin');
 
-        $vendor = User::factory()->create([
+        $vendorUser = User::factory()->create([
             'uuid' => '0eaf6d30-9b51-11ed-a8fc-0242ac120002',
             'email' => 'drin@gmail.com',
             'password' => bcrypt('123123123'),
         ]);
 
-        $vendor->assignRole('vendor');
+        Vendor::factory()->create([
+            'user_id' => $vendorUser->id
+        ]);
+
+        $vendorUser->assignRole('vendor');
+
+        $buyerUser = User::factory()->create([
+            'email' => 'lejla@gmail.com',
+            'password' => bcrypt('123123123'),
+        ]);
+
+
+        Buyer::factory()->create([
+            'user_id' => $buyerUser->id,
+            'first_name' => 'Lejla',
+            'last_name' => 'Buyer'
+        ]);
+        
+
         User::factory($usersQuantity)->create();
     }
 }

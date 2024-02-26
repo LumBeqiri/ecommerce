@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Buyer;
 
+use App\Exceptions\CartException;
 use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Cart\CartItemRequest;
@@ -25,15 +26,17 @@ class BuyerCartController extends ApiController
     }
 
     // @phpstan-ignore-next-line
-    public function store(CartRequest $request)
+    public function add_to_cart(CartRequest $request)
     {
         $data = $request->validated();
         $items = $data['items'];
 
-        $cart = CartService::saveItemsToCart($items, auth()->user());
+        try{
 
-        if ($cart instanceof JsonResponse) {
-            return $cart;
+            $cart = CartService::saveItemsToCart($items, auth()->user());
+
+        }catch(CartException $ex){
+            return $this->showError($ex->getMessage(), $ex->getCode());
         }
 
         CartService::calculateCartPrice($cart);
