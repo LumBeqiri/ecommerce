@@ -8,8 +8,6 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Variant;
-use Exception;
-
 class CartService
 {
 
@@ -29,9 +27,9 @@ class CartService
         $cart->save();
     }
 
-    public static function saveItemsToCart(mixed $items, User $user): Cart
+    public static function saveItemsToCart(mixed $items): Cart
     {
-        $region = $user->region;
+        $region = auth()->user()->region;
 
         /**
          * @var Cart $cart

@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Exceptions\CartException;
-use App\Exceptions\DiscountException;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Cart\CartItemRequest;
-use App\Http\Requests\Cart\CartRequest;
-use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Variant;
+use Illuminate\Http\Request;
 use App\Services\CartService;
+use App\Exceptions\CartException;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Resources\CartResource;
+use App\Exceptions\DiscountException;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Cart\CartRequest;
+use App\Http\Requests\Cart\CartItemRequest;
 
 class BuyerCartController extends ApiController
 {
-    public function index(User $buyer): JsonResponse
+    public function index(User $user): JsonResponse
     {
-        $cart = $buyer->cart()->with('cart_items')->first();
+        $cart = $user->buyer->cart()->with('cart_items')->first();
 
         return $this->showOne(new CartResource($cart));
     }
@@ -32,14 +33,12 @@ class BuyerCartController extends ApiController
         $items = $data['items'];
 
         try{
-
-            $cart = CartService::saveItemsToCart($items, auth()->user());
-
+            $cart = CartService::saveItemsToCart($items);
+            CartService::calculateCartPrice($cart);
         }catch(CartException $ex){
             return $this->showError($ex->getMessage(), $ex->getCode());
         }
 
-        CartService::calculateCartPrice($cart);
 
         return $this->showOne(new CartResource($cart));
     }
@@ -48,11 +47,17 @@ class BuyerCartController extends ApiController
     {
         $data = $request->validated();
 
+
+
         $variant = Variant::where('uuid', $data['variant_id'])->first();
-        $cart = Cart::where('buyer_id', auth()->id())->first();
+        $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
         if ($cart === null) {
             return $this->errorResponse('Shopping cart missing', 404);
+        }
+
+        if(count($cart->cart_items) == 0){
+            return $this->showMessage('Shopping cart empty');
         }
 
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
@@ -72,18 +77,22 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function apply_discount(Request $request): array|JsonResponse
+    public function apply_discount(Request $request)
     {
         $request->validate([
             'code' => 'required|string',
         ], [$request->code]);
 
-        $cart = $this->authUser()->cart;
-
+        $cart = auth()->user()->buyer->cart;
+        DB::beginTransaction();
         try{
             DiscountService::applyDiscount($cart, $request->code);
+            DB::commit();
         }catch(DiscountException $ex){
+            DB::rollBack();
             return $this->showError($ex->getMessage(),$ex->getCode());
         } 
+
+        return new CartResource($cart);
     }
 }

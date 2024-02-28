@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('apply-discount', [BuyerCartController::class, 'apply_discount']);
 
-    Route::get('buyer/{buyer}/cart', [BuyerCartController::class, 'index']);
+    Route::get('buyer/{user}/cart', [BuyerCartController::class, 'index']);
     Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart']);
     Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
 
