@@ -12,5 +12,4 @@ return new class extends Migration
             $table->foreignId('discount_id')->nullable()->constrained('discounts');
         });
     }
-
 };

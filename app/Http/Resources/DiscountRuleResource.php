@@ -23,7 +23,7 @@ class DiscountRuleResource extends JsonResource
             'value' => $this->value,
             'allocation' => $this->allocation,
             'metadata' => $this->metadata,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
         ];
     }
 }

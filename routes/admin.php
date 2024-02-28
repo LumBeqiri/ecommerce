@@ -68,4 +68,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('discounts/{discount}', [DiscountController::class, 'show']);
     Route::put('discounts/{discount}', [DiscountController::class, 'update']);
     Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
-   });
+});

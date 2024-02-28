@@ -15,5 +15,4 @@ return new class extends Migration
             $table->foreignId('region_id')->nullable()->constrained('regions');
         });
     }
-
 };

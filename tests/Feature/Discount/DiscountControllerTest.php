@@ -107,8 +107,6 @@
 //     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
 // });
 
-
-
 // it('can update percentage discount', function () {
 //     $user = User::factory()->create();
 //     $user->assignRole('admin');

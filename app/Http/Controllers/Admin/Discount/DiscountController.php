@@ -63,7 +63,6 @@ class DiscountController extends ApiController
 
             if ($request->conditions) {
 
-
                 if ($request->has('products')) {
                     $products = Product::whereIn('uuid', $request->products)->pluck('id');
                 }

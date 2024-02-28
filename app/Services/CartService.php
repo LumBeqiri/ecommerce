@@ -6,11 +6,10 @@ use App\Exceptions\CartException;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Models\User;
 use App\Models\Variant;
+
 class CartService
 {
-
     public static function calculateCartPrice(Cart $cart)
     {
         $price = 0;
@@ -62,7 +61,6 @@ class CartService
                 ]);
             }
 
-
             $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
             $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
@@ -74,25 +72,24 @@ class CartService
         return $cart;
     }
 
-
     private static function validateCartItem(array $item, $variant, $cart, $region): bool
     {
         if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
-            throw new CartException('Product is not available',404);
+            throw new CartException('Product is not available', 404);
         }
 
         if ($variant->publish_status === Product::DRAFT) {
-            throw new CartException('Product is not available',404);
+            throw new CartException('Product is not available', 404);
         }
 
         if ($item['quantity'] > $variant->stock) {
-            throw new CartException('There are not enough products in stock',422);
+            throw new CartException('There are not enough products in stock', 422);
         }
 
         $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
         if (isset($cart_item) && ($cart_item->quantity + $item['quantity'] > $variant->stock)) {
-            throw new CartException('There are not enough products in stock',422);
+            throw new CartException('There are not enough products in stock', 422);
         }
 
         return true;

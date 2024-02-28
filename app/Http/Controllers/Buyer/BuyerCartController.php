@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Buyer;
 
+use App\Exceptions\CartException;
+use App\Exceptions\DiscountException;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Cart\CartItemRequest;
+use App\Http\Requests\Cart\CartRequest;
+use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Variant;
-use Illuminate\Http\Request;
 use App\Services\CartService;
-use App\Exceptions\CartException;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\CartResource;
-use App\Exceptions\DiscountException;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Cart\CartRequest;
-use App\Http\Requests\Cart\CartItemRequest;
 
 class BuyerCartController extends ApiController
 {
@@ -32,13 +32,12 @@ class BuyerCartController extends ApiController
         $data = $request->validated();
         $items = $data['items'];
 
-        try{
+        try {
             $cart = CartService::saveItemsToCart($items);
             CartService::calculateCartPrice($cart);
-        }catch(CartException $ex){
+        } catch (CartException $ex) {
             return $this->showError($ex->getMessage(), $ex->getCode());
         }
-
 
         return $this->showOne(new CartResource($cart));
     }
@@ -47,8 +46,6 @@ class BuyerCartController extends ApiController
     {
         $data = $request->validated();
 
-
-
         $variant = Variant::where('uuid', $data['variant_id'])->first();
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
@@ -56,7 +53,7 @@ class BuyerCartController extends ApiController
             return $this->errorResponse('Shopping cart missing', 404);
         }
 
-        if(count($cart->cart_items) == 0){
+        if (count($cart->cart_items) == 0) {
             return $this->showMessage('Shopping cart empty');
         }
 
@@ -85,13 +82,14 @@ class BuyerCartController extends ApiController
 
         $cart = auth()->user()->buyer->cart;
         DB::beginTransaction();
-        try{
+        try {
             DiscountService::applyDiscount($cart, $request->code);
             DB::commit();
-        }catch(DiscountException $ex){
+        } catch (DiscountException $ex) {
             DB::rollBack();
-            return $this->showError($ex->getMessage(),$ex->getCode());
-        } 
+
+            return $this->showError($ex->getMessage(), $ex->getCode());
+        }
 
         return new CartResource($cart);
     }

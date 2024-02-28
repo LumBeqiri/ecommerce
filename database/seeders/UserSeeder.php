@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
         ]);
 
         Vendor::factory()->create([
-            'user_id' => $vendorUser->id
+            'user_id' => $vendorUser->id,
         ]);
 
         $vendorUser->assignRole('vendor');
@@ -43,13 +43,11 @@ class UserSeeder extends Seeder
             'password' => bcrypt('123123123'),
         ]);
 
-
         Buyer::factory()->create([
             'user_id' => $buyerUser->id,
             'first_name' => 'Lejla',
-            'last_name' => 'Buyer'
+            'last_name' => 'Buyer',
         ]);
-        
 
         User::factory($usersQuantity)->create();
     }

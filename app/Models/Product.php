@@ -40,7 +40,6 @@ class Product extends Model
         return $this->belongsToMany(DiscountRule::class);
     }
 
-
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class)->withTimestamps();
