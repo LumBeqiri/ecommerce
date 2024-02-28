@@ -24,7 +24,6 @@ class DiscountRuleResource extends JsonResource
             'allocation' => $this->allocation,
             'metadata' => $this->metadata,
             'created_at' => $this->created_at,
-            'discount_conditions' => DiscountConditionResource::collection($this->whenLoaded('discount_conditions')),
         ];
     }
 }

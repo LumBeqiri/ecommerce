@@ -1,5 +1,5 @@
 ALTER TABLE currencies CONVERT TO CHARACTER SET utf8;
-INSERT INTO currencies (name, code, symbol) VALUES ('Leke', 'ALL', 'Lek');
+-- INSERT INTO currencies (name, code, symbol) VALUES ('Leke', 'ALL', 'Lek'); 
 INSERT INTO currencies (name, code, symbol) VALUES ('Dollars', 'USD', '$');
 INSERT INTO currencies (name, code, symbol) VALUES ('Afghanis', 'AFN', '؋');
 INSERT INTO currencies (name, code, symbol) VALUES ('Pesos', 'ARS', '$');

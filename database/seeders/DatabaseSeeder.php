@@ -38,6 +38,9 @@ class DatabaseSeeder extends Seeder
         DB::table('attribute_variant')->truncate();
         DB::table('category_product')->truncate();
         DB::table('order_variant')->truncate();
+        DB::table('permissions')->truncate();
+        DB::table('role_has_permissions')->truncate();
+        DB::table('roles')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // in order to not send emails to fake accounts when seeding the db, we call flushEventListenres() method
@@ -61,7 +64,6 @@ class DatabaseSeeder extends Seeder
         $this->call([DiscountSeeder::class]);
         $this->call([CategorySeeder::class]);
         $this->call([ProductSeeder::class]);
-        $this->call([DiscountConditionSeeder::class]);
         $this->call(AttributeSeeder::class);
         $this->call(VariantSeeder::class);
         // $this->call(CartSeeder::class);

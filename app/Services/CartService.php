@@ -2,17 +2,14 @@
 
 namespace App\Services;
 
+use App\Exceptions\CartException;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Models\User;
 use App\Models\Variant;
-use Illuminate\Http\JsonResponse;
 
 class CartService
 {
-    protected static $error_message;
-
     public static function calculateCartPrice(Cart $cart)
     {
         $price = 0;
@@ -29,14 +26,14 @@ class CartService
         $cart->save();
     }
 
-    public static function saveItemsToCart(mixed $items, User $user): Cart|JsonResponse
+    public static function saveItemsToCart(mixed $items): Cart
     {
-        $region = $user->country->region;
+        $region = auth()->user()->region;
 
         /**
          * @var Cart $cart
          */
-        $cart = Cart::with('cart_items')->updateOrCreate(['buyer_id' => auth()->id()], ['region_id' => $region->id]);
+        $cart = Cart::with('cart_items')->updateOrCreate(['buyer_id' => auth()->user()->buyer->id], ['region_id' => $region->id]);
 
         $variant_ids = array_column($items, 'variant_id');
 
@@ -51,9 +48,7 @@ class CartService
 
             $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
-            if (! self::validateCartItem($item, $variant, $cart, $region)) {
-                return CartService::$error_message;
-            }
+            self::validateCartItem($item, $variant, $cart, $region);
 
             if (isset($cart_item)) {
                 $cart_item->quantity += $item['quantity'];
@@ -65,6 +60,7 @@ class CartService
                     'quantity' => $item['quantity'],
                 ]);
             }
+
             $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
             $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
@@ -76,69 +72,24 @@ class CartService
         return $cart;
     }
 
-    public static function saveCookieItemsToCart(mixed $items, User $user): void
-    {
-        $region = $user->country->region;
-        $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region) {
-            $query->where('region_id', $region->id);
-        },
-        ])->updateOrCreate(['buyer_id' => $user->id], ['region_id' => $region->id]);
-
-        foreach ($items as $item) {
-            $variant = Variant::where('uuid', $item['variant_id'])->firstOrFail();
-
-            if (! self::validateCartItem($item, $variant, $cart, $region)) {
-                continue;
-            }
-
-            $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
-
-            if (isset($cart_item)) {
-                $cart_item->quantity += $item['quantity'];
-                $cart_item->save();
-            } else {
-                $cart_item = CartItem::create([
-                    'cart_id' => $cart->id,
-                    'variant_id' => $variant->id,
-                    'quantity' => $item['quantity'],
-                ]);
-            }
-
-            $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
-            $cart->total_cart_price += $variantPrice->price * $item['quantity'];
-        }
-
-        $cart->save();
-
-        $cart->refresh();
-    }
-
     private static function validateCartItem(array $item, $variant, $cart, $region): bool
     {
         if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
-            CartService::$error_message = response()->json(['error' => 'Product is not available', 'code' => 404], 404);
-
-            return false;
+            throw new CartException('Product is not available', 404);
         }
 
         if ($variant->publish_status === Product::DRAFT) {
-            CartService::$error_message = response()->json(['error' => 'Product is not available', 'code' => 404], 404);
-
-            return false;
+            throw new CartException('Product is not available', 404);
         }
 
         if ($item['quantity'] > $variant->stock) {
-            CartService::$error_message = response()->json(['error' => 'There are not enough products in stock', 'code' => 422], 422);
-
-            return false;
+            throw new CartException('There are not enough products in stock', 422);
         }
 
         $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();
 
         if (isset($cart_item) && ($cart_item->quantity + $item['quantity'] > $variant->stock)) {
-            CartService::$error_message = response()->json(['error' => 'There are not enough products in stock', 'code' => 422], 422);
-
-            return false;
+            throw new CartException('There are not enough products in stock', 422);
         }
 
         return true;

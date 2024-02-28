@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Region;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -25,6 +26,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => $password ?: $password = bcrypt('secret'),
             'remember_token' => Str::random(10),
+            'region_id' => Region::factory(),
             'verified' => $this->faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
             'verification_token' => User::VERIFIED_USER ? null : User::generateVerificationCode(),
 

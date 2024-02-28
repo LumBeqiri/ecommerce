@@ -29,9 +29,4 @@ class CustomerGroup extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function discount_condition(): BelongsToMany
-    {
-        return $this->belongsToMany(DiscountCondition::class);
-    }
 }

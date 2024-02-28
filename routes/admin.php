@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
 use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
-use App\Http\Controllers\Admin\Discount\DiscountConditionController;
 use App\Http\Controllers\Admin\Discount\DiscountController;
 use App\Http\Controllers\Admin\Order\AdminOrderController;
 use App\Http\Controllers\Admin\Product\AdminProductController;
@@ -69,10 +68,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('discounts/{discount}', [DiscountController::class, 'show']);
     Route::put('discounts/{discount}', [DiscountController::class, 'update']);
     Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
-    Route::post('discount-conditions/{discount}', [DiscountConditionController::class, 'store']);
-    Route::get('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'show']);
-    Route::put('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'update']);
-    Route::delete('discount-conditions/{discount_condition}', [DiscountConditionController::class, 'destroy']);
-    Route::delete('discount-conditions/{discount_condition}/product/{product}', [DiscountConditionController::class, 'removeProduct']);
-    Route::delete('discount-conditions/{discount_condition}/product/{customerGroup}', [DiscountConditionController::class, 'removeCustomerGroup']);
 });

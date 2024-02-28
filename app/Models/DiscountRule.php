@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DiscountRule extends Model
@@ -20,11 +19,6 @@ class DiscountRule extends Model
     public function discount(): HasOne
     {
         return $this->hasOne(Discount::class);
-    }
-
-    public function discount_conditions(): HasMany
-    {
-        return $this->hasMany(DiscountCondition::class);
     }
 
     public function products(): BelongsToMany
