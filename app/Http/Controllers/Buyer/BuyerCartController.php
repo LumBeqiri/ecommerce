@@ -54,6 +54,10 @@ class BuyerCartController extends ApiController
         }
 
         if (count($cart->cart_items) == 0) {
+            $cart->total_cart_price = 0;
+            $cart->has_been_discounted = 0;
+            $cart->save();
+
             return $this->showMessage('Shopping cart empty');
         }
 
@@ -66,6 +70,7 @@ class BuyerCartController extends ApiController
         $cart_item->quantity -= $data['quantity'];
 
         if ($cart_item->quantity == 0) {
+            $cart->total_cart_price = 0;
             $cart_item->delete();
         } else {
             $cart_item->save();

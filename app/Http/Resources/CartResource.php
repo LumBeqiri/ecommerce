@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Brick\Money\Money;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Cart */
@@ -19,8 +20,7 @@ class CartResource extends JsonResource
             'id' => $this->uuid,
             'buyer' => new BuyerResource($this->whenLoaded('buyer')),
             'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
-            'total' => $this->total_cart_price,
-            'currency' => $this->region->currency->code,
+            'total' => Money::ofMinor($this->total_cart_price, $this->region->currency->code),
             'is_closed' => $this->is_closed,
         ];
     }
