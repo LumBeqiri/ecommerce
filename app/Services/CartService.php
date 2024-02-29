@@ -2,14 +2,17 @@
 
 namespace App\Services;
 
-use App\Exceptions\CartException;
 use App\Models\Cart;
-use App\Models\CartItem;
+use Brick\Money\Money;
 use App\Models\Product;
 use App\Models\Variant;
+use App\Models\CartItem;
+use Brick\Math\RoundingMode;
+use App\Exceptions\CartException;
 
 class CartService
 {
+
     public static function calculateCartPrice(Cart $cart)
     {
         $price = 0;
@@ -25,6 +28,7 @@ class CartService
         $cart->total_cart_price = $price;
         $cart->save();
     }
+  
 
     public static function saveItemsToCart(mixed $items): Cart
     {
