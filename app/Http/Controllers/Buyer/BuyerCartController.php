@@ -57,6 +57,7 @@ class BuyerCartController extends ApiController
             $cart->total_cart_price = 0;
             $cart->has_been_discounted = 0;
             $cart->save();
+
             return $this->showMessage('Shopping cart empty');
         }
 

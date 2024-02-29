@@ -20,7 +20,7 @@ class CartResource extends JsonResource
             'id' => $this->uuid,
             'buyer' => new BuyerResource($this->whenLoaded('buyer')),
             'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
-            'total' => Money::ofMinor($this->total_cart_price,$this->region->currency->code),
+            'total' => Money::ofMinor($this->total_cart_price, $this->region->currency->code),
             'is_closed' => $this->is_closed,
         ];
     }
