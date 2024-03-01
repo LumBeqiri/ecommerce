@@ -13,7 +13,6 @@ class CartService
     public static function calculateCartPrice(Cart $cart)
     {
         $price = 0;
-
         foreach ($cart->cart_items as $cartItem) {
             $variant = Variant::find($cartItem->variant_id);
 
@@ -24,6 +23,7 @@ class CartService
 
         $cart->total_cart_price = $price;
         $cart->save();
+        return $cart;
     }
 
     public static function saveItemsToCart(mixed $items): Cart
@@ -34,7 +34,7 @@ class CartService
          * @var Cart $cart
          */
         $cart = Cart::updateOrCreate(
-            ['buyer_id' => auth()->user()->buyer->id, 'status' => 'active'], 
+            ['buyer_id' => auth()->user()->buyer->id, 'is_closed' => 'false'], 
             ['region_id' => $region->id]
         );
         
