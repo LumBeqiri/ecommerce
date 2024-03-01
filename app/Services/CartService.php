@@ -33,7 +33,12 @@ class CartService
         /**
          * @var Cart $cart
          */
-        $cart = Cart::with('cart_items')->updateOrCreate(['buyer_id' => auth()->user()->buyer->id], ['region_id' => $region->id]);
+        $cart = Cart::updateOrCreate(
+            ['buyer_id' => auth()->user()->buyer->id, 'status' => 'active'], 
+            ['region_id' => $region->id]
+        );
+        
+        $cart = $cart->load('cart_items');
 
         $variant_ids = array_column($items, 'variant_id');
 
