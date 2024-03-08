@@ -162,7 +162,7 @@ it('staff can delete variant pricing', function () {
 
     $response->assertOk();
 
-    $this->assertDatabaseMissing(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
+    $this->assertSoftDeleted(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
 
 it('staff can not delete variant pricing of another vendor', function () {
