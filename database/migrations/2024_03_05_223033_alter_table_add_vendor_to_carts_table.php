@@ -15,5 +15,4 @@ return new class extends Migration
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
         });
     }
-
 };

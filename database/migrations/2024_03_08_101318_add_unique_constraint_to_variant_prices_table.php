@@ -15,12 +15,11 @@ return new class extends Migration
             $table->unique(['variant_id', 'region_id', 'deleted_at'], 'unique_variant_region_deleted_at');
         });
     }
-    
+
     public function down()
     {
         Schema::table('variant_prices', function (Blueprint $table) {
             $table->dropUnique('unique_variant_region_deleted_at');
         });
     }
-    
 };
