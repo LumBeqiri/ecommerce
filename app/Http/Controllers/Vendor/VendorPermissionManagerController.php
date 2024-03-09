@@ -25,7 +25,7 @@ class VendorPermissionManagerController extends ApiController
      */
     public function update(UpdateUserPermission $request, User $user)
     {
-        $vendor = Vendor::findOrFail(auth()->id());
+        $vendor = Vendor::where('user_id',auth()->id())->firstOrFail();
 
         abort_if(! $vendor->staff()->where('user_id', $user->id)->exists(), 422, 'Cannot update this staff');
 
