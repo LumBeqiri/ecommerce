@@ -28,7 +28,14 @@ class VariantService
         $region = Region::where('uuid', $data['region_id'])->first();
         $money = Money::of($data['price'], $region->currency->code);
 
-        $variantPrice = VariantPrice::create([
+
+
+        $variantPrice = VariantPrice::firstOrCreate(
+            [
+                'region_id' => $region->id,
+                'variant_id' => $variant->id
+            ],
+            [
             'price' => $money->getMinorAmount()->toInt(),
             'region_id' => $region->id,
             'variant_id' => $variant->id,
