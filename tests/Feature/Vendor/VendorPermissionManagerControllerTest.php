@@ -29,7 +29,7 @@ it('vendor can create a permission for user', function () {
     $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
 
     $staffUser = User::factory()->create();
-    
+
     Staff::factory()->create(['user_id' => $staffUser->id, 'vendor_id' => $vendor->id]);
 
     $vendorUser->assignRole('vendor');
@@ -41,7 +41,6 @@ it('vendor can create a permission for user', function () {
     $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->uuid), [
         'permissions' => $permissionIds,
     ]);
-
 
     $response->assertOk();
 
@@ -61,7 +60,6 @@ it('vendor can not create a permission for user not part of vendor', function ()
     $vendorUser->assignRole('vendor');
 
     login($vendorUser);
-
 
     $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->uuid), [
         'permissions' => [1, 2],
