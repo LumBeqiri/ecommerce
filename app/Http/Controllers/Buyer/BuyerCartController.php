@@ -75,6 +75,7 @@ class BuyerCartController extends ApiController
         }
 
         CartService::calculateCartPrice($cart->refresh());
+
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 

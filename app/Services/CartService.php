@@ -23,6 +23,7 @@ class CartService
 
         $cart->total_cart_price = $price;
         $cart->save();
+
         return $cart;
     }
 
@@ -34,10 +35,10 @@ class CartService
          * @var Cart $cart
          */
         $cart = Cart::updateOrCreate(
-            ['buyer_id' => auth()->user()->buyer->id, 'is_closed' => 'false'], 
+            ['buyer_id' => auth()->user()->buyer->id, 'is_closed' => 'false'],
             ['region_id' => $region->id]
         );
-        
+
         $cart = $cart->load('cart_items');
 
         $variant_ids = array_column($items, 'variant_id');

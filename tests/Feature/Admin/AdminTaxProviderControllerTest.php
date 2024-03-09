@@ -90,7 +90,6 @@ beforeEach(function () {
 
 //     $response = $this->deleteJson(action([AdminTaxProviderController::class, 'destroy'], $taxProvider->uuid));
 
-
 //     $response->assertOk();
 
 //     $this->assertDatabaseMissing(TaxProvider::class, ['id' => $taxProvider->id]);

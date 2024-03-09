@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Cart;
 use App\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Payment extends Model
@@ -15,10 +14,8 @@ class Payment extends Model
 
     protected $guarded = [];
 
-    public function cart() : HasOne
+    public function cart(): HasOne
     {
         return $this->hasOne(Cart::class);
     }
-
-
 }
