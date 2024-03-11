@@ -14,6 +14,7 @@ class ProductController extends ApiController
 {
     public function index(LocationService $locationService): JsonResponse
     {
+        // Maybe use the country the user registered with
         $country_name = $locationService->getCountry();
 
         $region_id = Country::select('region_id')->where('name', 'LIKE', '%'.$country_name.'%')->value('region_id');
