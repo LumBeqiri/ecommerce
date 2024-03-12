@@ -12,6 +12,8 @@ class PaymentProcessor extends Model
     use HasFactory;
     use HasUuid;
 
+    protected $table = 'payment_processors';
+
     protected $guarded = [];
 
     public function vendor(): BelongsTo
