@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Vendor;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\Permission\UpdateUserPermission;
+use App\Http\Requests\Permission\UpdateUserPermissionRequest;
 use App\Http\Resources\PermissionResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -23,7 +23,7 @@ class VendorPermissionManagerController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserPermission $request, User $user)
+    public function update(UpdateUserPermissionRequest $request, User $user)
     {
         $vendor = Vendor::where('user_id', auth()->id())->firstOrFail();
 
