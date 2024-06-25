@@ -19,7 +19,6 @@ class RegionResource extends JsonResource
             // @phpstan-ignore-next-line
             'id' => $this->uuid,
             'title' => $this->title,
-            'currency' => $this->currency,
             'tax_rate' => $this->tax_rate,
             'tax_code' => $this->tax_code,
             'tax_provider' => $this->tax_provider_id,

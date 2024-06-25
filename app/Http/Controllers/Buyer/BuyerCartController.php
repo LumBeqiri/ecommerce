@@ -26,7 +26,6 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    // @phpstan-ignore-next-line
     public function add_to_cart(CartRequest $request)
     {
         $data = $request->validated();
@@ -47,19 +46,26 @@ class BuyerCartController extends ApiController
         $data = $request->validated();
 
         $variant = Variant::where('uuid', $data['variant_id'])->first();
+
+        /**
+         * @var Cart $cart
+         * */
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
         if ($cart === null) {
             return $this->errorResponse('Shopping cart missing', 404);
         }
 
-        if (count($cart->cart_items) == 0) {
+        if ($cart->isEmpty()) {
             $cart->total_cart_price = 0;
             $cart->save();
 
             return $this->showOne(new CartResource($cart));
         }
 
+        /**
+         * @var CartItem $cart_item
+         */
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
         if ($cart_item->quantity < $data['quantity']) {
@@ -68,7 +74,7 @@ class BuyerCartController extends ApiController
 
         $cart_item->quantity -= $data['quantity'];
 
-        if ($cart_item->quantity == 0) {
+        if ($cart_item->isEmpty()) {
             $cart_item->delete();
         } else {
             $cart_item->save();
