@@ -18,8 +18,7 @@ class AttributeResource extends JsonResource
         return [
             'id' => $this->uuid,
             'attribute_type' => $this->attribute_type,
-            'attribute_value' => $this->attribute_value,
-            'product_id' => $this->product_id,
+            'attribute_value' => $this->attribute_value
         ];
     }
 }

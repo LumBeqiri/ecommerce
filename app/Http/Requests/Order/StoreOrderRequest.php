@@ -22,13 +22,16 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'different_shipping_address' => 'required|boolean',
-            'shipping_name' => 'string',
-            'shipping_address' => 'string',
-            'shipping_city' => 'string',
-            'shipping_country' => 'string',
-            'order_email' => 'email',
-            'order_phone' => 'string',
+            'shipping_name' => 'required|string|max:191',
+            'shipping_address' => 'required|string|max:191',
+            'shipping_city' => 'required|string|max:191',
+            'shipping_country' => 'required|string|max:191',
+            'order_tax' => 'required|numeric|min:0',
+            'currency_id' => 'required|exists:currencies,id',
+            'order_date' => 'required|date',
+            'order_shipped' => 'nullable|string|max:191',
+            'order_email' => 'nullable|email|max:191',
+            'order_phone' => 'nullable|string|max:191',
         ];
     }
 }
