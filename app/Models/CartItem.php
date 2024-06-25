@@ -23,4 +23,9 @@ class CartItem extends Model
     {
         return $this->belongsTo(Variant::class);
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->quantity === 0;
+    }
 }

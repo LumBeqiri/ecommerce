@@ -10,11 +10,9 @@ class PriceService
     public static function variantPriceToDisplay(VariantPrice $variantPrice): float
     {
         $variantPrice = VariantPrice::with('region.currency')->find($variantPrice->id);
-        if ($variantPrice->region->currency->has_cents) {
-            return $variantPrice->price / 100;
-        }
+        $priceNumericFormat = Money::ofMinor($variantPrice->price, $variantPrice->region->currency->code);
 
-        return $variantPrice->price;
+        return $priceNumericFormat->getAmount()->toFloat();
     }
 
     public static function priceToSave(Money $money): int

@@ -34,4 +34,9 @@ class Cart extends Model
     {
         return $this->belongsTo(Payment::class);
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->cart_items()->count() === 0;
+    }
 }

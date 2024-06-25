@@ -18,7 +18,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->uuid,
             'product_name' => $this->product_name,
-            'seller' => new UserResource($this->whenLoaded('seller')),
+            'seller' => new UserResource($this->whenLoaded('vendor')->user),
             'status' => $this->status,
             'thumbnail' => $this->thumbnail,
             'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
