@@ -19,9 +19,9 @@ class UserResource extends JsonResource
 
             'id' => $this->uuid,
             'email' => $this->email ?? null,
-            // 'role' => $this->getRoleNames()->first(),
-            // 'region' => new RegionResource($this->whenLoaded('region')),
-            // 'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
+            'role' => $this->getRoleNames()->first(),
+            'region' => new RegionResource($this->whenLoaded('region')),
+            'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
         ];
     }
 }
