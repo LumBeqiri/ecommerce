@@ -19,10 +19,10 @@ class ProductController extends ApiController
             $query->where('region_id', $region_id);
         })
             ->with([
-                'vendor',
-                'variants',
+                'vendor.user',
+                'variants.medias',
                 'variant_prices' => function ($query) use ($region_id) {
-                    $query->where('region_id', $region_id);
+                    $query->where('region_id', $region_id)->with(['currency', 'region']);
                 },
             ])
             ->get();

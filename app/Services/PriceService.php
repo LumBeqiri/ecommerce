@@ -9,8 +9,7 @@ class PriceService
 {
     public static function variantPriceToDisplay(VariantPrice $variantPrice): float
     {
-        $variantPrice = VariantPrice::with('region.currency')->find($variantPrice->id);
-        $priceNumericFormat = Money::ofMinor($variantPrice->price, $variantPrice->region->currency->code);
+        $priceNumericFormat = Money::ofMinor($variantPrice->price, $variantPrice->currency->code);
 
         return $priceNumericFormat->getAmount()->toFloat();
     }
