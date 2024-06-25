@@ -3,16 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\Cart;
+use App\Models\User;
+use App\Models\Region;
+use App\Models\Product;
+use App\Models\Variant;
 use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\User;
-use App\Models\Variant;
 use Illuminate\Database\Seeder;
+use App\Models\PaymentProcessor;
 use Illuminate\Support\Facades\DB;
+use Database\Seeders\PaymentProcessorSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,6 +36,7 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         Variant::truncate();
         Discount::truncate();
+        PaymentProcessor::truncate();
 
         DB::table('attribute_variant')->truncate();
         DB::table('category_product')->truncate();
@@ -52,7 +55,8 @@ class DatabaseSeeder extends Seeder
         CartItem::flushEventListeners();
         Variant::flushEventListeners();
         Region::flushEventListeners();
-
+        PaymentProcessor::flushEventListeners();
+        
         $this->call([RoleAndPermissionSeeder::class]);
         $this->call([CurrencySeeder::class]);
         $this->call([TaxProviderSeeder::class]);
@@ -66,6 +70,7 @@ class DatabaseSeeder extends Seeder
         $this->call([ProductSeeder::class]);
         $this->call(AttributeSeeder::class);
         $this->call(VariantSeeder::class);
+        $this->call(PaymentProcessorSeeder::class);
         // $this->call(CartSeeder::class);
         // $this->call(CartItemSeeder::class);
         $this->call(VariantPriceSeeder::class);
