@@ -23,7 +23,7 @@ class ProductResource extends JsonResource
             'thumbnail' => $this->thumbnail,
             'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
             'variants' => VariantResource::collection($this->whenLoaded('variants')),
-            // 'publish_status' => $this->publish_status,
+            'publish_status' => $this->publish_status,
         ];
     }
 }
