@@ -25,12 +25,15 @@ class RegisterStaffController extends ApiController
             $data['password'] = bcrypt($data['password']);
             $data['verification_token'] = User::generateVerificationCode();
 
+            /**
+             * @var User $user
+             */
             $user = User::create([
                 'email' => $request->input('email'),
                 'password' => $data['password'],
             ]);
 
-            $user->assignRole($request->input('role'));
+            $user->syncRoles($request->input('role'));
 
             $staff = Staff::create([
                 'first_name' => $request->input('first_name'),
