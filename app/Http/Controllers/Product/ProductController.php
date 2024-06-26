@@ -25,7 +25,9 @@ class ProductController extends ApiController
                     $query->where('region_id', $region_id)->with(['currency', 'region']);
                 },
             ])
-            ->get();
+            ->paginate(10);
+
+        return ProductResource::collection($products);
 
         return $this->showAll(ProductResource::collection($products));
     }
