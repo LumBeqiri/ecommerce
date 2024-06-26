@@ -27,8 +27,6 @@ class ProductController extends ApiController
             ])
             ->paginate(10);
 
-        return ProductResource::collection($products);
-
         return $this->showAll(ProductResource::collection($products));
     }
 
