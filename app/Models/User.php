@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use App\values\Roles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -115,5 +116,31 @@ class User extends Authenticatable
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function getRoelName(): string
+    {
+        return $this->getRoleNames()->first();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(Roles::ADMIN);
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->hasRole(Roles::STAFF);
+    }
+
+    public function isVendor(): bool
+    {
+        return $this->hasRole(Roles::VENDOR);
+    }
+
+    public function isBuyer(): bool
+    {
+        return $this->hasRole(Roles::BUYER);
+
     }
 }
