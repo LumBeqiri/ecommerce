@@ -2,7 +2,7 @@
 
 namespace App\values;
 
-class UserTypes
+class Roles
 {
     const VENDOR = 'vendor';
 

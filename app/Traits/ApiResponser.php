@@ -45,9 +45,7 @@ trait ApiResponser
         if ($collection->isEmpty()) {
             return $this->successResponse(['data' => $collection], $code);
         }
-        if ($paginate) {
-            $collection = $this->paginate($collection);
-        }
+
         // $collection = $this->cacheResponse($collection);
 
         return $this->successResponse($collection, $code);

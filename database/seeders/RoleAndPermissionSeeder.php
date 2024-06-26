@@ -57,40 +57,25 @@ class RoleAndPermissionSeeder extends Seeder
 
         Role::create(['name' => 'vendor']);
         Role::create(['name' => 'manager']);
-        Role::create(['name' => 'employee']);
+        Role::create(['name' => 'staff']);
+        Role::create(['name' => 'buyer']);
 
         $adminRole->givePermissionTo([
-            'create-users',
-            'edit-users',
-            'delete-users',
+            'manage-users',
 
-            'create-products',
-            'edit-products',
-            'delete-products',
+            'manage-products',
 
-            'create-categories',
-            'edit-categories',
-            'delete-categories',
+            'manage-categories',
 
-            'create-attributes',
-            'edit-attributes',
-            'delete-attributes',
+            'manage-attributes',
 
-            'create-carts',
-            'edit-carts',
-            'delete-carts',
+            'manage-carts',
 
-            'create-discounts',
-            'edit-discounts',
-            'delete-discounts',
+            'manage-discounts',
 
-            'create-orders',
-            'edit-orders',
-            'delete-orders',
+            'manage-orders',
 
-            'create-roles',
-            'edit-roles',
-            'delete-roles',
+            'manage-roles',
         ]);
     }
 }
