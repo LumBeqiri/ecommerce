@@ -12,6 +12,7 @@ use App\Models\Cart;
 use App\Models\Variant;
 use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class CartItemController extends ApiController
 {
@@ -20,10 +21,14 @@ class CartItemController extends ApiController
         $data = $request->validated();
         $items = $data['items'];
 
+        DB::beginTransaction();
         try {
             $cart = CartService::saveItemsToCart($items);
             CartService::calculateCartPrice($cart);
+            DB::commit();
         } catch (CartException $ex) {
+            DB::rollBack();
+
             return $this->showError($ex->getMessage(), $ex->getCode());
         }
 
@@ -61,15 +66,24 @@ class CartItemController extends ApiController
             return $this->errorResponse('You have less than '.$data['quantity'].' items', 422);
         }
 
-        $cart_item->quantity -= $data['quantity'];
+        DB::beginTransaction();
+        try {
 
-        if ($cart_item->isEmpty()) {
-            $cart_item->delete();
-        } else {
-            $cart_item->save();
+            $cart_item->quantity -= $data['quantity'];
+
+            if ($cart_item->isEmpty()) {
+                $cart_item->delete();
+            } else {
+                $cart_item->save();
+            }
+
+            CartService::calculateCartPrice($cart->refresh());
+            DB::commit();
+        } catch (CartException $ex) {
+            DB::rollBack();
+
+            return $this->showError($ex->getMessage(), $ex->getCode());
         }
-
-        CartService::calculateCartPrice($cart->refresh());
 
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
