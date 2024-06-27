@@ -8,13 +8,14 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\CartItem\CartItemController;
 use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Product\ProductBuyerController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\User\UserController;
@@ -31,6 +32,15 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
 
+    Route::get('carts', [CartController::class, 'index']);
+    Route::put('carts/{cart}', [CartController::class, 'update']);
+    Route::post('carts/{cart}/discount', [CartController::class, 'apply_discount']);
+    Route::get('carts/{cart}', [CartController::class, 'show']);
+    Route::delete('carts/{cart}', [CartController::class, 'destroy']);
+
+    Route::post('carts/{cart}/items', [CartItemController::class, 'add_to_cart']);
+    Route::delete('carts/{cart}/items/{item}', [CartItemController::class, 'remove_from_cart']);
+
     Route::post('customer-groups', [CustomerGroupController::class, 'store']);
     Route::get('customer-groups', [CustomerGroupController::class, 'index']);
     Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
@@ -38,17 +48,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('apply-discount', [BuyerCartController::class, 'apply_discount']);
 
-    Route::get('buyer/{user}/cart', [BuyerCartController::class, 'index']);
-    Route::post('add_to_cart', [BuyerCartController::class, 'add_to_cart']);
-    Route::delete('remove_from_cart', [BuyerCartController::class, 'remove_from_cart']);
-
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });
 
 Route::get('countries', [CountryController::class, 'index']);
 
 Route::resource('products', ProductController::class);
-Route::resource('products.buyers', ProductBuyerController::class);
 Route::resource('products.categories', ProductCategoryController::class);
 Route::delete('products/deleteCategories/{product}', [ProductCategoryController::class, 'deleteCategories']);
 
