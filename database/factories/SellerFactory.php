@@ -22,7 +22,7 @@ class SellerFactory extends Factory
         static $password;
 
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),

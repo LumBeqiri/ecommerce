@@ -59,12 +59,12 @@ it('can create an order with unchanged shipping address', function () {
 
     $response->assertOk();
 
-    $order_uuid = $response->json('id');
-    $order = Order::where('uuid', $order_uuid)->select('id')->first();
+    $order_ulid = $response->json('id');
+    $order = Order::where('ulid', $order_ulid)->select('id')->first();
 
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'uuid' => $order_uuid]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
 })->todo();
 
@@ -99,11 +99,11 @@ it('can create an order with changed shipping address', function () {
 
     $response->assertOk();
 
-    $order_uuid = $response->json('id');
-    $order = Order::where('uuid', $order_uuid)->select('id')->first();
+    $order_ulid = $response->json('id');
+    $order = Order::where('ulid', $order_ulid)->select('id')->first();
 
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['user_id' => $buyer->id]);
-    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'uuid' => $order_uuid, 'shipping_city' => $buyer->city]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => $buyer->city]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
 })->todo();

@@ -60,6 +60,17 @@ class RoleAndPermissionSeeder extends Seeder
         Role::create(['name' => 'staff']);
         Role::create(['name' => 'buyer']);
 
+        // using Permission::create() create the below permissions
+        // and assign them to the admin role
+        Permission::create(['name' => 'manage-users', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-products', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-categories', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-attributes', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-carts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-orders', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'manage-roles', 'guard_name' => 'api']);
+
         $adminRole->givePermissionTo([
             'manage-users',
 

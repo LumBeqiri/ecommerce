@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->string('title');
             $table->foreignId('currency_id')->constrained('currencies');
             $table->integer('tax_rate')->nullable();

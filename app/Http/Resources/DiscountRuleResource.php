@@ -17,7 +17,7 @@ class DiscountRuleResource extends JsonResource
     {
         return [
             /** @phpstan-ignore-next-line */
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'description' => $this->description,
             'discount_type' => $this->discount_type,
             'value' => $this->value,

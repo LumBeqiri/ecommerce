@@ -113,7 +113,7 @@ it('admin can show cart with user', function () {
 
     login($user);
 
-    $response = $this->getJson('admin/carts?include=buyer', ['cart' => Cart::inRandomOrder()->first()->uuid]);
+    $response = $this->getJson('admin/carts?include=buyer', ['cart' => Cart::inRandomOrder()->first()->ulid]);
 
     $response->assertOk();
 });
@@ -160,7 +160,7 @@ it('admin can update cart', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminCartController::class, 'update'], $cart->uuid), [
+    $response = $this->putJson(action([AdminCartController::class, 'update'], $cart->ulid), [
         'is_closed' => true,
     ]);
 
@@ -182,7 +182,7 @@ it('admin can delete cart', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([AdminCartController::class, 'destroy'], $cart->uuid));
+    $response = $this->deleteJson(action([AdminCartController::class, 'destroy'], $cart->ulid));
 
     $response->assertOk();
 
@@ -216,7 +216,7 @@ it('admin can remove item qty from cart', function () {
 
     login($user);
 
-    $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid, [
+    $response = $this->deleteJson('admin/carts/'.$cart->ulid.'/variants/'.$variant->ulid, [
         'quantity' => $amountToBeRemoved,
     ]);
 
@@ -248,7 +248,7 @@ it('admin can remove item from cart completely', function () {
 
     login($user);
 
-    $response = $this->deleteJson('admin/carts/'.$cart->uuid.'/variants/'.$variant->uuid);
+    $response = $this->deleteJson('admin/carts/'.$cart->ulid.'/variants/'.$variant->ulid);
 
     $response->assertOk();
 

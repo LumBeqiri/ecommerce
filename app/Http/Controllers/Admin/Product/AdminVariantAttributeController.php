@@ -15,7 +15,7 @@ class AdminVariantAttributeController extends ApiController
     public function update(VariantAttributeRequest $request, Variant $variant, VariantService $variantService): JsonResponse
     {
 
-        $attributeIds = Attribute::whereIn('uuid', $request->input('attributes'))->pluck('id')->toArray();
+        $attributeIds = Attribute::whereIn('ulid', $request->input('attributes'))->pluck('id')->toArray();
 
         $variantService->addVariantAttributes($variant, $attributeIds);
 

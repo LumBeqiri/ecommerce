@@ -33,7 +33,7 @@ class AdminAttributeController extends ApiController
     {
         $data = $request->validated();
 
-        $data['product_id'] = Product::where('uuid', $data['product_id'])->first()->id;
+        $data['product_id'] = Product::where('ulid, $data['product_id'])->first()->id;
         $attribute->update($data);
 
         return $this->showOne($attribute);

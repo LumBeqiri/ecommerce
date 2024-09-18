@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payment_processors', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->string('name');
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->timestamps();

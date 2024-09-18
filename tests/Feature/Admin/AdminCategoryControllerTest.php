@@ -43,7 +43,7 @@ it('admin can update category name', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $category->uuid), [
+    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $category->ulid), [
         'name' => $updatedName,
     ]);
 
@@ -61,7 +61,7 @@ it('admin can update category slug', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $category->uuid), [
+    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $category->ulid), [
         'slug' => $updatedSlug,
     ]);
 
@@ -79,7 +79,7 @@ it('admin can update category description', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $category->uuid), [
+    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $category->ulid), [
         'description' => $updatedDescription,
     ]);
 
@@ -97,8 +97,8 @@ it('admin can update category parent', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $childCategory->uuid), [
-        'parent' => $parentCategory->uuid,
+    $response = $this->putJson(action([AdminCategoryController::class, 'update'], $childCategory->ulid), [
+        'parent' => $parentCategory->ulid,
     ]);
 
     $response->assertStatus(201);
@@ -115,7 +115,7 @@ it('admin can delete category', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([AdminCategoryController::class, 'destroy'], $parentCategory->uuid));
+    $response = $this->deleteJson(action([AdminCategoryController::class, 'destroy'], $parentCategory->ulid));
 
     $response->assertStatus(200);
 

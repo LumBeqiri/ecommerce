@@ -15,7 +15,7 @@ class CreateAttributesTable extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->ulid('ulid');
             $table->string('attribute_type')->default('size');
             $table->string('attribute_value');
             $table->timestamps();

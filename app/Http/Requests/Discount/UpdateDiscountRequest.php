@@ -28,7 +28,7 @@ class UpdateDiscountRequest extends FormRequest
         return [
             'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED_AMOUNT.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
             'value' => 'required_if:discount_type,'.DiscountRuleTypes::PERCENTAGE.'|numeric',
-            'region' => 'exists:regions,uuid',
+            'region' => 'exists:regions,ulid',
             'code' => 'sometimes|string',
             'description' => 'sometimes|string|max:255',
             'is_dynamic' => 'nullable|boolean',

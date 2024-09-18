@@ -30,7 +30,7 @@ class StoreVariantRequest extends FormRequest
             'barcode' => 'nullable|string|max:255|unique:variants',
             'ean' => 'nullable|string|max:255|unique:variants',
             'upc' => 'nullable|string|max:255|unique:variants',
-            'product_id' => 'required|exists:products,uuid',
+            'product_id' => 'required|exists:products,ulid',
             'variant_short_description' => 'string|max:255',
             'variant_long_description' => 'string| max:255',
             'stock' => 'required|integer|min:0',

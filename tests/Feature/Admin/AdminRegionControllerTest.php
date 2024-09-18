@@ -41,7 +41,7 @@ it('admin can show region', function () {
 
     login($user);
 
-    $response = $this->getJson(action([AdminRegionController::class, 'show'], $region->uuid));
+    $response = $this->getJson(action([AdminRegionController::class, 'show'], $region->ulid));
     $response->assertOk();
 
     expect($response->json('title'))->toBe($title);
@@ -85,7 +85,7 @@ it('admin can update region title', function () {
     $region = Region::factory()->create(['title' => $old_attr]);
     login($user);
 
-    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->uuid), [
+    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->ulid), [
         'title' => $new_attr,
     ]);
 
@@ -104,7 +104,7 @@ it('admin can update region currency', function () {
     $region = Region::factory()->create(['currency_id' => $old_currency->id]);
     login($user);
 
-    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->uuid), [
+    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->ulid), [
         'currency_id' => $new_currency->id,
     ]);
 
@@ -125,7 +125,7 @@ it('admin can update region tax rate', function () {
     $region = Region::factory()->create(['tax_rate' => $old_attr]);
     login($user);
 
-    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->uuid), [
+    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->ulid), [
         'tax_rate' => $new_attr,
     ]);
 
@@ -146,7 +146,7 @@ it('admin can update region tax code', function () {
     $region = Region::factory()->create(['tax_code' => $old_attr]);
     login($user);
 
-    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->uuid), [
+    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->ulid), [
         'tax_code' => $new_attr,
     ]);
 
@@ -166,7 +166,7 @@ it('admin can update region tax provider', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->uuid), [
+    $response = $this->putJson(action([AdminRegionController::class, 'update'], $region->ulid), [
         'tax_provider_id' => $new_attr->id,
     ]);
 
@@ -189,7 +189,7 @@ it('admin can update region countries', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminRegionController::class, 'updateCountries'], $region->uuid), [
+    $response = $this->putJson(action([AdminRegionController::class, 'updateCountries'], $region->ulid), [
         'countries' => $countries_ids,
     ]);
     $response->assertOk();
@@ -218,7 +218,7 @@ it('admin can remove countries from region', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([AdminRegionController::class, 'removeCountries'], $region->uuid), [
+    $response = $this->deleteJson(action([AdminRegionController::class, 'removeCountries'], $region->ulid), [
         'countries' => $countries,
     ]);
     $response->assertOk();
@@ -238,7 +238,7 @@ it('can delete region', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([AdminRegionController::class, 'update'], $region->uuid));
+    $response = $this->deleteJson(action([AdminRegionController::class, 'update'], $region->ulid));
 
     $response->assertOk();
 

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductFactory extends Factory
 {
@@ -22,7 +23,7 @@ class ProductFactory extends Factory
         DB::statement('SET FOREIGN_KEY_CHECKS =0');
 
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'product_name' => $this->faker->name,
             'vendor_id' => Vendor::all()->random()->id,
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),

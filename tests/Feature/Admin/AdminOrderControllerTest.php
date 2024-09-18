@@ -36,7 +36,7 @@ it('admin can update order', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminOrderController::class, 'update'], $order->uuid), [
+    $response = $this->putJson(action([AdminOrderController::class, 'update'], $order->ulid), [
         'shipping_name' => $updatedName,
         'shipping_address' => $updatedAddress,
         'shipping_country' => $updatedCountry,
@@ -58,7 +58,7 @@ it('admin can delete order', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([AdminOrderController::class, 'destroy'], $order->uuid));
+    $response = $this->deleteJson(action([AdminOrderController::class, 'destroy'], $order->ulid));
 
     $response->assertStatus(200);
 

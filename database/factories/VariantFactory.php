@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class VariantFactory extends Factory
 {
@@ -18,7 +19,7 @@ class VariantFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'product_id' => Product::all()->random()->id,
             'variant_name' => $this->faker->name,
             'variant_short_description' => $this->faker->paragraph(1),
@@ -67,11 +68,11 @@ class VariantFactory extends Factory
         });
     }
 
-    public function setUuid(string $uuid)
+    public function setulid(string $ulid)
     {
-        return $this->state(function (array $attributes) use ($uuid) {
+        return $this->state(function (array $attributes) use ($ulid) {
             return [
-                'uuid' => $uuid,
+                'ulid' => $ulid,
             ];
         });
     }

@@ -16,9 +16,9 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $productsQuantity = 50;
-        Product::factory()->create(['uuid' => '35e11a0b-49ef-3bf3-a2ac-59b36423b6d1']);
-        Product::factory()->create(['uuid' => '1fd3c554-2be9-3cfd-b52f-ca5d8244773a']);
-        Product::factory()->create(['uuid' => '273bb17e-6b76-38ba-8262-1911b5eb6066']);
+        Product::factory()->create(['ulid' => '01J82QPEESBETHRAGX6VPZ3X04']);
+        Product::factory()->create(['ulid' => '01J82QPKZ74SCXJV3A9MP93VF4']);
+        Product::factory()->create(['ulid' => '01J82QPRFASD7ADMKEE92JCCBT']);
         Product::factory($productsQuantity)->create()->each(
             function ($product) {
                 $categories = Category::all()->random(mt_rand(1, 5))->pluck('id');

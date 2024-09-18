@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\HasUuid;
+use App\Traits\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Order extends Model
 {
     use HasFactory;
-    use HasUuid;
+    use HasUlids;
 
     public const SHIPPED_ORDER = 'true';
 

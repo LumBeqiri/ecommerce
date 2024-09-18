@@ -16,7 +16,7 @@ class CreateVariantsTable extends Migration
     {
         Schema::create('variants', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->ulid('ulid');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('variant_name');
             $table->string('variant_short_description', 255)->nullable();

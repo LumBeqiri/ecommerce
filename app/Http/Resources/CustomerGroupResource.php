@@ -17,7 +17,7 @@ class CustomerGroupResource extends JsonResource
     {
         return [
             /** @phpstan-ignore-next-line */
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'name' => $this->name,
             'metadata' => $this->metadata ?? '',
             'seller' => new UserResource($this->user),

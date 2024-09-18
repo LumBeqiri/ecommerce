@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->ulid('ulid');
             $table->string('vendor_name');
             $table->string('city');
             $table->foreignId('country_id')->constrained();

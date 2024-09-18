@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomerGroup>
@@ -18,7 +19,7 @@ class CustomerGroupFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'name' => $this->faker->word(),
             'user_id' => User::all()->random()->id,
         ];

@@ -19,7 +19,7 @@ class VariantPriceResource extends JsonResource
 
         return [
             /** @phpstan-ignore-next-line */
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'price' => PriceService::variantPriceToDisplay($this->resource),
             'variant' => new VariantResource($this->whenLoaded('variant')),
             'region' => new RegionResource($this->region),

@@ -17,7 +17,7 @@ class CartResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'buyer' => new BuyerResource($this->whenLoaded('buyer')),
             'cart_items' => CartItemResource::collection($this->whenLoaded('cart_items')),
             'total' => Money::ofMinor($this->total_cart_price, $this->region->currency->code),

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\DiscountRule;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Discount>
@@ -19,7 +20,7 @@ class DiscountFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'code' => $this->faker->word,
             'vendor_id' => Vendor::all()->random()->id,
             'is_dynamic' => $this->faker->boolean(60),

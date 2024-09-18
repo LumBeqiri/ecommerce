@@ -39,7 +39,7 @@ class AdminCategoryController extends ApiController
         ]));
 
         if ($request->parent) {
-            $category->parent_id = Category::where('uuid', $request->parent)->first()->id;
+            $category->parent_id = Category::where('ulid', $request->parent)->first()->id;
         }
 
         if (! $category->isDirty()) {

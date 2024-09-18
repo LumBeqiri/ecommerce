@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('discount_conditions', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->string('model_type');
             $table->enum('operator', ['in', 'not_in']);
             $table->foreignId('discount_rule_id')->constrained('discount_rules')->cascadeOnDelete();

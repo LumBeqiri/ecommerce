@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Currency;
 use App\Models\TaxProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Region>
@@ -19,7 +20,7 @@ class RegionFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'title' => $this->faker->word(),
             'currency_id' => Currency::all()->random()->id,
             'tax_rate' => $this->faker->randomDigit(4, 30),

@@ -45,11 +45,11 @@ class CartService
 
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
-        }])->whereIn('uuid', $variant_ids)->get();
+        }])->whereIn('ulid', $variant_ids)->get();
 
         foreach ($items as $item) {
             $variant = $variants->first(function ($variant) use ($item) {
-                return $variant->uuid === $item['variant_id'];
+                return $variant->ulid === $item['variant_id'];
             });
 
             $cart_item = $cart->cart_items->where('variant_id', $variant->id)->first();

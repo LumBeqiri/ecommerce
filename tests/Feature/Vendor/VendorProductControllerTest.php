@@ -31,7 +31,7 @@ it('vendor can update product name', function () {
     $updatedName = 'new name';
     login($user);
 
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->ulid), [
         'product_name' => $updatedName,
     ]);
 
@@ -53,7 +53,7 @@ it('vendor can not update product name of another vendor', function () {
     $updatedName = 'new name';
     login($user2);
 
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->ulid), [
         'product_name' => $updatedName,
     ]);
 
@@ -72,7 +72,7 @@ it('vendor can update product status', function () {
     $updatedValue = Product::UNAVAILABLE_PRODUCT;
     login($user);
 
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->ulid), [
         'status' => $updatedValue,
     ]);
 
@@ -91,7 +91,7 @@ it('vendor can update product', function () {
     $updatedValue = Product::UNAVAILABLE_PRODUCT;
     login($user);
 
-    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([VendorProductController::class, 'update'], $product->ulid), [
         'status' => $updatedValue,
     ]);
 
@@ -111,7 +111,7 @@ it('vendor can delete product', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([VendorProductController::class, 'destroy'], $product->uuid));
+    $response = $this->deleteJson(action([VendorProductController::class, 'destroy'], $product->ulid));
 
     $response->assertOk();
 
@@ -130,7 +130,7 @@ it('vendor can not delete product of another vendor', function () {
 
     login($user2);
 
-    $response = $this->deleteJson(action([VendorProductController::class, 'destroy'], $product->uuid));
+    $response = $this->deleteJson(action([VendorProductController::class, 'destroy'], $product->ulid));
 
     $response->assertForbidden();
 

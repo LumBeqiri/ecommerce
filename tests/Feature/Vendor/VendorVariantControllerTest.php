@@ -34,9 +34,9 @@ it('vendor can update variant name', function () {
     $updatedName = 'new name';
     login($user);
 
-    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->ulid), [
         'variant_name' => $updatedName,
-        'product_id' => $product->uuid,
+        'product_id' => $product->ulid,
     ]);
 
     $response->assertOk();
@@ -57,9 +57,9 @@ it('vendor can update variant sku', function () {
     $updated = 'new sku';
     login($user);
 
-    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->ulid), [
         'sku' => $updated,
-        'product_id' => $product->uuid,
+        'product_id' => $product->ulid,
     ]);
 
     $response->assertOk();
@@ -80,9 +80,9 @@ it('vendor can update variant short description', function () {
     $updated = 'new sku';
     login($user);
 
-    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->ulid), [
         'variant_short_description' => $updated,
-        'product_id' => $product->uuid,
+        'product_id' => $product->ulid,
     ]);
 
     $response->assertOk();
@@ -103,9 +103,9 @@ it('vendor can update variant long description', function () {
     $updated = 'new description';
     login($user);
 
-    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->ulid), [
         'variant_long_description' => $updated,
-        'product_id' => $product->uuid,
+        'product_id' => $product->ulid,
     ]);
 
     $response->assertOk();
@@ -126,9 +126,9 @@ it('vendor can update variant stock', function () {
     $updated = 23;
     login($user);
 
-    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->ulid), [
         'stock' => $updated,
-        'product_id' => $product->uuid,
+        'product_id' => $product->ulid,
     ]);
 
     $response->assertOk();
@@ -149,7 +149,7 @@ it('vendor can not update variant with negative stock value', function () {
     $updated = -23;
     login($user);
 
-    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([VendorVariantController::class, 'update'], $variant->ulid), [
         'stock' => $updated,
     ]);
 
@@ -171,7 +171,7 @@ it('vendor can delete variant', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([VendorVariantController::class, 'destroy'], $variant->uuid));
+    $response = $this->deleteJson(action([VendorVariantController::class, 'destroy'], $variant->ulid));
 
     $response->assertOk();
 

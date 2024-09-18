@@ -27,7 +27,7 @@ class UpdateCategoryRequest extends FormRequest
             'name' => 'sometimes|max:255|string',
             'description' => 'sometimes|max:500|string',
             'slug' => 'sometimes|unique:categories,slug',
-            'parent_id' => 'sometimes|exists:categories,uuid',
+            'parent_id' => 'sometimes|exists:categories,ulid',
         ];
     }
 }

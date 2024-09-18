@@ -45,7 +45,7 @@ it('can store a customer group ', function () {
         [
             'name' => $customerGroupName,
             'metadata' => '{"info": "hello"}',
-            'users' => $users->pluck('uuid'),
+            'users' => $users->pluck('ulid'),
         ]
     );
 
@@ -64,7 +64,7 @@ it('can show one coustomer group', function () {
 
     login($user);
 
-    $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->uuid));
+    $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->ulid));
 
     $response->assertOk();
 })->todo();
@@ -78,7 +78,7 @@ it('can not show customer group of another seller', function () {
 
     login($userThatDoesntOwnCustomerGroups);
 
-    $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->uuid));
+    $response = $this->getJson(action([CustomerGroupController::class, 'show'], $customerGroup->ulid));
 
     $response->assertStatus(403);
 })->todo();
@@ -93,7 +93,7 @@ it('can delete one coustomer group', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->uuid));
+    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->ulid));
 
     $response->assertOk();
 
@@ -109,7 +109,7 @@ it('can not delete customer group of another seller', function () {
 
     login($userThatDoesntOwnCustomerGroups);
 
-    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->uuid));
+    $response = $this->deleteJson(action([CustomerGroupController::class, 'destroy'], $customerGroup->ulid));
 
     $response->assertStatus(403);
 

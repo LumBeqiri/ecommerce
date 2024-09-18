@@ -30,7 +30,7 @@ class DiscountRequest extends FormRequest
             'discount_type' => 'required|in:'.DiscountRuleTypes::FIXED_AMOUNT.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
             'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED_AMOUNT.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
             'value' => 'required|numeric',
-            'region' => 'exists:regions,uuid',
+            'region' => 'exists:regions,ulid',
             'code' => 'required|string',
             'description' => 'required|string|max:255',
             'is_dynamic' => 'nullable|boolean',
@@ -41,7 +41,7 @@ class DiscountRequest extends FormRequest
             'operator' => 'required_if: conditions, 1|in:in,not_in',
             'model_type' => 'required_if: conditions,1|string|'.Rule::in(['product', 'customer_group']),
             'products' => 'required_if: conditions, 1| array',
-            'products.*' => 'required_if: conditions, 1| exists:products,uuid',
+            'products.*' => 'required_if: conditions, 1| exists:products,ulid',
             'metadata' => 'sometimes|json',
         ];
     }

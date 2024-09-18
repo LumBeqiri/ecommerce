@@ -41,7 +41,7 @@ class AdminVariantController extends ApiController
         });
 
         if ($request->has('attributes')) {
-            $attributes = Attribute::all()->whereIn('uuid', $request->attributes)->pluck('id');
+            $attributes = Attribute::all()->whereIn('ulid', $request->attributes)->pluck('id');
             $newVariant->attributes()->sync($attributes);
         }
 
@@ -75,7 +75,7 @@ class AdminVariantController extends ApiController
     private function createVariantPrice(array $variant_prices, Variant $newVariant): void
     {
         foreach ($variant_prices as $variant_price) {
-            $variant_price['region_id'] = Region::where('uuid', $variant_price['region_id'])->firstOrFail()->id;
+            $variant_price['region_id'] = Region::where('ulid', $variant_price['region_id'])->firstOrFail()->id;
             $variant_price['variant_id'] = $newVariant->id;
             VariantPrice::create($variant_price);
         }

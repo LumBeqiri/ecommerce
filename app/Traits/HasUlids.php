@@ -3,20 +3,22 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
-trait HasUuid
+trait HasUlids
 {
-    public static function bootHasUuid(): void
+    public static function bootHasUlid(): void
     {
         static::creating(function (Model $model): void {
             /** @phpstan-ignore-next-line */
-            $model->uuid = Uuid::uuid4()->toString();
+            if (! $model->ulid) {
+                $model->ulid = Str::ulid();
+            }
         });
     }
 
     public function getRouteKeyName(): string
     {
-        return 'uuid';
+        return 'ulid';
     }
 }

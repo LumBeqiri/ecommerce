@@ -16,19 +16,19 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $usersQuantity = 50;
+        $usersQuantity = 20;
 
         $adminUser = User::factory()->create([
-            'uuid' => 'f4e367e1-aefe-33de-8e38-5f8b2ef1bead',
-            'email' => 'lum@gmail.com',
+            'ulid' => '01J82QDMSMR602KT1KKE52101Y',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('123123123'),
         ]);
 
         $adminUser->assignRole('admin');
 
         $vendorUser = User::factory()->create([
-            'uuid' => '0eaf6d30-9b51-11ed-a8fc-0242ac120002',
-            'email' => 'drin@gmail.com',
+            'ulid' => '01J82QDTQG96YR2VZT3MZM0E5S',
+            'email' => 'vendor@gmail.com',
             'password' => bcrypt('123123123'),
         ]);
 
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
         $vendorUser->assignRole('vendor');
 
         $buyerUser = User::factory()->create([
-            'email' => 'lejla@gmail.com',
+            'email' => 'buyer@gmail.com',
             'password' => bcrypt('123123123'),
         ]);
 

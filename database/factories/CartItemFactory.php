@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Variant;
 use App\Models\VariantPrice;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CartItem>
@@ -22,7 +23,7 @@ class CartItemFactory extends Factory
         $variant = Variant::all()->random();
 
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'cart_id' => Cart::all()->random()->id,
             'variant_id' => $variant->id,
             'variant_price_id' => VariantPrice::factory(),

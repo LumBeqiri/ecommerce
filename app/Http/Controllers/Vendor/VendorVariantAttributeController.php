@@ -23,7 +23,7 @@ class VendorVariantAttributeController extends ApiController
     {
         $this->authorize('update', $variant);
 
-        $attributeIds = Attribute::whereIn('uuid', $request->input('attributes'))->pluck('id')->toArray();
+        $attributeIds = Attribute::whereIn('ulid', $request->input('attributes'))->pluck('id')->toArray();
 
         $variantService->addVariantAttributes($variant, $attributeIds);
 
