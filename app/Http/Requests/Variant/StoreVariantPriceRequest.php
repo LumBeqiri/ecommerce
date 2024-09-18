@@ -22,7 +22,7 @@ class StoreVariantPriceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'region_id' => 'required|exists:regions,uuid',
+            'region_id' => 'required|exists:regions,ulid',
             'price' => 'required|numeric|min:1',
             'min_quantity' => 'required|integer|min:1',
             'max_quantity' => 'required|integer|min:1|gte:min_quantity',

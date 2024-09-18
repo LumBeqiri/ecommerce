@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use App\values\UserStatusTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Staff>
@@ -24,7 +25,7 @@ class StaffFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid' => $this->faker->uuid,
+            'ulid' => Str::ulid(),
             'user_id' => User::factory(),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,

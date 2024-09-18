@@ -25,9 +25,9 @@ class ProductService
             $vendor = Vendor::where('user_id', auth()->user()->id)->firstOrFail();
         }
 
-        $categoriesUuids = $data['categories'];
+        $categoriesulids = $data['categories'];
 
-        $categories = Category::whereIn('uuid', $categoriesUuids)->get();
+        $categories = Category::whereIn('ulid', $categoriesulids)->get();
 
         $product = Product::create(
             Arr::except($data, 'categories') + ['vendor_id' => $vendor->id]
@@ -44,7 +44,7 @@ class ProductService
         $product->fill($updateProductData);
 
         if (Arr::has($data, 'categories')) {
-            $categories = Category::all()->whereIn('uuid', $data['categories'])->pluck('id');
+            $categories = Category::all()->whereIn('ulid', $data['categories'])->pluck('id');
             $product->categories()->sync($categories);
         }
 

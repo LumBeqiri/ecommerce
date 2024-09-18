@@ -12,7 +12,7 @@ class VariantService
 {
     public function createVariant($data): Variant
     {
-        $data['product_id'] = Product::where('uuid', $data['product_id'])->firstOrFail()->id;
+        $data['product_id'] = Product::where('ulid', $data['product_id'])->firstOrFail()->id;
         $newVariant = Variant::create($data);
 
         return $newVariant;
@@ -25,7 +25,7 @@ class VariantService
 
     public function addVariantPrice(Variant $variant, array $data): VariantPrice
     {
-        $region = Region::where('uuid', $data['region_id'])->first();
+        $region = Region::where('ulid', $data['region_id'])->first();
         $money = Money::of($data['price'], $region->currency->code);
 
         $variantPrice = VariantPrice::firstOrCreate(
@@ -46,7 +46,7 @@ class VariantService
 
     public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, array $data): Variant
     {
-        $region = Region::where('uuid', $data['region_id'])->first();
+        $region = Region::where('ulid', $data['region_id'])->first();
         $money = Money::of($data['price'], $region->currency->code);
 
         $variantPrice = VariantPrice::where('id', $variantPrice->id)->where('variant_id', $variant->id)->update([

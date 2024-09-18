@@ -35,7 +35,7 @@ it('admin can update product name', function () {
     $updatedName = 'new name';
     login($user);
 
-    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->ulid), [
         'product_name' => $updatedName,
     ]);
 
@@ -57,7 +57,7 @@ it('admin can delete product', function () {
 
     login($user);
 
-    $response = $this->deleteJson(action([AdminProductController::class, 'destroy'], $product->uuid));
+    $response = $this->deleteJson(action([AdminProductController::class, 'destroy'], $product->ulid));
 
     $response->assertOk();
 
@@ -77,7 +77,7 @@ it('admin can update product status', function () {
     $updatedStatus = Product::AVAILABLE_PRODUCT;
     login($user);
 
-    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->ulid), [
         'status' => $updatedStatus,
     ]);
 
@@ -101,7 +101,7 @@ it('can upload product thumbnail', function () {
 
     login($user);
 
-    $response = $this->postJson(action([ProductThumbnailController::class, 'store'], ['product' => $product->uuid]),
+    $response = $this->postJson(action([ProductThumbnailController::class, 'store'], ['product' => $product->ulid]),
         [
             'thumbnail' => $file,
         ]

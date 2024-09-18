@@ -6,6 +6,7 @@ use App\Models\Buyer;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class BuyerFactory extends Factory
 {
@@ -20,7 +21,7 @@ class BuyerFactory extends Factory
     {
 
         return [
-            'uuid' => $this->faker->uuid,
+            'ulid' => Str::ulid(),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'city' => $this->faker->city,

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\HasUuid;
+use App\Traits\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory;
-    use HasUuid;
+    use HasUlids;
     use SoftDeletes;
 
     public const AVAILABLE_PRODUCT = 'available';

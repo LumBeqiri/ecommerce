@@ -36,18 +36,18 @@ it('vendor can add variant attributes', function () {
 
     $user->assignRole('vendor');
     $user->givePermissionTo('update-products');
-    $attributeUuids = [$attribute1->uuid, $attribute2->uuid];
+    $attributeulids = [$attribute1->ulid, $attribute2->ulid];
 
     login($user);
 
-    $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->uuid), [
-        'attributes' => $attributeUuids,
+    $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->ulid), [
+        'attributes' => $attributeulids,
     ]);
 
     $response->assertOk();
 
-    foreach ($attributeUuids as $attributeUuid) {
-        $attributeId = Attribute::where('uuid', $attributeUuid)->value('id');
+    foreach ($attributeulids as $attributeulid) {
+        $attributeId = Attribute::where('ulid', $attributeulid)->value('id');
         $this->assertDatabaseHas('attribute_variant', [
             'variant_id' => $variant->id,
             'attribute_id' => $attributeId,
@@ -71,12 +71,12 @@ it('vendor can remove variant attributes', function () {
     $variant->attributes()->sync([$attribute1->id, $attribute2->id]);
 
     $user->assignRole('vendor');
-    $attributeUuids = [];
+    $attributeulids = [];
 
     login($user);
 
-    $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->uuid), [
-        'attributes' => $attributeUuids,
+    $response = $this->putJson(action([VendorVariantAttributeController::class, 'update'], $variant->ulid), [
+        'attributes' => $attributeulids,
     ]);
 
     $response->assertOk();

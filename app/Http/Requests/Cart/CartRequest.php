@@ -25,7 +25,7 @@ class CartRequest extends FormRequest
     {
         return [
             'items' => 'array',
-            'items.*.variant_id' => 'required|exists:variants,uuid',
+            'items.*.variant_id' => 'required|exists:variants,ulid',
             'items.*.quantity' => 'integer',
         ];
     }

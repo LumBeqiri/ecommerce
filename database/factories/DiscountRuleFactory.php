@@ -6,6 +6,7 @@ use App\Models\DiscountRule;
 use App\values\DiscountAllocationTypes;
 use App\values\DiscountRuleTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Discount>
@@ -20,7 +21,7 @@ class DiscountRuleFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'description' => $this->faker->paragraph(1),
             'discount_type' => $type = $this->faker->randomElement([DiscountRuleTypes::FIXED_AMOUNT, DiscountRuleTypes::PERCENTAGE, DiscountRuleTypes::FREE_SHIPPING]),
             'value' => $this->valueForType($type),

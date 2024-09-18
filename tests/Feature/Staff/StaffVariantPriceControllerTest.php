@@ -44,8 +44,8 @@ it('staff can create variant pricing', function () {
     $max_quantity = 5;
     $min_quantity = 2;
 
-    $response = $this->postJson(action([StaffVariantPriceController::class, 'store'], $variant->uuid), [
-        'region_id' => $region->uuid,
+    $response = $this->postJson(action([StaffVariantPriceController::class, 'store'], $variant->ulid), [
+        'region_id' => $region->ulid,
         'price' => $price,
         'min_quantity' => $min_quantity,
         'max_quantity' => $max_quantity,
@@ -81,9 +81,9 @@ it('staff can update variant pricing', function () {
     $min_quantity = 2;
 
     $response = $this->putJson(
-        action([StaffVariantPriceController::class, 'update'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid]),
+        action([StaffVariantPriceController::class, 'update'], ['variant' => $variant->ulid, 'variantPrice' => $variantPrice->ulid]),
         [
-            'region_id' => $region2->uuid,
+            'region_id' => $region2->ulid,
             'price' => $price,
             'min_quantity' => $min_quantity,
             'max_quantity' => $max_quantity,
@@ -123,9 +123,9 @@ it('staff can not update variant pricing of another vendor', function () {
     $min_quantity = 2;
 
     $response = $this->putJson(
-        action([StaffVariantPriceController::class, 'update'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid]),
+        action([StaffVariantPriceController::class, 'update'], ['variant' => $variant->ulid, 'variantPrice' => $variantPrice->ulid]),
         [
-            'region_id' => $region2->uuid,
+            'region_id' => $region2->ulid,
             'price' => $price,
             'min_quantity' => $min_quantity,
             'max_quantity' => $max_quantity,
@@ -157,7 +157,7 @@ it('staff can delete variant pricing', function () {
     login($staffUser);
 
     $response = $this->deleteJson(
-        action([StaffVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid])
+        action([StaffVariantPriceController::class, 'destroy'], ['variant' => $variant->ulid, 'variantPrice' => $variantPrice->ulid])
     );
 
     $response->assertOk();
@@ -188,7 +188,7 @@ it('staff can not delete variant pricing of another vendor', function () {
     login($staffUser);
 
     $response = $this->deleteJson(
-        action([StaffVariantPriceController::class, 'destroy'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid])
+        action([StaffVariantPriceController::class, 'destroy'], ['variant' => $variant->ulid, 'variantPrice' => $variantPrice->ulid])
     );
 
     $response->assertForbidden();

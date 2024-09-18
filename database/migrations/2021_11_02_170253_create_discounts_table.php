@@ -16,7 +16,7 @@ class CreateDiscountsTable extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->ulid('ulid');
             $table->foreignId('seller_id')->constrained('users');
             $table->string('code');
             $table->boolean('is_dynamic')->nullable();

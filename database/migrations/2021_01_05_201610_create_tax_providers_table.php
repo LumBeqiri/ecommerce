@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tax_providers', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->string('tax_provider');
             $table->boolean('is_installed')->default(false)->nullable();
             $table->timestamps();

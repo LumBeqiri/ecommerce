@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\HasUuid;
+use App\Traits\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Buyer extends User
 {
     use HasFactory, SoftDeletes;
-    use HasUuid;
+    use HasUlids;
 
     protected $table = 'buyers';
 

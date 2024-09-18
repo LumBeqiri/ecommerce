@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('discount_rules', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->string('description');
             $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();
             $table->enum('discount_type', ['fixed_amount', 'percentage', 'free_shipping']);

@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class OrderFactory extends Factory
 {
@@ -19,7 +20,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => $this->faker->uuid(),
+            'ulid' => Str::ulid(),
             'buyer_id' => User::all()->random()->id,
             'shipping_name' => $this->faker->name(),
             'shipping_address' => $this->faker->address(),

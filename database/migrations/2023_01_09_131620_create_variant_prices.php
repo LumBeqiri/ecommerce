@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('variant_prices', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->integer('price');
             $table->foreignId('variant_id')->constrained('variants')->cascadeOnDelete();
             $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();

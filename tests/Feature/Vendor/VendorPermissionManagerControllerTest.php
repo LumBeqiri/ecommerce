@@ -38,7 +38,7 @@ it('vendor can create a permission for user', function () {
 
     $permissionIds = Permission::take(2)->pluck('id')->toArray();
 
-    $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->uuid), [
+    $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->ulid), [
         'permissions' => $permissionIds,
     ]);
 
@@ -61,7 +61,7 @@ it('vendor can not create a permission for user not part of vendor', function ()
 
     login($vendorUser);
 
-    $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->uuid), [
+    $response = $this->putJson(action([VendorPermissionManagerController::class, 'update'], $staffUser->ulid), [
         'permissions' => [1, 2],
     ]);
 
@@ -87,7 +87,7 @@ it('vendor can delete a permission for user', function () {
 
     $staffUser->givePermissionTo(['create-users', 'edit-users']);
 
-    $response = $this->deleteJson(action([VendorPermissionManagerController::class, 'destroy'], [$staffUser->uuid, 'permission_id' => $permission_id]));
+    $response = $this->deleteJson(action([VendorPermissionManagerController::class, 'destroy'], [$staffUser->ulid, 'permission_id' => $permission_id]));
 
     $response->assertOk();
 

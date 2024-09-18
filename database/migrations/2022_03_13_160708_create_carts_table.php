@@ -16,7 +16,7 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->ulid('ulid');
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->integer('total_cart_price')->nullable();
             $table->boolean('is_closed')->default(false);

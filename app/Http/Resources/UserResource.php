@@ -17,7 +17,7 @@ class UserResource extends JsonResource
     {
         return [
 
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'email' => $this->email ?? null,
             'role' => $this->getRoleNames()->first(),
             'region' => new RegionResource($this->whenLoaded('region')),

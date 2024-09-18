@@ -14,7 +14,7 @@ class CountryResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'name' => $this->name,
             'region_id' => new RegionResource($this->whenLoaded('region')),
         ];

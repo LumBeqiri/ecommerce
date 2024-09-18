@@ -20,9 +20,9 @@ class VariantSeeder extends Seeder
             'publish_status' => Product::PUBLISHED,
             'stock' => 2000,
         ];
-        Variant::factory($data + ['product_id' => 1])->setUuid('a92f7c0d-5781-4367-b817-5cd9f9064184')->create();
-        Variant::factory($data + ['product_id' => 2])->setUuid('f6e89183-6b9d-4c17-9719-fbb4c02d5614')->create();
-        Variant::factory($data + ['product_id' => 3])->setUuid('8fe19731-ba71-44c4-a0af-ac1183cb6c26')->create();
+        Variant::factory($data + ['product_id' => 1])->setulid('01J82QRY0DE1PD2W4FD3P2AF9J')->create();
+        Variant::factory($data + ['product_id' => 2])->setulid('01J82QS36RGDSA0EWZFPP3BVAH')->create();
+        Variant::factory($data + ['product_id' => 3])->setulid('01J82QS7B6DD61YTV24BX5EJFZ')->create();
 
         $variantsQuantity = 30;
         Variant::factory($variantsQuantity)->count($variantsQuantity)->create()->each(

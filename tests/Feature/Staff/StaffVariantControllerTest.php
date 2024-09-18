@@ -38,9 +38,9 @@ it('staff can update variant name', function () {
     $updatedName = 'new name';
     login($staffUser);
 
-    $response = $this->putJson(action([StaffVariantController::class, 'update'], $variant->uuid), [
+    $response = $this->putJson(action([StaffVariantController::class, 'update'], $variant->ulid), [
         'variant_name' => $updatedName,
-        'product_id' => $product->uuid,
+        'product_id' => $product->ulid,
     ]);
 
     $response->assertOk();
@@ -63,7 +63,7 @@ it('staff can delete variant', function () {
 
     login($staffUser);
 
-    $response = $this->deleteJson(action([StaffVariantController::class, 'destroy'], $variant->uuid));
+    $response = $this->deleteJson(action([StaffVariantController::class, 'destroy'], $variant->ulid));
     $response->assertOk();
 
     $this->assertSoftDeleted(Variant::class, ['id' => $variant->id]);

@@ -34,7 +34,7 @@ class ProductController extends ApiController
     {
         // @phpstan-ignore-next-line
         $product = QueryBuilder::for(Product::class)
-            ->where('uuid', $product->uuid)
+            ->where('ulid', $product->ulid)
             ->allowedIncludes(['variant_prices', 'variants'])
             ->first();
 

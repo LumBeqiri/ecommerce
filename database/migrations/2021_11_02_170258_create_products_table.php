@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->ulid('ulid');
             $table->string('product_name');
             $table->foreignId('seller_id')->constrained('users');
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);

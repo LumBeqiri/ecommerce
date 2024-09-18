@@ -21,14 +21,15 @@ use Illuminate\Support\Facades\DB;
 
 class BuyerCheckoutController extends ApiController
 {
-
     public function checkout(StoreOrderRequest $request, Cart $cart)
     {
         DB::beginTransaction();
-        try{
+        try {
 
-        }catch(Exception){}
+        } catch (Exception) {
+        }
     }
+
     public function index(User $user): JsonResponse
     {
         $cart = $user->buyer->cart()->with('cart_items')->first();
@@ -56,7 +57,7 @@ class BuyerCheckoutController extends ApiController
     {
         $data = $request->validated();
 
-        $variant = Variant::where('uuid', $data['variant_id'])->first();
+        $variant = Variant::where('ulid', $data['variant_id'])->first();
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
         if ($cart === null) {

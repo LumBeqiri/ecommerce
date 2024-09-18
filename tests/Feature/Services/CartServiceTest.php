@@ -36,9 +36,9 @@ beforeEach(function () {
 //     VariantPrice::factory()->for($variant3)->for($region)->create();
 
 //     $items = [
-//         ['variant_id' => $variant1->uuid, 'quantity' => 2],
-//         ['variant_id' => $variant2->uuid, 'quantity' => 1],
-//         ['variant_id' => $variant3->uuid, 'quantity' => 3],
+//         ['variant_id' => $variant1->ulid, 'quantity' => 2],
+//         ['variant_id' => $variant2->ulid, 'quantity' => 1],
+//         ['variant_id' => $variant3->ulid, 'quantity' => 3],
 //     ];
 
 //     CartService::saveCookieItemsToCart($items, $user);

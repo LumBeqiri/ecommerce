@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('customer_groups', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->ulid();
             $table->string('name', 255);
             $table->json('metadata')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

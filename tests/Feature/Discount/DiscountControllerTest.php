@@ -35,7 +35,7 @@
 //         [
 //             'code' => 'LCX',
 //             'discount_type' => 'percentage',
-//             'region' => Region::first()->uuid,
+//             'region' => Region::first()->ulid,
 //             'value' => 23.2,
 //             'description' => 'hello',
 //             'conditions' => 0,
@@ -44,11 +44,11 @@
 
 //     $response->assertStatus(200);
 
-//     $discount_rule_uuid = $response->json('discount_rule.id');
+//     $discount_rule_ulid = $response->json('discount_rule.id');
 //     $discount_code = $response->json('code');
 
 //     $this->assertDatabaseHas(Discount::class, ['code' => $discount_code]);
-//     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
+//     $this->assertDatabaseHas(DiscountRule::class, ['ulid' => $discount_rule_ulid]);
 // });
 
 // it('can store fixed discount without conditions ', function ($allocation) {
@@ -61,7 +61,7 @@
 //         [
 //             'code' => 'LCX',
 //             'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-//             'region' => Region::first()->uuid,
+//             'region' => Region::first()->ulid,
 //             'value' => 23.2,
 //             'allocation' => $allocation,
 //             'description' => 'hello',
@@ -71,11 +71,11 @@
 
 //     $response->assertStatus(200);
 
-//     $discount_rule_uuid = $response->json('discount_rule.id');
+//     $discount_rule_ulid = $response->json('discount_rule.id');
 //     $discount_code = $response->json('code');
 
 //     $this->assertDatabaseHas(Discount::class, ['code' => $discount_code]);
-//     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
+//     $this->assertDatabaseHas(DiscountRule::class, ['ulid' => $discount_rule_ulid]);
 // })->with([
 //     'item_specific',
 //     'total_amount',
@@ -92,7 +92,7 @@
 //             'code' => 'LCX',
 //             'discount_type' => 'free_shipping',
 //             'value' => 0,
-//             'region' => Region::first()->uuid,
+//             'region' => Region::first()->ulid,
 //             'description' => 'hello',
 //             'conditions' => 0,
 //         ]
@@ -100,11 +100,11 @@
 
 //     $response->assertStatus(200);
 
-//     $discount_rule_uuid = $response->json('discount_rule.id');
+//     $discount_rule_ulid = $response->json('discount_rule.id');
 //     $discount_code = $response->json('code');
 
 //     $this->assertDatabaseHas(Discount::class, ['code' => $discount_code]);
-//     $this->assertDatabaseHas(DiscountRule::class, ['uuid' => $discount_rule_uuid]);
+//     $this->assertDatabaseHas(DiscountRule::class, ['ulid' => $discount_rule_ulid]);
 // });
 
 // it('can update percentage discount', function () {
@@ -126,11 +126,11 @@
 
 //     login($user);
 
-//     $response = $this->putJson(action([DiscountController::class, 'update'], $discount->uuid),
+//     $response = $this->putJson(action([DiscountController::class, 'update'], $discount->ulid),
 //         [
 //             'code' => $code,
 //             'discount_type' => 'percentage',
-//             'region' => $region->uuid,
+//             'region' => $region->ulid,
 //             'value' => $value,
 //             'description' => $description,
 //             'usage_limit' => $usage_limit,
@@ -165,7 +165,7 @@
 
 //     login($user);
 
-//     $response = $this->deleteJson(action([DiscountController::class, 'destroy'], $discount->uuid));
+//     $response = $this->deleteJson(action([DiscountController::class, 'destroy'], $discount->ulid));
 
 //     $response->assertStatus(200);
 

@@ -24,7 +24,7 @@ class CartItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'variant_id' => 'required|exists:variants,uuid',
+            'variant_id' => 'required|exists:variants,ulid',
             'quantity' => 'required|integer|min:1',
         ];
     }

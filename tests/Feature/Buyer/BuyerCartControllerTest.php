@@ -46,7 +46,7 @@ it('can add an item to the cart', function () {
 
     $items_json = [
         [
-            'variant_id' => $variant1->uuid,
+            'variant_id' => $variant1->ulid,
             'quantity' => $quantity,
         ],
     ];
@@ -85,7 +85,7 @@ it('can remove an item from the cart', function () {
     CartItem::factory()->for($cart)->create(['variant_id' => $variant->id, 'quantity' => $inCart]);
 
     $response = $this->deleteJson(action([BuyerCartController::class, 'remove_from_cart']), [
-        'variant_id' => $variant->uuid,
+        'variant_id' => $variant->ulid,
         'quantity' => $toRemove,
     ]);
 

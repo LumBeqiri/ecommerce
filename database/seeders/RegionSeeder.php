@@ -21,7 +21,7 @@ class RegionSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         $region = [
-            'uuid' => '108860ae-f8d1-4d94-83d8-0e7aa30a38ef',
+            'ulid' => '01J82QCCQQ08YH3AZJEP0B7NRS',
             'title' => 'EU',
             'currency_id' => 1,
             'tax_rate' => 22,
@@ -29,7 +29,7 @@ class RegionSeeder extends Seeder
         ];
 
         $region2 = [
-            'uuid' => '40cf8578-a8e8-4949-8f42-fe053e442937',
+            'ulid' => '01J82QCR6HBPM42MXMWK4B824G',
             'title' => 'ASIA',
             'currency_id' => 2,
             'tax_rate' => 14,

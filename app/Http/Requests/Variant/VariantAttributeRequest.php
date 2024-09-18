@@ -23,7 +23,7 @@ class VariantAttributeRequest extends FormRequest
     {
         return [
             'attributes' => 'array',
-            'attributes.*' => 'required|max:150|string|exists:attributes,uuid',
+            'attributes.*' => 'required|max:150|string|exists:attributes,ulid',
         ];
     }
 }

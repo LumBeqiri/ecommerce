@@ -51,7 +51,7 @@ it('admin can create user', function () {
 
     $user_id = $response->json('id');
 
-    $this->assertDatabaseHas(User::class, ['uuid' => $user_id]);
+    $this->assertDatabaseHas(User::class, ['ulid' => $user_id]);
 });
 
 it('admin can change user password', function () {
@@ -61,7 +61,7 @@ it('admin can change user password', function () {
     $updated = '123456';
     login($user);
 
-    $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->uuid), [
+    $response = $this->putJson(action([AdminUserController::class, 'update'], $userA->ulid), [
         'password' => $updated,
         'password_confirmation' => $updated,
     ]);

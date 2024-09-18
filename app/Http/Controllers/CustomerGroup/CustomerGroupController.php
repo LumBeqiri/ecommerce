@@ -34,7 +34,7 @@ class CustomerGroupController extends ApiController
 
         $customerGroup = $customerGroupService->createCustomerGroup($data['name'], Arr::get($data, 'metadata', ''));
 
-        $users = User::whereIn('uuid', $data['users'])->get();
+        $users = User::whereIn('ulid', $data['users'])->get();
 
         $customerGroup->users()->attach($users);
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PaymentProcessor>
@@ -18,9 +19,9 @@ class PaymentProcessorFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid' => $this->faker->uuid,
+            'ulid' => Str::ulid(),
             'name' => $this->faker->word,
-            'vendor_id' => Vendor::factory()
+            'vendor_id' => Vendor::factory(),
         ];
     }
 }

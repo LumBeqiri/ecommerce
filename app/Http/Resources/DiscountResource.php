@@ -16,7 +16,7 @@ class DiscountResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'uuid' => $this->uuid,
+            'ulid' => $this->ulid,
             'code' => $this->code,
             'is_dynamic' => $this->is_dynamic,
             'is_disabled' => $this->is_disabled,

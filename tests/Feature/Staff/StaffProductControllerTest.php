@@ -35,7 +35,7 @@ it('staff can update product name', function () {
     $updatedName = 'new name';
     login($user);
 
-    $response = $this->putJson(action([StaffProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([StaffProductController::class, 'update'], $product->ulid), [
         'product_name' => $updatedName,
     ]);
 
@@ -58,7 +58,7 @@ it('staff can not update product name of another vendor', function () {
     $updatedName = 'new name';
     login($user);
 
-    $response = $this->putJson(action([StaffProductController::class, 'update'], $product->uuid), [
+    $response = $this->putJson(action([StaffProductController::class, 'update'], $product->ulid), [
         'product_name' => $updatedName,
     ]);
 
@@ -81,7 +81,7 @@ it('staff can delete product', function () {
 
     login($staffUser);
 
-    $response = $this->deleteJson(action([StaffProductController::class, 'destroy'], $product->uuid));
+    $response = $this->deleteJson(action([StaffProductController::class, 'destroy'], $product->ulid));
 
     $response->assertOk();
 
@@ -104,7 +104,7 @@ it('staff can not  delete product of another vendor', function () {
 
     login($staffUser);
 
-    $response = $this->deleteJson(action([StaffProductController::class, 'destroy'], $product->uuid));
+    $response = $this->deleteJson(action([StaffProductController::class, 'destroy'], $product->ulid));
 
     $response->assertForbidden();
 

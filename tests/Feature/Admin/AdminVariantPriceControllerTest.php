@@ -41,9 +41,9 @@ it('admin can update variant pricing', function () {
     $min_quantity = 2;
 
     $response = $this->putJson(
-        action([AdminVariantPriceController::class, 'update'], ['variant' => $variant->uuid, 'variantPrice' => $variantPrice->uuid]),
+        action([AdminVariantPriceController::class, 'update'], ['variant' => $variant->ulid, 'variantPrice' => $variantPrice->ulid]),
         [
-            'region_id' => $region2->uuid,
+            'region_id' => $region2->ulid,
             'price' => $price,
             'min_quantity' => $min_quantity,
             'max_quantity' => $max_quantity,

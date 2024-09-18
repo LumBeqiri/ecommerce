@@ -39,7 +39,7 @@ beforeEach(function () {
 
 //     login($user);
 
-//     $response = $this->getJson(action([AdminTaxProviderController::class, 'show'], $TaxProvider->uuid));
+//     $response = $this->getJson(action([AdminTaxProviderController::class, 'show'], $TaxProvider->ulid));
 
 //     $response->assertOk();
 // });
@@ -71,7 +71,7 @@ beforeEach(function () {
 
 //     $tax_provider_title = $this->faker()->word();
 
-//     $response = $this->putJson(action([AdminTaxProviderController::class, 'update'], $taxProvider->uuid), [
+//     $response = $this->putJson(action([AdminTaxProviderController::class, 'update'], $taxProvider->ulid), [
 //         'tax_provider' => $tax_provider_title,
 //         'is_installed' => 1,
 //     ]);
@@ -88,7 +88,7 @@ beforeEach(function () {
 
 //     login($user);
 
-//     $response = $this->deleteJson(action([AdminTaxProviderController::class, 'destroy'], $taxProvider->uuid));
+//     $response = $this->deleteJson(action([AdminTaxProviderController::class, 'destroy'], $taxProvider->ulid));
 
 //     $response->assertOk();
 

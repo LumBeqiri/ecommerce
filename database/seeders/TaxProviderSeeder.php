@@ -6,6 +6,7 @@ use App\Models\TaxProvider;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class TaxProviderSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class TaxProviderSeeder extends Seeder
         DB::table('tax_providers')->truncate();
         Schema::enableForeignKeyConstraints();
         $tax_provider = [
+            'ulid' => Str::ulid(),
             'tax_provider' => 'default',
             'is_installed' => 1,
         ];

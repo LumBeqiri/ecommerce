@@ -16,7 +16,7 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->uuid,
+            'id' => $this->ulid,
             'buyer' => new BuyerResource($this->buyer),
             'shipping_name' => $this->shipping_name,
             'shipping_address' => $this->shipping_address,

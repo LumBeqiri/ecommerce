@@ -45,7 +45,7 @@ class BuyerCartController extends ApiController
     {
         $data = $request->validated();
 
-        $variant = Variant::where('uuid', $data['variant_id'])->first();
+        $variant = Variant::where('ulid', $data['variant_id'])->first();
 
         /**
          * @var Cart $cart

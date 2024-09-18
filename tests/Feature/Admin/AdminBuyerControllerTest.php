@@ -31,7 +31,7 @@ it('admin can update buyer first name and last name', function () {
     $admin->assignRole('admin');
     login($admin);
 
-    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->uuid), [
+    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->ulid), [
         'first_name' => $updatedFirstName,
         'last_name' => $updatedLastName,
     ]);
@@ -50,7 +50,7 @@ it('admin can update buyer city', function () {
     $updated = 'Tirana';
     login($user);
 
-    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->uuid), [
+    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->ulid), [
         'city' => $updated,
     ]);
 
@@ -69,7 +69,7 @@ it('admin can update buyer country', function () {
 
     login($user);
 
-    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->uuid), [
+    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->ulid), [
         'country_id' => $new_country->id,
     ]);
 
@@ -86,7 +86,7 @@ it('admin can update buyer phone', function () {
     $updated = '123456';
     login($user);
 
-    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->uuid), [
+    $response = $this->putJson(action([AdminBuyerController::class, 'update'], $userA->ulid), [
         'phone' => $updated,
     ]);
 
