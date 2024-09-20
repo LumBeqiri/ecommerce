@@ -17,10 +17,12 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid');
-            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('buyer_id')->constrained('buyers');
             $table->integer('total_cart_price')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->boolean('has_been_discounted')->default(false);
+            $table->foreignId('payment_id')->nullable()->constrained('payments');
+            $table->foreignId('vendor_id')->nullable()->constrained('vendors');
             $table->foreignIdFor(Region::class, 'region_id')->constrained();
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ class CreateDiscountsTable extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid');
-            $table->foreignId('seller_id')->constrained('users');
+            $table->foreignId('vendor_id')->nullable()->constrained('vendors');
             $table->string('code');
             $table->boolean('is_dynamic')->nullable();
             $table->boolean('is_disabled')->default(false)->nullable();
@@ -27,6 +27,7 @@ class CreateDiscountsTable extends Migration
             $table->timestamp('ends_at')->nullable();
             $table->integer('usage_limit')->nullable();
             $table->integer('usage_count')->nullable();
+
             $table->timestamps();
         });
     }

@@ -31,7 +31,6 @@ class CreateVariantsTable extends Migration
             $table->string('upc')->nullable();
             $table->boolean('allow_backorder')->nullable();
             $table->string('material', 255)->nullable();
-
             $table->integer('weight')->nullable();
             $table->string('weight_unit')->nullable();
 

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('customer_group_user', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->deleteOnCascade();
+            $table->foreignId('buyer_id')->constrained('buyers')->cascadeOnDelete();
             $table->foreignId('customer_group_id')->constrained('customer_groups')->deleteOnCascade();
             $table->timestamps();
         });
