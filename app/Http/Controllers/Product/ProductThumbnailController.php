@@ -6,9 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Media\MediaRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 
 class ProductThumbnailController extends ApiController
 {
@@ -18,17 +16,10 @@ class ProductThumbnailController extends ApiController
 
         $this->authorize('update', $product);
 
-        $thumbnail = $request->thumbnail;
-
-        if ($product->thumbnail) {
-            Storage::disk('images')->delete($product->thumbnail);
+        if ($request->hasFile('thumbnail')) {
+            $product->addMediaFromRequest('thumbnail')
+                ->toMediaCollection('thumbnails');
         }
-
-        $upload = $thumbnail->store('', 'images');
-
-        $product->thumbnail = $upload;
-
-        $product->save();
 
         return $this->showOne(new ProductResource($product));
     }
@@ -37,20 +28,7 @@ class ProductThumbnailController extends ApiController
     {
         $this->authorize('delete', $product);
 
-        $thumbnail = $product->thumbnail;
-
-        if ($thumbnail === null) {
-            return $this->showMessage('This product has no thumbnail!');
-        }
-
-        try {
-            Storage::disk('images')->delete($thumbnail);
-        } catch (Exception $e) {
-        }
-
-        $product->thumbnail = null;
-
-        $product->save();
+        $product->clearMediaCollection('thumbnails');
 
         return $this->showMessage('Thumbnail Removed Successfully');
     }

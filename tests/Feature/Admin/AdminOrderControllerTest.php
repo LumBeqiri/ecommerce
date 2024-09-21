@@ -7,6 +7,7 @@ use App\Models\Buyer;
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Region;
 use App\Models\TaxProvider;
 use App\Models\User;
@@ -15,16 +16,19 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
+    User::flushEventListeners();
+
     Currency::factory()->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
+    Payment::factory()->create();
     $this->seed(RoleAndPermissionSeeder::class);
     Notification::fake();
     Bus::fake();
 });
 
-it('admin can update order', function () {
+test('admin can update order', function () {
     $user = User::factory()->create(['email' => 'lumadmin@example.com']);
     $buyer = Buyer::factory()->create();
     $order = Order::factory()->for($buyer)->create();

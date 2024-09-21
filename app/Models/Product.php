@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
     use HasFactory;
     use HasUlids;
+    use InteractsWithMedia;
     use SoftDeletes;
 
     public const AVAILABLE_PRODUCT = 'available';
@@ -60,9 +62,11 @@ class Product extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function medias(): MorphMany
+    public function registerMediaCollections(): void
     {
-        return $this->morphMany(Media::class, 'mediable');
+        $this
+            ->addMediaCollection('thumbnails')
+            ->singleFile();
     }
 
     public function variant_prices(): HasManyThrough

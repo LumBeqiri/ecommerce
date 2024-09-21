@@ -24,7 +24,7 @@ class MediaRequest extends FormRequest
     public function rules()
     {
         return [
-            'media' => 'mimes:jpeg,jpg,png|max:2000',
+            'thumbnail' => 'mimes:jpeg,jpg,png|max:2000',
         ];
     }
 }

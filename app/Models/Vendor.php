@@ -29,4 +29,14 @@ class Vendor extends Model
     {
         return $this->hasMany(PaymentProcessor::class);
     }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function ownsProduct(Product $product): bool
+    {
+        return $this->id === $product->vendor_id;
+    }
 }

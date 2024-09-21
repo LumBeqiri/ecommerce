@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\Staff\RegisterStaffController;
+use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Vendor\VendorPermissionManagerController;
 use App\Http\Controllers\Vendor\VendorProductController;
 use App\Http\Controllers\Vendor\VendorVariantAttributeController;
@@ -14,6 +15,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('products/{product}', [VendorProductController::class, 'show']);
     Route::put('products/{product}', [VendorProductController::class, 'update']);
     Route::delete('products/{product}', [VendorProductController::class, 'destroy']);
+
+    Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
+    Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
 
     Route::post('variants', [VendorVariantController::class, 'store']);
     Route::get('variants/{variant}', [VendorVariantController::class, 'show']);

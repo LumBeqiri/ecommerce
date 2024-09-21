@@ -23,7 +23,6 @@ class CreateProductsTable extends Migration
             $table->string('publish_status')->default(Product::DRAFT);
             $table->boolean('discountable')->default(0);
             $table->foreignId('origin_country')->nullable()->constrained('countries');
-            $table->string('thumbnail')->nullable();
             $table->foreignId('discount_id')->nullable()->constrained('discounts');
             $table->timestamps();
             $table->softDeletes();

@@ -1,5 +1,5 @@
-@component('mail::message')
-# Hello {{$user->name}}
+<!-- @component('mail::message')
+# Hello {{$user->first_name}}
 
 Thank you for creating an account with us. Please verify your email using this button:
 
@@ -9,4 +9,4 @@ Verify Account
 
 Thanks,<br>
 {{ config('app.name') }}
-@endcomponent
+@endcomponent -->
