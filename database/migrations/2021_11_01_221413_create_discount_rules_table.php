@@ -18,9 +18,11 @@ return new class extends Migration
             $table->ulid();
             $table->string('description');
             $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();
-            $table->enum('discount_type', ['fixed_amount', 'percentage', 'free_shipping']);
+            // instead of enum use string
+            $table->string('discount_type');
+            $table->string('operator')->default('in');
             $table->double('value', 8, 2);
-            $table->enum('allocation', ['total_amount', 'item_specific'])->nullable();
+            $table->string('allocation')->nullable();
             $table->json('metadata')->nullable();
 
             $table->timestamps();

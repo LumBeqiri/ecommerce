@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Variant extends Model
+class Variant extends Model implements HasMedia
 {
     use HasFactory;
     use HasUlids;
+    use InteractsWithMedia;
     use SoftDeletes;
 
     protected $guarded = [];
@@ -23,11 +25,6 @@ class Variant extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function medias(): MorphMany
-    {
-        return $this->morphMany(Media::class, 'mediable');
     }
 
     public function attributes(): BelongsToMany
@@ -49,5 +46,11 @@ class Variant extends Model
     {
         return $this->belongsToMany(Order::class)
             ->withTimestamps();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('variants');
     }
 }

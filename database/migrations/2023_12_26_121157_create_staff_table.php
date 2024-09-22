@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->foreignId('country_id')->constrained('countries');
-            $table->date('start_date');
+            $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->timestamps();
 

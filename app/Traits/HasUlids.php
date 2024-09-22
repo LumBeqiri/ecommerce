@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 trait HasUlids
 {
-    public static function bootHasUlid(): void
+    public static function bootHasUlids(): void
     {
         static::creating(function (Model $model): void {
             /** @phpstan-ignore-next-line */

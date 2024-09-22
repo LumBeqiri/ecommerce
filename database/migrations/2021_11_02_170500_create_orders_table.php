@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid');
-            $table->foreignId('buyer_id')->constrained('users');
+            $table->foreignId('buyer_id')->constrained('buyers');
             $table->string('shipping_name')->nullable();
             $table->string('shipping_address');
             $table->string('shipping_city');
@@ -28,8 +28,7 @@ class CreateOrdersTable extends Migration
             $table->string('order_shipped')->default(false);
             $table->string('order_email');
             $table->string('order_phone');
-            $table->integer('payment_id');
-
+            $table->foreignId('payment_id')->nullable()->constrained('payments');
             $table->timestamps();
         });
     }

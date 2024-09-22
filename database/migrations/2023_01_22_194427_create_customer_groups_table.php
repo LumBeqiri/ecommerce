@@ -18,7 +18,7 @@ return new class extends Migration
             $table->ulid();
             $table->string('name', 255);
             $table->json('metadata')->nullable();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('buyer_id')->constrained('buyers')->cascadeOnDelete();
             $table->timestamps();
         });
     }

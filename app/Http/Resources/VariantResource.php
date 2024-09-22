@@ -25,7 +25,7 @@ class VariantResource extends JsonResource
             'stock' => $this->stock,
             'status' => $this->status,
             'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
-            'medias' => MediaResource::collection($this->medias),
+            'medias' => MediaResource::collection($this->getMedia()),
             'attributes' => AttributeResource::collection($this->whenLoaded('attributes')),
         ];
     }

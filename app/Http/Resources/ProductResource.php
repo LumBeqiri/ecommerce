@@ -18,9 +18,11 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->ulid,
             'product_name' => $this->product_name,
-            'seller' => new UserResource($this->whenLoaded('vendor')->user),
+            'vendor' => new VendorResource($this->whenLoaded('vendor')),
             'status' => $this->status,
-            'thumbnail' => $this->thumbnail,
+            // use spatie media to get the thumbnail
+            'thumbnail' => $this->getMedia('thumbnails'),
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
             'variants' => VariantResource::collection($this->whenLoaded('variants')),
             'publish_status' => $this->publish_status,
