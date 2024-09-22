@@ -6,11 +6,10 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Media\MediasRequest;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\VariantResource;
-use App\Models\Media;
 use App\Models\Variant;
-use App\Services\UploadImageService;
+use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AdminVariantMediaController extends ApiController
 {
@@ -21,27 +20,37 @@ class AdminVariantMediaController extends ApiController
         return $this->showAll(MediaResource::collection($medias));
     }
 
-    public function store(MediasRequest $request, Variant $variant, UploadImageService $uploadImageService): JsonResponse
+    public function store(MediasRequest $request, Variant $variant): JsonResponse
     {
-        $medias = $request->file('medias');
+        $medias = $request->file('files');
 
         try {
-            $uploadImageService->upload($variant, $medias, Variant::class);
-        } catch (\Throwable $th) {
-            return $this->showError('Something went wrong');
+            // Loop through each media file and upload it to Spatie's media collection
+            foreach ($medias as $media) {
+                $variant->addMedia($media)
+                    ->toMediaCollection('variants');
+            }
+        } catch (Exception $ex) {
+            return $this->showError($ex->getMessage());
         }
 
         return $this->showOne(new VariantResource($variant));
     }
 
-    public function destroy(Variant $variant, Media $media): JsonResponse
+    public function destroy(Variant $variant, $media_uuid): JsonResponse
     {
-        Storage::disk('images')->delete($media->path);
+        $media = Media::where('uuid', $media_uuid)->firstOrFail();
+        // Ensure the media belongs to the specified variant
+        if ($variant->id !== $media->model_id) {
+            return $this->showError('This media does not belong to the specified variant.');
+        }
 
-        Media::where('id', $media->id)
-            ->where('mediable_id', $variant->id)
-            ->where('mediable_type', $media->mediable_type)
-            ->delete();
+        try {
+            // Delete the media using Spatie's delete method
+            $media->delete();
+        } catch (Exception $ex) {
+            return $this->showError($ex->getMessage(), $ex->getCode());
+        }
 
         return $this->showMessage('Image deleted successfully!');
     }

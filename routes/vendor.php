@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
 use App\Http\Controllers\Auth\Staff\RegisterStaffController;
 use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Vendor\VendorPermissionManagerController;
@@ -23,6 +24,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('variants/{variant}', [VendorVariantController::class, 'show']);
     Route::put('variants/{variant}', [VendorVariantController::class, 'update']);
     Route::delete('variants/{variant}', [VendorVariantController::class, 'destroy']);
+
+    Route::get('variants/{variant}/medias', [AdminVariantMediaController::class, 'index']);
+    Route::post('variants/{variant}/medias', [AdminVariantMediaController::class, 'store']);
+    Route::delete('variants/{variant}/medias/{media_id}', [AdminVariantMediaController::class, 'destroy']);
 
     Route::get('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'index']);
     Route::put('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'update']);

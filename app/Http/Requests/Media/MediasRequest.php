@@ -24,8 +24,8 @@ class MediasRequest extends FormRequest
     public function rules()
     {
         return [
-            'medias' => 'sometimes|array',
-            'medias.*' => 'mimes:jpeg,jpg,png|max:2000',
+            'files' => 'sometimes|array',
+            'files.*' => 'mimes:jpeg,jpg,png|max:2000',
         ];
     }
 }
