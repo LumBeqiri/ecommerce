@@ -10,11 +10,7 @@ class Currency extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'code',
-        'symbol',
-    ];
+    protected $guarded = [];
 
     public function regions(): HasMany
     {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Staff\StaffVariantPriceController;
 use App\Models\Country;
+use App\Models\Currency;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\Staff;
@@ -26,7 +27,7 @@ it('staff can create variant pricing', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     Country::factory()->create();
-
+    $currency = Currency::where('code', 'EUR')->first();
     $vendorUser = User::factory()->create();
     $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
@@ -47,6 +48,7 @@ it('staff can create variant pricing', function () {
     $response = $this->postJson(action([StaffVariantPriceController::class, 'store'], $variant->ulid), [
         'region_id' => $region->ulid,
         'price' => $price,
+        'currency_id' => $currency->id,
         'min_quantity' => $min_quantity,
         'max_quantity' => $max_quantity,
     ]);
