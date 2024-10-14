@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Currency;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\Variant;
@@ -36,6 +37,7 @@ class VariantService
             [
                 'price' => $money->getMinorAmount()->toInt(),
                 'region_id' => $region->id,
+                'currency_id' => Currency::find($data['currency_id'])->id,
                 'variant_id' => $variant->id,
                 'min_quantity' => $data['min_quantity'],
                 'max_quantity' => $data['max_quantity'],

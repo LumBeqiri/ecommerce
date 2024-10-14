@@ -11,6 +11,7 @@ class StoreVariantPriceRequest extends FormRequest
      */
     public function authorize(): bool
     {
+
         return true;
     }
 
@@ -21,9 +22,11 @@ class StoreVariantPriceRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'region_id' => 'required|exists:regions,ulid',
             'price' => 'required|numeric|min:1',
+            'currency_id' => 'required|numeric|exists:currencies,id',
             'min_quantity' => 'required|integer|min:1',
             'max_quantity' => 'required|integer|min:1|gte:min_quantity',
         ];

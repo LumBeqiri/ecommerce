@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Vendor\VendorVariantPriceController;
 use App\Models\Country;
+use App\Models\Currency;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\TaxProvider;
@@ -21,36 +22,38 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('vendor can create variant pricing', function () {
+test('vendor can create variant pricing', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     Country::factory()->create();
-
     $user = User::factory()->create();
     $vendor = Vendor::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->create(['product_id' => $product->id]);
 
     $user->assignRole('vendor');
+    $user->givePermissionTo('update-products');
+
     login($user);
 
     $price = 120;
     $max_quantity = 5;
     $min_quantity = 2;
 
+    $currency = Currency::where('code', 'EUR')->first();
     $response = $this->postJson(action([VendorVariantPriceController::class, 'store'], $variant->ulid), [
         'region_id' => $region->ulid,
         'price' => $price,
+        'currency_id' => $currency->id,
         'min_quantity' => $min_quantity,
         'max_quantity' => $max_quantity,
     ]);
-
     $response->assertOk();
 
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
 
-it('vendor can update variant pricing', function () {
+test('vendor can update variant pricing', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     $region2 = Region::factory()->create();
@@ -84,7 +87,7 @@ it('vendor can update variant pricing', function () {
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region2->id]);
 });
 
-it('vendor can not update variant pricing of another vendor', function () {
+test('vendor can not update variant pricing of another vendor', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     $region2 = Region::factory()->create();
@@ -120,7 +123,7 @@ it('vendor can not update variant pricing of another vendor', function () {
     $this->assertDatabaseHas(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
 
-it('vendor can delete variant pricing', function () {
+test('vendor can delete variant pricing', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     Country::factory()->create();
@@ -143,7 +146,7 @@ it('vendor can delete variant pricing', function () {
     $this->assertSoftDeleted(VariantPrice::class, ['variant_id' => $variant->id, 'region_id' => $region->id]);
 });
 
-it('vendor can not delete variant pricing of another vendor', function () {
+test('vendor can not delete variant pricing of another vendor', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     Country::factory()->create();

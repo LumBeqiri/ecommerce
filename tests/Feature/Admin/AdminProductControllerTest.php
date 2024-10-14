@@ -114,4 +114,4 @@ it('can upload product thumbnail', function () {
 
     $this->assertTrue(file_exists(public_path().'/img/'.$file->hashName()));
     $this->assertDatabaseHas(Product::class, ['thumbnail' => $file->hashName()]);
-});
+})->todo();

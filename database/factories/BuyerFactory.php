@@ -22,13 +22,7 @@ class BuyerFactory extends Factory
 
         return [
             'ulid' => Str::ulid(),
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'city' => $this->faker->city,
-            'country_id' => Country::all()->random()->id,
-            'zip' => 5000,
             'shipping_address' => $this->faker->address,
-            'phone' => $this->faker->phoneNumber,
             'user_id' => User::all()->random()->id,
         ];
     }
@@ -44,6 +38,23 @@ class BuyerFactory extends Factory
             return [
                 'email_verified_at' => null,
             ];
+        });
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Buyer $buyer) {
+            $buyer->user->user_settings()->create([
+                'first_name' => $this->faker->firstName,
+                'last_name' => $this->faker->lastName,
+                //fix below fields to use faker
+                'phone' => $this->faker->phoneNumber,
+                'city' => $this->faker->city,
+                'country_id' => Country::inRandomOrder()->first()->id,
+                'zip' => $this->faker->postcode,
+                'user_id' => $buyer->user_id,
+
+            ]);
         });
     }
 }

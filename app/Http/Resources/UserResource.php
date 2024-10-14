@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'role' => $this->getRoleNames()->first(),
             'region' => new RegionResource($this->whenLoaded('region')),
             'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
+            'user_settings' => new UserSettingsResource($this->whenLoaded('user_settings')),
         ];
     }
 }

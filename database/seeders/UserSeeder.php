@@ -45,8 +45,6 @@ class UserSeeder extends Seeder
 
         Buyer::factory()->create([
             'user_id' => $buyerUser->id,
-            'first_name' => 'Lejla',
-            'last_name' => 'Buyer',
         ]);
 
         User::factory($usersQuantity)->create();

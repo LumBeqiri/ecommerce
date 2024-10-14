@@ -23,7 +23,7 @@ beforeEach(function () {
     Country::factory()->create();
 });
 
-it('staff can update product name', function () {
+test('staff can update product name', function () {
     $user = User::factory()->create();
     $vendor = Vendor::factory()->create();
 

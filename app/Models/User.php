@@ -73,6 +73,11 @@ class User extends Authenticatable
         return Str::random(40);
     }
 
+    public function user_settings(): HasOne
+    {
+        return $this->hasOne(UserSettings::class);
+    }
+
     public function cart(): HasOne
     {
         return $this->hasOne(Cart::class);

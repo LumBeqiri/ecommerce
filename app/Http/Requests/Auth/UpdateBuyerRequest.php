@@ -24,8 +24,6 @@ class UpdateBuyerRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'sometimes|string|max:191',
-            'last_name' => 'sometimes|string|max:191',
             'city' => 'sometimes|string|max:191',
             'country_id' => 'sometimes|exists:countries,id',
             'zip' => 'sometimes|integer',
