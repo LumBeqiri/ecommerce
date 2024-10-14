@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Country;
 use App\Models\Staff;
 use App\Models\User;
 use App\Models\Vendor;
@@ -27,16 +26,11 @@ class StaffFactory extends Factory
         return [
             'ulid' => Str::ulid(),
             'user_id' => User::factory(),
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
             'position' => $this->faker->jobTitle,
-            'phone' => $this->faker->phoneNumber,
-            'city' => $this->faker->city,
             'status' => $this->faker->randomElement([UserStatusTypes::ACTIVE, UserStatusTypes::INACTIVE]),
             'notes' => $this->faker->text(200),
             'address' => $this->faker->address,
             'vendor_id' => Vendor::factory(),
-            'country_id' => Country::factory(),
             'start_date' => $this->faker->date,
             'end_date' => $this->faker->optional()->date,
         ];

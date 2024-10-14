@@ -15,16 +15,11 @@ return new class extends Migration
             $table->id();
             $table->ulid('ulid');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('first_name');
-            $table->string('last_name');
             $table->string('position');
-            $table->string('phone')->nullable();
-            $table->string('city')->nullable();
             $table->string('status')->nullable();
             $table->string('notes', 500)->nullable();
             $table->string('address')->nullable();
             $table->foreignId('vendor_id')->constrained('vendors');
-            $table->foreignId('country_id')->constrained('countries');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->timestamps();
