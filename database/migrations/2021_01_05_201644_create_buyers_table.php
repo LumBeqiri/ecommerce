@@ -14,13 +14,7 @@ return new class extends Migration
         Schema::create('buyers', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('city')->nullable();
-            $table->foreignId('country_id')->constrained();
-            $table->integer('zip')->nullable();
             $table->string('shipping_address')->nullable();
-            $table->string('phone')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
 
