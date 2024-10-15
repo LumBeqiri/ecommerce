@@ -9,6 +9,7 @@ use App\Http\Resources\VariantResource;
 use App\Models\Variant;
 use App\Models\VariantPrice;
 use App\Services\VariantService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class StaffVariantPriceController extends ApiController
@@ -22,9 +23,15 @@ class StaffVariantPriceController extends ApiController
     {
         $this->authorize('update', $variant);
 
-        $variantService->addVariantPrice($variant, $request->validated());
+        try {
+            $variantService->addVariantPrice($variant, $request->validated());
 
-        return $this->showOne(new VariantResource($variant->load(['variant_prices'])));
+            return $this->showOne(new VariantResource($variant->load(['variant_prices'])));
+
+        } catch (Exception $ex) {
+            return $this->showError(message: $ex->getMessage(), code: $ex->getCode());
+        }
+
     }
 
     public function update(UpdateVariantPriceRequest $request, Variant $variant, VariantPrice $variantPrice, VariantService $variantService): JsonResponse
