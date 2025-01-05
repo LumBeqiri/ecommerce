@@ -9,6 +9,7 @@ use App\Http\Requests\Cart\CartItemRequest;
 use App\Http\Requests\Cart\CartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Variant;
 use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
@@ -35,16 +36,13 @@ class CartItemController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    public function remove_from_cart(CartItemRequest $request): JsonResponse
+    public function remove_from_cart(Cart $cart, CartItemRequest $request): JsonResponse
     {
         $data = $request->validated();
 
-        $variant = Variant::where('ulid', $data['variant_id'])->first();
+        $this->authorize('manageCart', $cart);
 
-        /**
-         * @var Cart $cart
-         * */
-        $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
+        $variant = Variant::where('ulid', $data['variant_id'])->first();
 
         if ($cart === null) {
             return $this->errorResponse('Shopping cart missing', 404);
@@ -78,8 +76,10 @@ class CartItemController extends ApiController
             }
 
             CartService::calculateCartPrice($cart->refresh());
+
             DB::commit();
         } catch (CartException $ex) {
+
             DB::rollBack();
 
             return $this->showError($ex->getMessage(), $ex->getCode());
