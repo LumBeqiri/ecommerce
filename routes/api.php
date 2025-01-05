@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Cart\CartController;
@@ -45,8 +44,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('customer-groups', [CustomerGroupController::class, 'index']);
     Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
     Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
-
-    Route::post('apply-discount', [BuyerCartController::class, 'apply_discount']);
 
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });
