@@ -6,6 +6,7 @@ use App\Exceptions\CartException;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\Region;
 use App\Models\Variant;
 
 class CartService
@@ -45,7 +46,7 @@ class CartService
 
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
-        }])->whereIn('ulid', $variant_ids)->get();
+        }])->whereIn('ulid', $variant_ids)->get()->keyBy('ulid');
 
         foreach ($items as $item) {
             $variant = $variants->first(function ($variant) use ($item) {
@@ -78,7 +79,7 @@ class CartService
         return $cart;
     }
 
-    private static function validateCartItem(array $item, $variant, $cart, $region): bool
+    private static function validateCartItem(array $item, Variant $variant, Cart $cart, Region $region): bool
     {
         if ($variant->status === Product::UNAVAILABLE_PRODUCT) {
             throw new CartException('Product is not available', 404);
