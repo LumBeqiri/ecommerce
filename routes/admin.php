@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
-use App\Http\Controllers\Admin\Cart\AdminCartController;
 use App\Http\Controllers\Admin\Category\AdminCategoryController;
 use App\Http\Controllers\Admin\Discount\DiscountController;
 use App\Http\Controllers\Admin\Order\AdminOrderController;
@@ -45,11 +44,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('variants/{variant}/prices', [AdminVariantPriceController::class, 'store']);
     Route::put('variants/{variant}/prices/{variantPrice}', [AdminVariantPriceController::class, 'update']);
     Route::delete('variants/{variant}/prices/{variantPrice}', [AdminVariantPriceController::class, 'destroy']);
-
-    Route::get('carts', [AdminCartController::class, 'index']);
-    Route::put('carts/{cart}', [AdminCartController::class, 'update']);
-    Route::delete('carts/{cart}/variants/{variant}', [AdminCartController::class, 'remove_from_cart']);
-    Route::delete('carts/{cart}', [AdminCartController::class, 'destroy']);
 
     Route::resource('attributes', AdminAttributeController::class);
 
