@@ -25,41 +25,41 @@ beforeEach(function () {
     Bus::fake();
 });
 
-// it('can add an item to the cart', function () {
-//     Currency::factory()->create();
-//     TaxProvider::factory()->create();
-//     $region = Region::factory()->create(['id' => 1]);
-//     $country = Country::factory()->for($region)->create();
-//     $seller = User::factory()->create();
-//     $buyer = Buyer::factory()->create();
+it('can add an item to the cart', function () {
+    Currency::factory()->create();
+    TaxProvider::factory()->create();
+    $region = Region::factory()->create(['id' => 1]);
+    $country = Country::factory()->for($region)->create();
+    $seller = User::factory()->create();
+    $buyer = Buyer::factory()->create();
 
-//     $buyer->user->region_id = 1;
-//     $buyer->save();
+    $buyer->user->region_id = 1;
+    $buyer->save();
 
-//     $vendor = Vendor::factory()->for($seller)->create();
-//     $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
-//     $variant1 = Variant::factory()->available()->published()->for($product)->create(['stock' => 50]);
-//     VariantPrice::factory()->for($variant1)->create();
-//     $quantity = 2;
+    $vendor = Vendor::factory()->for($seller)->create();
+    $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
+    $variant1 = Variant::factory()->available()->published()->for($product)->create(['stock' => 50]);
+    VariantPrice::factory()->for($variant1)->create();
+    $quantity = 2;
 
-//     login($buyer);
+    login($buyer);
 
-//     $items_json = [
-//         [
-//             'variant_id' => $variant1->ulid,
-//             'quantity' => $quantity,
-//         ],
-//     ];
+    $items_json = [
+        [
+            'variant_id' => $variant1->ulid,
+            'quantity' => $quantity,
+        ],
+    ];
 
-//     $response = $this->postJson(action([BuyerCartController::class, 'add_to_cart']), [
-//         'items' => $items_json,
-//     ]);
+    $response = $this->postJson(action([BuyerCartController::class, 'add_to_cart']), [
+        'items' => $items_json,
+    ]);
 
-//     $response->assertOk();
+    $response->assertOk();
 
-//     $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant1->id, 'quantity' => $quantity, 'cart_id' => $buyer->cart->id]);
-//     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-// });
+    $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant1->id, 'quantity' => $quantity, 'cart_id' => $buyer->cart->id]);
+    $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
+});
 
 it('can remove an item from the cart', function () {
     Currency::factory()->create();
