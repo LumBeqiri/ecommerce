@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends ApiController
 {

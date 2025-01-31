@@ -1,20 +1,23 @@
 <?php
 
-use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Models\User;
+use App\Models\Region;
+use App\Models\Vendor;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\User;
-use App\Models\Vendor;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
+use Database\Seeders\CurrencySeeder;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Http\Controllers\Admin\Product\AdminProductController;
+
 
 beforeEach(function () {
+    
     $this->seed(CurrencySeeder::class);
     $this->seed(RoleAndPermissionSeeder::class);
 
@@ -29,6 +32,8 @@ it('admin can update product name', function () {
     User::factory()->count(10)->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
+
+
 
     $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
+
     Currency::factory()->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
@@ -22,13 +23,14 @@ beforeEach(function () {
 });
 
 it('admin can show categories', function () {
+    
     $user = User::factory()->create();
     $user->assignRole('admin');
-
+    
     Category::factory()->create();
-
+    
     login($user);
-
+    
     $response = $this->getJson(action([AdminCategoryController::class, 'index']));
 
     $response->assertOk();
