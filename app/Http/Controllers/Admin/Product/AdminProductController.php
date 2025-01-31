@@ -35,11 +35,6 @@ class AdminProductController extends ApiController
 
         $product = $productService->createProduct($productData);
 
-        Variant::create([
-            'variant_name' => $request->input('product_name'),
-            'product_id' => $product->id,
-        ]);
-
         return $this->showOne(new ProductResource($product));
     }
 

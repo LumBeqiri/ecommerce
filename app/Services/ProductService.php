@@ -34,22 +34,16 @@ class ProductService
             Arr::except($data, 'categories') + ['vendor_id' => $vendor->id]
         );
 
-        $product->categories()->sync($categories);
-
-        return $product;
-    }
-
-    public function createProductAndVariant(array $data): Product
-    {
-        $product = $this->createProduct($data);
-
         Variant::create([
             'variant_name' => $data['product_name'],
             'product_id' => $product->id,
         ]);
 
+        $product->categories()->sync($categories);
+
         return $product->load('variants');
     }
+
 
     public function updateProduct(Product $product, $data): Product
     {
@@ -68,12 +62,11 @@ class ProductService
 
     public function syncProductCategories(Product $product, array $categoriesUlids): Product
     {
-        // If you want to re-use the logic in updateProduct, you could simply call that method,
-        // or separate it out to keep updateProduct focused on updating other fields.
+     
         $categories = Category::whereIn('ulid', $categoriesUlids)->pluck('id');
         $product->categories()->sync($categories);
         
-        // Optionally, update timestamps or other related logic here
+      
         $product->save();
 
         return $product;
@@ -82,7 +75,7 @@ class ProductService
     public function deleteProductCategories(Product $product): Product
     {
         $product->categories()->detach();
-        // If needed, do additional cleanup or logging
+
         return $product;
     }
 }
