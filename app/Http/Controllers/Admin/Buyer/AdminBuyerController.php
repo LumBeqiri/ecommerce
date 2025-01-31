@@ -22,9 +22,7 @@ class AdminBuyerController extends ApiController
 
     public function update(UpdateBuyerRequest $request, Buyer $buyer): JsonResponse
     {
-        $buyer->fill($request->validated());
-
-        $buyer->save();
+        $buyer->update($request->validated());
 
         return $this->showOne(new BuyerResource($buyer));
     }

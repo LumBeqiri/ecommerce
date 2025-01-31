@@ -13,7 +13,6 @@ use App\Http\Controllers\CartItem\CartItemController;
 use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
-use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Product\ProductCategoryController;
@@ -65,7 +64,6 @@ Route::resource('buyers', BuyerController::class);
 Route::resource('categories.buyers', CategoryBuyerController::class);
 Route::resource('categories.products', CategoryProductController::class);
 Route::get('categories/{category}/subs', [CategoryProductController::class, 'subcats']);
-Route::resource('categories.sellers', CategorySellerController::class);
 Route::resource('categories.orders', CategoryOrderController::class);
 
 Route::resource('users', UserController::class);
