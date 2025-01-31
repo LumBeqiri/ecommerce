@@ -14,42 +14,42 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
 
-// beforeEach(function () {
-//     Notification::fake();
-//     Bus::fake();
-//     Currency::factory()->create();
-//     TaxProvider::factory()->create();
-//     Region::factory()->create();
-//     Country::factory()->create();
-//     $this->seed(RoleAndPermissionSeeder::class);
-// });
+beforeEach(function () {
+    Notification::fake();
+    Bus::fake();
+    Currency::factory()->create();
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    $this->seed(RoleAndPermissionSeeder::class);
+});
 
-// it('can store attribute', function () {
+it('can store attribute', function () {
 
-//     $user = User::factory()->create();
+    $user = User::factory()->create();
 
-//     $user->assignRole('admin');
+    $user->assignRole('admin');
 
-//     Vendor::factory()->create([
-//         'country_id' => Country::first()->id,
-//         'user_id' => $user->id,
-//     ]);
+    Vendor::factory()->create([
+        'country_id' => Country::first()->id,
+        'user_id' => $user->id,
+    ]);
 
-//     Product::factory()->create();
+    Product::factory()->create();
 
-//     login($user);
+    login($user);
 
-//     // Define valid attribute data
-//     $attribute_type = 'size';
-//     $attribute_value = 'large';
-//     $attributeData = [
-//         'attribute_type' => $attribute_type,
-//         'attribute_value' => $attribute_value,
-//     ];
+    // Define valid attribute data
+    $attribute_type = 'size';
+    $attribute_value = 'large';
+    $attributeData = [
+        'attribute_type' => $attribute_type,
+        'attribute_value' => $attribute_value,
+    ];
 
-//     $response = $this->postJson(action([AdminAttributeController::class, 'store']), $attributeData);
+    $response = $this->postJson(action([AdminAttributeController::class, 'store']), $attributeData);
 
-//     $response->assertStatus(JsonResponse::HTTP_CREATED);
+    $response->assertStatus(JsonResponse::HTTP_CREATED);
 
-//     $this->assertDatabaseHas(Attribute::class, ['attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
-// });
+    $this->assertDatabaseHas(Attribute::class, ['attribute_type' => $attribute_type, 'attribute_value' => $attribute_value]);
+});

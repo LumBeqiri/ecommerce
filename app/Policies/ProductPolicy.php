@@ -63,7 +63,7 @@ class ProductPolicy
         }
 
         // For staff members
-        return $user->hasPermissionTo('update-products') && $user->staff->vendor_id === $product->vendor_id
+        return $user->hasPermissionTo('update-products','api') && $user->staff->vendor_id === $product->vendor_id
             ? Response::allow()
             : Response::deny('You do not have permission to update this product.');
     }

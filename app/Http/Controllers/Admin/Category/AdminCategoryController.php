@@ -13,6 +13,7 @@ class AdminCategoryController extends ApiController
 {
     public function index(): JsonResponse
     {
+
         $categories = Category::orderBy('id')->get();
 
         return $this->showAll(CategoryResource::collection($categories));

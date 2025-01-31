@@ -1,34 +1,52 @@
 <?php
 
-namespace App\Http\Controllers\CartItem;
+namespace App\Http\Controllers\Buyer;
 
 use App\Exceptions\CartException;
-// use App\Http\Requests\CartRequest;
+use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Cart\CartItemRequest;
 use App\Http\Requests\Cart\CartRequest;
+use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
+use App\Models\User;
 use App\Models\Variant;
 use App\Services\CartService;
+use App\Services\DiscountService;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CartItemController extends ApiController
+class BuyerCheckoutController extends ApiController
 {
+    public function checkout(StoreOrderRequest $request, Cart $cart)
+    {
+        DB::beginTransaction();
+        try {
+
+        } catch (Exception) {
+        }
+    }
+
+    public function index(User $user): JsonResponse
+    {
+        $cart = $user->buyer->cart()->with('cart_items')->first();
+
+        return $this->showOne(new CartResource($cart));
+    }
+
+    // @phpstan-ignore-next-line
     public function add_to_cart(CartRequest $request)
     {
         $data = $request->validated();
         $items = $data['items'];
 
-        DB::beginTransaction();
         try {
             $cart = CartService::saveItemsToCart($items);
             CartService::calculateCartPrice($cart);
-            DB::commit();
         } catch (CartException $ex) {
-            DB::rollBack();
-
             return $this->showError($ex->getMessage(), $ex->getCode());
         }
 
@@ -40,51 +58,55 @@ class CartItemController extends ApiController
         $data = $request->validated();
 
         $variant = Variant::where('ulid', $data['variant_id'])->first();
-
-        /**
-         * @var Cart $cart
-         * */
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
         if ($cart === null) {
             return $this->errorResponse('Shopping cart missing', 404);
         }
 
-        if ($cart->isEmpty()) {
+        if (count($cart->cart_items) == 0) {
             $cart->total_cart_price = 0;
             $cart->save();
 
             return $this->showOne(new CartResource($cart));
         }
 
-        /**
-         * @var CartItem $cart_item
-         */
         $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
 
         if ($cart_item->quantity < $data['quantity']) {
             return $this->errorResponse('You have less than '.$data['quantity'].' items', 422);
         }
 
+        $cart_item->quantity -= $data['quantity'];
+
+        if ($cart_item->quantity == 0) {
+            $cart_item->delete();
+        } else {
+            $cart_item->save();
+        }
+
+        CartService::calculateCartPrice($cart->refresh());
+
+        return $this->showOne(new CartResource($cart->load('cart_items')));
+    }
+
+    public function apply_discount(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ], [$request->code]);
+
+        $cart = auth()->user()->buyer->cart;
         DB::beginTransaction();
         try {
-
-            $cart_item->quantity -= $data['quantity'];
-
-            if ($cart_item->isEmpty()) {
-                $cart_item->delete();
-            } else {
-                $cart_item->save();
-            }
-
-            CartService::calculateCartPrice($cart->refresh());
+            DiscountService::applyDiscount($cart, $request->code);
             DB::commit();
-        } catch (CartException $ex) {
+        } catch (DiscountException $ex) {
             DB::rollBack();
 
             return $this->showError($ex->getMessage(), $ex->getCode());
         }
 
-        return $this->showOne(new CartResource($cart->load('cart_items')));
+        return new CartResource($cart);
     }
 }

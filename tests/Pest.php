@@ -1,11 +1,9 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Illuminate\Foundation\Testing\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
-use Tests\CreatesApplication;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +12,13 @@ use Tests\CreatesApplication;
 |
 | The closure you provide to your test functions is always bound to a specific PHPUnit test
 | case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "uses()" function to bind a different classes or traits.
+| need to change it using the "pest()" function to bind a different classes or traits.
 |
 */
 
-uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class, WithFaker::class)->in('Feature');
+pest()->extend(Tests\TestCase::class)
+    ->use(LazilyRefreshDatabase::class, WithFaker::class)
+    ->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

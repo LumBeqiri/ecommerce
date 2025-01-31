@@ -20,6 +20,7 @@ class Product extends Model implements HasMedia
     use InteractsWithMedia;
     use SoftDeletes;
 
+
     public const AVAILABLE_PRODUCT = 'available';
 
     public const UNAVAILABLE_PRODUCT = 'unavailable';
