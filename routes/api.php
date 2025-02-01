@@ -10,8 +10,6 @@ use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\CartItem\CartItemController;
-use App\Http\Controllers\Category\CategoryBuyerController;
-use App\Http\Controllers\Category\CategoryOrderController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
@@ -61,10 +59,8 @@ Route::resource('variants', VariantController::class)->only(['index', 'show']);
 
 Route::resource('buyers', BuyerController::class);
 
-Route::resource('categories.buyers', CategoryBuyerController::class);
 Route::resource('categories.products', CategoryProductController::class);
 Route::get('categories/{category}/subs', [CategoryProductController::class, 'subcats']);
-Route::resource('categories.orders', CategoryOrderController::class);
 
 Route::resource('users', UserController::class);
 
