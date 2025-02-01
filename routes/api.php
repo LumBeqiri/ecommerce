@@ -20,7 +20,9 @@ use App\Http\Controllers\Variant\VariantController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
-Route::get('/home',function(){ return 'hello';});
+Route::get('/home', function () {
+    return 'hello';
+});
 
 Route::post('register-buyer', RegisterBuyerController::class)->name('register-buyer');
 Route::post('register', [RegisterController::class, 'register'])->name('register');

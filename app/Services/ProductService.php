@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Data\ProductData;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Models\Category;
-use App\Data\ProductData;
 use Illuminate\Support\Arr;
 
 class ProductService
@@ -32,7 +32,6 @@ class ProductService
         return $product->load('variants');
     }
 
-
     public function updateProduct(Product $product, $data): Product
     {
         $updateProductData = Arr::except($data, 'categories');
@@ -50,11 +49,10 @@ class ProductService
 
     public function syncProductCategories(Product $product, array $categoriesUlids): Product
     {
-     
+
         $categories = Category::whereIn('ulid', $categoriesUlids)->pluck('id');
         $product->categories()->sync($categories);
-        
-      
+
         $product->save();
 
         return $product;

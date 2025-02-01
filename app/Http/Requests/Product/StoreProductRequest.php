@@ -46,12 +46,12 @@ class StoreProductRequest extends FormRequest
     {
         /** @var User $user */
         $user = auth()->user();
-        
+
         if ($user->staff) {
             $vendorId = $user->staff->vendor;
         } elseif ($user->hasRole('vendor')) {
             $vendorId = Vendor::where('user_id', $user->id)->firstOrFail()->id;
-        }else{
+        } else {
             $vendorId = Vendor::first()->id;
         }
 

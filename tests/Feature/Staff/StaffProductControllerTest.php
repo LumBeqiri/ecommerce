@@ -12,7 +12,6 @@ use Database\Seeders\CurrencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Spatie\Permission\Models\Permission;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);

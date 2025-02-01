@@ -17,7 +17,6 @@ class LoginController extends ApiController
     {
         $data = $request->validated();
 
-
         $user = User::where('email', $data['email'])->first();
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {

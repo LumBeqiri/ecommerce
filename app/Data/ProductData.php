@@ -10,18 +10,18 @@ use Spatie\LaravelData\Data;
 class ProductData extends Data
 {
     /**
-     * @param int|null $id Bigint, unsigned, auto-increment, primary key.
-     * @param string $ulid Char(26).
-     * @param string $product_name Varchar(255).
-     * @param int $vendor_id Bigint, unsigned.
-     * @param string $status Varchar(255).
-     * @param string $publish_status Varchar(255).
-     * @param bool $discountable Tinyint(1).
-     * @param int $origin_country Bigint, unsigned.
-     * @param int $discount_id Bigint, unsigned.
-     * @param CarbonImmutable|null $created_at Timestamp.
-     * @param CarbonImmutable|null $updated_at Timestamp.
-     * @param CarbonImmutable|null $deleted_at Timestamp.
+     * @param  int|null  $id  Bigint, unsigned, auto-increment, primary key.
+     * @param  string  $ulid  Char(26).
+     * @param  string  $product_name  Varchar(255).
+     * @param  int  $vendor_id  Bigint, unsigned.
+     * @param  string  $status  Varchar(255).
+     * @param  string  $publish_status  Varchar(255).
+     * @param  bool  $discountable  Tinyint(1).
+     * @param  int  $origin_country  Bigint, unsigned.
+     * @param  int  $discount_id  Bigint, unsigned.
+     * @param  CarbonImmutable|null  $created_at  Timestamp.
+     * @param  CarbonImmutable|null  $updated_at  Timestamp.
+     * @param  CarbonImmutable|null  $deleted_at  Timestamp.
      */
     public function __construct(
         public ?int $id,

@@ -3,18 +3,17 @@
 namespace Database\Seeders;
 
 use App\Models\Cart;
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Product;
-use App\Models\Variant;
 use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Discount;
-use Illuminate\Database\Seeder;
 use App\Models\PaymentProcessor;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\User;
+use App\Models\Variant;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Database\Seeders\PaymentProcessorSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -56,7 +55,7 @@ class DatabaseSeeder extends Seeder
         Variant::flushEventListeners();
         Region::flushEventListeners();
         PaymentProcessor::flushEventListeners();
-        
+
         $this->call([RoleAndPermissionSeeder::class]);
         $this->call([CurrencySeeder::class]);
         $this->call([TaxProviderSeeder::class]);

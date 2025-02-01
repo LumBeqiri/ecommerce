@@ -8,7 +8,6 @@ use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Models\Variant;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -32,7 +31,6 @@ class AdminProductController extends ApiController
     public function store(StoreProductRequest $request, ProductService $productService): JsonResponse
     {
         $productData = ProductData::from($request);
-
 
         $product = $productService->createProduct($productData);
 
