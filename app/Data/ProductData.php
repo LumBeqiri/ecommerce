@@ -3,8 +3,6 @@
 namespace App\Data;
 
 use Carbon\CarbonImmutable;
-use Spatie\LaravelData\Attributes\Validation\Numeric;
-use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
@@ -26,21 +24,21 @@ class ProductData extends Data
      * @param CarbonImmutable|null $deleted_at Timestamp.
      */
     public function __construct(
-        #[Required, Numeric] public ?int $id,
-        #[Required] public string $ulid,
-        #[Required] public string $product_name,
-        #[Required, Numeric] public int $vendor_id,
-        #[Required] public string $status,
-        #[Required] public string $publish_status,
-        #[Required] public bool $discountable,
-        #[Required, Numeric] public int $origin_country,
-        #[Required, Numeric] public int $discount_id,
+        public ?int $id,
+        public ?string $ulid,
+        public string $product_name,
+        public int $vendor_id,
+        public string $status,
+        public string $publish_status,
+        public ?bool $discountable,
+        public int $origin_country_id,
+        public ?int $discount_id,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d H:i:s')]
         public ?CarbonImmutable $created_at,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d H:i:s')]
         public ?CarbonImmutable $updated_at,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d H:i:s')]
         public ?CarbonImmutable $deleted_at,
-        #[Required] public array $categories
+        public ?array $categories
     ) {}
 }
