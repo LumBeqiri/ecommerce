@@ -2,44 +2,32 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Vendor;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Category;
+use App\Data\ProductData;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
 class ProductService
 {
-    public function createProduct($data): Product
+    public function createProduct(ProductData $productData): Product
     {
+        $categoriesulids = $productData->categories;
 
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user->staff) {
-            $vendor = auth()->user()->staff->vendor_id;
-        }
-
-        if ($user->hasRole('vendor')) {
-            $vendor = Vendor::where('user_id', auth()->user()->id)->firstOrFail();
-        }
-
-        $categoriesulids = $data['categories'];
-
-        $categories = Category::whereIn('ulid', $categoriesulids)->get();
+        $categoriesIds = Category::whereIn('ulid', $categoriesulids)
+            ->pluck('id')
+            ->all();
 
         $product = Product::create(
-            Arr::except($data, 'categories') + ['vendor_id' => $vendor->id]
+            Arr::except($productData->all(), 'categories')
         );
 
         Variant::create([
-            'variant_name' => $data['product_name'],
+            'variant_name' => $productData->product_name,
             'product_id' => $product->id,
         ]);
 
-        $product->categories()->sync($categories);
+        $product->categories()->sync($categoriesIds);
 
         return $product->load('variants');
     }
