@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
+use App\Data\ProductData;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -30,8 +31,8 @@ class AdminProductController extends ApiController
 
     public function store(StoreProductRequest $request, ProductService $productService): JsonResponse
     {
+        $productData = ProductData::from($request);
 
-        $productData = $request->validated();
 
         $product = $productService->createProduct($productData);
 
