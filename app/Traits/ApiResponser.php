@@ -101,19 +101,22 @@ trait ApiResponser
     {
         $url = request()->url();
         $queryParams = request()->query();
-
+    
+        $queryParams = is_array($queryParams) ? $queryParams : [];
+    
         ksort($queryParams);
-
+    
         $queryString = http_build_query($queryParams);
-
+    
         $fullUrl = "{$url}?{$queryString}";
-
+    
         return Cache::remember($fullUrl, 60, function () use ($data) {
             return $data;
         });
     }
+    
 
-    public function authUser(): User
+    public function authUser(): ?User
     {
         return auth()->user();
     }
