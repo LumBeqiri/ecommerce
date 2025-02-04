@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Product\AdminProductController;
 use App\Http\Controllers\Product\ProductThumbnailController;
+use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Region;
@@ -23,7 +24,7 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('admin can update product name', function () {
+test('admin can update product name', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -45,7 +46,40 @@ it('admin can update product name', function () {
     $this->assertDatabaseHas(Product::class, ['product_name' => $updatedName]);
 });
 
-it('admin can delete product', function () {
+test('admin can update product category', function () {
+    TaxProvider::factory()->create();
+    Region::factory()->create();
+    Country::factory()->create();
+    User::factory()->count(10)->create();
+    Vendor::factory()->create();
+    $category = Category::factory()->create();
+    $product = Product::factory()->create();
+    $product->categories()->attach($category);
+
+    $newCategory = Category::factory()->create();
+
+    $user = User::factory()->create(['email' => 'lum@test.com']);
+    $user->assignRole('admin');
+    login($user);
+
+    $response = $this->putJson(action([AdminProductController::class, 'update'], $product->ulid), [
+        'categories' => [$category->ulid,$newCategory->ulid],
+    ]);
+
+    $response->assertOk();
+
+    $this->assertDatabaseHas('category_product', [
+        'product_id' => $product->id,
+        'category_id' => $newCategory->id,
+    ]);
+    $this->assertDatabaseHas('category_product', [
+        'product_id' => $product->id,
+        'category_id' => $category->id,
+    ]);
+
+});
+
+test('admin can delete product', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -65,7 +99,7 @@ it('admin can delete product', function () {
     $this->assertSoftDeleted(Product::class, ['id' => $product->id]);
 });
 
-it('admin can update product status', function () {
+test('admin can update product status', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -87,7 +121,7 @@ it('admin can update product status', function () {
     $this->assertDatabaseHas(Product::class, ['status' => $updatedStatus]);
 });
 
-it('can upload product thumbnail', function () {
+test('can upload product thumbnail', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
