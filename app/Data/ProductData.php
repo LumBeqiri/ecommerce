@@ -19,9 +19,6 @@ class ProductData extends Data
      * @param  bool  $discountable  Tinyint(1).
      * @param  int  $origin_country  Bigint, unsigned.
      * @param  int  $discount_id  Bigint, unsigned.
-     * @param  CarbonImmutable|null  $created_at  Timestamp.
-     * @param  CarbonImmutable|null  $updated_at  Timestamp.
-     * @param  CarbonImmutable|null  $deleted_at  Timestamp.
      */
     public function __construct(
         public ?int $id,
@@ -33,12 +30,6 @@ class ProductData extends Data
         public ?bool $discountable,
         public int $origin_country_id,
         public ?int $discount_id,
-        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d H:i:s')]
-        public ?CarbonImmutable $created_at,
-        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d H:i:s')]
-        public ?CarbonImmutable $updated_at,
-        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d H:i:s')]
-        public ?CarbonImmutable $deleted_at,
         public ?array $categories
     ) {}
 }

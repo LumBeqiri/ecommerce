@@ -41,8 +41,9 @@ class AdminProductController extends ApiController
     {
 
         $this->authorize('update', $product);
+        $productUpdateData = ProductData::from(array_merge($product->toArray(), $request->validated()));
 
-        $product = $productService->updateProduct($product, $request->validated());
+        $product = $productService->updateProduct($product, $productUpdateData);
 
         return $this->showOne(new ProductResource($product));
     }

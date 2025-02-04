@@ -32,13 +32,13 @@ class ProductService
         return $product->load('variants');
     }
 
-    public function updateProduct(Product $product, $data): Product
+    public function updateProduct(Product $product, ProductData $data): Product
     {
-        $updateProductData = Arr::except($data, 'categories');
-        $product->fill($updateProductData);
+        $updateProductData = $data->except('categories');
+        $product->fill($updateProductData->toArray());
 
-        if (Arr::has($data, 'categories')) {
-            $categories = Category::all()->whereIn('ulid', $data['categories'])->pluck('id');
+        if ($data->categories) {
+            $categories = Category::all()->whereIn('ulid', $data->categories)->pluck('id');
             $product->categories()->sync($categories);
         }
 
