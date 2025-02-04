@@ -1,17 +1,11 @@
 <?php
 
-use App\Http\Controllers\Staff\StaffProductController;
 use App\Http\Controllers\Staff\StaffVariantAttributeController;
 use App\Http\Controllers\Staff\StaffVariantController;
 use App\Http\Controllers\Staff\StaffVariantPriceController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
-    Route::post('products', [StaffProductController::class, 'store']);
-    Route::get('products/{product}', [StaffProductController::class, 'show']);
-    Route::put('products/{product}', [StaffProductController::class, 'update']);
-    Route::delete('products/{product}', [StaffProductController::class, 'destroy']);
 
     Route::post('variants', [StaffVariantController::class, 'store']);
     Route::get('variants/{variant}', [StaffVariantController::class, 'show']);

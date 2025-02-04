@@ -1,28 +1,26 @@
 <?php
 
-use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
-use App\Http\Controllers\Auth\ChangePasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Buyer\BuyerCartController;
-use App\Http\Controllers\Buyer\BuyerController;
-use App\Http\Controllers\Buyer\BuyerOrderController;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\CartItem\CartItemController;
-use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Country\CountryController;
-use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Variant\VariantController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Buyer\BuyerOrderController;
+use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\CartItem\CartItemController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
+use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 
 Route::post('login', LoginController::class)->name('login');
-Route::get('/home', function () {
-    return 'hello';
-});
 
 Route::post('register-buyer', RegisterBuyerController::class)->name('register-buyer');
 Route::post('register', [RegisterController::class, 'register'])->name('register');
@@ -31,6 +29,14 @@ Route::post('reset_password', [ForgotPasswordController::class, 'reset_password'
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('change_password', ChangePasswordController::class)->name('change_password');
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('products', [UserProductController::class, 'index']);
+        Route::get('products/{product}', [UserProductController::class, 'show']);
+        Route::put('products/{product}', [UserProductController::class, 'update']);
+        Route::delete('products/{product}', [UserProductController::class, 'destroy']);
+        
+    });
 
     Route::get('carts', [CartController::class, 'index']);
     Route::put('carts/{cart}', [CartController::class, 'update']);

@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ProductService
 {
@@ -34,17 +36,26 @@ class ProductService
 
     public function updateProduct(Product $product, ProductData $data): Product
     {
-        $updateProductData = $data->except('categories');
-        $product->fill($updateProductData->toArray());
+        DB::beginTransaction();
 
-        if ($data->categories) {
-            $categories = Category::all()->whereIn('ulid', $data->categories)->pluck('id');
-            $product->categories()->sync($categories);
+        try {
+            $updateProductData = $data->except('categories');
+            $product->fill($updateProductData->toArray());
+
+            if ($data->categories) {
+                $categories = Category::all()->whereIn('ulid', $data->categories)->pluck('id');
+                $product->categories()->sync($categories);
+            }
+
+            $product->save();
+
+            DB::commit();
+
+            return $product->load('variants');
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
-
-        $product->save();
-
-        return $product;
     }
 
     public function syncProductCategories(Product $product, array $categoriesUlids): Product
