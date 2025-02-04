@@ -120,4 +120,13 @@ trait ApiResponser
     {
         return auth()->user();
     }
+
+    public function respondInvalidQuery($message = null, $code = 422)
+    {
+        if (env('APP_ENV') != 'local') {
+            $message = 'Invalid Query';
+        }
+
+        return $this->errorResponse($message, $code);
+    }
 }
