@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\User\Variants;
 
 use App\Data\VariantData;
 use App\Http\Controllers\ApiController;

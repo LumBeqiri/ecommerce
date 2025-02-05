@@ -1,26 +1,27 @@
 <?php
 
-use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
-use App\Http\Controllers\Auth\ChangePasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Buyer\BuyerCartController;
-use App\Http\Controllers\Buyer\BuyerController;
-use App\Http\Controllers\Buyer\BuyerOrderController;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\CartItem\CartItemController;
-use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Country\CountryController;
-use App\Http\Controllers\CustomerGroup\CustomerGroupController;
-use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\User\UserProductController;
-use App\Http\Controllers\User\UserVariantController;
-use App\Http\Controllers\User\UserVariantPriceController;
 use App\Http\Controllers\Variant\VariantController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Buyer\BuyerOrderController;
+use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\CartItem\CartItemController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
+use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\User\Variants\UserVariantController;
+use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Http\Controllers\User\Variants\UserVariantPriceController;
+use App\Http\Controllers\User\Variants\UserVariantAttributeController;
 
 Route::post('login', LoginController::class)->name('login');
 
@@ -47,6 +48,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('variants/{variant}/prices', [UserVariantPriceController::class, 'store']);
         Route::put('variants/{variant}/prices/{variantPrice}', [UserVariantPriceController::class, 'update']);
         Route::delete('variants/{variant}/prices/{variantPrice}', [UserVariantPriceController::class, 'destroy']);
+
+        
+        Route::get('variants/{variant}/attributes', [UserVariantAttributeController::class, 'index']);
+        Route::put('variants/{variant}/attributes', [UserVariantAttributeController::class, 'update']);
 
     });
 

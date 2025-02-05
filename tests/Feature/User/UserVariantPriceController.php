@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\User\UserVariantPriceController;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\Staff;
-use App\Models\TaxProvider;
+
 use App\Models\User;
-use App\Models\Variant;
-use App\Models\VariantPrice;
-use App\Models\Vendor;
+use App\Models\Staff;
 use App\values\Roles;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\RoleAndPermissionSeeder;
+use App\Models\Region;
+use App\Models\Vendor;
+use App\Models\Country;
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\Currency;
+use App\Models\TaxProvider;
+use App\Models\VariantPrice;
 use Illuminate\Support\Facades\Bus;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\User\Variants\UserVariantPriceController;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
