@@ -20,10 +20,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'index']);
     Route::put('variants/{variant}/attributes', [VendorVariantAttributeController::class, 'update']);
 
-    Route::post('variants/{variant}/prices', [VendorVariantPriceController::class, 'store']);
-    Route::put('variants/{variant}/prices/{variantPrice}', [VendorVariantPriceController::class, 'update']);
-    Route::delete('variants/{variant}/prices/{variantPrice}', [VendorVariantPriceController::class, 'destroy']);
-
     Route::get('user-permissions', [VendorPermissionManagerController::class, 'index']);
     Route::put('users/{user}/permissions', [VendorPermissionManagerController::class, 'update']);
     Route::delete('users/{user}/permissions/{permission_id}', [VendorPermissionManagerController::class, 'destroy']);
