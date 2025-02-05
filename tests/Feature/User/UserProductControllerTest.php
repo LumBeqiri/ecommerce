@@ -13,6 +13,7 @@ use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
 use App\Http\Controllers\User\UserProductController;
+use App\Models\Category;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -22,6 +23,65 @@ beforeEach(function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
+});
+
+
+
+test('Product can be created by vendor', function(){
+
+    User::factory()->create();
+
+    $user = User::factory()->create();
+    $vendor = Vendor::factory()->create(['user_id' => $user->id]);
+    $user->assignRole(Roles::VENDOR);
+    
+    $productData = [
+        'product_name' => 'Test Product',
+        'product_description' => 'Test Product Description',
+        'origin_country_id' => Country::first()->id,
+        'status' => Product::AVAILABLE_PRODUCT,
+        'publish_status' => Product::PUBLISHED,
+        'categories' => [Category::factory()->create()->ulid],
+    ];
+
+    login($user);
+
+    $response = $this->postJson(action([UserProductController::class, 'store']), $productData);
+
+    $response->assertOk();
+
+    $this->assertDatabaseHas('products', ['product_name' => $productData['product_name']]);
+
+});
+
+
+
+test('Product can be created by staff', function(){
+
+    User::factory()->create();
+    
+    $user = User::factory()->create();
+    Staff::factory()->create(['user_id' => $user->id, 'vendor_id'=> Vendor::factory()->create()->id]);
+    $user->assignRole(Roles::STAFF);
+    $user->givePermissionTo('create-products');
+    
+    $productData = [
+        'product_name' => 'Test Product',
+        'product_description' => 'Test Product Description',
+        'origin_country_id' => Country::first()->id,
+        'status' => Product::AVAILABLE_PRODUCT,
+        'publish_status' => Product::PUBLISHED,
+        'categories' => [Category::factory()->create()->ulid],
+    ];
+
+    login($user);
+
+    $response = $this->postJson(action([UserProductController::class, 'store']), $productData);
+
+    $response->assertOk();
+
+    $this->assertDatabaseHas('products', ['product_name' => $productData['product_name']]);
+
 });
 
 test('vendor can view its own products', function(){
@@ -153,7 +213,6 @@ test('Product can be updated by vendor', function(){
     ]);
 });
 
-// staff can update its own product
 test('Product can be updated by staff', function(){
 
     User::factory()->count(3)->create();
@@ -178,7 +237,6 @@ test('Product can be updated by staff', function(){
     ]);
 });
 
-// product can be deleted by vendor
 
 test('Product can be deleted by vendor', function(){
 
@@ -199,3 +257,4 @@ test('Product can be deleted by vendor', function(){
     $this->assertSoftDeleted('products', ['id' => $product->id]);
 
 });
+
