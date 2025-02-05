@@ -48,7 +48,7 @@ class StoreProductRequest extends FormRequest
         $user = auth()->user();
 
         if ($user->staff) {
-            $vendorId = $user->staff->vendor;
+            $vendorId = $user->staff->vendor->id;
         } elseif ($user->hasRole('vendor')) {
             $vendorId = Vendor::where('user_id', $user->id)->firstOrFail()->id;
         } else {
@@ -58,6 +58,7 @@ class StoreProductRequest extends FormRequest
         $this->merge([
             'vendor_id' => $vendorId,
         ]);
+
 
     }
 }
