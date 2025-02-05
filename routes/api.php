@@ -1,24 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Buyer\BuyerController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Buyer\BuyerCartController;
-use App\Http\Controllers\Country\CountryController;
-use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Variant\VariantController;
-use App\Http\Controllers\Buyer\BuyerOrderController;
-use App\Http\Controllers\User\UserProductController;
-use App\Http\Controllers\CartItem\CartItemController;
+use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Product\ProductCategoryController;
-use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Buyer\BuyerCartController;
+use App\Http\Controllers\Buyer\BuyerController;
+use App\Http\Controllers\Buyer\BuyerOrderController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\CartItem\CartItemController;
 use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\Variant\VariantController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
 
@@ -36,7 +36,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('products/{product}', [UserProductController::class, 'show']);
         Route::put('products/{product}', [UserProductController::class, 'update']);
         Route::delete('products/{product}', [UserProductController::class, 'destroy']);
-        
+
+        Route::get('variants', [UserVariantController::class, 'index']);
+        Route::post('variants', [UserVariantController::class, 'store']);
+        Route::get('variants/{variant}', [UserVariantController::class, 'show']);
+        Route::put('variants/{variant}', [UserVariantController::class, 'update']);
+        Route::delete('variants/{variant}', [UserVariantController::class, 'destroy']);
+
     });
 
     Route::get('carts', [CartController::class, 'index']);

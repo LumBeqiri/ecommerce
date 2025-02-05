@@ -6,9 +6,9 @@ use App\Data\ProductData;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Variant;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Exception;
 
 class ProductService
 {

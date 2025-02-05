@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
 use App\Http\Controllers\Auth\Staff\RegisterStaffController;
 use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Vendor\VendorPermissionManagerController;
-use App\Http\Controllers\Vendor\VendorProductController;
 use App\Http\Controllers\Vendor\VendorVariantAttributeController;
 use App\Http\Controllers\Vendor\VendorVariantController;
 use App\Http\Controllers\Vendor\VendorVariantPriceController;

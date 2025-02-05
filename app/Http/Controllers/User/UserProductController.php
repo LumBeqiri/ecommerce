@@ -2,54 +2,47 @@
 
 namespace App\Http\Controllers\User;
 
-use Exception;
-use App\Models\User;
-use App\values\Roles;
-use App\Models\Vendor;
-use App\Models\Product;
 use App\Data\ProductData;
-use Illuminate\Http\Request;
-use App\Services\ProductService;
-use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use Spatie\LaravelData\Attributes\Validation\Exclude;
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
+use App\Models\User;
+use App\Services\ProductService;
+use App\values\Roles;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserProductController extends ApiController
 {
-
     public function index()
     {
         $productQuery = $this->productQueryForRole(auth()->user());
-    
+
         $products = QueryBuilder::for($productQuery)
             ->allowedIncludes(['variants', 'variant_prices'])
             ->get();
-    
+
         return $this->showAll(ProductResource::collection($products));
     }
-    
-
 
     public function store(StoreProductRequest $request, ProductService $productService): JsonResponse
     {
         $this->authorize('create', Product::class);
-        
+
         $productData = ProductData::from($request);
-        try{
+        try {
             $product = $productService->createProduct($productData);
 
             return $this->showOne(new ProductResource($product));
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return $this->respondInvalidQuery($ex->getMessage());
         }
     }
-
 
     public function show(Product $product): JsonResource
     {
@@ -58,16 +51,15 @@ class UserProductController extends ApiController
         return new ProductResource($product->load(['variants.variant_prices']));
     }
 
-
     public function update(UpdateProductRequest $request, Product $product, ProductService $productService): JsonResource
     {
         $this->authorize('update', $product);
 
-        $productData = ProductData::from($product->toArray(),$request->validated());
+        $productData = ProductData::from($product->toArray(), $request->validated());
 
-        try{
+        try {
             $updatedProduct = $productService->updateProduct($product, $productData);
-        }catch(Exception $ex){  
+        } catch (Exception $ex) {
             return $this->showError($ex->getMessage());
         }
 
@@ -75,7 +67,7 @@ class UserProductController extends ApiController
 
     }
 
-    public function destroy(Product $product): JsonResponse     
+    public function destroy(Product $product): JsonResponse
     {
         $this->authorize('delete', $product);
 
@@ -94,5 +86,4 @@ class UserProductController extends ApiController
             default => Product::query(),
         };
     }
-    
 }

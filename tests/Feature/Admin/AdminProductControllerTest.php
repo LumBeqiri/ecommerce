@@ -63,7 +63,7 @@ test('admin can update product category', function () {
     login($user);
 
     $response = $this->putJson(action([AdminProductController::class, 'update'], $product->ulid), [
-        'categories' => [$category->ulid,$newCategory->ulid],
+        'categories' => [$category->ulid, $newCategory->ulid],
     ]);
 
     $response->assertOk();

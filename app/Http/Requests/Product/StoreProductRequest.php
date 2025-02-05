@@ -59,6 +59,5 @@ class StoreProductRequest extends FormRequest
             'vendor_id' => $vendorId,
         ]);
 
-
     }
 }
