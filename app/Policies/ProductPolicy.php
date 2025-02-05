@@ -62,7 +62,6 @@ class ProductPolicy
                 : Response::deny('You do not own this variant.');
         }
 
-        // For staff members
         return $user->hasPermissionTo('update-products', 'api') && $user->staff->vendor_id === $product->vendor_id
             ? Response::allow()
             : Response::deny('You do not have permission to update this product.');
@@ -76,13 +75,11 @@ class ProductPolicy
     public function delete(User $user, Product $product)
     {
         if ($user->hasRole('vendor')) {
-            // Vendor can update own variants
             return $user->id === $product->vendor->user_id
                 ? Response::allow()
                 : Response::deny('You do not own this product.');
         }
 
-        // For staff members
         return $user->hasPermissionTo('delete-products') && $user->staff->vendor_id === $product->vendor_id
             ? Response::allow()
             : Response::deny('You do not have permission to delete this product.');
