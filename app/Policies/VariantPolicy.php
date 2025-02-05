@@ -12,6 +12,19 @@ class VariantPolicy
 {
     use HandlesAuthorization;
 
+    public function view(User $user, Variant $variant)
+    {
+        if ($user->hasRole('vendor') && $user->id === $variant->product->vendor->user_id) {
+            return Response::allow();
+        }
+
+        if ($user->hasRole('staff') && $user->staff->vendor_id === $variant->product->vendor_id) {
+            return Response::allow();
+        }
+
+        return Response::deny('You do not own this variant.');
+    }
+
     /**
      * Determine whether the user can create models.
      *
