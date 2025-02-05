@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers\User;
 
-use Exception;
-use App\Models\Variant;
-use App\Data\VariantData;
-use App\Models\VariantPrice;
-use App\Services\VariantService;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
-use App\Http\Requests\Variant\UpdateVariantRequest;
 use App\Http\Requests\Variant\StoreVariantPriceRequest;
 use App\Http\Requests\Variant\UpdateVariantPriceRequest;
+use App\Http\Resources\VariantResource;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use App\Services\VariantService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class UserVariantPriceController extends ApiController
 {
-
     public function store(StoreVariantPriceRequest $request, Variant $variant, VariantService $variantService): JsonResponse
     {
         $this->authorize('update', $variant);
@@ -35,10 +32,11 @@ class UserVariantPriceController extends ApiController
     public function update(UpdateVariantPriceRequest $request, Variant $variant, VariantPrice $variantPrice, VariantService $variantService): JsonResponse
     {
         $this->authorize('update', $variant);
-        try{
+        try {
             $variantService->updateVariantPrice($variant, $variantPrice, $request->validated());
+
             return $this->showOne(new VariantResource($variant->load('variant_prices')));
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return $this->respondInvalidQuery(message: $ex->getMessage(), code: $ex->getCode());
         }
 

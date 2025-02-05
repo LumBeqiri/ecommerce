@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\Staff\RegisterStaffController;
 use App\Http\Controllers\Product\ProductThumbnailController;
 use App\Http\Controllers\Vendor\VendorPermissionManagerController;
 use App\Http\Controllers\Vendor\VendorVariantAttributeController;
-use App\Http\Controllers\Vendor\VendorVariantPriceController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
