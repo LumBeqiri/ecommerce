@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\User\Variants;
 
-use App\Models\Variant;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Variant\VariantAttributeRequest;
+use App\Http\Resources\VariantResource;
 use App\Models\Attribute;
+use App\Models\Variant;
 use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
-use App\Http\Requests\Variant\VariantAttributeRequest;
 
 class UserVariantAttributeController extends ApiController
 {
@@ -31,5 +31,4 @@ class UserVariantAttributeController extends ApiController
 
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
-
 }

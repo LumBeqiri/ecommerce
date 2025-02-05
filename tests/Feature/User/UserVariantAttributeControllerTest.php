@@ -1,21 +1,20 @@
 <?php
 
-use App\Models\User;
-use App\Models\Staff;
-use App\Models\Region;
-use App\Models\Vendor;
+use App\Http\Controllers\User\Variants\UserVariantAttributeController;
+use App\Models\Attribute;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Variant;
-use App\Models\Attribute;
+use App\Models\Region;
+use App\Models\Staff;
 use App\Models\TaxProvider;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Bus;
+use App\Models\User;
+use App\Models\Variant;
+use App\Models\Vendor;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
 use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\User\Variants\UserVariantAttributeController;
-use App\Http\Controllers\Staff\StaffVariantAttributeController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);

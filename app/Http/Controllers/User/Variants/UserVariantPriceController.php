@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User\Variants;
 
-
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Variant\StoreVariantPriceRequest;
 use App\Http\Requests\Variant\UpdateVariantPriceRequest;
