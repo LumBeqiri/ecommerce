@@ -20,16 +20,26 @@ class ProductService
             ->pluck('id')
             ->all();
 
-        $product = Product::create(
-            Arr::except($productData->all(), 'categories')
-        );
+        DB::beginTransaction();
+        try {
+            $product = Product::create(
+                Arr::except($productData->all(), 'categories')
+            );
 
-        Variant::create([
-            'variant_name' => $productData->product_name,
-            'product_id' => $product->id,
-        ]);
+            Variant::create([
+                'variant_name' => $productData->product_name,
+                'product_id' => $product->id,
+            ]);
 
-        $product->categories()->sync($categoriesIds);
+            $product->categories()->sync($categoriesIds);
+
+            DB::commit();
+
+            return $product->load('variants');
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
 
         return $product->load('variants');
     }

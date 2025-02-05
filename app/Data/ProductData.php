@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
 
 class ProductData extends Data
 {
@@ -16,7 +17,7 @@ class ProductData extends Data
      * @param  int  $vendor_id  Bigint, unsigned.
      * @param  string  $status  Varchar(255).
      * @param  string  $publish_status  Varchar(255).
-     * @param  bool  $discountable  Tinyint(1).
+     * @param  bool|null  $discountable  Tinyint(1).
      * @param  int  $origin_country  Bigint, unsigned.
      * @param  int  $discount_id  Bigint, unsigned.
      */
@@ -24,10 +25,10 @@ class ProductData extends Data
         public ?int $id,
         public ?string $ulid,
         public string $product_name,
-        public int $vendor_id,
+        public int|Optional $vendor_id,
         public string $status,
         public string $publish_status,
-        public ?bool $discountable,
+        public bool|Optional $discountable,
         public int $origin_country_id,
         public ?int $discount_id,
         public ?array $categories

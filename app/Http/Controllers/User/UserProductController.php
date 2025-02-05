@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Data\ProductData;
+use Exception;
 use App\Models\User;
 use App\values\Roles;
 use App\Models\Vendor;
 use App\Models\Product;
+use App\Data\ProductData;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
+use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Services\ProductService;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use Spatie\LaravelData\Attributes\Validation\Exclude;
 
 class UserProductController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $productQuery = $this->productQueryForRole(auth()->user());
@@ -36,14 +36,21 @@ class UserProductController extends ApiController
     
 
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request, ProductService $productService): JsonResponse
     {
-        //
+        $this->authorize('create', Product::class);
+        
+        $productData = ProductData::from($request);
+        try{
+            $product = $productService->createProduct($productData);
+
+            return $this->showOne(new ProductResource($product));
+        }catch(Exception $ex){
+            return $this->respondInvalidQuery($ex->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product): JsonResource
     {
         $this->authorize('view', $product);
@@ -51,9 +58,7 @@ class UserProductController extends ApiController
         return new ProductResource($product->load(['variants.variant_prices']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(UpdateProductRequest $request, Product $product, ProductService $productService): JsonResource
     {
         $this->authorize('update', $product);
