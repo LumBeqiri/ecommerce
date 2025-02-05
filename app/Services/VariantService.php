@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Data\VariantData;
 use App\Models\Currency;
-use App\Models\Product;
 use App\Models\Region;
 use App\Models\Variant;
 use App\Models\VariantPrice;

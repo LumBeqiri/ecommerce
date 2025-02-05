@@ -2,36 +2,24 @@
 
 namespace App\Http\Controllers\User;
 
-use Exception;
-use App\Models\User;
-use App\values\Roles;
+use App\Data\VariantData;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Variant\StoreVariantRequest;
+use App\Http\Requests\Variant\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Data\ProductData;
-use App\Data\VariantData;
-use App\Services\ProductService;
 use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\VariantResource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Variant\StoreVariantRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
-use App\Http\Requests\Variant\UpdateVariantRequest;
 
 class UserVariantController extends ApiController
 {
-
     public function store(StoreVariantRequest $request, VariantService $variantService): JsonResponse
     {
 
         $product = Product::find($request->validated()['product_id']);
 
-        $this->authorize('update',$product);
+        $this->authorize('update', $product);
 
         $variantData = VariantData::from($request->validated());
 
@@ -56,7 +44,6 @@ class UserVariantController extends ApiController
         return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
 
-
     public function destroy(Variant $variant): JsonResponse
     {
         $this->authorize('delete', $variant);
@@ -66,5 +53,4 @@ class UserVariantController extends ApiController
 
         return $this->showMessage($message);
     }
-
 }

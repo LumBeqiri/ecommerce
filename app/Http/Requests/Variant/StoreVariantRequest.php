@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Variant;
 
-use App\values\Roles;
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -47,7 +46,8 @@ class StoreVariantRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation(){
+    protected function prepareForValidation()
+    {
 
         $this->merge([
             'product_id' => Product::where('ulid', $this->product_id)->first()->id,

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Variant;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class VariantPolicy
 {
@@ -17,9 +17,9 @@ class VariantPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user,Product $product)
+    public function create(User $user, Product $product)
     {
-        return ($user->hasPermissionTo('create-products') && $user->id === $product->vendor->user_id )
+        return ($user->hasPermissionTo('create-products') && $user->id === $product->vendor->user_id)
                 ? Response::allow()
                 : Response::deny('You do not own this variant.');
     }
