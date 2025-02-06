@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
-    Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
-    Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
-
     Route::get('variants/{variant}/medias', [AdminVariantMediaController::class, 'index']);
     Route::post('variants/{variant}/medias', [AdminVariantMediaController::class, 'store']);
     Route::delete('variants/{variant}/medias/{media_id}', [AdminVariantMediaController::class, 'destroy']);
