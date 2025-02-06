@@ -25,7 +25,6 @@ class AdminVariantMediaController extends ApiController
         $medias = $request->file('files');
 
         try {
-            // Loop through each media file and upload it to Spatie's media collection
             foreach ($medias as $media) {
                 $variant->addMedia($media)
                     ->toMediaCollection('variants');
@@ -40,13 +39,11 @@ class AdminVariantMediaController extends ApiController
     public function destroy(Variant $variant, $media_uuid): JsonResponse
     {
         $media = Media::where('uuid', $media_uuid)->firstOrFail();
-        // Ensure the media belongs to the specified variant
         if ($variant->id !== $media->model_id) {
             return $this->showError('This media does not belong to the specified variant.');
         }
 
         try {
-            // Delete the media using Spatie's delete method
             $media->delete();
         } catch (Exception $ex) {
             return $this->showError($ex->getMessage(), $ex->getCode());
