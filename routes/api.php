@@ -17,7 +17,7 @@ use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\User\Products\UserProductThumbnailController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\User\Products\UserProductController;
 use App\Http\Controllers\User\Variants\UserVariantAttributeController;
 use App\Http\Controllers\User\Variants\UserVariantController;
 use App\Http\Controllers\User\Variants\UserVariantMediaController;

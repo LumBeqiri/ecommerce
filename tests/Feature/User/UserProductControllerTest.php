@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\User\Products\UserProductController;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
