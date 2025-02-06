@@ -1,29 +1,29 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Buyer\BuyerController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Buyer\BuyerCartController;
-use App\Http\Controllers\Country\CountryController;
-use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Variant\VariantController;
-use App\Http\Controllers\Buyer\BuyerOrderController;
-use App\Http\Controllers\User\UserProductController;
-use App\Http\Controllers\CartItem\CartItemController;
+use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Product\ProductCategoryController;
-use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Buyer\BuyerCartController;
+use App\Http\Controllers\Buyer\BuyerController;
+use App\Http\Controllers\Buyer\BuyerOrderController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\CartItem\CartItemController;
 use App\Http\Controllers\Category\CategoryProductController;
-use App\Http\Controllers\User\Variants\UserVariantController;
+use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\User\Products\UserProductThumbnailController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\User\Variants\UserVariantAttributeController;
+use App\Http\Controllers\User\Variants\UserVariantController;
 use App\Http\Controllers\User\Variants\UserVariantMediaController;
 use App\Http\Controllers\User\Variants\UserVariantPriceController;
-use App\Http\Controllers\User\Products\UserProductThumbnailController;
-use App\Http\Controllers\User\Variants\UserVariantAttributeController;
+use App\Http\Controllers\Variant\VariantController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
 

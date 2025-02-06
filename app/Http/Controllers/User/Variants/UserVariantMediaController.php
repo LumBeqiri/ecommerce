@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User\Variants;
 
-
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Media\MediasRequest;
 use App\Http\Resources\MediaResource;
@@ -16,7 +15,7 @@ class UserVariantMediaController extends ApiController
 {
     public function index(Variant $variant): JsonResponse
     {
-        $this->authorize('view',$variant);
+        $this->authorize('view', $variant);
         $medias = $variant->medias;
 
         return $this->showAll(MediaResource::collection($medias));
@@ -24,7 +23,7 @@ class UserVariantMediaController extends ApiController
 
     public function store(MediasRequest $request, Variant $variant): JsonResponse
     {
-        $this->authorize('update',$variant);
+        $this->authorize('update', $variant);
 
         $medias = $request->file('files');
 
@@ -42,8 +41,8 @@ class UserVariantMediaController extends ApiController
 
     public function destroy(Variant $variant, $media_uuid): JsonResponse
     {
-        $this->authorize('delete',$variant);
-        
+        $this->authorize('delete', $variant);
+
         $media = Media::where('uuid', $media_uuid)->firstOrFail();
         if ($variant->id !== $media->model_id) {
             return $this->showError('This media does not belong to the specified variant.');
