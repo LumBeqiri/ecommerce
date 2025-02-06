@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\User\Variants;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Media\MediasRequest;
@@ -11,10 +11,11 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class AdminVariantMediaController extends ApiController
+class UserVariantMediaController extends ApiController
 {
     public function index(Variant $variant): JsonResponse
     {
+        $this->authorize('view', $variant);
         $medias = $variant->medias;
 
         return $this->showAll(MediaResource::collection($medias));
@@ -22,6 +23,8 @@ class AdminVariantMediaController extends ApiController
 
     public function store(MediasRequest $request, Variant $variant): JsonResponse
     {
+        $this->authorize('update', $variant);
+
         $medias = $request->file('files');
 
         try {
@@ -38,6 +41,8 @@ class AdminVariantMediaController extends ApiController
 
     public function destroy(Variant $variant, $media_uuid): JsonResponse
     {
+        $this->authorize('delete', $variant);
+
         $media = Media::where('uuid', $media_uuid)->firstOrFail();
         if ($variant->id !== $media->model_id) {
             return $this->showError('This media does not belong to the specified variant.');

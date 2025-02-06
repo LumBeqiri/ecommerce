@@ -47,7 +47,7 @@ class BuyerFactory extends Factory
             $buyer->user->user_settings()->create([
                 'first_name' => $this->faker->firstName,
                 'last_name' => $this->faker->lastName,
-                //fix below fields to use faker
+                // fix below fields to use faker
                 'phone' => $this->faker->phoneNumber,
                 'city' => $this->faker->city,
                 'country_id' => Country::inRandomOrder()->first()->id,

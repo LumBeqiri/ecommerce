@@ -10,5 +10,5 @@ class Roles
 
     const BUYER = 'buyer';
 
-    const ADMIN = 'admmin';
+    const ADMIN = 'admin';
 }

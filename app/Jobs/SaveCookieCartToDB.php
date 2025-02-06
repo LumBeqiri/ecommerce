@@ -22,8 +22,7 @@ class SaveCookieCartToDB implements ShouldQueue
     public function __construct(
         protected mixed $items,
         protected User $user
-    ) {
-    }
+    ) {}
 
     /**
      * Execute the job.

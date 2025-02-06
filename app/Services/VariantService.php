@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Data\VariantData;
 use App\Models\Currency;
-use App\Models\Product;
 use App\Models\Region;
 use App\Models\Variant;
 use App\Models\VariantPrice;
@@ -12,10 +12,9 @@ use Exception;
 
 class VariantService
 {
-    public function createVariant($data): Variant
+    public function createVariant(VariantData $variantData): Variant
     {
-        $data['product_id'] = Product::where('ulid', $data['product_id'])->firstOrFail()->id;
-        $newVariant = Variant::create($data);
+        $newVariant = Variant::create($variantData->toArray());
 
         return $newVariant;
     }

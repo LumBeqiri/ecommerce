@@ -23,14 +23,14 @@ beforeEach(function () {
 });
 
 it('admin can show categories', function () {
-    
+
     $user = User::factory()->create();
     $user->assignRole('admin');
-    
+
     Category::factory()->create();
-    
+
     login($user);
-    
+
     $response = $this->getJson(action([AdminCategoryController::class, 'index']));
 
     $response->assertOk();

@@ -53,12 +53,12 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-orders', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-orders', 'guard_name' => 'api']);
 
-        $adminRole = Role::create(['name' => 'admin','guard_name' => 'api']);
+        $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'api']);
 
-        Role::create(['name' => 'vendor','guard_name' => 'api']);
-        Role::create(['name' => 'manager','guard_name' => 'api'],);
-        Role::create(['name' => 'staff','guard_name' => 'api'],);
-        Role::create(['name' => 'buyer','guard_name' => 'api'],);
+        Role::create(['name' => 'vendor', 'guard_name' => 'api']);
+        Role::create(['name' => 'manager', 'guard_name' => 'api']);
+        Role::create(['name' => 'staff', 'guard_name' => 'api']);
+        Role::create(['name' => 'buyer', 'guard_name' => 'api']);
 
         Permission::create(['name' => 'manage-users', 'guard_name' => 'api']);
         Permission::create(['name' => 'manage-products', 'guard_name' => 'api']);

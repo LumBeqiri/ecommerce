@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vendor;
+namespace App\Http\Controllers\User\Variants;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Variant\VariantAttributeRequest;
@@ -10,7 +10,7 @@ use App\Models\Variant;
 use App\Services\VariantService;
 use Illuminate\Http\JsonResponse;
 
-class VendorVariantAttributeController extends ApiController
+class UserVariantAttributeController extends ApiController
 {
     public function index(Variant $variant): JsonResponse
     {

@@ -16,19 +16,19 @@ class ProductPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    // public function view(User $user, Product $product)
-    // {
-    //     if ($user->hasRole('admin')) {
-    //         return Response::allow();
-    //     }
-    //     if ($user->hasRole('vendor') && $user->vendor->ownsProduct($product)) {
-    //         return Response::allow();
-    //     }
+    public function view(User $user, Product $product)
+    {
+        if ($user->hasRole('admin')) {
+            return Response::allow();
+        }
+        if ($user->hasRole('vendor') && $user->vendor->ownsProduct($product)) {
+            return Response::allow();
+        }
 
-    //     return $user->hasPermissionTo('manage-products') && $user->staff->vendor_id == $product->vendor->user_id
-    //     ? Response::allow()
-    //     : Response::deny('You do not own this product.');
-    // }
+        return $user->hasPermissionTo('manage-products') && $user->staff->vendor_id == $product->vendor->user_id
+        ? Response::allow()
+        : Response::deny('You do not own this product.');
+    }
 
     /**
      * Determine whether the user can create models.
@@ -62,8 +62,7 @@ class ProductPolicy
                 : Response::deny('You do not own this variant.');
         }
 
-        // For staff members
-        return $user->hasPermissionTo('update-products','api') && $user->staff->vendor_id === $product->vendor_id
+        return $user->hasPermissionTo('update-products', 'api') && $user->staff->vendor_id === $product->vendor_id
             ? Response::allow()
             : Response::deny('You do not have permission to update this product.');
     }
@@ -76,13 +75,11 @@ class ProductPolicy
     public function delete(User $user, Product $product)
     {
         if ($user->hasRole('vendor')) {
-            // Vendor can update own variants
             return $user->id === $product->vendor->user_id
                 ? Response::allow()
                 : Response::deny('You do not own this product.');
         }
 
-        // For staff members
         return $user->hasPermissionTo('delete-products') && $user->staff->vendor_id === $product->vendor_id
             ? Response::allow()
             : Response::deny('You do not have permission to delete this product.');

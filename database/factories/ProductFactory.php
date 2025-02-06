@@ -29,7 +29,7 @@ class ProductFactory extends Factory
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
             'publish_status' => $this->faker->randomElement([Product::PUBLISHED, Product::DRAFT]),
             'discountable' => $this->faker->boolean,
-            'origin_country' => Country::all()->random()->id,
+            'origin_country_id' => Country::all()->random()->id,
         ];
     }
 

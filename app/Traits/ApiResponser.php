@@ -102,6 +102,8 @@ trait ApiResponser
         $url = request()->url();
         $queryParams = request()->query();
 
+        $queryParams = is_array($queryParams) ? $queryParams : [];
+
         ksort($queryParams);
 
         $queryString = http_build_query($queryParams);
@@ -113,8 +115,17 @@ trait ApiResponser
         });
     }
 
-    public function authUser(): User
+    public function authUser(): ?User
     {
         return auth()->user();
+    }
+
+    public function respondInvalidQuery($message = null, $code = 422)
+    {
+        if (env('APP_ENV') != 'local') {
+            $message = 'Invalid Query';
+        }
+
+        return $this->errorResponse($message, $code);
     }
 }

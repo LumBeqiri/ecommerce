@@ -15,6 +15,8 @@ class ProductObserver
     {
         $product->variants->each(function ($variant) {
             $variant->medias()->delete();
+            $variant->variantPrices()->delete();
+            $variant->delete();
         });
     }
 }

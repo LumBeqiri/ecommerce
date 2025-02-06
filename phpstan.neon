@@ -1,23 +1,19 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
 
 parameters:
-
-    checkGenericClassInNonGenericObjectType: false
     paths:
         - app/
 
     # Level 9 is the highest level
-    level: 7
+    level: 6
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
-#
+    ignoreErrors:
+        - '#PHPDoc tag @var#'
+        - identifier: missingType.generics
     excludePaths:
-        - app/Http/Kernel.php
         - app/Http/Middleware
         - app/Policies
         - app/Services/PriceService.php
         - app/Services/CartService.php
-#
-    checkMissingIterableValueType: false

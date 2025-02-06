@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Staff;
+namespace App\Http\Controllers\User\Variants;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Variant\StoreVariantPriceRequest;
@@ -12,13 +12,8 @@ use App\Services\VariantService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-class StaffVariantPriceController extends ApiController
+class UserVariantPriceController extends ApiController
 {
-    public function show(Variant $variant)
-    {
-        return $this->showOne(new VariantResource($variant->load(['variant_prices'])));
-    }
-
     public function store(StoreVariantPriceRequest $request, Variant $variant, VariantService $variantService): JsonResponse
     {
         $this->authorize('update', $variant);
@@ -37,10 +32,14 @@ class StaffVariantPriceController extends ApiController
     public function update(UpdateVariantPriceRequest $request, Variant $variant, VariantPrice $variantPrice, VariantService $variantService): JsonResponse
     {
         $this->authorize('update', $variant);
+        try {
+            $variantService->updateVariantPrice($variant, $variantPrice, $request->validated());
 
-        $variantService->updateVariantPrice($variant, $variantPrice, $request->validated());
+            return $this->showOne(new VariantResource($variant->load('variant_prices')));
+        } catch (Exception $ex) {
+            return $this->respondInvalidQuery(message: $ex->getMessage(), code: $ex->getCode());
+        }
 
-        return $this->showOne(new VariantResource($variant->load('variant_prices')));
     }
 
     public function destroy(Variant $variant, VariantPrice $variantPrice): JsonResponse

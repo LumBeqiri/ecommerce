@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
+use App\Data\ProductData;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Models\Variant;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -30,15 +30,9 @@ class AdminProductController extends ApiController
 
     public function store(StoreProductRequest $request, ProductService $productService): JsonResponse
     {
-
-        $productData = $request->validated();
+        $productData = ProductData::from($request);
 
         $product = $productService->createProduct($productData);
-
-        Variant::create([
-            'variant_name' => $request->input('product_name'),
-            'product_id' => $product->id,
-        ]);
 
         return $this->showOne(new ProductResource($product));
     }
@@ -47,8 +41,9 @@ class AdminProductController extends ApiController
     {
 
         $this->authorize('update', $product);
+        $productUpdateData = ProductData::from(array_merge($product->toArray(), $request->validated()));
 
-        $product = $productService->updateProduct($product, $request->validated());
+        $product = $productService->updateProduct($product, $productUpdateData);
 
         return $this->showOne(new ProductResource($product));
     }

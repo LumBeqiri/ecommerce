@@ -30,7 +30,7 @@ class StoreVariantRequest extends FormRequest
             'barcode' => 'nullable|string|max:255|unique:variants',
             'ean' => 'nullable|string|max:255|unique:variants',
             'upc' => 'nullable|string|max:255|unique:variants',
-            'product_id' => 'required|exists:products,ulid',
+            'product_id' => 'required|exists:products,id',
             'variant_short_description' => 'string|max:255',
             'variant_long_description' => 'string| max:255',
             'stock' => 'required|integer|min:0',
@@ -43,7 +43,14 @@ class StoreVariantRequest extends FormRequest
             'length' => 'nullable|integer|min:0',
             'height' => 'nullable|integer|min:0',
             'width' => 'nullable|integer|min:0',
-
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+
+        $this->merge([
+            'product_id' => Product::where('ulid', $this->product_id)->first()->id,
+        ]);
     }
 }

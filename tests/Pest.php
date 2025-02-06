@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\User;
-use Laravel\Sanctum\Sanctum;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 
 /*
 |--------------------------------------------------------------------------
