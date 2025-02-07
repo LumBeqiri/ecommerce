@@ -37,47 +37,51 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    public function update(StoreUserRequest $request, User $user): JsonResponse
-    {
-        $request->validated();
+    // TODO: Implement update
+    // public function update(StoreUserRequest $request, User $user): JsonResponse
+    // {
+    //     $request->validated();
 
-        if ($request->has('name')) {
-            $user->name = $request->name;
-        }
+    //     if ($request->has('first_name')) {
+    //         $user->first_name = $request->first_name;
+    //     }
+    //     if($request->has('last_name')) {
+    //         $user->last_name = $request->last_name;
+    //     }
 
-        if ($request->has('email') && $user->email != $request->email) {
-            $user->verified = User::UNVERIFIED_USER;
-            $user->verification_token = User::generateVerificationCode();
-            $user->email = $request->email;
-        }
+    //     if ($request->has('email') && $user->email != $request->email) {
+    //         $user->verified = User::UNVERIFIED_USER;
+    //         $user->verification_token = User::generateVerificationCode();
+    //         $user->email = $request->email;
+    //     }
 
-        if ($request->has('password')) {
-            $user->password = bcrypt($request->password);
-        }
+    //     if ($request->has('password')) {
+    //         $user->password = bcrypt($request->password);
+    //     }
 
-        if ($request->has('city')) {
-            $user->city = $request->city;
-        }
+    //     if ($request->has('city')) {
+    //         $user->city = $request->city;
+    //     }
 
-        if ($request->has('country_id')) {
-            $user->country_id = $request->country_id;
-        }
+    //     if ($request->has('country_id')) {
+    //         $user->country_id = $request->country_id;
+    //     }
 
-        if ($request->has('zip')) {
-            $user->zip = $request->zip;
-        }
+    //     if ($request->has('zip')) {
+    //         $user->zip = $request->zip;
+    //     }
 
-        if ($request->has('phone')) {
-            $user->phone = $request->phone;
-        }
-        if (! $user->isDirty()) {
-            return $this->errorResponse('Please specify a field to update', 409);
-        }
+    //     if ($request->has('phone')) {
+    //         $user->phone = $request->phone;
+    //     }
+    //     if (! $user->isDirty()) {
+    //         return $this->errorResponse('Please specify a field to update', 409);
+    //     }
 
-        $user->save();
+    //     $user->save();
 
-        return $this->showOne(new UserResource($user));
-    }
+    //     return $this->showOne(new UserResource($user));
+    // }
 
     public function destroy(User $user): JsonResponse
     {

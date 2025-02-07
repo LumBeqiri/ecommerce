@@ -15,7 +15,7 @@ class AdminVariantMediaController extends ApiController
 {
     public function index(Variant $variant): JsonResponse
     {
-        $medias = $variant->medias;
+        $medias = $variant->media;
 
         return $this->showAll(MediaResource::collection($medias));
     }

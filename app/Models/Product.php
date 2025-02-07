@@ -32,31 +32,50 @@ class Product extends Model implements HasMedia
 
     protected $guarded = [];
 
+
+    /**
+     * @return BelongsTo<\App\Models\Discount, self>
+     */
     public function discount(): BelongsTo
     {
         return $this->belongsTo(Discount::class);
     }
 
+    /**
+     * @return BelongsToMany<\App\Models\DiscountRule, self>
+     */
     public function discount_rules(): BelongsToMany
     {
         return $this->belongsToMany(DiscountRule::class);
     }
 
+    /**
+     * @return BelongsToMany<\App\Models\Category, self>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
+    /**
+     * @return HasMany<\App\Models\Variant, self>
+     */
     public function variants(): HasMany
     {
         return $this->hasMany(Variant::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\User, self>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Vendor, self>
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

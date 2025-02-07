@@ -18,11 +18,17 @@ class Staff extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return BelongsTo<\App\Models\User, self>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Vendor, self>
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

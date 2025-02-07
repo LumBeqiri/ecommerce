@@ -17,21 +17,33 @@ class Buyer extends User
 
     protected $guarded = [];
 
+    /**
+     * @return HasMany<\App\Models\Cart, self>
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * @return HasMany<\App\Models\Cart, self>
+     */
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\User, self>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Country, self>
+     */
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);

@@ -15,10 +15,11 @@ class AdminCartController extends ApiController
 {
     public function index(): JsonResponse
     {
+        // return paginated carts
         $carts = QueryBuilder::for(Cart::class)
             ->allowedIncludes('buyer', 'cart_items')
-            ->get();
-
+            ->paginate(10);
+            
         return $this->showAll(CartResource::collection($carts));
     }
 

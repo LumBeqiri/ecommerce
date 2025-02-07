@@ -28,7 +28,7 @@ class Discount extends Model
     /**
      * Get the discount rule associated with the discount.
      *
-     * @return BelongsTo<\App\Models\DiscountRule>
+     * @return BelongsTo<\App\Models\DiscountRule, self>
      */
     public function discount_rule(): BelongsTo
     {
@@ -39,7 +39,7 @@ class Discount extends Model
     /**
      * Get the parent discount associated with the discount.
      *
-     * @return BelongsTo<\App\Models\Discount>
+     * @return BelongsTo<\App\Models\Discount, self>
      */
     public function parent(): BelongsTo
     {
@@ -49,7 +49,7 @@ class Discount extends Model
     /** 
      * Get the regions associated with the discount.
      *
-     * @return BelongsToMany<\App\Models\Region>
+     * @return BelongsToMany<\App\Models\Region, self>
      */
     public function regions(): BelongsToMany
     {
