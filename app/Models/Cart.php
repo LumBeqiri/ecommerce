@@ -24,13 +24,12 @@ class Cart extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Buyer, $this> 
+     * @return BelongsTo<\App\Models\Buyer, $this>
      */
     public function buyer(): BelongsTo
     {
         return $this->belongsTo(Buyer::class);
     }
-
 
     /**
      * @return BelongsTo<\App\Models\Region, $this>

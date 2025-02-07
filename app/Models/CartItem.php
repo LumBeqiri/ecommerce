@@ -14,7 +14,6 @@ class CartItem extends Model
 
     protected $guarded = [];
 
-
     /**
      * @return BelongsTo<\App\Models\Cart, $this>
      */

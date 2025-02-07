@@ -13,15 +13,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-
 class Variant extends Model implements HasMedia
 {
-    use InteractsWithMedia;
     use HasFactory;
     use HasUlids;
+    use InteractsWithMedia;
     use SoftDeletes;
 
     protected $guarded = [];
+
     /**
      * @return BelongsTo<\App\Models\Product, $this>
      */

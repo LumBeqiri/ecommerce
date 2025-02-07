@@ -11,7 +11,7 @@ class OrderItem extends Model
 {
     use HasFactory;
     use HasUlids;
-    
+
     protected $guarded = [];
 
     public function order(): BelongsTo

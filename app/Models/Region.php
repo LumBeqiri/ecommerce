@@ -16,7 +16,6 @@ class Region extends Model
 
     protected $guarded = [];
 
-
     public function countries(): HasMany
     {
         return $this->hasMany(Country::class);
@@ -32,7 +31,6 @@ class Region extends Model
         return $this->belongsTo(Currency::class);
     }
 
-    
     /**
      * Get the currency associated with the region.
      *

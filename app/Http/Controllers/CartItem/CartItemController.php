@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\CartItem;
 
-use App\Models\Cart;
-// use App\Http\Requests\CartRequest;
-use App\Models\Variant;
-use App\Models\CartItem;
-use App\Services\CartService;
 use App\Exceptions\CartException;
+// use App\Http\Requests\CartRequest;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Cart\CartItemRequest;
+use App\Http\Requests\Cart\CartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Variant;
+use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\CartResource;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Cart\CartRequest;
-use App\Http\Requests\Cart\CartItemRequest;
 
 class CartItemController extends ApiController
 {

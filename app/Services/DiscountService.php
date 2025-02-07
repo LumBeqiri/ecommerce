@@ -49,7 +49,7 @@ class DiscountService
     private static function calculate_whole_cart_discount(DiscountRule $discount_rule, Cart $cart, Region $discount_region): Cart
     {
 
-        if ($cart->region->id 
+        if ($cart->region->id
         !== $discount_region->id) {
             throw new DiscountException('Discount is not applicable', 422);
         }
@@ -73,18 +73,17 @@ class DiscountService
     private static function calculate_percentage_cart_discount(DiscountRule $discount_rule, Cart $cart): Cart
     {
         $discountedPrice = $cart->total_cart_price - ($cart->total_cart_price * ($discount_rule->value / 100));
-    
+
         if ($discountedPrice < 0) {
             $discountedPrice = 0;
         }
-        
+
         $cart->total_cart_price = (int) round($discountedPrice);
         $cart->has_been_discounted = true;
         $cart->save();
-    
+
         return $cart;
     }
-    
 
     private static function apply_discount_to_cart_variants(Cart $cart, DiscountRule $discount_rule, Region $discount_region): array
     {

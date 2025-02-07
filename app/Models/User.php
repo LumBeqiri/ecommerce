@@ -21,14 +21,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
     use HasUlids;
 
-    public const VERIFIED_USER =1;
+    public const VERIFIED_USER = 1;
 
     public const UNVERIFIED_USER = 0;
 
-
     protected $guarded = [];
 
-    
     protected $hidden = [
         'password',
         'remember_token',
@@ -116,9 +114,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Staff::class);
     }
+
     /**
-    * @return HasOne<\App\Models\Vendor, $this>
-    */
+     * @return HasOne<\App\Models\Vendor, $this>
+     */
     public function vendor(): HasOne
     {
         return $this->hasOne(Vendor::class);
@@ -131,7 +130,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Region::class);
     }
-
 
     public function getRoelName(): string
     {

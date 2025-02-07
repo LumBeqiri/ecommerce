@@ -35,7 +35,6 @@ class Discount extends Model
         return $this->belongsTo(DiscountRule::class);
     }
 
-
     /**
      * Get the parent discount associated with the discount.
      *
@@ -46,7 +45,7 @@ class Discount extends Model
         return $this->belongsTo(Discount::class);
     }
 
-    /** 
+    /**
      * Get the regions associated with the discount.
      *
      * @return BelongsToMany<\App\Models\Region, $this>

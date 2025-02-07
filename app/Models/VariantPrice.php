@@ -33,5 +33,4 @@ class VariantPrice extends Model
     {
         return $this->belongsTo(Currency::class);
     }
-
 }

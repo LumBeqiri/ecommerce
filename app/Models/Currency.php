@@ -16,5 +16,4 @@ class Currency extends Model
     {
         return $this->hasMany(Region::class);
     }
-
 }

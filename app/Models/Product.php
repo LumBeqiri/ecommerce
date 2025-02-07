@@ -32,7 +32,6 @@ class Product extends Model implements HasMedia
 
     protected $guarded = [];
 
-
     /**
      * @return BelongsTo<\App\Models\Discount, $this>
      */
