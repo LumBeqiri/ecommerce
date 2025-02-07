@@ -122,7 +122,7 @@ trait ApiResponser
 
     public function respondInvalidQuery($message = null, $code = 422)
     {
-        if (env('APP_ENV') != 'local') {
+        if (config('app.env') != 'local') {
             $message = 'Invalid Query';
         }
 

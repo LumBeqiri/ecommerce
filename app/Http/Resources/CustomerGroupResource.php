@@ -16,7 +16,6 @@ class CustomerGroupResource extends JsonResource
     public function toArray($request)
     {
         return [
-            /** @phpstan-ignore-next-line */
             'id' => $this->ulid,
             'name' => $this->name,
             'metadata' => $this->metadata ?? '',

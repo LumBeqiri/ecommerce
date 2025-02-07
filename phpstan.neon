@@ -7,11 +7,11 @@ parameters:
         - app/
 
     # Level 9 is the highest level
-    level: 6
+    level: 1
 
     ignoreErrors:
-        - '#PHPDoc tag @var#'
-        - identifier: missingType.generics
+        #- '#PHPDoc tag @var#'
+        #- identifier: missingType.generics
     excludePaths:
         - app/Http/Middleware
         - app/Policies

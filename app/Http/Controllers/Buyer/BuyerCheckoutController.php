@@ -37,7 +37,6 @@ class BuyerCheckoutController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    // @phpstan-ignore-next-line
     public function add_to_cart(CartRequest $request)
     {
         $data = $request->validated();

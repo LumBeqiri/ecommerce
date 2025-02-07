@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \App\Models\Staff */
 class StaffResource extends JsonResource
 {
     /**
@@ -17,7 +18,6 @@ class StaffResource extends JsonResource
         return [
             'id' => $this->ulid,
             'position' => $this->position,
-            'phone' => $this->phone,
             'status' => $this->status,
             'notes' => $this->notes,
             'address' => $this->address,

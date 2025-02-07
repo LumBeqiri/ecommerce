@@ -16,7 +16,6 @@ class RegionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            // @phpstan-ignore-next-line
             'id' => $this->ulid,
             'title' => $this->title,
             'tax_rate' => $this->tax_rate,

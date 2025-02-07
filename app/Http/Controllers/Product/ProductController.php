@@ -32,7 +32,6 @@ class ProductController extends ApiController
 
     public function show(Product $product): JsonResponse
     {
-        // @phpstan-ignore-next-line
         $product = QueryBuilder::for(Product::class)
             ->where('ulid', $product->ulid)
             ->allowedIncludes(['variant_prices', 'variants'])
