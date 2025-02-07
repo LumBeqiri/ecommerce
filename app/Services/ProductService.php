@@ -40,8 +40,6 @@ class ProductService
             DB::rollBack();
             throw $e;
         }
-
-        return $product->load('variants');
     }
 
     public function updateProduct(Product $product, ProductData $data): Product

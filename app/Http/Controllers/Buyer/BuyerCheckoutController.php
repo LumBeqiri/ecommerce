@@ -21,14 +21,14 @@ use Illuminate\Support\Facades\DB;
 
 class BuyerCheckoutController extends ApiController
 {
-    public function checkout(StoreOrderRequest $request, Cart $cart)
-    {
-        DB::beginTransaction();
-        try {
+    // public function checkout(StoreOrderRequest $request, Cart $cart)
+    // {
+    //     DB::beginTransaction();
+    //     try {
 
-        } catch (Exception) {
-        }
-    }
+    //     } catch (Exception) {
+    //     }
+    // }
 
     public function index(User $user): JsonResponse
     {
