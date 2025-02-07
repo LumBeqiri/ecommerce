@@ -26,6 +26,11 @@ class DiscountRule extends Model
         return $this->belongsToMany(Product::class);
     }
 
+    /**
+     * Get the region associated with the discount rule.
+     *
+     * @return BelongsTo<\App\Models\Region>
+     */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);

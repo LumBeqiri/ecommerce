@@ -25,16 +25,32 @@ class Discount extends Model
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * Get the discount rule associated with the discount.
+     *
+     * @return BelongsTo<\App\Models\DiscountRule>
+     */
     public function discount_rule(): BelongsTo
     {
         return $this->belongsTo(DiscountRule::class);
     }
 
+
+    /**
+     * Get the parent discount associated with the discount.
+     *
+     * @return BelongsTo<\App\Models\Discount>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Discount::class);
     }
 
+    /** 
+     * Get the regions associated with the discount.
+     *
+     * @return BelongsToMany<\App\Models\Region>
+     */
     public function regions(): BelongsToMany
     {
         return $this->belongsToMany(Region::class);
