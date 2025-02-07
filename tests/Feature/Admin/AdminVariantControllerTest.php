@@ -25,7 +25,7 @@ it('admin can update variant name', function () {
     Region::factory()->create();
     Country::factory()->create();
 
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
     $variant = Variant::factory()->create(['product_id' => $product->id]);
@@ -49,7 +49,7 @@ it('admin can update variant sku', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
     $variant = Variant::factory()->create(['product_id' => $product->id]);
@@ -73,7 +73,7 @@ it('admin can update variant short description', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
     $variant = Variant::factory()->create(['product_id' => $product->id]);
@@ -97,7 +97,7 @@ it('admin can update variant long description', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
     $variant = Variant::factory()->create(['product_id' => $product->id]);
@@ -121,9 +121,9 @@ it('admin can not update variant with negative price', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
-    Product::factory()->count(10)->create();
+    Product::factory()->create();
     $variant = Variant::factory()->create();
 
     $user = User::factory()->create(['email' => 'lum@test.com']);
@@ -142,7 +142,7 @@ it('admin can update variant stock', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
     $variant = Variant::factory()->create(['product_id' => $product->id, 'stock' => 5]);
@@ -166,9 +166,9 @@ it('admin can not update variant with negative stock value', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
-    Product::factory()->count(10)->create();
+    Product::factory()->create();
     $variant = Variant::factory()->create(['stock' => 5]);
 
     $user = User::factory()->create(['email' => 'lum@test.com']);
@@ -188,9 +188,9 @@ it('admin can delete variant', function () {
     Region::factory()->create();
     Country::factory()->create();
 
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
-    Product::factory()->count(10)->create();
+    Product::factory()->create();
     $variant = Variant::factory()->create(['stock' => 5]);
 
     $user = User::factory()->create();

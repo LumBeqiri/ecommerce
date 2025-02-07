@@ -28,7 +28,7 @@ test('admin can update product name', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
 
@@ -50,7 +50,7 @@ test('admin can update product category', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->create();
@@ -83,7 +83,7 @@ test('admin can delete product', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->create();
 
@@ -103,7 +103,7 @@ test('admin can update product status', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
-    User::factory()->count(10)->create();
+    User::factory()->create();
     Vendor::factory()->create();
     $product = Product::factory()->unavailable()->create();
 

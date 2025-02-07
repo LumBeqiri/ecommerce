@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
             $table->string('publish_status')->default(Product::DRAFT);
             $table->boolean('discountable')->default(0);
-            $table->foreignId('origin_country')->nullable()->constrained('countries');
+            $table->foreignId('origin_country_id')->nullable()->constrained('countries');
             $table->foreignId('discount_id')->nullable()->constrained('discounts');
             $table->timestamps();
             $table->softDeletes();

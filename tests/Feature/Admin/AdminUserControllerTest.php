@@ -15,14 +15,14 @@ beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
     Notification::fake();
     Bus::fake();
-    Currency::factory()->count(5)->create();
+    Currency::factory()->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
 });
 
 it('admin can show users', function () {
-    User::factory()->count(10)->create();
+    User::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
 

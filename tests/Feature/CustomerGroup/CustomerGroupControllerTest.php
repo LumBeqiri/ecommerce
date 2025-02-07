@@ -21,7 +21,7 @@ beforeEach(function () {
 
 it('can show all user groups for seller', function () {
     $user = User::factory()->create();
-    User::factory()->count(5)->create();
+    User::factory()->create();
     CustomerGroup::factory()
         ->for($user)
         ->count(5)->create();
@@ -35,7 +35,7 @@ it('can show all user groups for seller', function () {
 
 it('can store a customer group ', function () {
     $user = User::factory()->create();
-    $users = User::factory()->count(10)->create();
+    $users = User::factory()->count(5)->create();
 
     $customerGroupName = 'Golf Club';
 
