@@ -28,7 +28,7 @@ class RegisterController extends ApiController
 
                 if (! empty($items) && is_array($items) && array_key_exists('items', $items)) {
                     $items = $items['items'];
-                    SaveCookieCartToDB::dispatch($items, $user);
+                    // TODO: Sync items from cookie to cart
                 }
             }
         }
