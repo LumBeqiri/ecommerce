@@ -34,7 +34,7 @@ class Product extends Model implements HasMedia
 
 
     /**
-     * @return BelongsTo<\App\Models\Discount, self>
+     * @return BelongsTo<\App\Models\Discount, $this>
      */
     public function discount(): BelongsTo
     {
@@ -42,7 +42,7 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsToMany<\App\Models\DiscountRule, self>
+     * @return BelongsToMany<\App\Models\DiscountRule, $this>
      */
     public function discount_rules(): BelongsToMany
     {
@@ -50,7 +50,7 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsToMany<\App\Models\Category, self>
+     * @return BelongsToMany<\App\Models\Category, $this>
      */
     public function categories(): BelongsToMany
     {
@@ -58,7 +58,7 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * @return HasMany<\App\Models\Variant, self>
+     * @return HasMany<\App\Models\Variant, $this>
      */
     public function variants(): HasMany
     {
@@ -66,7 +66,7 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsTo<\App\Models\User, self>
+     * @return BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -74,7 +74,7 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsTo<\App\Models\Vendor, self>
+     * @return BelongsTo<\App\Models\Vendor, $this>
      */
     public function vendor(): BelongsTo
     {

@@ -16,7 +16,7 @@ class Cart extends Model
     protected $guarded = [];
 
     /**
-     * @return HasMany<\App\Models\CartItem, self>
+     * @return HasMany<\App\Models\CartItem, $this>
      */
     public function cart_items(): HasMany
     {
@@ -24,7 +24,7 @@ class Cart extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Buyer, self> 
+     * @return BelongsTo<\App\Models\Buyer, $this> 
      */
     public function buyer(): BelongsTo
     {
@@ -33,7 +33,7 @@ class Cart extends Model
 
 
     /**
-     * @return BelongsTo<\App\Models\Region, self>
+     * @return BelongsTo<\App\Models\Region, $this>
      */
     public function region(): BelongsTo
     {
@@ -41,7 +41,7 @@ class Cart extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Payment, self>
+     * @return BelongsTo<\App\Models\Payment, $this>
      */
     public function payment(): BelongsTo
     {

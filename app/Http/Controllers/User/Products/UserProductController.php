@@ -51,7 +51,7 @@ class UserProductController extends ApiController
         return new ProductResource($product->load(['variants.variant_prices']));
     }
 
-    public function update(UpdateProductRequest $request, Product $product, ProductService $productService): JsonResource
+    public function update(UpdateProductRequest $request, Product $product, ProductService $productService): JsonResource|JsonResponse
     {
         $this->authorize('update', $product);
 

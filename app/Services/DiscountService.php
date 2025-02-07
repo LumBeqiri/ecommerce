@@ -72,15 +72,19 @@ class DiscountService
 
     private static function calculate_percentage_cart_discount(DiscountRule $discount_rule, Cart $cart): Cart
     {
-        $cart->total_cart_price = $cart->total_cart_price - ($cart->total_cart_price * ($discount_rule->value / 100));
-        if ($cart->total_cart_price < 0) {
-            $cart->total_cart_price = 0;
+        $discountedPrice = $cart->total_cart_price - ($cart->total_cart_price * ($discount_rule->value / 100));
+    
+        if ($discountedPrice < 0) {
+            $discountedPrice = 0;
         }
+        
+        $cart->total_cart_price = (int) round($discountedPrice);
         $cart->has_been_discounted = true;
         $cart->save();
-
+    
         return $cart;
     }
+    
 
     private static function apply_discount_to_cart_variants(Cart $cart, DiscountRule $discount_rule, Region $discount_region): array
     {

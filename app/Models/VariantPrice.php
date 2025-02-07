@@ -27,10 +27,11 @@ class VariantPrice extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Currency, self>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Currency, $this>
      */
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
+
 }
