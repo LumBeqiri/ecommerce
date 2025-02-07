@@ -66,16 +66,17 @@ class ProductService
         }
     }
 
-    public function syncProductCategories(Product $product, array $categoriesUlids): Product
-    {
+    // TODO : delete this or implement
+    // public function syncProductCategories(Product $product, array $categoriesUlids): Product
+    // {
 
-        $categories = Category::whereIn('ulid', $categoriesUlids)->pluck('id');
-        $product->categories()->sync($categories);
+    //     $categories = Category::whereIn('ulid', $categoriesUlids)->pluck('id');
+    //     $product->categories()->sync($categories);
 
-        $product->save();
+    //     $product->save();
 
-        return $product;
-    }
+    //     return $product;
+    // }
 
     public function deleteProductCategories(Product $product): Product
     {
