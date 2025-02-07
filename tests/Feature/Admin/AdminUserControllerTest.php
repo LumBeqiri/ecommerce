@@ -41,7 +41,8 @@ it('admin can create user', function () {
     $password = $this->faker()->password(8, 12);
 
     $response = $this->postJson(action([AdminUserController::class, 'store']), [
-        'name' => $this->faker()->name(),
+        'first_name' => $this->faker()->name(),
+        'last_name' => $this->faker()->name(),
         'email' => $this->faker()->email(),
         'password' => $password,
         'password_confirmation' => $password,
