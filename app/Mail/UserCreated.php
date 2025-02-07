@@ -34,6 +34,8 @@ class UserCreated extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.welcome')->subject('Please verify your account');
+        /** @var view-string $markdownView */
+        $markdownView = 'emails.welcome';
+        return $this->markdown($markdownView)->subject('Please verify your account');
     }
 }
