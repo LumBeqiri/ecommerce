@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use App\Models\Variant;
 
 class ProductObserver
 {
@@ -13,9 +14,9 @@ class ProductObserver
      */
     public function deleting(Product $product)
     {
-        $product->variants->each(function ($variant) {
-            $variant->medias()->delete();
-            $variant->variantPrices()->delete();
+        $product->variants->each(function (Variant $variant) {
+            $variant->media()->delete();
+            $variant->variant_prices()->delete();
             $variant->delete();
         });
     }

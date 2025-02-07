@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Order\StoreOrderRequest;
-use App\Http\Resources\OrderResource;
-use App\Mail\OrderReceipt;
-use App\Models\Buyer;
 use App\Models\Cart;
+use App\Models\User;
+use App\Models\Buyer;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderReceipt;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\OrderResource;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Order\StoreOrderRequest;
 
 class BuyerOrderController extends ApiController
 {
-    protected $user;
+    protected User $user;
 
     public function __construct()
     {
-        /**
-         * @var \App\Models\User
-         */
+        /*** @var $user User*/
         $this->user = auth()->user();
     }
 
@@ -34,7 +33,7 @@ class BuyerOrderController extends ApiController
 
     public function store(StoreOrderRequest $request)
     {
-        $region_id = auth()->user()->country->region->id;
+        $region_id = $this->user->region_id;
 
         $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
@@ -49,9 +48,10 @@ class BuyerOrderController extends ApiController
             $order_data['shipping_country'] = $request->shipping_country;
             $order_data['shipping_address'] = $request->shipping_address;
         } else {
-            $order_data['shipping_city'] = $this->user->city;
-            $order_data['shipping_country'] = $this->user->country->name;
-            $order_data['shipping_address'] = $this->user->shipping_address;
+            $order_data['shipping_city'] = $this->user->user_settings->city;
+            $order_data['shipping_country'] = $this->user->user_settings->country->name;
+            // TODO: shipping address needs to be moved to user settings
+            // $order_data['shipping_address'] = $this->user->user_settings->shipping_address;
         }
 
         unset($order_data['different_shipping_address']);

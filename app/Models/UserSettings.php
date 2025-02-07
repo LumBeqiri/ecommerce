@@ -16,11 +16,17 @@ class UserSettings extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return BelongsTo<\App\Models\User, self>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Country, self>
+     */
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);

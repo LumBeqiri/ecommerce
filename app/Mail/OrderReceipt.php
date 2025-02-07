@@ -49,7 +49,7 @@ class OrderReceipt extends Mailable implements ShouldQueue
             markdown: 'emails.orders.receipt',
             with: [
                 'order' => $this->order,
-                'name' => $this->user->name,
+                'name' => $this->user->first_name . ' ' . $this->user->last_name,
             ]
         );
     }

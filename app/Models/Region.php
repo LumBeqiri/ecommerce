@@ -25,13 +25,19 @@ class Region extends Model
     /**
      * Get the currency associated with the region.
      *
-     * @return BelongsTo<\App\Models\Currency>
+     * @return BelongsTo<\App\Models\Currency, self>
      */
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
 
+    
+    /**
+     * Get the currency associated with the region.
+     *
+     * @return BelongsTo<\App\Models\TaxProvider, self>
+     */
     public function tax_provider(): BelongsTo
     {
         return $this->belongsTo(TaxProvider::class);
@@ -42,6 +48,9 @@ class Region extends Model
         return $this->hasMany(Cart::class);
     }
 
+    /**
+     * @return BelongsToMany<\App\Models\Discount, self>
+     */
     public function discounts(): BelongsToMany
     {
         return $this->belongsToMany(Discount::class);

@@ -49,7 +49,8 @@ class DiscountService
     private static function calculate_whole_cart_discount(DiscountRule $discount_rule, Cart $cart, Region $discount_region): Cart
     {
 
-        if ($cart->region->id !== $discount_region->id) {
+        if ($cart->region->id 
+        !== $discount_region->id) {
             throw new DiscountException('Discount is not applicable', 422);
         }
         if ($discount_region->currency->has_cents) {

@@ -78,11 +78,17 @@ class User extends Authenticatable
         return Str::random(40);
     }
 
+    /**
+     * @return HasOne<\App\Models\UserSettings, self>
+     */
     public function user_settings(): HasOne
     {
         return $this->hasOne(UserSettings::class);
     }
 
+    /**
+     * @return HasOne<\App\Models\Cart, self>
+     */
     public function cart(): HasOne
     {
         return $this->hasOne(Cart::class);
@@ -98,35 +104,53 @@ class User extends Authenticatable
         return $this->hasMany(CustomerGroup::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Country, self>
+     */
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
 
+    /**
+     * @return HasMany<\App\Models\Product, self>
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * @return HasOne<\App\Models\Buyer, self>
+     */
     public function buyer(): HasOne
     {
         return $this->hasOne(Buyer::class);
     }
 
+    /**
+     * @return HasOne<\App\Models\Staff, self>
+     */
     public function staff(): HasOne
     {
         return $this->hasOne(Staff::class);
     }
-
+    /**
+    * @return HasOne<\App\Models\Vendor, self>
+    */
     public function vendor(): HasOne
     {
         return $this->hasOne(Vendor::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Region, self>
+     */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
     }
+
 
     public function getRoelName(): string
     {

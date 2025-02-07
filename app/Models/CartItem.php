@@ -14,11 +14,18 @@ class CartItem extends Model
 
     protected $guarded = [];
 
+
+    /**
+     * @return BelongsTo<\App\Models\Cart, self>
+     */
     public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Variant, self>
+     */
     public function variant(): BelongsTo
     {
         return $this->belongsTo(Variant::class);

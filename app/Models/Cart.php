@@ -15,21 +15,34 @@ class Cart extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return HasMany<\App\Models\CartItem, self>
+     */
     public function cart_items(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Buyer, self> 
+     */
     public function buyer(): BelongsTo
     {
         return $this->belongsTo(Buyer::class);
     }
 
+
+    /**
+     * @return BelongsTo<\App\Models\Region, self>
+     */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Payment, self>
+     */
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);

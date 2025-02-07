@@ -16,7 +16,7 @@ class UserVariantMediaController extends ApiController
     public function index(Variant $variant): JsonResponse
     {
         $this->authorize('view', $variant);
-        $medias = $variant->medias;
+        $medias = $variant->media;
 
         return $this->showAll(MediaResource::collection($medias));
     }
