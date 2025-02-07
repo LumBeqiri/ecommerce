@@ -18,7 +18,7 @@ class Buyer extends User
     protected $guarded = [];
 
     /**
-     * @return HasMany<\App\Models\Cart, self>
+     * @return HasMany<\App\Models\Order, $this>
      */
     public function orders(): HasMany
     {
@@ -26,7 +26,7 @@ class Buyer extends User
     }
 
     /**
-     * @return HasMany<\App\Models\Cart, self>
+     * @return HasMany<\App\Models\Cart, $this>
      */
     public function carts(): HasMany
     {
@@ -34,7 +34,7 @@ class Buyer extends User
     }
 
     /**
-     * @return BelongsTo<\App\Models\User, self>
+     * @return BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -42,7 +42,7 @@ class Buyer extends User
     }
 
     /**
-     * @return BelongsTo<\App\Models\Country, self>
+     * @return BelongsTo<\App\Models\Country, $this>
      */
     public function country(): BelongsTo
     {

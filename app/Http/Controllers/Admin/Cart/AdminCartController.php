@@ -19,7 +19,7 @@ class AdminCartController extends ApiController
         $carts = QueryBuilder::for(Cart::class)
             ->allowedIncludes('buyer', 'cart_items')
             ->paginate(10);
-            
+
         return $this->showAll(CartResource::collection($carts));
     }
 

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Models\Cart;
-use App\Models\User;
-use App\Models\Buyer;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Mail\OrderReceipt;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Mail;
-use App\Http\Resources\OrderResource;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Order\StoreOrderRequest;
+use App\Http\Resources\OrderResource;
+use App\Mail\OrderReceipt;
+use App\Models\Buyer;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 
 class BuyerOrderController extends ApiController
 {

@@ -21,33 +21,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
     use HasUlids;
 
-    public const VERIFIED_USER = '1';
+    public const VERIFIED_USER = 1;
 
-    public const UNVERIFIED_USER = '0';
+    public const UNVERIFIED_USER = 0;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = [
-        'email',
-        'first_name',
-        'last_name',
-        'city',
-        'country_id',
-        'user_id',
-        'password',
-        'verified',
-        'phone',
-        'verification_token',
-    ];
+    protected $guarded = [];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -79,7 +58,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasOne<\App\Models\UserSettings, self>
+     * @return HasOne<\App\Models\UserSettings, $this>
      */
     public function user_settings(): HasOne
     {
@@ -87,7 +66,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasOne<\App\Models\Cart, self>
+     * @return HasOne<\App\Models\Cart, $this>
      */
     public function cart(): HasOne
     {
@@ -105,7 +84,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return BelongsTo<\App\Models\Country, self>
+     * @return BelongsTo<\App\Models\Country, $this>
      */
     public function country(): BelongsTo
     {
@@ -113,7 +92,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasMany<\App\Models\Product, self>
+     * @return HasMany<\App\Models\Product, $this>
      */
     public function products(): HasMany
     {
@@ -121,7 +100,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasOne<\App\Models\Buyer, self>
+     * @return HasOne<\App\Models\Buyer, $this>
      */
     public function buyer(): HasOne
     {
@@ -129,28 +108,28 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasOne<\App\Models\Staff, self>
+     * @return HasOne<\App\Models\Staff, $this>
      */
     public function staff(): HasOne
     {
         return $this->hasOne(Staff::class);
     }
+
     /**
-    * @return HasOne<\App\Models\Vendor, self>
-    */
+     * @return HasOne<\App\Models\Vendor, $this>
+     */
     public function vendor(): HasOne
     {
         return $this->hasOne(Vendor::class);
     }
 
     /**
-     * @return BelongsTo<\App\Models\Region, self>
+     * @return BelongsTo<\App\Models\Region, $this>
      */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
     }
-
 
     public function getRoelName(): string
     {

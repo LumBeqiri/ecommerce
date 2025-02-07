@@ -14,9 +14,8 @@ class CartItem extends Model
 
     protected $guarded = [];
 
-
     /**
-     * @return BelongsTo<\App\Models\Cart, self>
+     * @return BelongsTo<\App\Models\Cart, $this>
      */
     public function cart(): BelongsTo
     {
@@ -24,7 +23,7 @@ class CartItem extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Variant, self>
+     * @return BelongsTo<\App\Models\Variant, $this>
      */
     public function variant(): BelongsTo
     {

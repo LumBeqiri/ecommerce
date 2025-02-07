@@ -13,17 +13,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-
 class Variant extends Model implements HasMedia
 {
-    use InteractsWithMedia;
     use HasFactory;
     use HasUlids;
+    use InteractsWithMedia;
     use SoftDeletes;
 
     protected $guarded = [];
+
     /**
-     * @return BelongsTo<\App\Models\Product, self>
+     * @return BelongsTo<\App\Models\Product, $this>
      */
     public function product(): BelongsTo
     {
@@ -31,7 +31,7 @@ class Variant extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsToMany<\App\Models\Attribute, self>
+     * @return BelongsToMany<\App\Models\Attribute, $this>
      */
     public function attributes(): BelongsToMany
     {
@@ -39,7 +39,7 @@ class Variant extends Model implements HasMedia
     }
 
     /**
-     * @return HasOne<\App\Models\CartItem, self>
+     * @return HasOne<\App\Models\CartItem, $this>
      */
     public function cart_item(): HasOne
     {
@@ -47,7 +47,7 @@ class Variant extends Model implements HasMedia
     }
 
     /**
-     * @return HasMany<\App\Models\VariantPrice, self>
+     * @return HasMany<\App\Models\VariantPrice, $this>
      */
     public function variant_prices(): HasMany
     {
@@ -55,7 +55,7 @@ class Variant extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsToMany<\App\Models\Order, self>
+     * @return BelongsToMany<\App\Models\Order, $this>
      */
     public function orders(): BelongsToMany
     {

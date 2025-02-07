@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Variant;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
 use App\Models\Country;
 use App\Models\Variant;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
 use Stevebauman\Location\Facades\Location;
 
 class VariantController extends ApiController

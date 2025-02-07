@@ -16,7 +16,6 @@ class Region extends Model
 
     protected $guarded = [];
 
-
     public function countries(): HasMany
     {
         return $this->hasMany(Country::class);
@@ -25,18 +24,17 @@ class Region extends Model
     /**
      * Get the currency associated with the region.
      *
-     * @return BelongsTo<\App\Models\Currency, self>
+     * @return BelongsTo<\App\Models\Currency, $this>
      */
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
 
-    
     /**
      * Get the currency associated with the region.
      *
-     * @return BelongsTo<\App\Models\TaxProvider, self>
+     * @return BelongsTo<\App\Models\TaxProvider, $this>
      */
     public function tax_provider(): BelongsTo
     {
@@ -49,7 +47,7 @@ class Region extends Model
     }
 
     /**
-     * @return BelongsToMany<\App\Models\Discount, self>
+     * @return BelongsToMany<\App\Models\Discount, $this>
      */
     public function discounts(): BelongsToMany
     {

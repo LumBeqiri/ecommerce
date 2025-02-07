@@ -94,7 +94,7 @@ class UserController extends ApiController
     {
         $user = User::where('verification_token', $token)->firstOrFail();
 
-        $user->verified = User::VERIFIED_USER;
+        $user->verified = (bool) User::VERIFIED_USER;
         $user->email_verified_at = now();
         $user->verification_token = null;
 

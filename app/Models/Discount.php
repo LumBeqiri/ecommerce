@@ -28,28 +28,27 @@ class Discount extends Model
     /**
      * Get the discount rule associated with the discount.
      *
-     * @return BelongsTo<\App\Models\DiscountRule, self>
+     * @return BelongsTo<\App\Models\DiscountRule, $this>
      */
     public function discount_rule(): BelongsTo
     {
         return $this->belongsTo(DiscountRule::class);
     }
 
-
     /**
      * Get the parent discount associated with the discount.
      *
-     * @return BelongsTo<\App\Models\Discount, self>
+     * @return BelongsTo<\App\Models\Discount, $this>
      */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Discount::class);
     }
 
-    /** 
+    /**
      * Get the regions associated with the discount.
      *
-     * @return BelongsToMany<\App\Models\Region, self>
+     * @return BelongsToMany<\App\Models\Region, $this>
      */
     public function regions(): BelongsToMany
     {

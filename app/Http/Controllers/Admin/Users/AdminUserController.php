@@ -40,7 +40,7 @@ class AdminUserController extends ApiController
         $user->fill($request->only(['city', 'zip', 'phone', 'country_id']));
 
         if ($request->has('email')) {
-            $user->verified = User::UNVERIFIED_USER;
+            $user->verified = (bool) User::UNVERIFIED_USER;
             $user->verification_token = User::generateVerificationCode();
             $user->email = $request->email;
         }

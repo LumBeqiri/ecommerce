@@ -29,7 +29,7 @@ class DiscountRule extends Model
     /**
      * Get the region associated with the discount rule.
      *
-     * @return BelongsTo<\App\Models\Region, self>
+     * @return BelongsTo<\App\Models\Region, $this>
      */
     public function region(): BelongsTo
     {

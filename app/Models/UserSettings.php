@@ -17,7 +17,7 @@ class UserSettings extends Model
     protected $guarded = [];
 
     /**
-     * @return BelongsTo<\App\Models\User, self>
+     * @return BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -25,7 +25,7 @@ class UserSettings extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Country, self>
+     * @return BelongsTo<\App\Models\Country, $this>
      */
     public function country(): BelongsTo
     {

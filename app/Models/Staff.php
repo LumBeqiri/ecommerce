@@ -19,7 +19,7 @@ class Staff extends Model
     protected $guarded = [];
 
     /**
-     * @return BelongsTo<\App\Models\User, self>
+     * @return BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -27,7 +27,7 @@ class Staff extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\Vendor, self>
+     * @return BelongsTo<\App\Models\Vendor, $this>
      */
     public function vendor(): BelongsTo
     {
