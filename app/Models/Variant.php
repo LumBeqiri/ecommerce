@@ -17,7 +17,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Variant extends Model implements HasMedia
 {
     use InteractsWithMedia;
+    use HasFactory;
+    use HasUlids;
+    use SoftDeletes;
 
+    protected $guarded = [];
     /**
      * @return BelongsTo<\App\Models\Product, self>
      */

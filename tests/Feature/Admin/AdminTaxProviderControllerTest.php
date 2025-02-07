@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Notification;
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
-    Currency::factory()->count(5)->create();
+    Currency::factory()->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();

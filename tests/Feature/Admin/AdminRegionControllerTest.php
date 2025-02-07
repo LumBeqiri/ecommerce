@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Notification;
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
-    Currency::factory()->count(5)->create();
+    Currency::factory()->create();
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -23,7 +23,7 @@ beforeEach(function () {
 it('admin can show regions', function () {
     $user = User::factory()->create();
     $user->assignRole('admin');
-    Region::factory()->count(1)->make();
+    Region::factory()->make();
 
     login($user);
 

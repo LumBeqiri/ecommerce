@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('user_settings', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            
             $table->string('phone')->nullable();
             $table->string('city')->nullable();
 
