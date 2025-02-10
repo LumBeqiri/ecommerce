@@ -22,6 +22,7 @@ class AdminVariantMediaController extends ApiController
 
     public function store(MediasRequest $request, Variant $variant): JsonResponse
     {
+        /** @var array<int, \Illuminate\Http\UploadedFile> $medias */
         $medias = $request->file('files');
 
         try {

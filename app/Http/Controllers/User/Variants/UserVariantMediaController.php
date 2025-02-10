@@ -24,7 +24,8 @@ class UserVariantMediaController extends ApiController
     public function store(MediasRequest $request, Variant $variant): JsonResponse
     {
         $this->authorize('update', $variant);
-
+        
+        /** @var array<int, \Illuminate\Http\UploadedFile> $medias */
         $medias = $request->file('files');
 
         try {

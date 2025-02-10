@@ -15,7 +15,9 @@ class LocationService
 
             return $user->country;
         }
-        if ($position = Location::get($ip)) {
+
+        $position = Location::get($ip);
+        if ($position instanceof \Stevebauman\Location\Position) {
             return $position->countryName;
         }
 
