@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Data\VariantPriceData;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Variant\StoreVariantPriceRequest;
-use App\Http\Requests\Variant\UpdateVariantPriceRequest;
-use App\Http\Resources\VariantResource;
+use Exception;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Data\VariantPriceData;
 use App\Services\VariantService;
-use Exception;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\Variant\StoreVariantPriceRequest;
+use App\Http\Requests\Variant\UpdateVariantPriceRequest;
 
 class AdminVariantPriceController extends ApiController
 {
-    public function show(Variant $variant): JsonResponse
+    public function show(Variant $variant) : JsonResponse
     {
         return $this->showOne(new VariantResource($variant->load(['variant_prices'])));
     }
@@ -36,7 +36,7 @@ class AdminVariantPriceController extends ApiController
 
     public function update(UpdateVariantPriceRequest $request, Variant $variant, VariantPrice $variantPrice, VariantService $variantService): JsonResponse
     {
-        $variantPriceData = VariantPriceData::from($request->validated());
+        $variantPriceData = VariantPriceData::from(array_merge($variantPrice->toArray(), $request->validated()));
         $variantService->updateVariantPrice($variant, $variantPrice, $variantPriceData);
 
         return $this->showOne(new VariantResource($variant->load('variant_prices')));

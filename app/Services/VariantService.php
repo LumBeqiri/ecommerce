@@ -29,10 +29,12 @@ class VariantService
 
     public function addVariantPrice(Variant $variant, VariantPriceData $variantPriceData): VariantPrice
     {
-
         try {
-            $region = Region::find($variantPriceData->region_id);
-            $money = Money::of($variantPriceData->price, $region->currency->code);
+            $region = Region::findOrFail($variantPriceData->region_id);
+            $currency = $region->currency()->firstOrFail();
+    
+            $money = Money::of($variantPriceData->price, $currency->code);
+            
             $variantPrice = VariantPrice::firstOrCreate(
                 [
                     'region_id' => $variantPriceData->region_id,
@@ -41,28 +43,28 @@ class VariantService
                 [
                     'price' => $money->getMinorAmount()->toInt(),
                     'region_id' => $variantPriceData->region_id,
-                    'currency_id' => $variantPriceData->currency_id,
+                    'currency_id' => $currency->id,
                     'variant_id' => $variant->id,
                     'min_quantity' => $variantPriceData->min_quantity,
                     'max_quantity' => $variantPriceData->max_quantity,
-                ]);
-
+                ]
+            );
+    
             return $variantPrice;
-
         } catch (Exception $ex) {
+            // Log the error or handle it as needed
             throw $ex;
         }
-
     }
 
     public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, VariantPriceData $data): Variant
     {
-        $region = Region::find($data->region_id);
+        $region = Region::findOrFail($data->region_id);
         $money = Money::of($data->price, $region->currency->code);
 
         $variantPrice->update([
             'price' => $money->getMinorAmount()->toInt(),
-            'region_id' => $region->id,
+            'region_id' => $data->region_id,
             'variant_id' => $variant->id,
             'min_quantity' => $data->min_quantity,
             'max_quantity' => $data->max_quantity,
