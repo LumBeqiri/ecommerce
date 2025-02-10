@@ -36,10 +36,14 @@ class AdminVariantPriceController extends ApiController
 
     public function update(UpdateVariantPriceRequest $request, Variant $variant, VariantPrice $variantPrice, VariantService $variantService): JsonResponse
     {
-        $variantPriceData = VariantPriceData::from(array_merge($variantPrice->toArray(), $request->validated()));
-        $variantService->updateVariantPrice($variant, $variantPrice, $variantPriceData);
+        try {
+            $variantPriceData = VariantPriceData::fromRequest($request->validated());
+            $variantService->updateVariantPrice($variant, $variantPrice, $variantPriceData);
 
-        return $this->showOne(new VariantResource($variant->load('variant_prices')));
+            return $this->showOne(new VariantResource($variant->load('variant_prices')));
+        } catch (Exception $e) {
+            return $this->showError($e->getMessage(), 422);
+        }
     }
 
     public function destroy(Variant $variant, VariantPrice $variantPrice): JsonResponse

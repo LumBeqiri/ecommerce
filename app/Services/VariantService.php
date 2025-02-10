@@ -60,12 +60,12 @@ class VariantService
     public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, VariantPriceData $data): Variant
     {
         $region = Region::findOrFail($data->region_id);
-        $money = Money::of($data->price, $region->currency->code);
-
+        
         $variantPrice->update([
-            'price' => $money->getMinorAmount()->toInt(),
+            'price' => $data->toMoneyAmount($region),
             'region_id' => $data->region_id,
             'variant_id' => $variant->id,
+            'currency_id' => $region->currency_id,
             'min_quantity' => $data->min_quantity,
             'max_quantity' => $data->max_quantity,
         ]);
