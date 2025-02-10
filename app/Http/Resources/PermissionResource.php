@@ -11,10 +11,11 @@ class PermissionResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @return array<string, int|string|null>
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): array
     {
+        /** @var array<string, int|string|null> */
         return parent::toArray($request);
     }
 }

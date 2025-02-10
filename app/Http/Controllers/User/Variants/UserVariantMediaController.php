@@ -25,6 +25,7 @@ class UserVariantMediaController extends ApiController
     {
         $this->authorize('update', $variant);
 
+        /** @var array<int, \Illuminate\Http\UploadedFile> $medias */
         $medias = $request->file('files');
 
         try {

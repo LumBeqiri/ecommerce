@@ -15,10 +15,15 @@ class VariantController extends ApiController
     {
         $ip = '185.190.132.204';
         $country_name = '';
-        if ($position = Location::get($ip)) {
+
+        $position = Location::get($ip);
+        if ($position instanceof \Stevebauman\Location\Position) {
             $country_name = $position->countryName;
         }
-        $region_id = Country::select('region_id')->where('name', 'LIKE', '%'.$country_name.'%')->value('region_id');
+
+        $region_id = Country::select('region_id')
+            ->where('name', 'LIKE', '%'.$country_name.'%')
+            ->value('region_id');
 
         $variants = Variant::with(['media', 'variant_prices' => function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
