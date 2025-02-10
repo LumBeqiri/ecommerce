@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\User\Variants;
 
-use Exception;
-use App\Models\Variant;
-use App\Models\VariantPrice;
 use App\Data\VariantPriceData;
-use App\Services\VariantService;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\VariantResource;
 use App\Http\Requests\Variant\StoreVariantPriceRequest;
 use App\Http\Requests\Variant\UpdateVariantPriceRequest;
+use App\Http\Resources\VariantResource;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use App\Services\VariantService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class UserVariantPriceController extends ApiController
 {

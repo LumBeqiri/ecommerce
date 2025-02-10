@@ -4,8 +4,6 @@ namespace App\Http\Resources;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use App\Http\Resources\CountryResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Vendor */

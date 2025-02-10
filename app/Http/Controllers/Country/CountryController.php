@@ -12,7 +12,7 @@ class CountryController extends ApiController
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $countries = QueryBuilder::for(Country::class)
             ->allowedIncludes('region')

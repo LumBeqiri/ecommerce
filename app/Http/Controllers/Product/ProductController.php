@@ -10,7 +10,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends ApiController
 {
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $user = auth()->user();
         $region_id = $user->buyer->country->region_id;

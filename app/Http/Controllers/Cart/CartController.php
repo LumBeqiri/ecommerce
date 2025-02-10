@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends ApiController
 {
-    public function index() : JsonResource
+    public function index(): JsonResource
     {
         $user = $this->authUser();
         $carts = null;
@@ -77,7 +77,7 @@ class CartController extends ApiController
         return $this->showMessage('Cart deleted Successfully', 200);
     }
 
-    public function apply_discount(Request $request) : JsonResponse| JsonResource
+    public function apply_discount(Request $request): JsonResponse|JsonResource
     {
         $request->validate([
             'code' => 'required|string',

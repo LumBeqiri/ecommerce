@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use Exception;
-use App\Models\Region;
-use Brick\Money\Money;
-use App\Models\Variant;
-use App\Models\Currency;
 use App\Data\VariantData;
-use App\Models\VariantPrice;
 use App\Data\VariantPriceData;
+use App\Models\Region;
+use App\Models\Variant;
+use App\Models\VariantPrice;
+use Brick\Money\Money;
+use Exception;
 
 class VariantService
 {
@@ -21,9 +20,7 @@ class VariantService
     }
 
     /**
-     * @param Variant $variant
-     * @param int[]   $attributeIds
-     * @return void
+     * @param  int[]  $attributeIds
      */
     public function addVariantAttributes(Variant $variant, array $attributeIds): void
     {

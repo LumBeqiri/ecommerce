@@ -7,14 +7,13 @@ use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminOrderController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         return $this->showAll(new OrderResource(Order::all()));
     }
@@ -22,7 +21,7 @@ class AdminOrderController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(Order $order) : JsonResponse
+    public function show(Order $order): JsonResponse
     {
         return $this->showOne(new OrderResource($order));
     }

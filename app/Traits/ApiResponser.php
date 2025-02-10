@@ -120,7 +120,7 @@ trait ApiResponser
         return auth()->user();
     }
 
-    public function respondInvalidQuery(string $message = null, int $code = 422) : JsonResponse
+    public function respondInvalidQuery(?string $message = null, int $code = 422): JsonResponse
     {
         if (config('app.env') != 'local') {
             $message = 'Invalid Query';

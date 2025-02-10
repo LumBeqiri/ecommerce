@@ -17,7 +17,7 @@ class VendorPermissionManagerController extends ApiController
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         return $this->showAll(PermissionResource::collection(Permission::paginate(10)));
     }

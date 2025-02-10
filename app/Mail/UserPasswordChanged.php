@@ -36,8 +36,8 @@ class UserPasswordChanged extends Mailable implements ShouldQueue
     {
         /** @var view-string $markdownView */
         $markdownView = 'emails.password_changed';
-    
+
         return $this->from('example@example.com')
-                    ->markdown($markdownView);
+            ->markdown($markdownView);
     }
 }
