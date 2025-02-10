@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Variant;
 
+use App\Models\Region;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreVariantPriceRequest extends FormRequest
@@ -30,5 +31,13 @@ class StoreVariantPriceRequest extends FormRequest
             'min_quantity' => 'required|integer|min:1',
             'max_quantity' => 'required|integer|min:1|gte:min_quantity',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+
+        $this->merge([
+            'region_id' => Region::where('ulid', $this->region_id)->first()->id,
+        ]);
     }
 }

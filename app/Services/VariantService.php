@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use App\Data\VariantData;
-use App\Models\Currency;
-use App\Models\Region;
-use App\Models\Variant;
-use App\Models\VariantPrice;
-use Brick\Money\Money;
 use Exception;
+use App\Models\Region;
+use Brick\Money\Money;
+use App\Models\Variant;
+use App\Models\Currency;
+use App\Data\VariantData;
+use App\Models\VariantPrice;
+use App\Data\VariantPriceData;
 
 class VariantService
 {
@@ -19,30 +20,34 @@ class VariantService
         return $newVariant;
     }
 
-    public function addVariantAttributes(Variant $variant, array $attributeIds)
+    /**
+     * @param Variant $variant
+     * @param int[]   $attributeIds
+     * @return void
+     */
+    public function addVariantAttributes(Variant $variant, array $attributeIds): void
     {
         $variant->attributes()->sync($attributeIds);
     }
 
-    public function addVariantPrice(Variant $variant, array $data): VariantPrice
+    public function addVariantPrice(Variant $variant, VariantPriceData $variantPriceData): VariantPrice
     {
 
         try {
-            $region = Region::where('ulid', $data['region_id'])->first();
-            $money = Money::of($data['price'], $region->currency->code);
-            $currency = Currency::find($data['currency_id']);
+            $region = Region::find($variantPriceData->region_id);
+            $money = Money::of($variantPriceData->price, $region->currency->code);
             $variantPrice = VariantPrice::firstOrCreate(
                 [
-                    'region_id' => $region->id,
+                    'region_id' => $variantPriceData->region_id,
                     'variant_id' => $variant->id,
                 ],
                 [
                     'price' => $money->getMinorAmount()->toInt(),
-                    'region_id' => $region->id,
-                    'currency_id' => $currency->id,
+                    'region_id' => $variantPriceData->region_id,
+                    'currency_id' => $variantPriceData->currency_id,
                     'variant_id' => $variant->id,
-                    'min_quantity' => $data['min_quantity'],
-                    'max_quantity' => $data['max_quantity'],
+                    'min_quantity' => $variantPriceData->min_quantity,
+                    'max_quantity' => $variantPriceData->max_quantity,
                 ]);
 
             return $variantPrice;
@@ -53,17 +58,17 @@ class VariantService
 
     }
 
-    public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, array $data): Variant
+    public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, VariantPriceData $data): Variant
     {
-        $region = Region::where('ulid', $data['region_id'])->first();
-        $money = Money::of($data['price'], $region->currency->code);
+        $region = Region::find($data->region_id);
+        $money = Money::of($data->price, $region->currency->code);
 
-        $variantPrice = VariantPrice::where('id', $variantPrice->id)->where('variant_id', $variant->id)->update([
+        $variantPrice->update([
             'price' => $money->getMinorAmount()->toInt(),
             'region_id' => $region->id,
             'variant_id' => $variant->id,
-            'min_quantity' => $data['min_quantity'],
-            'max_quantity' => $data['max_quantity'],
+            'min_quantity' => $data->min_quantity,
+            'max_quantity' => $data->max_quantity,
         ]);
 
         return $variant->refresh();

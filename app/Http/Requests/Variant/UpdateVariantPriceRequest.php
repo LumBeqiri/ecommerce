@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Variant;
 
+use App\Models\Region;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateVariantPriceRequest extends FormRequest
@@ -22,10 +23,18 @@ class UpdateVariantPriceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'region_id' => 'required|exists:regions,ulid',
+            'region_id' => 'required',
             'price' => 'required|integer|min:1',
             'min_quantity' => 'sometimes|integer|min:1',
             'max_quantity' => 'sometimes|integer|min:1|gte:min_quantity',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+
+        $this->merge([
+            'region_id' => Region::where('ulid', $this->region_id)->firstOrFail()->id,
+        ]);
     }
 }
