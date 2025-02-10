@@ -15,7 +15,7 @@ use App\Http\Requests\Variant\UpdateVariantPriceRequest;
 
 class AdminVariantPriceController extends ApiController
 {
-    public function show(Variant $variant)
+    public function show(Variant $variant) : JsonResponse
     {
         return $this->showOne(new VariantResource($variant->load(['variant_prices'])));
     }

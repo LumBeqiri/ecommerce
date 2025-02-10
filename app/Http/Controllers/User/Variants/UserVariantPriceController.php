@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\User\Variants;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Variant\StoreVariantPriceRequest;
-use App\Http\Requests\Variant\UpdateVariantPriceRequest;
-use App\Http\Resources\VariantResource;
+use Exception;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Data\VariantPriceData;
 use App\Services\VariantService;
-use Exception;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\VariantResource;
+use App\Http\Requests\Variant\StoreVariantPriceRequest;
+use App\Http\Requests\Variant\UpdateVariantPriceRequest;
 
 class UserVariantPriceController extends ApiController
 {
@@ -19,7 +20,8 @@ class UserVariantPriceController extends ApiController
         $this->authorize('update', $variant);
 
         try {
-            $variantService->addVariantPrice($variant, $request->validated());
+            $variantPriceData = VariantPriceData::from($request->validated());
+            $variantService->addVariantPrice($variant, $variantPriceData);
 
             return $this->showOne(new VariantResource($variant->load(['variant_prices'])));
 
@@ -33,7 +35,9 @@ class UserVariantPriceController extends ApiController
     {
         $this->authorize('update', $variant);
         try {
-            $variantService->updateVariantPrice($variant, $variantPrice, $request->validated());
+            $variantPriceData = VariantPriceData::from($request->validated());
+
+            $variantService->updateVariantPrice($variant, $variantPrice, $variantPriceData);
 
             return $this->showOne(new VariantResource($variant->load('variant_prices')));
         } catch (Exception $ex) {

@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Exceptions\CartException;
-use App\Exceptions\DiscountException;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Cart\CartItemRequest;
-use App\Http\Requests\Cart\CartRequest;
-use App\Http\Resources\CartResource;
 use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Variant;
+use App\Models\CartItem;
+use Illuminate\Http\Request;
 use App\Services\CartService;
+use App\Exceptions\CartException;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\CartResource;
+use App\Exceptions\DiscountException;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Cart\CartRequest;
+use App\Http\Requests\Cart\CartItemRequest;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class BuyerCartController extends ApiController
 {
@@ -27,7 +28,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    public function add_to_cart(CartRequest $request)
+    public function add_to_cart(CartRequest $request) : JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
@@ -86,7 +87,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function apply_discount(Request $request)
+    public function apply_discount(Request $request) : JsonResponse | JsonResource
     {
         $request->validate([
             'code' => 'required|string',

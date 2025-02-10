@@ -19,7 +19,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class UserProductController extends ApiController
 {
-    public function index()
+    public function index() : JsonResponse
     {
         $productQuery = $this->productQueryForRole(auth()->user());
 

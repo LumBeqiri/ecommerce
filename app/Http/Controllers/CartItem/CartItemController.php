@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 
 class CartItemController extends ApiController
 {
-    public function add_to_cart(CartRequest $request)
+    public function add_to_cart(CartRequest $request) : JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];

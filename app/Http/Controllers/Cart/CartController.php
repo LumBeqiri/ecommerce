@@ -11,11 +11,12 @@ use App\Models\Cart;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends ApiController
 {
-    public function index()
+    public function index() : JsonResource
     {
         $user = $this->authUser();
         $carts = null;
@@ -76,7 +77,7 @@ class CartController extends ApiController
         return $this->showMessage('Cart deleted Successfully', 200);
     }
 
-    public function apply_discount(Request $request)
+    public function apply_discount(Request $request) : JsonResponse| JsonResource
     {
         $request->validate([
             'code' => 'required|string',

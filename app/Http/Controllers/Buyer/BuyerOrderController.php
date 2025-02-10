@@ -31,7 +31,7 @@ class BuyerOrderController extends ApiController
         return $this->showAll(OrderResource::collection($orders));
     }
 
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request) : JsonResponse
     {
         $region_id = $this->user->region_id;
 

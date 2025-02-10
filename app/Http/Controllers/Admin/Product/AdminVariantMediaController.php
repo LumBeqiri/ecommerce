@@ -36,7 +36,7 @@ class AdminVariantMediaController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    public function destroy(Variant $variant, $media_uuid): JsonResponse
+    public function destroy(Variant $variant, string $media_uuid): JsonResponse
     {
         $media = Media::where('uuid', $media_uuid)->firstOrFail();
         if ($variant->id !== $media->model_id) {

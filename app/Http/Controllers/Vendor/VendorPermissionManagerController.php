@@ -8,6 +8,8 @@ use App\Http\Resources\PermissionResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Vendor;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\Permission\Models\Permission;
 
 class VendorPermissionManagerController extends ApiController
@@ -15,7 +17,7 @@ class VendorPermissionManagerController extends ApiController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : JsonResponse
     {
         return $this->showAll(PermissionResource::collection(Permission::paginate(10)));
     }
@@ -23,7 +25,7 @@ class VendorPermissionManagerController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserPermissionRequest $request, User $user)
+    public function update(UpdateUserPermissionRequest $request, User $user): JsonResource
     {
         $vendor = Vendor::where('user_id', auth()->id())->firstOrFail();
 
@@ -39,7 +41,7 @@ class VendorPermissionManagerController extends ApiController
         return new UserResource($user);
     }
 
-    public function destroy(User $user, $permission_id)
+    public function destroy(User $user, int $permission_id): JsonResponse
     {
 
         $permission = Permission::findOrFail($permission_id);

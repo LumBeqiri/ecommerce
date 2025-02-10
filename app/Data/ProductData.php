@@ -17,6 +17,7 @@ class ProductData extends Data
         public bool|Optional $discountable,
         public int $origin_country_id,
         public ?int $discount_id,
+        /** @var array<int> */
         public ?array $categories
     ) {}
 }
