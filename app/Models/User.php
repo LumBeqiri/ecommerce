@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function isVerified(): bool
     {
-        return $this->verified === User::VERIFIED_USER;
+        return $this->verified == User::VERIFIED_USER;
     }
 
     public static function generateVerificationCode(): string

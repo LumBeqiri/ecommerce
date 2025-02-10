@@ -34,6 +34,9 @@ class UserMailChanged extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.confirm')->subject('Please confirm your account');
+        /** @var view-string $markdownView */
+        $markdownView = 'emails.confirm';
+
+        return $this->markdown($markdownView)->subject('Please confirm your account');
     }
 }

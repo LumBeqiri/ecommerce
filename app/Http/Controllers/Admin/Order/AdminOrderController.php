@@ -6,13 +6,14 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use Illuminate\Http\JsonResponse;
 
 class AdminOrderController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         return $this->showAll(new OrderResource(Order::all()));
     }
@@ -20,7 +21,7 @@ class AdminOrderController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): JsonResponse
     {
         return $this->showOne(new OrderResource($order));
     }
@@ -28,7 +29,7 @@ class AdminOrderController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function update(UpdateOrderRequest $request, Order $order): JsonResponse
     {
         $order_data = $request->validated();
 
@@ -41,7 +42,7 @@ class AdminOrderController extends ApiController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order): JsonResponse
     {
         $order->delete();
 

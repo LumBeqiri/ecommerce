@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 
 class CartItemController extends ApiController
 {
-    public function add_to_cart(CartRequest $request)
+    public function add_to_cart(CartRequest $request): JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
@@ -47,7 +47,7 @@ class CartItemController extends ApiController
          * */
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
-        if ($cart === null) {
+        if ($cart == null) {
             return $this->errorResponse('Shopping cart missing', 404);
         }
 

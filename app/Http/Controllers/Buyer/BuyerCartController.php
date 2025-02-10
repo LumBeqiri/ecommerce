@@ -16,6 +16,7 @@ use App\Services\CartService;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
 class BuyerCartController extends ApiController
@@ -27,7 +28,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    public function add_to_cart(CartRequest $request)
+    public function add_to_cart(CartRequest $request): JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
@@ -53,7 +54,7 @@ class BuyerCartController extends ApiController
          * */
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
 
-        if ($cart === null) {
+        if ($cart == null) {
             return $this->errorResponse('Shopping cart missing', 404);
         }
 
@@ -86,7 +87,7 @@ class BuyerCartController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function apply_discount(Request $request)
+    public function apply_discount(Request $request): JsonResponse|JsonResource
     {
         $request->validate([
             'code' => 'required|string',

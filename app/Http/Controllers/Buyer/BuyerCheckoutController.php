@@ -17,18 +17,19 @@ use App\Services\DiscountService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
 class BuyerCheckoutController extends ApiController
 {
-    public function checkout(StoreOrderRequest $request, Cart $cart)
-    {
-        DB::beginTransaction();
-        try {
+    // public function checkout(StoreOrderRequest $request, Cart $cart)
+    // {
+    //     DB::beginTransaction();
+    //     try {
 
-        } catch (Exception) {
-        }
-    }
+    //     } catch (Exception) {
+    //     }
+    // }
 
     public function index(User $user): JsonResponse
     {
@@ -37,7 +38,7 @@ class BuyerCheckoutController extends ApiController
         return $this->showOne(new CartResource($cart));
     }
 
-    public function add_to_cart(CartRequest $request)
+    public function add_to_cart(CartRequest $request): JsonResponse
     {
         $data = $request->validated();
         $items = $data['items'];
@@ -89,7 +90,7 @@ class BuyerCheckoutController extends ApiController
         return $this->showOne(new CartResource($cart->load('cart_items')));
     }
 
-    public function apply_discount(Request $request)
+    public function apply_discount(Request $request): JsonResponse|JsonResource
     {
         $request->validate([
             'code' => 'required|string',

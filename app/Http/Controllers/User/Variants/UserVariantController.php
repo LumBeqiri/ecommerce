@@ -28,7 +28,7 @@ class UserVariantController extends ApiController
         return $this->showOne(new VariantResource($newVariant));
     }
 
-    public function show(Variant $variant)
+    public function show(Variant $variant): JsonResponse
     {
         return $this->showOne(new VariantResource($variant->load(['variant_prices', 'attributes'])));
     }

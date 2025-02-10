@@ -31,6 +31,9 @@ class VendorResource extends JsonResource
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function protectedData(): array
     {
         /** @var User|null $user */

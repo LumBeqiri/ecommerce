@@ -39,7 +39,7 @@ class UserVariantMediaController extends ApiController
         return $this->showOne(new VariantResource($variant));
     }
 
-    public function destroy(Variant $variant, $media_uuid): JsonResponse
+    public function destroy(Variant $variant, string $media_uuid): JsonResponse
     {
         $this->authorize('delete', $variant);
 
