@@ -52,7 +52,6 @@ class VariantService
 
             return $variantPrice;
         } catch (Exception $ex) {
-            // Log the error or handle it as needed
             throw $ex;
         }
     }

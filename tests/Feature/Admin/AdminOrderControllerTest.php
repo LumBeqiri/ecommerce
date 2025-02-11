@@ -52,7 +52,7 @@ test('admin can update order', function () {
         'shipping_country' => $updatedCountry, ]);
 });
 
-it('admin can delete order', function () {
+test('admin can delete order', function () {
     User::factory()->create();
     $buyer = Buyer::factory()->create();
     $user = User::factory()->create(['email' => 'lum@test.com']);

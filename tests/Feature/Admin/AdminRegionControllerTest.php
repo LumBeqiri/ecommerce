@@ -20,7 +20,7 @@ beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
 });
 
-it('admin can show regions', function () {
+test('admin can show regions', function () {
     $user = User::factory()->create();
     $user->assignRole('admin');
     Region::factory()->make();
@@ -31,7 +31,7 @@ it('admin can show regions', function () {
     $response->assertOk();
 });
 
-it('admin can show region', function () {
+test('admin can show region', function () {
     TaxProvider::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
@@ -47,7 +47,7 @@ it('admin can show region', function () {
     expect($response->json('title'))->toBe($title);
 });
 
-it('admin can create region', function () {
+test('admin can create region', function () {
     $tax_provider = TaxProvider::factory()->create(['id' => 4]);
 
     $user = User::factory()->create();
@@ -74,7 +74,7 @@ it('admin can create region', function () {
     $this->assertDatabaseHas(Region::class, ['title' => $title]);
 });
 
-it('admin can update region title', function () {
+test('admin can update region title', function () {
     TaxProvider::factory()->create(['id' => 4]);
 
     $user = User::factory()->create();
@@ -94,7 +94,7 @@ it('admin can update region title', function () {
     $this->assertDatabaseHas(Region::class, ['title' => $new_attr, 'id' => $region->id]);
 });
 
-it('admin can update region currency', function () {
+test('admin can update region currency', function () {
     TaxProvider::factory()->create(['id' => 4]);
     $old_currency = Currency::factory()->create();
     $new_currency = Currency::factory()->create();
@@ -113,7 +113,7 @@ it('admin can update region currency', function () {
     $this->assertDatabaseHas(Region::class, ['currency_id' => $new_currency->id, 'id' => $region->id]);
 });
 
-it('admin can update region tax rate', function () {
+test('admin can update region tax rate', function () {
     TaxProvider::factory()->create(['id' => 4]);
 
     $user = User::factory()->create();
@@ -134,7 +134,7 @@ it('admin can update region tax rate', function () {
     $this->assertDatabaseHas(Region::class, ['tax_rate' => $new_attr, 'id' => $region->id]);
 });
 
-it('admin can update region tax code', function () {
+test('admin can update region tax code', function () {
     TaxProvider::factory()->create(['id' => 4]);
 
     $user = User::factory()->create();
@@ -155,7 +155,7 @@ it('admin can update region tax code', function () {
     $this->assertDatabaseHas(Region::class, ['tax_code' => $new_attr, 'id' => $region->id]);
 });
 
-it('admin can update region tax provider', function () {
+test('admin can update region tax provider', function () {
     $old_attr = TaxProvider::factory()->create(['id' => 1]);
     $new_attr = TaxProvider::factory()->create(['id' => 2]);
 
@@ -175,7 +175,7 @@ it('admin can update region tax provider', function () {
     $this->assertDatabaseHas(Region::class, ['tax_provider_id' => $new_attr->id, 'id' => $region->id]);
 });
 
-it('admin can update region countries', function () {
+test('admin can update region countries', function () {
     TaxProvider::factory()->create(['id' => 1]);
     TaxProvider::factory()->create(['id' => 2]);
 
@@ -199,7 +199,7 @@ it('admin can update region countries', function () {
     }
 });
 
-it('admin can remove countries from region', function () {
+test('admin can remove countries from region', function () {
     TaxProvider::factory()->create(['id' => 1]);
     TaxProvider::factory()->create(['id' => 2]);
 
@@ -228,7 +228,7 @@ it('admin can remove countries from region', function () {
     $this->assertDatabaseHas(Country::class, ['id' => $country3->id, 'region_id' => $region->id]);
 });
 
-it('can delete region', function () {
+test('can delete region', function () {
     TaxProvider::factory()->create();
 
     $user = User::factory()->create();

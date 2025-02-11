@@ -21,7 +21,7 @@ beforeEach(function () {
     Country::factory()->create();
 });
 
-it('admin can show users', function () {
+test('admin can show users', function () {
     User::factory()->create();
     $user = User::factory()->create();
     $user->assignRole('admin');
@@ -33,7 +33,7 @@ it('admin can show users', function () {
     $response->assertOk();
 });
 
-it('admin can create user', function () {
+test('admin can create user', function () {
     $user = User::factory()->create();
     $user->assignRole('admin');
     login($user);
@@ -55,7 +55,7 @@ it('admin can create user', function () {
     $this->assertDatabaseHas(User::class, ['ulid' => $user_id]);
 });
 
-it('admin can change user password', function () {
+test('admin can change user password', function () {
     $userA = User::factory()->create();
     $user = User::factory()->create(['email' => 'lum@test.com']);
     $user->assignRole('admin');

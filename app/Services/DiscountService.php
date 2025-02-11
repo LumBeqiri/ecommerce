@@ -28,7 +28,6 @@ class DiscountService
             throw new DiscountException('Cart already discounted!', 422);
         }
 
-        // Retrieve discount & rule
         $discount = Discount::with('discount_rule')
             ->where('code', $discount_code)
             ->firstOrFail();

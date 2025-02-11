@@ -17,8 +17,16 @@ class VariantPriceData extends Data
         public int $max_quantity
     ) {}
 
+
+    /**
+     * Build the VariantPriceData from request data.
+     *
+     * @param array<string, mixed> $data
+     * @return self
+     */
     public static function fromRequest(array $data): self
     {
+        /** @var \App\Models\Region $region */
         $region = Region::findOrFail($data['region_id']);
 
         return new self(

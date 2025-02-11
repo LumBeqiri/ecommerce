@@ -20,7 +20,7 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('admin can update variant name', function () {
+test('admin can update variant name', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -45,7 +45,7 @@ it('admin can update variant name', function () {
     $this->assertDatabaseHas(Variant::class, ['variant_name' => $updatedName]);
 });
 
-it('admin can update variant sku', function () {
+test('admin can update variant sku', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -69,7 +69,7 @@ it('admin can update variant sku', function () {
     $this->assertDatabaseHas(Variant::class, ['sku' => $updated]);
 });
 
-it('admin can update variant short description', function () {
+test('admin can update variant short description', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -93,7 +93,7 @@ it('admin can update variant short description', function () {
     $this->assertDatabaseHas(Variant::class, ['variant_short_description' => $updated]);
 });
 
-it('admin can update variant long description', function () {
+test('admin can update variant long description', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -117,7 +117,7 @@ it('admin can update variant long description', function () {
     $this->assertDatabaseHas(Variant::class, ['variant_long_description' => $updated]);
 });
 
-it('admin can not update variant with negative price', function () {
+test('admin can not update variant with negative price', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -138,7 +138,7 @@ it('admin can not update variant with negative price', function () {
     $response->assertStatus(422);
 })->skip();
 
-it('admin can update variant stock', function () {
+test('admin can update variant stock', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -162,7 +162,7 @@ it('admin can update variant stock', function () {
     $this->assertDatabaseHas(Variant::class, ['stock' => $updated]);
 });
 
-it('admin can not update variant with negative stock value', function () {
+test('admin can not update variant with negative stock value', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();
@@ -183,7 +183,7 @@ it('admin can not update variant with negative stock value', function () {
     $response->assertStatus(422);
 });
 
-it('admin can delete variant', function () {
+test('admin can delete variant', function () {
     TaxProvider::factory()->create();
     Region::factory()->create();
     Country::factory()->create();

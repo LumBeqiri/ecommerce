@@ -75,7 +75,7 @@ it('can remove an item from the cart', function () {
 
     login($buyerUser);
 
-    $cart = Cart::factory()->for($buyer)->create();
+    $cart = Cart::factory()->for($buyer)->create(['region_id' => $region->id]);
     $inCart = 20;
     $toRemove = 10;
     $itemsLeft = $inCart - $toRemove;
