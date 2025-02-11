@@ -15,10 +15,8 @@ class CartService
         $price = 0;
         foreach ($cart->cart_items as $cartItem) {
             $variant = Variant::find($cartItem->variant_id);
-            // dd($variant->variant_prices()->where('region_id', $cart->region_id)->get());
-            $variantPrice = $variant->variant_prices()->where('region_id', $cart->region_id)->firstOrFail();
 
-            // dd($variantPrice);
+            $variantPrice = $variant->variant_prices()->where('region_id', $cart->region_id)->firstOrFail();
 
             $price += $variantPrice->price * $cartItem->quantity;
         }
@@ -96,7 +94,7 @@ class CartService
         }
 
         if ($variant->publish_status === Product::DRAFT) {
-            throw new CartExcept-ion('Product is not available', 404);
+            throw new CartException('Product is not available', 404);
         }
 
         if ($item['quantity'] > $variant->stock) {
