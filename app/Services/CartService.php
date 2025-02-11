@@ -15,8 +15,10 @@ class CartService
         $price = 0;
         foreach ($cart->cart_items as $cartItem) {
             $variant = Variant::find($cartItem->variant_id);
-
+            // dd($variant->variant_prices()->where('region_id', $cart->region_id)->get());
             $variantPrice = $variant->variant_prices()->where('region_id', $cart->region_id)->firstOrFail();
+
+            // dd($variantPrice);
 
             $price += $variantPrice->price * $cartItem->quantity;
         }
@@ -29,15 +31,21 @@ class CartService
 
     public static function saveItemsToCart(mixed $items): Cart
     {
-        $region = auth()->user()->region;
 
+        /**
+         * @var User $user
+         */
+        $user = auth()->user();
+
+        $region = $user->region;
         /**
          * @var Cart $cart
          */
         $cart = Cart::updateOrCreate(
-            ['buyer_id' => auth()->user()->buyer->id, 'is_closed' => 'false'],
+            ['buyer_id' => $user->buyer->id, 'is_closed' => false],
             ['region_id' => $region->id]
         );
+
 
         $cart = $cart->load('cart_items');
 
@@ -56,6 +64,9 @@ class CartService
 
             self::validateCartItem($item, $variant, $cart, $region);
 
+            $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
+
+
             if (isset($cart_item)) {
                 $cart_item->quantity += $item['quantity'];
                 $cart_item->save();
@@ -63,11 +74,11 @@ class CartService
                 $cart_item = CartItem::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $variant->id,
+                    'variant_price_id' => $variantPrice->id,
                     'quantity' => $item['quantity'],
                 ]);
             }
 
-            $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
             $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
 
@@ -85,7 +96,7 @@ class CartService
         }
 
         if ($variant->publish_status === Product::DRAFT) {
-            throw new CartException('Product is not available', 404);
+            throw new CartExcept-ion('Product is not available', 404);
         }
 
         if ($item['quantity'] > $variant->stock) {

@@ -2,36 +2,28 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Exceptions\DiscountException;
-// use App\Http\Requests\CartRequest;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Cart\UpdateCartRequest;
-use App\Http\Resources\CartResource;
 use App\Models\Cart;
+// use App\Http\Requests\CartRequest;
+use App\Models\User;
+use App\values\Roles;
+use Illuminate\Http\Request;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\CartResource;
+use App\Exceptions\DiscountException;
+use App\Http\Controllers\ApiController;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\Cart\UpdateCartRequest;
+use Illuminate\Http\Resources\Json\JsonResource;
+
 
 class CartController extends ApiController
 {
     public function index(): JsonResource
     {
         $user = $this->authUser();
-        $carts = null;
-        if ($user->isAdmin()) {
-            $carts = Cart::with(['cart_items', 'buyer'])->paginate(10);
-        }
-        if ($user->isBuyer()) {
-            $carts = Cart::where('buyer_id', $user->buyer->id)->paginate(10);
-        }
-        if ($user->isStaff()) {
-            $carts = Cart::where('vendor_id', $user->staff->vendor_id)->paginate(10);
-        }
-        if ($user->isVendor()) {
-            $carts = Cart::where('vendor_id', $user->vendor->id)->paginate(10);
-        }
+        $carts = $this->userCartQueryForRole($user)->paginate(10);
 
         return CartResource::collection($carts);
 
@@ -95,5 +87,15 @@ class CartController extends ApiController
         }
 
         return new CartResource($cart);
+    }
+
+    protected function userCartQueryForRole(User $user): Builder
+    {
+        return match (true) {
+            $user->hasRole(Roles::BUYER) => Cart::where('buyer_id', $user->buyer->id),
+            $user->hasRole(Roles::VENDOR) => Cart::where('vendor_id', $user->vendor->id),
+            $user->hasRole(Roles::STAFF) => Cart::where('vendor_id', $user->staff?->vendor_id),
+            default => Cart::query(),
+        };
     }
 }
