@@ -44,7 +44,6 @@ class CartService
             ['region_id' => $region->id]
         );
 
-
         $cart = $cart->load('cart_items');
 
         $variant_ids = array_column($items, 'variant_id');
@@ -63,7 +62,6 @@ class CartService
             self::validateCartItem($item, $variant, $cart, $region);
 
             $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
-
 
             if (isset($cart_item)) {
                 $cart_item->quantity += $item['quantity'];

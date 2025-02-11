@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Models\Cart;
-// use App\Http\Requests\CartRequest;
-use App\Models\User;
-use App\values\Roles;
-use Illuminate\Http\Request;
-use App\Services\DiscountService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Resources\CartResource;
 use App\Exceptions\DiscountException;
+// use App\Http\Requests\CartRequest;
 use App\Http\Controllers\ApiController;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Cart\UpdateCartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
+use App\Models\User;
+use App\Services\DiscountService;
+use App\values\Roles;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use Illuminate\Support\Facades\DB;
 
 class CartController extends ApiController
 {

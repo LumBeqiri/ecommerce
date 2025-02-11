@@ -32,9 +32,9 @@ class VariantService
         try {
             $region = Region::findOrFail($variantPriceData->region_id);
             $currency = $region->currency()->firstOrFail();
-    
+
             $money = Money::of($variantPriceData->price, $currency->code);
-            
+
             $variantPrice = VariantPrice::firstOrCreate(
                 [
                     'region_id' => $variantPriceData->region_id,
@@ -49,7 +49,7 @@ class VariantService
                     'max_quantity' => $variantPriceData->max_quantity,
                 ]
             );
-    
+
             return $variantPrice;
         } catch (Exception $ex) {
             // Log the error or handle it as needed
@@ -60,7 +60,7 @@ class VariantService
     public function updateVariantPrice(Variant $variant, VariantPrice $variantPrice, VariantPriceData $data): Variant
     {
         $region = Region::findOrFail($data->region_id);
-        
+
         $variantPrice->update([
             'price' => $data->toMoneyAmount($region),
             'region_id' => $data->region_id,

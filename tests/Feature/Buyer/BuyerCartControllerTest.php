@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Notification;
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
-    
+
     TaxProvider::factory()->create();
 
     Currency::factory()->create();
@@ -57,7 +57,6 @@ it('can add an item to the cart', function () {
     ]);
 
     $response->assertOk();
-
 
     $this->assertDatabaseHas(CartItem::class, ['variant_id' => $variant1->id, 'quantity' => $quantity, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);

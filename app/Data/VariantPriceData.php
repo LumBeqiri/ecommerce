@@ -20,7 +20,7 @@ class VariantPriceData extends Data
     public static function fromRequest(array $data): self
     {
         $region = Region::findOrFail($data['region_id']);
-        
+
         return new self(
             region_id: $region->id,
             price: $data['price'],

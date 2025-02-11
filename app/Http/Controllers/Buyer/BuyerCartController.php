@@ -54,7 +54,6 @@ class BuyerCartController extends ApiController
          * */
         $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->firstOrFail();
 
-
         if ($cart->isEmpty()) {
             $cart->total_cart_price = 0;
             $cart->save();
