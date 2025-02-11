@@ -22,7 +22,7 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('admin can show categories', function () {
+test('admin can show categories', function () {
 
     $user = User::factory()->create();
     $user->assignRole('admin');
@@ -36,7 +36,7 @@ it('admin can show categories', function () {
     $response->assertOk();
 });
 
-it('admin can update category name', function () {
+test('admin can update category name', function () {
     $category = Category::factory()->create();
 
     $user = User::factory()->create(['email' => 'lumadin@example.com']);
@@ -54,7 +54,7 @@ it('admin can update category name', function () {
     $this->assertDatabaseHas(Category::class, ['name' => $updatedName]);
 });
 
-it('admin can update category slug', function () {
+test('admin can update category slug', function () {
     $category = Category::factory()->create();
 
     $user = User::factory()->create(['email' => 'lumadin@example.com']);
@@ -72,7 +72,7 @@ it('admin can update category slug', function () {
     $this->assertDatabaseHas(Category::class, ['slug' => $updatedSlug]);
 });
 
-it('admin can update category description', function () {
+test('admin can update category description', function () {
     $category = Category::factory()->create();
 
     $user = User::factory()->create(['email' => 'lumadin@example.com']);
@@ -90,7 +90,7 @@ it('admin can update category description', function () {
     $this->assertDatabaseHas(Category::class, ['description' => $updatedDescription]);
 });
 
-it('admin can update category parent', function () {
+test('admin can update category parent', function () {
     $childCategory = Category::factory()->create();
     $parentCategory = Category::factory()->create();
 
@@ -108,7 +108,7 @@ it('admin can update category parent', function () {
     $this->assertDatabaseHas(Category::class, ['parent_id' => $parentCategory->id]);
 });
 
-it('admin can delete category', function () {
+test('admin can delete category', function () {
     $parentCategory = Category::factory()->create();
     $childCategory = Category::factory()->create(['parent_id' => $parentCategory->id]);
 

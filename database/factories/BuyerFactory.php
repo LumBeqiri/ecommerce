@@ -23,7 +23,7 @@ class BuyerFactory extends Factory
         return [
             'ulid' => Str::ulid(),
             'shipping_address' => $this->faker->address,
-            'user_id' => User::all()->random()->id,
+            'user_id' => User::factory(),
         ];
     }
 

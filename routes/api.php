@@ -77,7 +77,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
     Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
 
-    Route::post('apply-discount', [BuyerCartController::class, 'apply_discount']);
+    Route::get('cart', [BuyerCartController::class, 'index']);
+    Route::post('cart/add', [BuyerCartController::class, 'add_to_cart']);
+    Route::post('cart/remove', [BuyerCartController::class, 'remove_from_cart']);
+    Route::post('cart/apply-discount', [BuyerCartController::class, 'apply_discount']);
 
     Route::post('buyer-orders', [BuyerOrderController::class, 'store']);
 });

@@ -29,13 +29,18 @@ class CartService
 
     public static function saveItemsToCart(mixed $items): Cart
     {
-        $region = auth()->user()->region;
 
+        /**
+         * @var User $user
+         */
+        $user = auth()->user();
+
+        $region = $user->region;
         /**
          * @var Cart $cart
          */
         $cart = Cart::updateOrCreate(
-            ['buyer_id' => auth()->user()->buyer->id, 'is_closed' => 'false'],
+            ['buyer_id' => $user->buyer->id, 'is_closed' => false],
             ['region_id' => $region->id]
         );
 
@@ -56,6 +61,8 @@ class CartService
 
             self::validateCartItem($item, $variant, $cart, $region);
 
+            $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
+
             if (isset($cart_item)) {
                 $cart_item->quantity += $item['quantity'];
                 $cart_item->save();
@@ -63,11 +70,11 @@ class CartService
                 $cart_item = CartItem::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $variant->id,
+                    'variant_price_id' => $variantPrice->id,
                     'quantity' => $item['quantity'],
                 ]);
             }
 
-            $variantPrice = $variant->variant_prices->where('region_id', $region->id)->firstOrFail();
             $cart->total_cart_price += $variantPrice->price * $item['quantity'];
         }
 

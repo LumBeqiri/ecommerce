@@ -21,7 +21,7 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('admin can update variant pricing', function () {
+test    ('admin can update variant pricing', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     $region2 = Region::factory()->create();

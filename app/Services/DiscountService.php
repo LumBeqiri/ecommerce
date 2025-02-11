@@ -28,7 +28,6 @@ class DiscountService
             throw new DiscountException('Cart already discounted!', 422);
         }
 
-        // Retrieve discount & rule
         $discount = Discount::with('discount_rule')
             ->where('code', $discount_code)
             ->firstOrFail();
@@ -81,7 +80,7 @@ class DiscountService
     }
 
     /**
-     * Deduct a fixed amount from the cart’s total price.
+     * Deduct a fixed amount from the cart's total price.
      *
      *
      * @throws DiscountException
@@ -113,7 +112,7 @@ class DiscountService
     }
 
     /**
-     * Deduct a percentage from the cart’s total price.
+     * Deduct a percentage from the cart's total price.
      */
     private static function calculate_percentage_cart_discount(DiscountRule $discount_rule, Cart $cart): Cart
     {

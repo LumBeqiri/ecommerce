@@ -52,11 +52,7 @@ class BuyerCartController extends ApiController
         /**
          * @var Cart $cart
          * */
-        $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->first();
-
-        if ($cart == null) {
-            return $this->errorResponse('Shopping cart missing', 404);
-        }
+        $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->firstOrFail();
 
         if ($cart->isEmpty()) {
             $cart->total_cart_price = 0;

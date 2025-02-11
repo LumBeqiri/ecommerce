@@ -23,8 +23,8 @@ class VariantPriceFactory extends Factory
         return [
             'ulid' => Str::ulid(),
             'price' => $this->faker->randomNumber(1, 400),
-            'variant_id' => Variant::all()->random()->id,
-            'region_id' => 1, // Region::all()->random()->id,
+            'variant_id' => Variant::factory(),
+            'region_id' => Region::factory(),
             'currency_id' => Currency::all()->random()->id,
             'min_quantity' => $this->faker->randomNumber(1, 4),
             'max_quantity' => $this->faker->randomNumber(1, 4),
