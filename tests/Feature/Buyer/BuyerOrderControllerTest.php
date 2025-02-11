@@ -32,23 +32,62 @@ it('can create an order with unchanged shipping address', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create(['id' => 1]);
     Country::factory()->for($region)->create();
-    User::factory()->create();
-    $buyer = Buyer::factory()->create();
+    $buyerUser = User::factory()->create(['region_id' => $region->id]);
+    $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
 
-    $buyer->save();
-    User::factory()->create();
-    Vendor::factory()->create();
-    Product::factory()->available()->create();
-    Variant::factory()->available()->published()->create(['stock' => 50]);
-    VariantPrice::factory()->create();
+    $vendor = Vendor::factory()->create();
+    $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
+    $variant = Variant::factory()->available()->published()->create(['stock' => 50]);
+    VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
 
     $cart = Cart::factory()->for($buyer)->create();
-    $cart_item = CartItem::factory()->for($cart)->create();
+    $cart_item = CartItem::factory()->for($cart)->create(['variant_id' => $variant->id]);
 
-    login($buyer);
+    login($buyerUser);
 
     $response = $this->postJson(action([BuyerOrderController::class, 'store']), [
         'different_shipping_address' => 0,
+        'shipping_name' => fake()->name,
+        'shipping_address' => fake()->streetAddress,
+        'shipping_city' => fake()->city,
+        'shipping_country' => fake()->country,
+        'order_email' => fake()->email,
+        'order_phone' => fake()->phoneNumber,
+        'tax_rate' => 18,
+        'ordered_at' => now(),
+    ]);
+
+    $response->assertOk();
+
+    $order_ulid = $response->json('id');
+    $order = Order::where('ulid', $order_ulid)->select('id')->first();
+
+    $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
+    $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid]);
+    $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
+});
+
+it('can create an order with changed shipping address', function () {
+    Currency::factory()->create();
+    TaxProvider::factory()->create();
+    $region = Region::factory()->create(['id' => 1]);
+    Country::factory()->for($region)->create();
+    $buyerUser = User::factory()->create(['region_id' => $region->id]);
+    $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
+
+    $vendor = Vendor::factory()->create();
+    $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
+    $variant = Variant::factory()->available()->published()->create(['stock' => 50]);
+    VariantPrice::factory()->create(['variant_id' => $variant->id, 'region_id' => $region->id]);
+
+    $cart = Cart::factory()->for($buyer)->create();
+    $cart_item = CartItem::factory()->for($cart)->create(['variant_id' => $variant->id]);
+
+    login($buyerUser);
+
+    $response = $this->postJson(action([BuyerOrderController::class, 'store']), [
+        'different_shipping_address' => 1,
         'shipping_name' => fake()->name,
         'shipping_address' => fake()->streetAddress,
         'shipping_city' => fake()->city,
@@ -64,46 +103,6 @@ it('can create an order with unchanged shipping address', function () {
 
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => fake()->city]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
-})->todo();
-
-it('can create an order with changed shipping address', function () {
-    Currency::factory()->create();
-    TaxProvider::factory()->create();
-    $region = Region::factory()->create(['id' => 1]);
-    Country::factory()->for($region)->create();
-    $buyer = User::factory()->create();
-
-    $buyer->country->region_id = 1;
-    $buyer->save();
-
-    Product::factory()->available()->create();
-    Variant::factory()->available()->published()->create(['stock' => 50]);
-    VariantPrice::factory()->create();
-
-    $cart = Cart::factory()->for($buyer)->create();
-    $cart_item = CartItem::factory()->for($cart)->create();
-
-    login($buyer);
-
-    $response = $this->postJson(action([BuyerOrderController::class, 'store']), [
-        'different_shipping_address' => 1,
-        'shipping_name' => fake()->name,
-        'shipping_address' => $buyer->shipping_address,
-        'shipping_city' => $buyer->city,
-        'shipping_country' => $buyer->country->name,
-        'order_email' => $buyer->email,
-        'order_phone' => $buyer->phone,
-    ]);
-
-    $response->assertOk();
-
-    $order_ulid = $response->json('id');
-    $order = Order::where('ulid', $order_ulid)->select('id')->first();
-
-    $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
-    $this->assertDatabaseHas(Cart::class, ['user_id' => $buyer->id]);
-    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => $buyer->city]);
-    $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
-})->todo();
+});

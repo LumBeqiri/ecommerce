@@ -38,7 +38,7 @@ class BuyerOrderController extends ApiController
         $cart = Cart::with(['cart_items.variant.variant_prices' => function ($query) use ($region_id) {
             $query->where('region_id', $region_id);
         }, 'region:id,currency_id', 'region.currency:id,name'])
-            ->where('buyer_id', auth()->id())
+            ->where('buyer_id', $this->user->buyer->id)
             ->first();
 
         $order_data = $request->validated();
@@ -50,17 +50,18 @@ class BuyerOrderController extends ApiController
         } else {
             $order_data['shipping_city'] = $this->user->user_settings->city;
             $order_data['shipping_country'] = $this->user->user_settings->country->name;
-            // TODO: shipping address needs to be moved to user settings
-            // $order_data['shipping_address'] = $this->user->user_settings->shipping_address;
+            $order_data['shipping_address'] = $this->user->buyer->shipping_address;
         }
 
         unset($order_data['different_shipping_address']);
 
-        $order_data['buyer_id'] = auth()->id();
+        $order_data['buyer_id'] = $this->user->buyer->id;
         $order_data['total'] = $cart->total_cart_price;
-        $order_data['order_date'] = now();
+        $order_data['ordered_at'] = now();
         $order_data['payment_id'] = 1;
         $order_data['currency_id'] = $cart->region->currency->id;
+        $order_data['tax_rate'] = 0;
+        $order_data['tax_total'] = 0;
 
         $order = Order::create($order_data);
 
@@ -76,7 +77,6 @@ class BuyerOrderController extends ApiController
         }
 
         Mail::to(auth()->user())->send(new OrderReceipt($order));
-        // return (new OrderReceipt($order))->render();
 
         return $this->showOne(
             new OrderResource($order->load('order_items'))

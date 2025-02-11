@@ -22,19 +22,20 @@ class OrderFactory extends Factory
     {
         return [
             'ulid' => Str::ulid(),
-            'buyer_id' => User::all()->random()->id,
+            'buyer_id' => User::factory(),
             'shipping_name' => $this->faker->name(),
             'shipping_address' => $this->faker->address(),
             'shipping_city' => $this->faker->city(),
             'shipping_country' => $this->faker->country(),
-            'order_tax' => $this->faker->numberBetween($min = 1, $max = 100),
-            'total' => $this->faker->numberBetween($min = 1, $max = 100),
-            'order_date' => $this->faker->dateTimeBetween($startDate = '-2 years', $endDate = 'now', $timezone = null),
-            'order_shipped' => $this->faker->randomElement([Order::SHIPPED_ORDER, Order::UNSHIPPED_ORDER]),
+            'tax_rate' => $this->faker->randomFloat(2, 0, 20),
+            'tax_total' => $this->faker->numberBetween(100, 1000),
+            'total' => $this->faker->numberBetween(1000, 10000),
+            'currency_id' => Currency::factory(),
+            'ordered_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
+            'shipped_at' => $this->faker->optional()->dateTimeBetween('-1 years', 'now'),
             'order_email' => $this->faker->unique()->safeEmail(),
-            'order_phone' => '044123456',
+            'order_phone' => $this->faker->phoneNumber(),
             'payment_id' => Payment::factory(),
-            'currency_id' => Currency::all()->random()->id,
         ];
     }
 }
