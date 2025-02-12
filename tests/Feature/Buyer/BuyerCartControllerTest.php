@@ -93,9 +93,9 @@ it('can remove an item from the cart', function () {
 });
 
 it('can apply discount', function () {
-    Currency::factory()->create();
+    $currency = Currency::factory()->create(['has_cents' => true]);
     TaxProvider::factory()->create();
-    $region = Region::factory()->create();
+    $region = Region::factory()->create(['currency_id' => $currency->id]);
     $country = Country::factory()->for($region)->create();
 
     $buyerUser = User::factory()->create(['region_id' => $region->id]);
@@ -106,36 +106,47 @@ it('can apply discount', function () {
     $variant1 = Variant::factory()->available()->for($product)->create(['stock' => 30]);
     $variant2 = Variant::factory()->available()->for($product)->create(['stock' => 30]);
 
+    // Create variant prices with explicit values
     VariantPrice::factory()->create([
         'variant_id' => $variant1->id,
         'region_id' => $region->id,
-        'price' => 100,
+        'price' => 10000, // $100.00
     ]);
 
     VariantPrice::factory()->create([
         'variant_id' => $variant2->id,
         'region_id' => $region->id,
-        'price' => 200,
+        'price' => 20000, // $200.00
     ]);
 
-    $cart = Cart::factory()->create(['buyer_id' => $buyer->id, 'total_cart_price' => 300, 'has_been_discounted' => false, 'region_id' => $region->id]);
+    // Create cart with explicit total
+    $cart = Cart::factory()->create([
+        'buyer_id' => $buyer->id, 
+        'total_cart_price' => 30000, // $300.00
+        'has_been_discounted' => false, 
+        'region_id' => $region->id
+    ]);
 
     CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant1->id,
         'quantity' => 1,
+        'price' => 10000,
     ]);
 
     CartItem::factory()->create([
         'cart_id' => $cart->id,
         'variant_id' => $variant2->id,
         'quantity' => 1,
+        'price' => 20000,
     ]);
 
+    // Create discount rule with explicit value
     $discount_rule = DiscountRule::factory()->create([
         'region_id' => $region->id,
+        'currency_id' => $currency->id,
         'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-        'value' => 100,
+        'value' => 10000, // $100.00
         'allocation' => DiscountAllocationTypes::TOTAL_AMOUNT,
     ]);
 
@@ -149,7 +160,7 @@ it('can apply discount', function () {
 
     login($buyerUser);
 
-    $this->assertEquals(300, $cart->total_cart_price);
+    $this->assertEquals(30000, $cart->total_cart_price);
 
     $response = $this->postJson(action([BuyerCartController::class, 'apply_discount']), [
         'code' => $discount->code,
@@ -158,7 +169,77 @@ it('can apply discount', function () {
     $response->assertOk();
 
     $cart->refresh();
-    $this->assertEquals(200, $cart->total_cart_price);
+    $this->assertEquals(20000, $cart->total_cart_price);
 
-    $this->assertDatabaseHas(Cart::class, ['id' => $cart->id, 'total_cart_price' => 200, 'has_been_discounted' => true]);
+    $this->assertDatabaseHas(Cart::class, [
+        'id' => $cart->id, 
+        'total_cart_price' => 20000, 
+        'has_been_discounted' => true
+    ]);
+});
+
+it('can apply discount with non-cents currency', function () {
+    $currency = Currency::factory()->create(['has_cents' => false]);
+    TaxProvider::factory()->create();
+    $region = Region::factory()->create(['currency_id' => $currency->id]);
+    $country = Country::factory()->for($region)->create();
+
+    $buyerUser = User::factory()->create(['region_id' => $region->id]);
+    $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
+
+    $vendor = Vendor::factory()->create();
+    $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
+    $variant1 = Variant::factory()->available()->for($product)->create(['stock' => 30]);
+
+    // Create variant price (300 LEK)
+    VariantPrice::factory()->create([
+        'variant_id' => $variant1->id,
+        'region_id' => $region->id,
+        'price' => 30000, // 300 LEK (stored as 30000 internally)
+    ]);
+
+    // Create cart
+    $cart = Cart::factory()->create([
+        'buyer_id' => $buyer->id, 
+        'total_cart_price' => 30000, // 300 LEK
+        'has_been_discounted' => false, 
+        'region_id' => $region->id
+    ]);
+
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'variant_id' => $variant1->id,
+        'quantity' => 1,
+        'price' => 30000,
+    ]);
+
+    // Create discount rule (100 LEK discount)
+    $discount_rule = DiscountRule::factory()->create([
+        'region_id' => $region->id,
+        'currency_id' => $currency->id,
+        'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
+        'value' => 100, // 100 LEK
+        'allocation' => DiscountAllocationTypes::TOTAL_AMOUNT,
+    ]);
+
+    $discount = Discount::factory()->create([
+        'code' => 'OCTOBER',
+        'is_disabled' => false,
+        'discount_rule_id' => $discount_rule->id,
+        'starts_at' => now()->subDay(),
+        'ends_at' => now()->addDay(),
+    ]);
+
+    login($buyerUser);
+
+    $this->assertEquals(30000, $cart->total_cart_price);
+
+    $response = $this->postJson(action([BuyerCartController::class, 'apply_discount']), [
+        'code' => $discount->code,
+    ]);
+
+    $response->assertOk();
+
+    $cart->refresh();
+    $this->assertEquals(20000, $cart->total_cart_price); // 200 LEK (stored as 20000)
 });

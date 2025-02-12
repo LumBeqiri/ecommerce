@@ -21,12 +21,13 @@ class CartItemFactory extends Factory
     public function definition()
     {
         $variant = Variant::all()->random();
-
+        $variantPrice = VariantPrice::factory()->create();
         return [
             'ulid' => Str::ulid(),
             'cart_id' => Cart::all()->random()->id,
             'variant_id' => $variant->id,
-            'variant_price_id' => VariantPrice::factory(),
+            'variant_price_id' => $variantPrice->id,
+            'price' => $variantPrice->price,
             'quantity' => $this->faker->numberBetween(3, 5),
         ];
     }

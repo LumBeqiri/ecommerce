@@ -94,17 +94,19 @@ class DiscountService
             throw new DiscountException('Discount is not applicable', 422);
         }
 
-        // If the currency has cents, multiply by 100
-        $value = $discount_region->currency->has_cents
-            ? $discount_rule->value * 100
-            : $discount_rule->value;
+        if ($discount_rule->discount_type === DiscountRuleTypes::PERCENTAGE) {
+            $discountAmount = ($cart->total_cart_price * $discount_rule->value) / 100;
+        } else {
+            if ($discount_rule->currency_id !== $cart->region->currency_id) {
+                throw new DiscountException('Discount currency does not match cart currency', 422);
+            }
 
-        $cart->total_cart_price -= (int) $value;
-
-        if ($cart->total_cart_price < 0) {
-            $cart->total_cart_price = 0;
+            $discountAmount = $discount_rule->currency->has_cents 
+                ? $discount_rule->value
+                : $discount_rule->value * 100;
         }
 
+        $cart->total_cart_price = max(0, $cart->total_cart_price - (int)$discountAmount);
         $cart->has_been_discounted = true;
         $cart->save();
 

@@ -71,6 +71,7 @@ class CartService
                     'cart_id' => $cart->id,
                     'variant_id' => $variant->id,
                     'variant_price_id' => $variantPrice->id,
+                    'price' => $variantPrice->price,
                     'quantity' => $item['quantity'],
                 ]);
             }

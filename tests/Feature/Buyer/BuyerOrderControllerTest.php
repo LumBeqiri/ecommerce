@@ -86,14 +86,17 @@ it('can create an order with changed shipping address', function () {
 
     login($buyerUser);
 
+    $shipping_city = fake()->city;
     $response = $this->postJson(action([BuyerOrderController::class, 'store']), [
         'different_shipping_address' => 1,
         'shipping_name' => fake()->name,
         'shipping_address' => fake()->streetAddress,
-        'shipping_city' => fake()->city,
+        'shipping_city' => $shipping_city,
         'shipping_country' => fake()->country,
         'order_email' => fake()->email,
         'order_phone' => fake()->phoneNumber,
+        'tax_rate' => 18,
+        'ordered_at' => now(),
     ]);
 
     $response->assertOk();
@@ -103,6 +106,6 @@ it('can create an order with changed shipping address', function () {
 
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => fake()->city]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => $shipping_city ]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
 });
