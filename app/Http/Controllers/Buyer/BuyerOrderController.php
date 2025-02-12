@@ -60,7 +60,7 @@ class BuyerOrderController extends ApiController
         $order_data['ordered_at'] = now();
         $order_data['payment_id'] = 1;
         $order_data['currency_id'] = $cart->region->currency->id;
-        $order_data['tax_rate'] = 0;
+        $order_data['tax_rate'] = $request->tax_rate;        
         $order_data['tax_total'] = 0;
 
         $order = Order::create($order_data);
