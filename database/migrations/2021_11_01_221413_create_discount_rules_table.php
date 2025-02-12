@@ -18,10 +18,11 @@ return new class extends Migration
             $table->ulid();
             $table->string('description');
             $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete();
+            $table->foreignId('currency_id')->nullable()->constrained('currencies');
             // instead of enum use string
             $table->string('discount_type');
             $table->string('operator')->default('in');
-            $table->double('value', 8, 2);
+            $table->decimal('value', 10, 2);
             $table->string('allocation')->nullable();
             $table->json('metadata')->nullable();
 
@@ -29,13 +30,4 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('discount_rules');
-    }
 };

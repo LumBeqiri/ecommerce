@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
+            $table->ulid('ulid');
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->foreignId('variant_id')->constrained('variants');
             $table->integer('price');
@@ -21,11 +22,4 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('order_items');
-    }
 };

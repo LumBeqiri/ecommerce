@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Currency;
 use App\Models\DiscountRule;
-use App\values\DiscountAllocationTypes;
+use App\Models\Region;
 use App\values\DiscountRuleTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -13,6 +14,8 @@ use Illuminate\Support\Str;
  */
 class DiscountRuleFactory extends Factory
 {
+    protected $model = DiscountRule::class;
+
     /**
      * Define the model's default state.
      *
@@ -20,13 +23,19 @@ class DiscountRuleFactory extends Factory
      */
     public function definition()
     {
+        $region = Region::factory()->create();
+        $isPercentage = $this->faker->boolean();
+        
         return [
             'ulid' => Str::ulid(),
-            'description' => $this->faker->paragraph(1),
-            'discount_type' => $type = $this->faker->randomElement([DiscountRuleTypes::FIXED_AMOUNT, DiscountRuleTypes::PERCENTAGE, DiscountRuleTypes::FREE_SHIPPING]),
-            'value' => $this->valueForType($type),
-            'region_id' => 1,
-            'allocation' => $this->faker->randomElement([DiscountAllocationTypes::TOTAL_AMOUNT, DiscountAllocationTypes::ITEM_SPICIFIC]),
+            'description' => $this->faker->sentence(),
+            'region_id' => $region->id,
+            'currency_id' => $isPercentage ? null : ($region->currency_id ?? Currency::factory()->create()->id),
+            'discount_type' => $isPercentage ? DiscountRuleTypes::PERCENTAGE : DiscountRuleTypes::FIXED_AMOUNT,
+            'value' => $isPercentage ? $this->faker->numberBetween(1, 100) : $this->faker->numberBetween(500, 10000),
+            'allocation' => null,
+            'operator' => 'in',
+            'metadata' => null,
         ];
     }
 

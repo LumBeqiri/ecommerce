@@ -21,13 +21,4 @@ class CategoryProductTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('category_product');
-    }
 }

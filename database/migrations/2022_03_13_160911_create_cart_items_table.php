@@ -20,19 +20,15 @@ class CreateCartItemsTable extends Migration
             $table->foreignId('variant_id')->constrained('variants')->cascadeOnDelete();
             $table->integer('quantity');
             $table->foreignId('variant_price_id')->constrained('variant_prices');
+            
+            $table->integer('price');
+            
             $table->integer('discounted_price')->nullable();
+            
             $table->foreignId('currency_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
+    
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('cart_items');
-    }
 }

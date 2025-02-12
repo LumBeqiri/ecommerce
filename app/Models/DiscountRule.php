@@ -35,4 +35,10 @@ class DiscountRule extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+    /** @return BelongsTo<\App\Models\Currency, $this> */
+    public function currency() : BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }
