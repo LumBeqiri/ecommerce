@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Data\CartItemData;
+use App\Models\User;
+use App\Services\CartService;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends ApiController
 {
@@ -21,25 +23,18 @@ class LoginController extends ApiController
             return $this->errorResponse('Wrong credentials', 401);
         }
 
-        $token = $user->createToken('secretFORnowToken')->plainTextToken;
+        $token = $user->createToken('secretFORnowToKEn')->plainTextToken;
 
-        if ($request->hasCookie('cart')) {
-            $cookie_cart = $request->cookie('cart');
-
-            if (is_string($cookie_cart) && ! empty($cookie_cart)) {
-                $cart = json_decode($cookie_cart, true);
-
-                if (! empty($cart) && array_key_exists('items', $cart)) {
-                    $items = $cart['items'];
-
-                    // TODO: Sync items from cookie to cart
-
-                }
-            }
+        if (isset($data['cart_items']) && is_array($data['cart_items'])) {
+            $cartItemsDTO = collect($data['cart_items'])
+                ->map(fn($item) => new CartItemData($item['variant_id'],$item['quantity']))
+                ->all();
+        
+            CartService::syncItemsToCart($user, $cartItemsDTO);
         }
+        
 
         $user = new UserResource($user);
-
         $response = [
             'user' => $user,
             'token' => $token,

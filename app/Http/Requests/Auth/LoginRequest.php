@@ -24,8 +24,12 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required',
+            'email'             => 'required|email',
+            'password'          => 'required',
+            'cart_items'        => 'sometimes|array',
+            'cart_items.*.variant_id' => 'required|string',  // Each item must have a variant_id
+            'cart_items.*.quantity'   => 'required|integer|min:1',  // and a quantity of at least 1
         ];
     }
+
 }
