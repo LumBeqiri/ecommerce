@@ -121,10 +121,10 @@ it('can apply discount', function () {
 
     // Create cart with explicit total
     $cart = Cart::factory()->create([
-        'buyer_id' => $buyer->id, 
+        'buyer_id' => $buyer->id,
         'total_cart_price' => 30000, // $300.00
-        'has_been_discounted' => false, 
-        'region_id' => $region->id
+        'has_been_discounted' => false,
+        'region_id' => $region->id,
     ]);
 
     CartItem::factory()->create([
@@ -172,9 +172,9 @@ it('can apply discount', function () {
     $this->assertEquals(20000, $cart->total_cart_price);
 
     $this->assertDatabaseHas(Cart::class, [
-        'id' => $cart->id, 
-        'total_cart_price' => 20000, 
-        'has_been_discounted' => true
+        'id' => $cart->id,
+        'total_cart_price' => 20000,
+        'has_been_discounted' => true,
     ]);
 });
 
@@ -200,10 +200,10 @@ it('can apply discount with non-cents currency', function () {
 
     // Create cart
     $cart = Cart::factory()->create([
-        'buyer_id' => $buyer->id, 
+        'buyer_id' => $buyer->id,
         'total_cart_price' => 30000, // 300 LEK
-        'has_been_discounted' => false, 
-        'region_id' => $region->id
+        'has_been_discounted' => false,
+        'region_id' => $region->id,
     ]);
 
     CartItem::factory()->create([

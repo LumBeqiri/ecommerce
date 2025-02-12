@@ -25,7 +25,7 @@ class ProductFactory extends Factory
         return [
             'ulid' => Str::ulid(),
             'product_name' => $this->faker->name,
-            'vendor_id' => Vendor::all()->random()->id,
+            'vendor_id' => Vendor::factory(),
             'status' => $this->faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
             'publish_status' => $this->faker->randomElement([Product::PUBLISHED, Product::DRAFT]),
             'discountable' => $this->faker->boolean,

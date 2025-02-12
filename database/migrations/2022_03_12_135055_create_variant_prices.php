@@ -28,5 +28,4 @@ return new class extends Migration
             $table->unique(['variant_id', 'region_id', 'deleted_at'], 'unique_variant_region_deleted_at');
         });
     }
-
 };

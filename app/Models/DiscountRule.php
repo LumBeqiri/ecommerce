@@ -37,7 +37,7 @@ class DiscountRule extends Model
     }
 
     /** @return BelongsTo<\App\Models\Currency, $this> */
-    public function currency() : BelongsTo
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }

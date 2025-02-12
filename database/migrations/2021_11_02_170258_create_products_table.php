@@ -28,5 +28,4 @@ class CreateProductsTable extends Migration
             $table->softDeletes();
         });
     }
-
 }

@@ -20,5 +20,4 @@ class CategoryProductTable extends Migration
             $table->timestamps();
         });
     }
-
 }

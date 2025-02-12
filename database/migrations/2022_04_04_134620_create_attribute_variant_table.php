@@ -19,5 +19,4 @@ class CreateAttributeVariantTable extends Migration
             $table->timestamps();
         });
     }
-
 }

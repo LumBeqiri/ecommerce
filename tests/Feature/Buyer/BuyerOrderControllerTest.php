@@ -106,6 +106,6 @@ it('can create an order with changed shipping address', function () {
 
     $this->assertDatabaseHas(CartItem::class, ['id' => $cart_item->id, 'cart_id' => $buyer->cart->id]);
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
-    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => $shipping_city ]);
+    $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => $shipping_city]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Buyer;
 
+use App\Data\CartItemData;
 use App\Exceptions\CartException;
 use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
@@ -31,10 +32,21 @@ class BuyerCartController extends ApiController
     public function add_to_cart(CartRequest $request): JsonResponse
     {
         $data = $request->validated();
+
+        /**
+         * @var array<int, array{variant_id: string, quantity: int}> $items
+         */
         $items = $data['items'];
 
+        $cartItemsDTO = collect($items)
+            ->map(fn (array $item): CartItemData => new CartItemData(
+                variant_id: $item['variant_id'],
+                quantity: $item['quantity']
+            ))
+            ->all();
+
         try {
-            $cart = CartService::saveItemsToCart($items);
+            $cart = CartService::saveItemsToCart($cartItemsDTO);
             CartService::calculateCartPrice($cart);
         } catch (CartException $ex) {
             return $this->showError($ex->getMessage(), $ex->getCode());
