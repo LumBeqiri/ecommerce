@@ -20,7 +20,7 @@ class VariantFactory extends Factory
     {
         return [
             'ulid' => Str::ulid(),
-            'product_id' => Product::all()->random()->id,
+            'product_id' => Product::factory(),
             'variant_name' => $this->faker->name,
             'variant_short_description' => $this->faker->paragraph(1),
             'variant_long_description' => $this->faker->text,
