@@ -22,7 +22,7 @@ it('can reset password', function () {
 
     $user = User::factory()->create();
 
-    //check if password reset notification is sent to user
+    // check if password reset notification is sent to user
     $reset_link_response = $this->postJson(
         route('reset.link'), [
             'email' => $user->email,

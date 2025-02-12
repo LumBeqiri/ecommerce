@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\Cart;
-use App\Models\User;
-use App\Models\Product;
-use App\Models\Variant;
-use App\Models\CartItem;
 use App\Data\CartItemData;
 use App\Exceptions\CartException;
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Variant;
 
 class CartService
 {
@@ -28,82 +28,83 @@ class CartService
 
         return $cart;
     }
-/**
- * Sync the provided cart items with the user's cart.
- * This method overwrites the current cart items with the ones provided,
- * and removes any items that are no longer present.
- * 
- * @param \App\Data\CartItemData[] $items Array of CartItemData instances.
- * @return \App\Models\Cart The updated cart.
- */
-public static function saveItemsToCart(array $items): Cart
-{
-    /** @var \App\Models\User $user */
-    $user = auth()->user();
-    $region = $user->region;
-    
-    /** @var \App\Models\Cart $cart */
-    $cart = Cart::updateOrCreate(
-        ['buyer_id' => $user->buyer->id, 'is_closed' => false],
-        ['region_id' => $region->id]
-    );
-    
-    $cart->load('cart_items');
-    
-    // Collect variant IDs from the DTO objects.
-    $variant_ids = collect($items)->pluck('variant_id')->all();
-    
-    $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
-        $query->where('region_id', $region->id);
-    }])->whereIn('ulid', $variant_ids)->get();
-    
-    foreach ($items as $item) {
-        /** @var \App\Data\CartItemData $item */
-        // Find the matching variant using the DTO's variant_id.
-        $variant = $variants->first(function ($variant) use ($item) {
-            return $variant->ulid === $item->variant_id;
-        });
-        
-        // Find an existing cart item for the variant.
-        $cart_item = $cart->cart_items->firstWhere('variant_id', $variant->id);
-        
-        // Validate the cart item.
-        self::validateCartItem($item, $variant, $cart, $region);
-        
-        $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
-        
-        if ($cart_item) {
-            // Update quantity by adding the new amount.
-            $cart_item->quantity += $item->quantity;
-            $cart_item->save();
-        } else {
-            // Create a new cart item with the locked price.
-            $cart_item = CartItem::create([
-                'cart_id'           => $cart->id,
-                'variant_id'        => $variant->id,
-                'variant_price_id'  => $variantPrice->id,
-                'price'             => $variantPrice->price,
-                'quantity'          => $item->quantity,
-                'currency_id'       => $variantPrice->currency_id, // if your variant price has currency_id
-            ]);
-        }
-        
-        $cart->total_cart_price += $variantPrice->price * $item->quantity;
-    }
-    
-    $cart->save();
-    $cart->refresh();
-    
-    return $cart;
-}
 
     /**
      * Sync the provided cart items with the user's cart.
      * This method overwrites the current cart items with the ones provided,
      * and removes any items that are no longer present.
-     * 
-     * @param \App\Data\CartItemData[] $items Array of CartItemData instances.
-     * @param \App\Models\User $user The user to sync the cart items for.
+     *
+     * @param  \App\Data\CartItemData[]  $items  Array of CartItemData instances.
+     * @return \App\Models\Cart The updated cart.
+     */
+    public static function saveItemsToCart(array $items): Cart
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $region = $user->region;
+
+        /** @var \App\Models\Cart $cart */
+        $cart = Cart::updateOrCreate(
+            ['buyer_id' => $user->buyer->id, 'is_closed' => false],
+            ['region_id' => $region->id]
+        );
+
+        $cart->load('cart_items');
+
+        // Collect variant IDs from the DTO objects.
+        $variant_ids = collect($items)->pluck('variant_id')->all();
+
+        $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
+            $query->where('region_id', $region->id);
+        }])->whereIn('ulid', $variant_ids)->get();
+
+        foreach ($items as $item) {
+            /** @var \App\Data\CartItemData $item */
+            // Find the matching variant using the DTO's variant_id.
+            $variant = $variants->first(function ($variant) use ($item) {
+                return $variant->ulid === $item->variant_id;
+            });
+
+            // Find an existing cart item for the variant.
+            $cart_item = $cart->cart_items->firstWhere('variant_id', $variant->id);
+
+            // Validate the cart item.
+            self::validateCartItem($item, $variant, $cart, $region);
+
+            $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
+
+            if ($cart_item) {
+                // Update quantity by adding the new amount.
+                $cart_item->quantity += $item->quantity;
+                $cart_item->save();
+            } else {
+                // Create a new cart item with the locked price.
+                $cart_item = CartItem::create([
+                    'cart_id' => $cart->id,
+                    'variant_id' => $variant->id,
+                    'variant_price_id' => $variantPrice->id,
+                    'price' => $variantPrice->price,
+                    'quantity' => $item->quantity,
+                    'currency_id' => $variantPrice->currency_id, // if your variant price has currency_id
+                ]);
+            }
+
+            $cart->total_cart_price += $variantPrice->price * $item->quantity;
+        }
+
+        $cart->save();
+        $cart->refresh();
+
+        return $cart;
+    }
+
+    /**
+     * Sync the provided cart items with the user's cart.
+     * This method overwrites the current cart items with the ones provided,
+     * and removes any items that are no longer present.
+     *
+     * @param  \App\Data\CartItemData[]  $items  Array of CartItemData instances.
+     * @param  \App\Models\User  $user  The user to sync the cart items for.
      * @return \App\Models\Cart The updated cart.
      */
     public static function syncItemsToCart(User $user, array $items): Cart
@@ -119,7 +120,6 @@ public static function saveItemsToCart(array $items): Cart
         );
 
         $cart->load('cart_items');
-
 
         $incomingItems = collect($items)->keyBy('variant_id');
 
@@ -144,12 +144,12 @@ public static function saveItemsToCart(array $items): Cart
                 $existingCartItem->save();
             } else {
                 CartItem::create([
-                    'cart_id'           => $cart->id,
-                    'variant_id'        => $variant->id,
-                    'variant_price_id'  => $variantPrice->id,
-                    'price'             => $variantPrice->price,
-                    'quantity'          => $itemData->quantity,
-                    'currency_id'       => $variantPrice->currency_id, // Assuming variant_price has currency_id
+                    'cart_id' => $cart->id,
+                    'variant_id' => $variant->id,
+                    'variant_price_id' => $variantPrice->id,
+                    'price' => $variantPrice->price,
+                    'quantity' => $itemData->quantity,
+                    'currency_id' => $variantPrice->currency_id, // Assuming variant_price has currency_id
                 ]);
             }
         }
@@ -162,9 +162,6 @@ public static function saveItemsToCart(array $items): Cart
 
         return $cart;
     }
-
-
-
 
     private static function validateCartItem(CartItemData $item, $variant, $cart, $region): bool
     {

@@ -31,5 +31,4 @@ class CreateDiscountsTable extends Migration
             $table->timestamps();
         });
     }
-
 }

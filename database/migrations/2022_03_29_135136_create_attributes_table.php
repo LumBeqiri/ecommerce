@@ -21,5 +21,4 @@ class CreateAttributesTable extends Migration
             $table->timestamps();
         });
     }
-
 }

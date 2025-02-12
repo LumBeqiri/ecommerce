@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Data\CartItemData;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Auth\LoginRequest;
 
 class LoginController extends ApiController
 {
@@ -27,12 +27,11 @@ class LoginController extends ApiController
 
         if (isset($data['cart_items']) && is_array($data['cart_items'])) {
             $cartItemsDTO = collect($data['cart_items'])
-                ->map(fn($item) => new CartItemData($item['variant_id'],$item['quantity']))
+                ->map(fn ($item) => new CartItemData($item['variant_id'], $item['quantity']))
                 ->all();
-        
+
             CartService::syncItemsToCart($user, $cartItemsDTO);
         }
-        
 
         $user = new UserResource($user);
         $response = [

@@ -101,12 +101,12 @@ class DiscountService
                 throw new DiscountException('Discount currency does not match cart currency', 422);
             }
 
-            $discountAmount = $discount_rule->currency->has_cents 
+            $discountAmount = $discount_rule->currency->has_cents
                 ? $discount_rule->value
                 : $discount_rule->value * 100;
         }
 
-        $cart->total_cart_price = max(0, $cart->total_cart_price - (int)$discountAmount);
+        $cart->total_cart_price = max(0, $cart->total_cart_price - (int) $discountAmount);
         $cart->has_been_discounted = true;
         $cart->save();
 

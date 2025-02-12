@@ -25,7 +25,7 @@ class DiscountRuleFactory extends Factory
     {
         $region = Region::factory()->create();
         $isPercentage = $this->faker->boolean();
-        
+
         return [
             'ulid' => Str::ulid(),
             'description' => $this->faker->sentence(),

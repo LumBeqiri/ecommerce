@@ -22,6 +22,7 @@ class CartItemFactory extends Factory
     {
         $variant = Variant::all()->random();
         $variantPrice = VariantPrice::factory()->create();
+
         return [
             'ulid' => Str::ulid(),
             'cart_id' => Cart::all()->random()->id,
