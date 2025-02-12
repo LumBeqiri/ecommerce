@@ -33,9 +33,13 @@ class BuyerCartController extends ApiController
     {
         $data = $request->validated();
 
-        // Convert each incoming item into a CartItemData instance.
-        $cartItemsDTO = collect($data['items'])
-            ->map(fn ($item) => new CartItemData(
+        /**
+         * @var array<int, array{variant_id: string, quantity: int}> $items
+         */
+        $items = $data['items'];
+
+        $cartItemsDTO = collect($items)
+            ->map(fn (array $item): CartItemData => new CartItemData(
                 variant_id: $item['variant_id'],
                 quantity: $item['quantity']
             ))
