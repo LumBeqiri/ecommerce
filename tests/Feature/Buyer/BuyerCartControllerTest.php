@@ -109,7 +109,7 @@ it('can apply discount', function () {
     VariantPrice::factory()->create([
         'variant_id' => $variant1->id,
         'region_id' => $region->id,
-        'price' => 10000, 
+        'price' => 10000,
     ]);
 
     VariantPrice::factory()->create([
@@ -120,7 +120,7 @@ it('can apply discount', function () {
 
     $cart = Cart::factory()->create([
         'buyer_id' => $buyer->id,
-        'total_cart_price' => 30000, 
+        'total_cart_price' => 30000,
         'has_been_discounted' => false,
         'region_id' => $region->id,
     ]);
@@ -191,9 +191,8 @@ it('can apply discount with non-cents currency', function () {
     VariantPrice::factory()->create([
         'variant_id' => $variant1->id,
         'region_id' => $region->id,
-        'price' => 30000, 
+        'price' => 30000,
     ]);
-
 
     $cart = Cart::factory()->create([
         'buyer_id' => $buyer->id,
@@ -213,7 +212,7 @@ it('can apply discount with non-cents currency', function () {
         'region_id' => $region->id,
         'currency_id' => $currency->id,
         'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-        'value' => 100, 
+        'value' => 100,
         'allocation' => DiscountAllocationTypes::TOTAL_AMOUNT,
     ]);
 
@@ -236,5 +235,5 @@ it('can apply discount with non-cents currency', function () {
     $response->assertOk();
 
     $cart->refresh();
-    $this->assertEquals(20000, $cart->total_cart_price); 
+    $this->assertEquals(20000, $cart->total_cart_price);
 });

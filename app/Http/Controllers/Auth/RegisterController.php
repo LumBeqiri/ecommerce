@@ -19,7 +19,7 @@ class RegisterController extends ApiController
 
         $token = $user->createToken('ecommerceToken')->plainTextToken;
 
-        $response = [   
+        $response = [
             'user' => $user,
             'token' => $token,
         ];

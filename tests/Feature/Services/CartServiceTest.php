@@ -7,4 +7,3 @@ beforeEach(function () {
     Notification::fake();
     Bus::fake();
 });
-

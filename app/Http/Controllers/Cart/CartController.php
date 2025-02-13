@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Models\Cart;
-// use App\Http\Requests\CartRequest;
-use App\Models\User;
-use App\values\Roles;
 use App\Data\CartItemData;
-use Illuminate\Http\Request;
-use App\Services\CartService;
-use App\Services\DiscountService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Resources\CartResource;
+// use App\Http\Requests\CartRequest;
 use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Cart\UpdateCartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
+use App\Models\User;
+use App\Services\CartService;
+use App\Services\DiscountService;
+use App\values\Roles;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends ApiController
 {
@@ -105,8 +105,8 @@ class CartController extends ApiController
 
         $data = $request->validate([
             'cart_items' => 'required|array',
-            'cart_items.*.variant_id' => 'required|string',  
-            'cart_items.*.quantity' => 'required|integer|min:1',  
+            'cart_items.*.variant_id' => 'required|string',
+            'cart_items.*.quantity' => 'required|integer|min:1',
         ]);
 
         $cart = $this->authUser()->cart()->with('cart_items')->first();
