@@ -112,7 +112,6 @@ class CartService
 
         $region = $user->region;
 
-        // Get or create the current open cart.
         /** @var Cart $cart */
         $cart = Cart::updateOrCreate(
             ['buyer_id' => $user->buyer->id, 'is_closed' => false],
@@ -123,7 +122,7 @@ class CartService
 
         $incomingItems = collect($items)->keyBy('variant_id');
 
-        // Retrieve the variants that match the provided variant ulids.
+        // Retrieve the variants that match the provided variant ulids
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
         }])->whereIn('ulid', $incomingItems->keys())->get();
