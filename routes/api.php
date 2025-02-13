@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('carts', [CartController::class, 'index']);
     Route::put('carts/{cart}', [CartController::class, 'update']);
     Route::post('carts/{cart}/discount', [CartController::class, 'apply_discount']);
+    Route::post('sync-cart', [CartController::class, 'syncCart']);
     Route::get('carts/{cart}', [CartController::class, 'show']);
     Route::delete('carts/{cart}', [CartController::class, 'destroy']);
 
