@@ -124,10 +124,8 @@ class CartService
 
         $cart->load('cart_items');
 
-        // Key by variant_id (using the DTO's property)
         $incomingItems = collect($items)->keyBy(fn ($item) => $item->variant_id);
 
-        // Retrieve variants using ULIDs.
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
         }])->whereIn('ulid', $incomingItems->keys())->get();
@@ -267,7 +265,6 @@ class CartService
         $attempt = 0;
 
         while ($attempt < $maxRetries) {
-            // Retrieve the variant using the ULID.
             $variant = Variant::where('ulid', $variantIdentifier)->first();
             if (! $variant) {
                 throw new CartException('Variant not found');
