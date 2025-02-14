@@ -29,13 +29,6 @@ class UserController extends ApiController
         return $this->showOne(new UserResource($user));
     }
 
-    public function update(UpdateUserRequest $request, User $user): JsonResponse
-    {
-        $this->authorize('update', $user);
-        
-        $user->update($request->validated());
-        return $this->showOne(new UserResource($user));
-    }
 
     public function destroy(User $user): JsonResponse
     {
