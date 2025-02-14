@@ -53,8 +53,7 @@ class CustomerGroupController extends ApiController
         $this->authorize('update', $customerGroup);
 
         $request->validated();
-        $customerGroup->fill($request->validated);
-        $customerGroup->save();
+        $customerGroup->update($request->validated);
 
         return $this->showOne(new CustomerGroupResource($customerGroup));
     }

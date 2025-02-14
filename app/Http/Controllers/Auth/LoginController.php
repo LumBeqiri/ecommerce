@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\CartService;
+use App\values\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,7 +26,7 @@ class LoginController extends ApiController
 
         $token = $user->createToken('secretFORnowToKEn')->plainTextToken;
 
-        if (isset($data['cart_items']) && is_array($data['cart_items'])) {
+        if (isset($data['cart_items']) && is_array($data['cart_items']) && $user->role === Roles::BUYER) {
             $cartItemsDTO = collect($data['cart_items'])
                 ->map(fn ($item) => new CartItemData($item['variant_id'], $item['quantity']))
                 ->all();
@@ -33,9 +34,8 @@ class LoginController extends ApiController
             CartService::syncItemsToCart($user, $cartItemsDTO);
         }
 
-        $user = new UserResource($user);
         $response = [
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token,
         ];
 
