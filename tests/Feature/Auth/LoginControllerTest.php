@@ -10,6 +10,8 @@ use App\Models\TaxProvider;
 use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\values\Roles;
+use Database\Seeders\RoleAndPermissionSeeder;
 
 beforeEach(function () {
     Currency::factory()->create();
@@ -18,6 +20,8 @@ beforeEach(function () {
     Country::factory()->create();
     Notification::fake();
     Bus::fake();
+    $this->seed(RoleAndPermissionSeeder::class);
+
 });
 
 it('can login user and sync cart items', function () {
@@ -29,6 +33,8 @@ it('can login user and sync cart items', function () {
         'password' => bcrypt('password'),
     ]);
 
+    $user->assignRole(Roles::BUYER);
+    $user->save();
     $buyer = Buyer::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create();
     $variant = Variant::factory()->available()->published()->create(['product_id' => $product->id]);

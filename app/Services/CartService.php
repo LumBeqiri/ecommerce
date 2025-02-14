@@ -9,6 +9,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Variant;
+use Illuminate\Support\Facades\DB;
 
 class CartService
 {
@@ -31,11 +32,12 @@ class CartService
 
     /**
      * Sync the provided cart items with the user's cart.
-     * This method overwrites the current cart items with the ones provided,
-     * and removes any items that are no longer present.
+     * Overwrites current cart items with the ones provided.
      *
      * @param  \App\Data\CartItemData[]  $items  Array of CartItemData instances.
      * @return \App\Models\Cart The updated cart.
+     *
+     * @throws CartException
      */
     public static function saveItemsToCart(array $items): Cart
     {
@@ -51,48 +53,49 @@ class CartService
 
         $cart->load('cart_items');
 
-        // Collect variant IDs from the DTO objects.
-        $variant_ids = collect($items)->pluck('variant_id')->all();
+        $variantIds = collect($items)->pluck('variant_id')->all();
 
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
-        }])->whereIn('ulid', $variant_ids)->get();
+        }])->whereIn('ulid', $variantIds)->get();
 
-        foreach ($items as $item) {
-            /** @var \App\Data\CartItemData $item */
-            // Find the matching variant using the DTO's variant_id.
-            $variant = $variants->first(function ($variant) use ($item) {
-                return $variant->ulid === $item->variant_id;
-            });
+        DB::transaction(function () use ($items, $variants, $cart, $region) {
+            foreach ($items as $item) {
+                /** @var \App\Data\CartItemData $item */
+                $variant = $variants->firstWhere('ulid', $item->variant_id);
+                if (! $variant) {
+                    throw new CartException("Variant with ULID {$item->variant_id} not found.");
+                }
 
-            // Find an existing cart item for the variant.
-            $cart_item = $cart->cart_items->firstWhere('variant_id', $variant->id);
+                // Validate the cart item.
+                self::validateCartItem($item, $variant, $cart, $region);
 
-            // Validate the cart item.
-            self::validateCartItem($item, $variant, $cart, $region);
+                $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
 
-            $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
+                // Update the variant's stock using optimistic locking.
+                self::updateVariantStockOptimistically($variant->ulid, $item->quantity);
 
-            if ($cart_item) {
-                // Update quantity by adding the new amount.
-                $cart_item->quantity += $item->quantity;
-                $cart_item->save();
-            } else {
-                // Create a new cart item with the locked price.
-                $cart_item = CartItem::create([
-                    'cart_id' => $cart->id,
-                    'variant_id' => $variant->id,
-                    'variant_price_id' => $variantPrice->id,
-                    'price' => $variantPrice->price,
-                    'quantity' => $item->quantity,
-                    'currency_id' => $variantPrice->currency_id, // if your variant price has currency_id
-                ]);
+                $cartItem = $cart->cart_items->firstWhere('variant_id', $variant->id);
+                if ($cartItem) {
+                    $cartItem->quantity += $item->quantity;
+                    $cartItem->save();
+                } else {
+                    CartItem::create([
+                        'cart_id' => $cart->id,
+                        'variant_id' => $variant->id,
+                        'variant_price_id' => $variantPrice->id,
+                        'price' => $variantPrice->price,
+                        'quantity' => $item->quantity,
+                        'currency_id' => $variantPrice->currency_id,
+                    ]);
+                }
+
+                // Increase the cart's total price.
+                $cart->total_cart_price += $variantPrice->price * $item->quantity;
             }
+            $cart->save();
+        });
 
-            $cart->total_cart_price += $variantPrice->price * $item->quantity;
-        }
-
-        $cart->save();
         $cart->refresh();
 
         return $cart;
@@ -100,12 +103,13 @@ class CartService
 
     /**
      * Sync the provided cart items with the user's cart.
-     * This method overwrites the current cart items with the ones provided,
-     * and removes any items that are no longer present.
+     * Overwrites current cart items with the ones provided.
      *
      * @param  \App\Data\CartItemData[]  $items  Array of CartItemData instances.
      * @param  \App\Models\User  $user  The user to sync the cart items for.
      * @return \App\Models\Cart The updated cart.
+     *
+     * @throws CartException
      */
     public static function syncItemsToCart(User $user, array $items): Cart
     {
@@ -120,43 +124,105 @@ class CartService
 
         $cart->load('cart_items');
 
-        $incomingItems = collect($items)->keyBy('variant_id');
+        $incomingItems = collect($items)->keyBy(fn ($item) => $item->variant_id);
 
-        // Retrieve the variants that match the provided variant ulids
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
         }])->whereIn('ulid', $incomingItems->keys())->get();
 
-        foreach ($incomingItems as $variantUlid => $itemData) {
-            $variant = $variants->firstWhere('ulid', $variantUlid);
-            if (! $variant) {
-                continue;
+        DB::transaction(function () use ($incomingItems, $variants, $cart, $region) {
+            foreach ($incomingItems as $variantUlid => $itemData) {
+                // $itemData is an instance of CartItemData.
+                $variant = $variants->firstWhere('ulid', $variantUlid);
+                if (! $variant) {
+                    continue;
+                }
+
+                self::validateCartItem($itemData, $variant, $cart, $region);
+
+                $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
+
+                $existingCartItem = $cart->cart_items->firstWhere('variant_id', $variant->id);
+                if ($existingCartItem && $itemData->quantity > $existingCartItem->quantity) {
+                    // Calculate the additional quantity needed.
+                    $diff = $itemData->quantity - $existingCartItem->quantity;
+                    self::updateVariantStockOptimistically($variant->ulid, $diff);
+                    $existingCartItem->quantity = $itemData->quantity;
+                    $existingCartItem->save();
+                } elseif ($existingCartItem) {
+                    // If decreasing, "release" stock.
+                    $diff = $existingCartItem->quantity - $itemData->quantity;
+                    self::revertVariantStockOptimistically($variant->ulid, $diff);
+                    $existingCartItem->quantity = $itemData->quantity;
+                    $existingCartItem->save();
+                } else {
+                    self::updateVariantStockOptimistically($variant->ulid, $itemData->quantity);
+                    CartItem::create([
+                        'cart_id' => $cart->id,
+                        'variant_id' => $variant->id,
+                        'variant_price_id' => $variantPrice->id,
+                        'price' => $variantPrice->price,
+                        'quantity' => $itemData->quantity,
+                        'currency_id' => $variantPrice->currency_id,
+                    ]);
+                }
             }
 
-            self::validateCartItem($itemData, $variant, $cart, $region);
+            $providedVariantIds = $variants->pluck('id')->toArray();
+            $cart->cart_items()->whereNotIn('variant_id', $providedVariantIds)->delete();
 
-            $variantPrice = $variant->variant_prices()->where('region_id', $region->id)->firstOrFail();
+            self::calculateCartPrice($cart);
+            $cart->save();
+        });
 
-            $existingCartItem = $cart->cart_items->firstWhere('variant_id', $variant->id);
-            if ($existingCartItem) {
-                $existingCartItem->quantity = $itemData['quantity'];
-                $existingCartItem->save();
-            } else {
-                CartItem::create([
-                    'cart_id' => $cart->id,
-                    'variant_id' => $variant->id,
-                    'variant_price_id' => $variantPrice->id,
-                    'price' => $variantPrice->price,
-                    'quantity' => $itemData->quantity,
-                    'currency_id' => $variantPrice->currency_id, // Assuming variant_price has currency_id
-                ]);
-            }
+        $cart->refresh();
+
+        return $cart;
+    }
+
+    /**
+     * Remove a specified quantity of an item from the user's cart.
+     * This method will also revert the reserved stock using optimistic locking.
+     *
+     * @param  array  $data  The validated data, including 'variant_id' and 'quantity'.
+     * @return \App\Models\Cart The updated cart.
+     *
+     * @throws CartException
+     */
+    public static function removeItemFromCart(array $data): Cart
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+
+        $cart = Cart::where('buyer_id', $user->buyer->id)
+            ->where('is_closed', false)
+            ->firstOrFail();
+
+        $variant = Variant::where('ulid', $data['variant_id'])->first();
+        if (! $variant) {
+            throw new CartException('Variant not found');
         }
 
-        $providedVariantIds = $variants->pluck('id')->toArray();
-        $cart->cart_items()->whereNotIn('variant_id', $providedVariantIds)->delete();
+        $cartItem = $cart->cart_items()->where('variant_id', $variant->id)->first();
+        if (! $cartItem) {
+            throw new CartException('Cart item not found');
+        }
+
+        if ($cartItem->quantity < $data['quantity']) {
+            throw new CartException("You have less than {$data['quantity']} items in your cart");
+        }
+
+        self::revertVariantStockOptimistically($variant->ulid, $data['quantity']);
+
+        $cartItem->quantity -= $data['quantity'];
+        if ($cartItem->quantity <= 0) {
+            $cartItem->delete();
+        } else {
+            $cartItem->save();
+        }
 
         self::calculateCartPrice($cart);
+        $cart->save();
         $cart->refresh();
 
         return $cart;
@@ -183,5 +249,98 @@ class CartService
         }
 
         return true;
+    }
+
+    /**
+     * Attempt to update (reduce) the variant stock using optimistic locking.
+     *
+     * @param  int|string  $variantIdentifier  The variant's ULID.
+     * @param  int  $quantity  The quantity to reduce.
+     *
+     * @throws CartException
+     */
+    protected static function updateVariantStockOptimistically($variantIdentifier, int $quantity): void
+    {
+        $maxRetries = 3;
+        $attempt = 0;
+
+        while ($attempt < $maxRetries) {
+            $variant = Variant::where('ulid', $variantIdentifier)->first();
+            if (! $variant) {
+                throw new CartException('Variant not found');
+            }
+
+            // Skip locking if inventory is not managed.
+            if (! $variant->manage_inventory) {
+                return;
+            }
+
+            // When reducing stock, ensure there is enough available.
+            if ($variant->stock < $quantity) {
+                throw new CartException("Insufficient stock for variant {$variant->id}");
+            }
+
+            // Calculate new stock.
+            $newStock = $variant->stock - $quantity;
+            $currentVersion = $variant->lock_version;
+
+            $affectedRows = Variant::where('id', $variant->id)
+                ->where('lock_version', $currentVersion)
+                ->update([
+                    'stock' => $newStock,
+                    'lock_version' => DB::raw('lock_version + 1'),
+                ]);
+
+            if ($affectedRows) {
+                return; // Update succeeded.
+            }
+
+            $attempt++;
+        }
+
+        throw new CartException('Failed to update variant stock due to concurrent modifications. Please try again.');
+    }
+
+    /**
+     * Attempt to revert (increase) the variant stock using optimistic locking.
+     *
+     * @param  int|string  $variantIdentifier  The variant's ULID.
+     * @param  int  $quantity  The quantity to add back.
+     *
+     * @throws CartException
+     */
+    protected static function revertVariantStockOptimistically($variantIdentifier, int $quantity): void
+    {
+        $maxRetries = 3;
+        $attempt = 0;
+
+        while ($attempt < $maxRetries) {
+            $variant = Variant::where('ulid', $variantIdentifier)->first();
+            if (! $variant) {
+                throw new CartException('Variant not found');
+            }
+
+            if (! $variant->manage_inventory) {
+                return;
+            }
+
+            $newStock = $variant->stock + $quantity;
+            $currentVersion = $variant->lock_version;
+
+            $affectedRows = Variant::where('id', $variant->id)
+                ->where('lock_version', $currentVersion)
+                ->update([
+                    'stock' => $newStock,
+                    'lock_version' => DB::raw('lock_version + 1'),
+                ]);
+
+            if ($affectedRows) {
+                return; // Reversion succeeded.
+            }
+
+            $attempt++;
+        }
+
+        throw new CartException('Failed to revert variant stock due to concurrent modifications. Please try again.');
     }
 }
