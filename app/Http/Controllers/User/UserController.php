@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\UserCreated;
 use App\Models\User;
@@ -13,28 +12,28 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
-
     public function show(User $user): JsonResponse
     {
         $this->authorize('view', $user);
-        
+
         return $this->showOne(new UserResource($user));
     }
 
     public function store(StoreUserRequest $request): JsonResponse
     {
         $this->authorize('create', User::class);
-        
+
         $user = User::create($request->validated());
+
         return $this->showOne(new UserResource($user));
     }
-
 
     public function destroy(User $user): JsonResponse
     {
         $this->authorize('delete', $user);
-        
+
         $user->delete();
+
         return $this->showMessage('User deleted successfully');
     }
 

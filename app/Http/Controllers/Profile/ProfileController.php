@@ -8,18 +8,17 @@ use Illuminate\Http\JsonResponse;
 
 class ProfileController extends ApiController
 {
- 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProfileRequest $request) : JsonResponse
+    public function update(UpdateProfileRequest $request): JsonResponse
     {
         $user = $this->authUser();
 
         $user->update([
             'first_name' => $request->input('first_name'),
-            'last_name'  => $request->input('last_name'),
-            'email'      => $request->input('email'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
         ]);
 
         if ($user->vendor) {
@@ -29,7 +28,7 @@ class ProfileController extends ApiController
                 'country_id',
                 'status',
                 'approval_date',
-                'website'
+                'website',
             ]);
 
             $user->vendor->update($vendorData);
@@ -41,7 +40,7 @@ class ProfileController extends ApiController
                 'address',
                 'vendor_id',
                 'start_date',
-                'end_date'
+                'end_date',
             ]);
 
             $user->staff->update($staffData);
@@ -49,9 +48,7 @@ class ProfileController extends ApiController
 
         return response()->json([
             'message' => 'Profile updated successfully',
-            'user'    => $user->load('vendor', 'staff'),
+            'user' => $user->load('vendor', 'staff'),
         ]);
     }
-
-
 }

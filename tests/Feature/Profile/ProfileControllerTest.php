@@ -1,18 +1,17 @@
 <?php
 
-use App\Models\User;
-use App\Models\Staff;
-use App\values\Roles;
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Country;
-use App\Models\TaxProvider;
-use Illuminate\Support\Facades\Bus;
-use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
 use App\Http\Controllers\Profile\ProfileController;
-
+use App\Models\Country;
+use App\Models\Region;
+use App\Models\Staff;
+use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Vendor;
+use App\values\Roles;
+use Database\Seeders\CurrencySeeder;
+use Database\Seeders\RoleAndPermissionSeeder;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);
@@ -30,8 +29,8 @@ test('user can update their basic profile information', function () {
 
     $profileData = [
         'first_name' => 'John',
-        'last_name'  => 'Updated',
-        'email'      => 'john.updated@example.com',
+        'last_name' => 'Updated',
+        'email' => 'john.updated@example.com',
     ];
 
     $response = $this->putJson(action([ProfileController::class, 'update']), $profileData);
@@ -55,8 +54,8 @@ test('vendor can update their profile information', function () {
 
     $profileData = [
         'first_name' => 'Vendor',
-        'last_name'  => 'Updated',
-        'email'      => 'vendor.updated@example.com',
+        'last_name' => 'Updated',
+        'email' => 'vendor.updated@example.com',
         'vendor_name' => 'Updated Vendor Company',
         'city' => 'New City',
         'country_id' => Country::first()->id,
@@ -92,8 +91,8 @@ test('staff can update their profile information', function () {
 
     $profileData = [
         'first_name' => 'Staff',
-        'last_name'  => 'Updated',
-        'email'      => 'staff.updated@example.com',
+        'last_name' => 'Updated',
+        'email' => 'staff.updated@example.com',
         'address' => 'New Address 123',
     ];
 
@@ -120,8 +119,8 @@ test('user cannot update profile with invalid email', function () {
 
     $profileData = [
         'first_name' => 'John',
-        'last_name'  => 'Doe',
-        'email'      => 'invalid-email',
+        'last_name' => 'Doe',
+        'email' => 'invalid-email',
     ];
 
     $response = $this->putJson(action([ProfileController::class, 'update']), $profileData);
@@ -129,4 +128,3 @@ test('user cannot update profile with invalid email', function () {
     $response->assertUnprocessable()
         ->assertJsonValidationErrors(['email']);
 });
-

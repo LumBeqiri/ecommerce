@@ -83,4 +83,4 @@ class UserPolicy
             ? Response::allow()
             : Response::deny('You do not have permission to view users.');
     }
-} 
+}
