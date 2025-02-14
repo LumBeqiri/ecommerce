@@ -17,7 +17,6 @@ class LoginController extends ApiController
     public function __invoke(LoginRequest $request): JsonResponse
     {
         $data = $request->validated();
-
         $user = User::where('email', $data['email'])->first();
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {
@@ -26,7 +25,8 @@ class LoginController extends ApiController
 
         $token = $user->createToken('secretFORnowToKEn')->plainTextToken;
 
-        if (isset($data['cart_items']) && is_array($data['cart_items']) && $user->role === Roles::BUYER) {
+
+        if (isset($data['cart_items']) && is_array($data['cart_items']) && $user->hasRole(Roles::BUYER)) {
             $cartItemsDTO = collect($data['cart_items'])
                 ->map(fn ($item) => new CartItemData($item['variant_id'], $item['quantity']))
                 ->all();

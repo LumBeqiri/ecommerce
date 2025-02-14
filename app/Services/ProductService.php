@@ -66,7 +66,6 @@ class ProductService
         }
     }
 
-
     public function deleteProductCategories(Product $product): Product
     {
         $product->categories()->detach();

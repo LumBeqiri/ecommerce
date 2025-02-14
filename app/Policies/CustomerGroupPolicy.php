@@ -10,7 +10,7 @@ use Illuminate\Auth\Access\Response;
 class CustomerGroupPolicy
 {
     use HandlesAuthorization;
-    
+
     /**
      * Determine whether the user can view the model.
      *
@@ -46,5 +46,4 @@ class CustomerGroupPolicy
         ? Response::allow()
         : Response::deny('You do not own this CustomerGroup!');
     }
-
 }

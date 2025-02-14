@@ -58,41 +58,16 @@ class BuyerCartController extends ApiController
     public function remove_from_cart(CartItemRequest $request): JsonResponse
     {
         $data = $request->validated();
-
-        $variant = Variant::where('ulid', $data['variant_id'])->first();
-
-        /**
-         * @var Cart $cart
-         * */
-        $cart = Cart::where('buyer_id', auth()->user()->buyer->id)->firstOrFail();
-
-        if ($cart->isEmpty()) {
-            $cart->total_cart_price = 0;
-            $cart->save();
-
-            return $this->showOne(new CartResource($cart));
+    
+        try {
+            $cart = CartService::removeItemFromCart($data);
+        } catch (CartException $ex) {
+            return $this->showError($ex->getMessage(), $ex->getCode());
+        } catch (\Exception $ex) {
+            return $this->showError('An unexpected error occurred', 500);
         }
-
-        /**
-         * @var CartItem $cart_item
-         */
-        $cart_item = $cart->cart_items()->where('variant_id', $variant->id)->first();
-
-        if ($cart_item->quantity < $data['quantity']) {
-            return $this->errorResponse('You have less than '.$data['quantity'].' items', 422);
-        }
-
-        $cart_item->quantity -= $data['quantity'];
-
-        if ($cart_item->isEmpty()) {
-            $cart_item->delete();
-        } else {
-            $cart_item->save();
-        }
-
-        CartService::calculateCartPrice($cart->refresh());
-
-        return $this->showOne(new CartResource($cart->load('cart_items')));
+    
+        return $this->showOne(new CartResource($cart));
     }
 
     public function apply_discount(Request $request): JsonResponse|JsonResource
