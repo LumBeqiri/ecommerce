@@ -131,7 +131,7 @@ class User extends Authenticatable
         return $this->belongsTo(Region::class);
     }
 
-    public function getRoelName(): string
+    public function getRoleName(): string
     {
         return $this->getRoleNames()->first();
     }

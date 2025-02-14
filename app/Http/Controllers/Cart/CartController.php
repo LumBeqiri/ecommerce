@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Exceptions\DiscountException;
+use App\Data\CartItemData;
 // use App\Http\Requests\CartRequest;
+use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\User;
+use App\Services\CartService;
 use App\Services\DiscountService;
 use App\values\Roles;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,5 +98,28 @@ class CartController extends ApiController
             $user->hasRole(Roles::STAFF) => Cart::where('vendor_id', $user->staff?->vendor_id),
             default => Cart::query(),
         };
+    }
+
+    public function syncCart(Request $request): JsonResource
+    {
+
+        $data = $request->validate([
+            'cart_items' => 'required|array',
+            'cart_items.*.variant_id' => 'required|string',
+            'cart_items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        $cart = $this->authUser()->cart()->with('cart_items')->first();
+
+        if (isset($data['cart_items']) && is_array($data['cart_items'])) {
+            $cartItemsDTO = collect($data['cart_items'])
+                ->map(fn ($item) => new CartItemData($item['variant_id'], $item['quantity']))
+                ->all();
+
+            $cart = CartService::syncItemsToCart($this->authUser(), $cartItemsDTO);
+        }
+
+        return new CartResource($cart->load('cart_items'));
+
     }
 }

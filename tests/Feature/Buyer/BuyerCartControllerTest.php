@@ -106,23 +106,21 @@ it('can apply discount', function () {
     $variant1 = Variant::factory()->available()->for($product)->create(['stock' => 30]);
     $variant2 = Variant::factory()->available()->for($product)->create(['stock' => 30]);
 
-    // Create variant prices with explicit values
     VariantPrice::factory()->create([
         'variant_id' => $variant1->id,
         'region_id' => $region->id,
-        'price' => 10000, // $100.00
+        'price' => 10000,
     ]);
 
     VariantPrice::factory()->create([
         'variant_id' => $variant2->id,
         'region_id' => $region->id,
-        'price' => 20000, // $200.00
+        'price' => 20000,
     ]);
 
-    // Create cart with explicit total
     $cart = Cart::factory()->create([
         'buyer_id' => $buyer->id,
-        'total_cart_price' => 30000, // $300.00
+        'total_cart_price' => 30000,
         'has_been_discounted' => false,
         'region_id' => $region->id,
     ]);
@@ -141,7 +139,6 @@ it('can apply discount', function () {
         'price' => 20000,
     ]);
 
-    // Create discount rule with explicit value
     $discount_rule = DiscountRule::factory()->create([
         'region_id' => $region->id,
         'currency_id' => $currency->id,
@@ -182,7 +179,7 @@ it('can apply discount with non-cents currency', function () {
     $currency = Currency::factory()->create(['has_cents' => false]);
     TaxProvider::factory()->create();
     $region = Region::factory()->create(['currency_id' => $currency->id]);
-    $country = Country::factory()->for($region)->create();
+    Country::factory()->for($region)->create();
 
     $buyerUser = User::factory()->create(['region_id' => $region->id]);
     $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
@@ -191,17 +188,15 @@ it('can apply discount with non-cents currency', function () {
     $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
     $variant1 = Variant::factory()->available()->for($product)->create(['stock' => 30]);
 
-    // Create variant price (300 LEK)
     VariantPrice::factory()->create([
         'variant_id' => $variant1->id,
         'region_id' => $region->id,
-        'price' => 30000, // 300 LEK (stored as 30000 internally)
+        'price' => 30000,
     ]);
 
-    // Create cart
     $cart = Cart::factory()->create([
         'buyer_id' => $buyer->id,
-        'total_cart_price' => 30000, // 300 LEK
+        'total_cart_price' => 30000,
         'has_been_discounted' => false,
         'region_id' => $region->id,
     ]);
@@ -213,12 +208,11 @@ it('can apply discount with non-cents currency', function () {
         'price' => 30000,
     ]);
 
-    // Create discount rule (100 LEK discount)
     $discount_rule = DiscountRule::factory()->create([
         'region_id' => $region->id,
         'currency_id' => $currency->id,
         'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-        'value' => 100, // 100 LEK
+        'value' => 100,
         'allocation' => DiscountAllocationTypes::TOTAL_AMOUNT,
     ]);
 
@@ -241,5 +235,5 @@ it('can apply discount with non-cents currency', function () {
     $response->assertOk();
 
     $cart->refresh();
-    $this->assertEquals(20000, $cart->total_cart_price); // 200 LEK (stored as 20000)
+    $this->assertEquals(20000, $cart->total_cart_price);
 });

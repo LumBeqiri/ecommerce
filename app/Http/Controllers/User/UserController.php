@@ -12,82 +12,29 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
-    public function index(): JsonResponse
+    public function show(User $user): JsonResponse
     {
-        $users = User::all();
+        $this->authorize('view', $user);
 
-        return $this->showAll(UserResource::collection($users));
+        return $this->showOne(new UserResource($user));
     }
 
     public function store(StoreUserRequest $request): JsonResponse
     {
-        $data = $request->validated();
+        $this->authorize('create', User::class);
 
-        $data['password'] = bcrypt($request->password);
-        $data['verified'] = User::UNVERIFIED_USER;
-        $data['verification_token'] = User::generateVerificationCode();
-
-        $user = User::create($data);
+        $user = User::create($request->validated());
 
         return $this->showOne(new UserResource($user));
     }
-
-    public function show(User $user): JsonResponse
-    {
-        return $this->showOne(new UserResource($user));
-    }
-
-    // TODO: Implement update
-    // public function update(StoreUserRequest $request, User $user): JsonResponse
-    // {
-    //     $request->validated();
-
-    //     if ($request->has('first_name')) {
-    //         $user->first_name = $request->first_name;
-    //     }
-    //     if($request->has('last_name')) {
-    //         $user->last_name = $request->last_name;
-    //     }
-
-    //     if ($request->has('email') && $user->email != $request->email) {
-    //         $user->verified = User::UNVERIFIED_USER;
-    //         $user->verification_token = User::generateVerificationCode();
-    //         $user->email = $request->email;
-    //     }
-
-    //     if ($request->has('password')) {
-    //         $user->password = bcrypt($request->password);
-    //     }
-
-    //     if ($request->has('city')) {
-    //         $user->city = $request->city;
-    //     }
-
-    //     if ($request->has('country_id')) {
-    //         $user->country_id = $request->country_id;
-    //     }
-
-    //     if ($request->has('zip')) {
-    //         $user->zip = $request->zip;
-    //     }
-
-    //     if ($request->has('phone')) {
-    //         $user->phone = $request->phone;
-    //     }
-    //     if (! $user->isDirty()) {
-    //         return $this->errorResponse('Please specify a field to update', 409);
-    //     }
-
-    //     $user->save();
-
-    //     return $this->showOne(new UserResource($user));
-    // }
 
     public function destroy(User $user): JsonResponse
     {
+        $this->authorize('delete', $user);
+
         $user->delete();
 
-        return $this->showOne(new UserResource($user));
+        return $this->showMessage('User deleted successfully');
     }
 
     public function verify(string $token): JsonResponse
