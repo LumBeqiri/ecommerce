@@ -25,7 +25,6 @@ class LoginController extends ApiController
 
         $token = $user->createToken('secretFORnowToKEn')->plainTextToken;
 
-
         if (isset($data['cart_items']) && is_array($data['cart_items']) && $user->hasRole(Roles::BUYER)) {
             $cartItemsDTO = collect($data['cart_items'])
                 ->map(fn ($item) => new CartItemData($item['variant_id'], $item['quantity']))

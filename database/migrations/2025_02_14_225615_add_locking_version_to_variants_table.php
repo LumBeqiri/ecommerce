@@ -15,5 +15,4 @@ return new class extends Migration
             $table->unsignedInteger('lock_version')->default(0)->after('stock');
         });
     }
-
 };

@@ -9,8 +9,6 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Cart\CartItemRequest;
 use App\Http\Requests\Cart\CartRequest;
 use App\Http\Resources\CartResource;
-use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Variant;
 use App\Services\CartService;
@@ -58,7 +56,7 @@ class BuyerCartController extends ApiController
     public function remove_from_cart(CartItemRequest $request): JsonResponse
     {
         $data = $request->validated();
-    
+
         try {
             $cart = CartService::removeItemFromCart($data);
         } catch (CartException $ex) {
@@ -66,7 +64,7 @@ class BuyerCartController extends ApiController
         } catch (\Exception $ex) {
             return $this->showError('An unexpected error occurred', 500);
         }
-    
+
         return $this->showOne(new CartResource($cart));
     }
 
