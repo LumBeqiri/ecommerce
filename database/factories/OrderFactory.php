@@ -27,7 +27,7 @@ class OrderFactory extends Factory
             'shipping_name' => $this->faker->name(),
             'shipping_address' => $this->faker->address(),
             'shipping_city' => $this->faker->city(),
-            'shipping_country' => Country::factory(),
+            'shipping_country_id' => Country::factory(),
             'tax_rate' => $this->faker->randomFloat(2, 0, 20),
             'tax_total' => $this->faker->numberBetween(100, 1000),
             'total' => $this->faker->numberBetween(1000, 10000),

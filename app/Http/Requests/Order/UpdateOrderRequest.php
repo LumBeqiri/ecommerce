@@ -25,7 +25,7 @@ class UpdateOrderRequest extends FormRequest
             'shipping_name' => 'string|max:255',
             'shipping_address' => 'string|max:255',
             'shipping_city' => 'string|max:255',
-            'shipping_country' => 'integer|exists:countries,id',
+            'shipping_country_id' => 'integer|exists:countries,id',
             'order_email' => 'email',
             'order_phone' => 'string',
         ];

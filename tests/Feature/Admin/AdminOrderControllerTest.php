@@ -36,20 +36,20 @@ test('admin can update order', function () {
     $user->assignRole('admin');
     $updatedName = 'new name';
     $updatedAddress = 'new address';
-    $updatedCountry = 'new country';
+    $updatedCountry = Country::factory()->create();
 
     login($user);
 
     $response = $this->putJson(action([AdminOrderController::class, 'update'], $order->ulid), [
         'shipping_name' => $updatedName,
         'shipping_address' => $updatedAddress,
-        'shipping_country' => $updatedCountry,
+        'shipping_country_id' => $updatedCountry->id,
     ]);
 
     $response->assertStatus(200);
 
     $this->assertDatabaseHas(Order::class, ['shipping_name' => $updatedName, 'shipping_address' => $updatedAddress,
-        'shipping_country' => $updatedCountry, ]);
+        'shipping_country_id' => $updatedCountry->id, ]);
 });
 
 test('admin can delete order', function () {

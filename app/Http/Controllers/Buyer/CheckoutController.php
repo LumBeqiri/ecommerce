@@ -38,12 +38,12 @@ class CheckoutController extends ApiController
         if ($request->input('different_shipping_address')) {
             $order_data['shipping_name'] = $request->input('shipping_name');
             $order_data['shipping_city'] = $request->input('shipping_city');
-            $order_data['shipping_country'] = $request->input('shipping_country');
+            $order_data['shipping_country_id'] = $request->input('shipping_country_id');
             $order_data['shipping_address'] = $request->input('shipping_address');
         } else {
             $order_data['shipping_name'] = $this->user->name;
             $order_data['shipping_city'] = $this->user->user_settings->city;
-            $order_data['shipping_country'] = $this->user->user_settings->country->name;
+            $order_data['shipping_country_id'] = $this->user->user_settings->country->id;
             $order_data['shipping_address'] = $this->user->buyer->shipping_address;
         }
 
