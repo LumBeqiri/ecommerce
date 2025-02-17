@@ -37,7 +37,7 @@ it('can login user and sync cart items', function () {
     $user->save();
     $buyer = Buyer::factory()->create(['user_id' => $user->id]);
     $product = Product::factory()->create();
-    $variant = Variant::factory()->available()->published()->create(['product_id' => $product->id]);
+    $variant = Variant::factory()->available()->published()->create(['product_id' => $product->id, 'stock' => 10]);
 
     VariantPrice::factory()->create([
         'variant_id' => $variant->id,

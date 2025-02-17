@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\CartItem\CartItemController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
@@ -74,9 +73,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('sync-cart', [CartController::class, 'syncCart']);
         Route::get('carts/{cart}', [CartController::class, 'show']);
         Route::delete('carts/{cart}', [CartController::class, 'destroy']);
-
-        Route::post('carts/{cart}/items', [CartItemController::class, 'add_to_cart']);
-        Route::delete('carts/{cart}/items/{item}', [CartItemController::class, 'remove_from_cart']);
 
         Route::post('customer-groups', [CustomerGroupController::class, 'store']);
         Route::get('customer-groups', [CustomerGroupController::class, 'index']);
