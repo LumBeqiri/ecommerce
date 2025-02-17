@@ -6,7 +6,6 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Mail\OrderReceipt;
-use App\Models\Buyer;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -35,7 +34,7 @@ class CheckoutController extends ApiController
             ->first();
 
         $order_data = $request->validated();
-        
+
         if ($request->input('different_shipping_address')) {
             $order_data['shipping_name'] = $request->input('shipping_name');
             $order_data['shipping_city'] = $request->input('shipping_city');

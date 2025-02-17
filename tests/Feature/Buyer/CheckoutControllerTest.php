@@ -7,7 +7,6 @@ use App\Models\CartItem;
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\TaxProvider;
@@ -28,14 +27,14 @@ it('can create an order from cart', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     $country = Country::factory()->for($region)->create();
-    
+
     $buyerUser = User::factory()->create(['region_id' => $region->id]);
     $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
 
     $vendor = Vendor::factory()->create();
     $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->available()->published()->create(['stock' => 50]);
-    
+
     VariantPrice::factory()->create([
         'variant_id' => $variant->id,
         'region_id' => $region->id,
@@ -70,14 +69,14 @@ it('can create an order from cart', function () {
     ];
 
     $response = $this->postJson(
-        action([CheckoutController::class, 'store']), 
+        action([CheckoutController::class, 'store']),
         $orderData
     );
 
     $response->assertOk();
 
     $order = Order::first();
-    
+
     $this->assertDatabaseHas('orders', [
         'buyer_id' => $buyer->id,
         'shipping_name' => 'John Doe',
@@ -101,17 +100,17 @@ it('can create an order with default shipping address', function () {
     TaxProvider::factory()->create();
     $region = Region::factory()->create();
     $country = Country::factory()->for($region)->create();
-    
+
     $buyerUser = User::factory()->create(['region_id' => $region->id]);
     $buyer = Buyer::factory()->create([
         'user_id' => $buyerUser->id,
-        'shipping_address' => 'Default Address'
+        'shipping_address' => 'Default Address',
     ]);
 
     $vendor = Vendor::factory()->create();
     $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->available()->published()->create(['stock' => 50]);
-    
+
     VariantPrice::factory()->create([
         'variant_id' => $variant->id,
         'region_id' => $region->id,
@@ -144,7 +143,7 @@ it('can create an order with default shipping address', function () {
     ];
 
     $response = $this->postJson(
-        action([CheckoutController::class, 'store']), 
+        action([CheckoutController::class, 'store']),
         $orderData
     );
 
@@ -156,4 +155,4 @@ it('can create an order with default shipping address', function () {
         'total' => 3000,
         'tax_rate' => 10,
     ]);
-}); 
+});
