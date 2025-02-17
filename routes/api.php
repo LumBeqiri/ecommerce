@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Buyer\BuyerOrderController;
 use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\CartItem\CartItemController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
