@@ -72,7 +72,7 @@ class CheckoutController extends ApiController
             ]);
         }
 
-        // Mail::to(auth()->user())->send(new OrderReceipt($order));
+        Mail::to(auth()->user())->send(new OrderReceipt($order));
 
         return $this->showOne(
             new OrderResource($order->load('order_items'))
