@@ -32,7 +32,7 @@ it('can create an order from cart', function () {
     $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
 
     $vendor = Vendor::factory()->create();
-    $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
+    Product::factory()->available()->create(['vendor_id' => $vendor->id]);
     $variant = Variant::factory()->available()->published()->create(['stock' => 50]);
 
     VariantPrice::factory()->create([
@@ -61,7 +61,7 @@ it('can create an order from cart', function () {
         'shipping_name' => 'John Doe',
         'shipping_address' => '123 Test St',
         'shipping_city' => 'Test City',
-        'shipping_country' => 'Test Country',
+        'shipping_country_id' => $country->id,
         'order_email' => 'test@example.com',
         'order_phone' => '1234567890',
         'tax_rate' => 10,
@@ -82,7 +82,7 @@ it('can create an order from cart', function () {
         'shipping_name' => 'John Doe',
         'shipping_address' => '123 Test St',
         'shipping_city' => 'Test City',
-        'shipping_country' => 'Test Country',
+        'shipping_country_id' =>  $country->id,
         'total' => 3000,
         'tax_rate' => 10,
     ]);
@@ -134,7 +134,7 @@ it('can create an order with default shipping address', function () {
 
     $orderData = [
         'shipping_city' => 'Test City',
-        'shipping_country' => 'Test Country',
+        'shipping_country_id' => $country->id,
         'different_shipping_address' => 0,
         'order_email' => 'test@example.com',
         'order_phone' => '1234567890',

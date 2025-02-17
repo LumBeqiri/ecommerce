@@ -41,4 +41,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function shipping_country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

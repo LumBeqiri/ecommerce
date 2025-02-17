@@ -20,7 +20,7 @@ class OrderResource extends JsonResource
             'shipping_name' => $this->shipping_name,
             'shipping_address' => $this->shipping_address,
             'shipping_city' => $this->shipping_city,
-            'shipping_country' => $this->shipping_country,
+            'shipping_country' => new CountryResource($this->whenLoaded('shipping_country')),
             'tax_rate' => $this->tax_rate,
             'tax_total' => $this->tax_total,
             'ordered_at' => $this->ordered_at,

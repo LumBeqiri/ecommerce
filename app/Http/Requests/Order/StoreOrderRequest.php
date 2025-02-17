@@ -26,7 +26,7 @@ class StoreOrderRequest extends FormRequest
             'different_shipping_address' => 'boolean',
             'shipping_address' => 'sometimes|string|max:191',
             'shipping_city' => 'required|string|max:191',
-            'shipping_country' => 'required|string|max:191',
+            'shipping_country_id' => 'required|integer|exists:countries,id',
             'tax_rate' => 'required|numeric|min:0|max:100',
             'ordered_at' => 'required|date',
             'order_email' => 'required|email|max:191',
