@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_name')->nullable();
             $table->string('shipping_address');
             $table->string('shipping_city');
-            $table->string('shipping_country');
+            $table->foreignId('country_id')->constrained('countries');
 
             // Tax information:
             // - tax_rate: percentage as a decimal (e.g., 7.50 for 7.5%)

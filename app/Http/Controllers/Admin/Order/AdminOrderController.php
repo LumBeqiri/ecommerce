@@ -6,7 +6,10 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AdminOrderController extends ApiController
 {
@@ -44,7 +47,17 @@ class AdminOrderController extends ApiController
      */
     public function destroy(Order $order): JsonResponse
     {
-        $order->delete();
+        DB::begintransaction();
+        try {
+            $order->order_items()->delete();
+            $order->delete();
+            DB::commit();
+        } catch (Exception $ex) {
+            DB::rollback();
+            Log::info($ex->getMessage());
+
+            return $this->showError($ex->getMessage(), $ex->getCode());
+        }
 
         return $this->showMessage('Order Deleted Successfully!');
     }
