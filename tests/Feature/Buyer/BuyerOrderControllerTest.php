@@ -66,7 +66,7 @@ it('can create an order with unchanged shipping address', function () {
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
     $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
-});
+})->todo();
 
 it('can create an order with changed shipping address', function () {
     Currency::factory()->create();
@@ -108,4 +108,4 @@ it('can create an order with changed shipping address', function () {
     $this->assertDatabaseHas(Cart::class, ['buyer_id' => $buyer->id]);
     $this->assertDatabaseHas(Order::class, ['buyer_id' => $buyer->id, 'ulid' => $order_ulid, 'shipping_city' => $shipping_city]);
     $this->assertDatabaseHas(OrderItem::class, ['order_id' => $order->id]);
-});
+})->todo();

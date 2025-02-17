@@ -14,7 +14,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
-class BuyerOrderController extends ApiController
+class CheckoutController extends ApiController
 {
     protected User $user;
 
@@ -22,13 +22,6 @@ class BuyerOrderController extends ApiController
     {
         /*** @var $user User*/
         $this->user = auth()->user();
-    }
-
-    public function index(Buyer $buyer): JsonResponse
-    {
-        $orders = $buyer->orders;
-
-        return $this->showAll(OrderResource::collection($orders));
     }
 
     public function store(StoreOrderRequest $request): JsonResponse
@@ -42,12 +35,14 @@ class BuyerOrderController extends ApiController
             ->first();
 
         $order_data = $request->validated();
+        
         if ($request->input('different_shipping_address')) {
-            $order_data['shipping_name'] = $request->shipping_name;
-            $order_data['shipping_city'] = $request->shipping_city;
-            $order_data['shipping_country'] = $request->shipping_country;
-            $order_data['shipping_address'] = $request->shipping_address;
+            $order_data['shipping_name'] = $request->input('shipping_name');
+            $order_data['shipping_city'] = $request->input('shipping_city');
+            $order_data['shipping_country'] = $request->input('shipping_country');
+            $order_data['shipping_address'] = $request->input('shipping_address');
         } else {
+            $order_data['shipping_name'] = $this->user->name;
             $order_data['shipping_city'] = $this->user->user_settings->city;
             $order_data['shipping_country'] = $this->user->user_settings->country->name;
             $order_data['shipping_address'] = $this->user->buyer->shipping_address;
@@ -57,11 +52,13 @@ class BuyerOrderController extends ApiController
 
         $order_data['buyer_id'] = $this->user->buyer->id;
         $order_data['total'] = $cart->total_cart_price;
-        $order_data['ordered_at'] = now();
+        $order_data['ordered_at'] = $request->input('ordered_at', now());
         $order_data['payment_id'] = 1;
         $order_data['currency_id'] = $cart->region->currency->id;
-        $order_data['tax_rate'] = $request->tax_rate;
+        $order_data['tax_rate'] = $request->input('tax_rate');
         $order_data['tax_total'] = 0;
+        $order_data['order_email'] = $request->input('order_email');
+        $order_data['order_phone'] = $request->input('order_phone');
 
         $order = Order::create($order_data);
 
@@ -76,7 +73,7 @@ class BuyerOrderController extends ApiController
             ]);
         }
 
-        Mail::to(auth()->user())->send(new OrderReceipt($order));
+        // Mail::to(auth()->user())->send(new OrderReceipt($order));
 
         return $this->showOne(
             new OrderResource($order->load('order_items'))
