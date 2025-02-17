@@ -22,10 +22,10 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shipping_name' => 'string',
-            'shipping_address' => 'string',
-            'shipping_city' => 'string',
-            'shipping_country' => 'string',
+            'shipping_name' => 'string|max:255',
+            'shipping_address' => 'string|max:255',
+            'shipping_city' => 'string|max:255',
+            'shipping_country' => 'integer|exists:countries,id',
             'order_email' => 'email',
             'order_phone' => 'string',
         ];
