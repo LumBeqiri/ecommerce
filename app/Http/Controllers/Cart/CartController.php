@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Data\CartItemData;
-// use App\Http\Requests\CartRequest;
 use App\Exceptions\DiscountException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Cart\UpdateCartRequest;
