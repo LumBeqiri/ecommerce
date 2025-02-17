@@ -21,16 +21,22 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'shipping_name' => 'required|string|max:191',
-            'shipping_address' => 'required|string|max:191',
+        $rules = [
+            'shipping_name' => 'nullable|string|max:191',
+            'different_shipping_address' => 'boolean',
+            'shipping_address' => 'sometimes|string|max:191',
             'shipping_city' => 'required|string|max:191',
             'shipping_country' => 'required|string|max:191',
             'tax_rate' => 'required|numeric|min:0|max:100',
             'ordered_at' => 'required|date',
-            'order_shipped' => 'nullable|string|max:191',
-            'order_email' => 'nullable|email|max:191',
-            'order_phone' => 'nullable|string|max:191',
+            'order_email' => 'required|email|max:191',
+            'order_phone' => 'required|string|max:191',
         ];
+
+        if ($this->input('different_shipping_address')) {
+            $rules['shipping_address'] = 'required|string|max:191';
+        }
+
+        return $rules;
     }
 }
