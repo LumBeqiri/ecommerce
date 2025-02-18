@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\values\OrderStatusTypes;
 
 class OrderFactory extends Factory
 {
@@ -37,6 +38,7 @@ class OrderFactory extends Factory
             'order_email' => $this->faker->unique()->safeEmail(),
             'order_phone' => $this->faker->phoneNumber(),
             'payment_id' => Payment::factory(),
+            'status' => $this->faker->randomElement(OrderStatusTypes::cases()),
         ];
     }
 }

@@ -22,7 +22,6 @@ class CreateCartsTable extends Migration
             $table->boolean('is_closed')->default(false);
             $table->boolean('has_been_discounted')->default(false);
             $table->foreignId('payment_id')->nullable()->constrained('payments');
-            $table->foreignId('vendor_id')->nullable()->constrained('vendors');
             $table->foreignIdFor(Region::class, 'region_id')->constrained();
             $table->timestamps();
         });

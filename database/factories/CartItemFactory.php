@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Cart;
+use App\Models\Vendor;
 use App\Models\Variant;
+use Illuminate\Support\Str;
 use App\Models\VariantPrice;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CartItem>
@@ -28,6 +29,7 @@ class CartItemFactory extends Factory
             'cart_id' => Cart::all()->random()->id,
             'variant_id' => $variant->id,
             'variant_price_id' => $variantPrice->id,
+            'vendor_id' => Vendor::factory(),
             'price' => $variantPrice->price,
             'quantity' => $this->faker->numberBetween(3, 5),
         ];
