@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Models\Variant;
 use App\Models\VariantPrice;
 use App\Models\Vendor;
+use App\Models\VendorOrder;
+use App\values\OrderStatusTypes;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
 
@@ -32,8 +34,12 @@ it('can create an order from cart', function () {
     $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
 
     $vendor = Vendor::factory()->create();
-    Product::factory()->available()->create(['vendor_id' => $vendor->id]);
-    $variant = Variant::factory()->available()->published()->create(['stock' => 50]);
+    $product = Product::factory()->available()->create(['vendor_id' => $vendor->id]);
+    $variant = Variant::factory()
+        ->available()
+        ->published()
+        ->for($product)
+        ->create(['stock' => 50]);
 
     VariantPrice::factory()->create([
         'variant_id' => $variant->id,
@@ -87,6 +93,23 @@ it('can create an order from cart', function () {
         'tax_rate' => 10,
     ]);
 
+    $this->assertDatabaseHas('order_items', [
+        'order_id' => $order->id,
+        'variant_id' => $variant->id,
+        'quantity' => 2,
+        'price' => 1500,
+    ]);
+
+    // Check vendor order was created
+    $this->assertDatabaseHas('vendor_orders', [
+        'vendor_id' => $vendor->id,
+        'order_id' => $order->id,
+        'total' => 3000,
+        'status' => OrderStatusTypes::PENDING->value,
+    ]);
+
+    // Check order items are linked to vendor order
+    $vendorOrder = VendorOrder::where('order_id', $order->id)->first();
     $this->assertDatabaseHas('order_items', [
         'order_id' => $order->id,
         'variant_id' => $variant->id,
