@@ -48,7 +48,7 @@ class BuyerFactory extends Factory
 
                 'phone' => $this->faker->phoneNumber,
                 'city' => $this->faker->city,
-                'country_id' => Country::inRandomOrder()->first()->id,
+                'country_id' => Country::factory()->create()->id,
                 'zip' => $this->faker->postcode,
                 'user_id' => $buyer->user_id,
 

@@ -22,10 +22,10 @@ class RegionFactory extends Factory
         return [
             'ulid' => Str::ulid(),
             'title' => $this->faker->word(),
-            'currency_id' => Currency::all()->random()->id,
+            'currency_id' => Currency::factory(),
             'tax_rate' => $this->faker->randomDigit(4, 30),
             'tax_code' => $this->faker->randomElement(['TEST110', 'TEST2002']),
-            'tax_provider_id' => TaxProvider::all()->random()->id,
+            'tax_provider_id' => TaxProvider::factory()
         ];
     }
 }

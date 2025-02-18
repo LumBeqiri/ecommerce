@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Traits\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VendorOrder extends Model
 {
+    use HasFactory;
     use HasUlids;
 
     protected $table = 'vendor_orders';

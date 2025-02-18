@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Order;
 use Exception;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Http\Request;
 use App\values\OrderStatusTypes;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\OrderResource;
 use App\Http\Controllers\ApiController;
-use Illuminate\Support\Facades\Request;
 
 class OrderController extends ApiController
 {
@@ -54,8 +54,8 @@ class OrderController extends ApiController
         $this->authorize('update', $order);
 
         $request->validate([
-            'status' => 'required|string|in:'.OrderStatusTypes::cases(),
-        ]);
+            'status' => 'required|string|in:' . implode(',', array_column(OrderStatusTypes::cases(), 'value')),
+        ]);        
 
         DB::beginTransaction();
         try{

@@ -51,4 +51,9 @@ class Order extends Model
     {
         return $this->hasMany(VendorOrder::class);
     }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }
