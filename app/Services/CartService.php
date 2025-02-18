@@ -57,7 +57,7 @@ class CartService
 
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
-        }])->whereIn('ulid', $variantIds)->get();
+        }],'product')->whereIn('ulid', $variantIds)->get();
 
         DB::transaction(function () use ($items, $variants, $cart, $region) {
             foreach ($items as $item) {
@@ -87,6 +87,7 @@ class CartService
                         'price' => $variantPrice->price,
                         'quantity' => $item->quantity,
                         'currency_id' => $variantPrice->currency_id,
+                        'vendor_id' => $variant->product->vendor_id,
                     ]);
                 }
 
@@ -128,7 +129,7 @@ class CartService
 
         $variants = Variant::with(['variant_prices' => function ($query) use ($region) {
             $query->where('region_id', $region->id);
-        }])->whereIn('ulid', $incomingItems->keys())->get();
+        }],'product')->whereIn('ulid', $incomingItems->keys())->get();
 
         DB::transaction(function () use ($incomingItems, $variants, $cart, $region) {
             foreach ($incomingItems as $variantUlid => $itemData) {
@@ -164,6 +165,7 @@ class CartService
                         'price' => $variantPrice->price,
                         'quantity' => $itemData->quantity,
                         'currency_id' => $variantPrice->currency_id,
+                        'vendor_id' => $variant->product->vendor_id,
                     ]);
                 }
             }

@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('attribute_variant')->truncate();
         DB::table('category_product')->truncate();
-        DB::table('order_variant')->truncate();
+        DB::table('vendor_orders')->truncate();
         DB::table('permissions')->truncate();
         DB::table('role_has_permissions')->truncate();
         DB::table('roles')->truncate();
