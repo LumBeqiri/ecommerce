@@ -22,6 +22,7 @@ use App\Http\Controllers\User\Variants\UserVariantController;
 use App\Http\Controllers\User\Variants\UserVariantMediaController;
 use App\Http\Controllers\User\Variants\UserVariantPriceController;
 use App\Http\Controllers\Variant\VariantController;
+use App\Http\Controllers\Order\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
@@ -85,6 +86,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('cart/apply-discount', [BuyerCartController::class, 'apply_discount']);
 
         Route::post('checkout', [CheckoutController::class, 'store']);
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::get('orders/{order}', [OrderController::class, 'show']);
+        Route::put('orders/{order}', [OrderController::class, 'update']);
+        Route::delete('orders/{order}', [OrderController::class, 'destroy']);
 
         Route::resource('products.categories', ProductCategoryController::class);
     });

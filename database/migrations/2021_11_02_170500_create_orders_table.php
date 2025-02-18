@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\values\OrderStatusTypes;
 
 class CreateOrdersTable extends Migration
 {
@@ -36,6 +37,8 @@ class CreateOrdersTable extends Migration
 
             // Order date: we record when the order was placed.
             $table->dateTime('ordered_at')->useCurrent();
+
+            $table->string('status')->default(OrderStatusTypes::PENDING->value);
 
             // Shipping status: we record when the order was shipped.
             $table->dateTime('shipped_at')->nullable();

@@ -2,13 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Order;
-use App\Models\Payment;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Buyer;
+use App\Models\Order;
+use App\Models\Country;
+use App\Models\Payment;
+use App\Models\Currency;
 use Illuminate\Support\Str;
+use App\values\OrderStatusTypes;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderFactory extends Factory
 {
@@ -23,7 +25,7 @@ class OrderFactory extends Factory
     {
         return [
             'ulid' => Str::ulid(),
-            'buyer_id' => User::factory(),
+            'buyer_id' => Buyer::factory(),
             'shipping_name' => $this->faker->name(),
             'shipping_address' => $this->faker->address(),
             'shipping_city' => $this->faker->city(),
@@ -37,6 +39,7 @@ class OrderFactory extends Factory
             'order_email' => $this->faker->unique()->safeEmail(),
             'order_phone' => $this->faker->phoneNumber(),
             'payment_id' => Payment::factory(),
+            'status' => $this->faker->randomElement(OrderStatusTypes::cases()),
         ];
     }
 }
