@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Buyer;
+namespace App\Http\Controllers\User\Checkout;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Order\StoreOrderRequest;

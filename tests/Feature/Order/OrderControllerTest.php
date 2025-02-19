@@ -1,22 +1,22 @@
 <?php
 
-use App\Http\Controllers\Order\OrderController;
-use App\Models\Buyer;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
-use App\Models\Region;
-use App\Models\TaxProvider;
 use App\Models\User;
-use App\Models\Variant;
+use App\Models\Buyer;
+use App\Models\Order;
+use App\Models\Region;
 use App\Models\Vendor;
+use App\Models\Country;
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\Currency;
+use App\Models\OrderItem;
+use App\Models\TaxProvider;
 use App\Models\VendorOrder;
 use App\values\OrderStatusTypes;
-use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\User\Order\OrderController;
 
 beforeEach(function () {
     Notification::fake();

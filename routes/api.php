@@ -1,28 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Buyer\CheckoutController;
-use App\Http\Controllers\Country\CountryController;
-use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Variant\VariantController;
+use App\Http\Controllers\User\Cart\CartController;
+use App\Http\Controllers\User\Order\OrderController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\Profile\ProfileController;
-use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\User\UserAccount\UserController;
+use App\Http\Controllers\Public\Country\CountryController;
+use App\Http\Controllers\Public\Product\ProductController;
+use App\Http\Controllers\Public\Variant\VariantController;
+use App\Http\Controllers\User\Checkout\CheckoutController;
 use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
-use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\User\Products\UserProductController;
 use App\Http\Controllers\User\Variants\UserVariantController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Http\Controllers\Public\Product\ProductCategoryController;
 use App\Http\Controllers\User\Variants\UserVariantMediaController;
 use App\Http\Controllers\User\Variants\UserVariantPriceController;
+use App\Http\Controllers\Public\Category\CategoryProductController;
 use App\Http\Controllers\User\Products\UserProductThumbnailController;
 use App\Http\Controllers\User\Variants\UserVariantAttributeController;
+
 
 Route::post('login', LoginController::class)->name('login');
 
@@ -89,10 +90,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('orders/{order}', [OrderController::class, 'update']);
         Route::delete('orders/{order}', [OrderController::class, 'destroy']);
 
-        Route::resource('products.categories', ProductCategoryController::class);
+        Route::get('products/{product}/categories', [ProductCategoryController::class, 'index']);
+        Route::resource('users', UserController::class);
     });
 
-    Route::resource('users', UserController::class);
 });
 
 // Public Routes

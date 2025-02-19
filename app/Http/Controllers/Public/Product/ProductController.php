@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Public\Product;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Resources\ProductResource;
+use App\Models\Region;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Controllers\ApiController;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends ApiController
 {
     public function index(): JsonResponse
     {
-        $user = auth()->user();
-        $region_id = $user->buyer->country->region_id;
+        
+        $region_id = Region::first()->id;
 
         $products = Product::whereHas('variant_prices', function ($query) use ($region_id) {
             $query->where('region_id', $region_id);

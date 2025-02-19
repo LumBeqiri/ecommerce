@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Variant;
+namespace App\Http\Controllers\Public\Variant;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\VariantResource;

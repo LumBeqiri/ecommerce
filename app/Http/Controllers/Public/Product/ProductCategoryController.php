@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Public\Product;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\CategoryResource;

@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\Profile\ProfileController;
-use App\Models\Country;
-use App\Models\Region;
-use App\Models\Staff;
-use App\Models\TaxProvider;
 use App\Models\User;
-use App\Models\Vendor;
+use App\Models\Staff;
 use App\values\Roles;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\RoleAndPermissionSeeder;
+use App\Models\Region;
+use App\Models\Vendor;
+use App\Models\Country;
+use App\Models\TaxProvider;
 use Illuminate\Support\Facades\Bus;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\User\Profile\ProfileController;
 
 beforeEach(function () {
     $this->seed(CurrencySeeder::class);

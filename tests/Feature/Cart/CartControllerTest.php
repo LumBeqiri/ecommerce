@@ -1,24 +1,25 @@
 <?php
 
-use App\Http\Controllers\Cart\CartController;
-use App\Models\Buyer;
+
 use App\Models\Cart;
-use App\Models\CartItem;
+use App\Models\User;
+use App\Models\Buyer;
+use App\Models\Region;
+use App\Models\Vendor;
 use App\Models\Country;
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\CartItem;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\DiscountRule;
-use App\Models\Product;
-use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\User;
-use App\Models\Variant;
+use App\Models\DiscountRule;
 use App\Models\VariantPrice;
-use App\Models\Vendor;
-use App\values\DiscountAllocationTypes;
 use App\values\DiscountRuleTypes;
 use Illuminate\Support\Facades\Bus;
+use App\values\DiscountAllocationTypes;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\User\Cart\CartController;
 
 beforeEach(function () {
     Notification::fake();

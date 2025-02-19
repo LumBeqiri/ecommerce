@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\User\UserAccount;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\User\StoreUserRequest;

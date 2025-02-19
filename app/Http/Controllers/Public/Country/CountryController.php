@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Country;
+namespace App\Http\Controllers\Public\Country;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Country;

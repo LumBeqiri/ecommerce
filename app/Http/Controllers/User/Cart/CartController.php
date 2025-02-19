@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Cart;
+namespace App\Http\Controllers\User\Cart;
 
 use App\Data\CartItemData;
 use App\Exceptions\CartException;
