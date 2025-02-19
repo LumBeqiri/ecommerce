@@ -16,11 +16,4 @@ class ProductCategoryController extends ApiController
         return $this->showAll(CategoryResource::collection($categories));
     }
 
-    public function deleteCategories(Product $product): JsonResponse
-    {
-        $this->authorize('update', $product);
-        $product->categories()->detach();
-
-        return $this->showMessage('Categories deleted');
-    }
 }
