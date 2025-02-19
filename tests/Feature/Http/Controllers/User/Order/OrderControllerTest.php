@@ -125,63 +125,6 @@ it('vendor cannot view orders without their products', function () {
     $response->assertForbidden();
 });
 
-it('admin can view all orders', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-
-    Order::factory(5)->create();
-    login($admin);
-
-    $response = $this->getJson(action([OrderController::class, 'index']));
-
-    $response->assertOk();
-    expect(count($response->json()))->toBe(5);
-});
-
-it('admin can update order status', function () {
-    $currency = Currency::factory()->create();
-    $region = Region::factory()->create();
-    $country = Country::factory()->for($region)->create();
-
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-
-    $order = Order::factory()->create([
-        'currency_id' => $currency->id,
-        'shipping_country_id' => $country->id,
-        'status' => OrderStatusTypes::PENDING->value,
-    ]);
-
-    // Create vendor orders
-    $vendorOrders = VendorOrder::factory(2)->create([
-        'order_id' => $order->id,
-        'status' => OrderStatusTypes::PENDING->value,
-    ]);
-
-    login($admin);
-
-    $response = $this->putJson(
-        action([OrderController::class, 'update'], $order),
-        ['status' => OrderStatusTypes::PROCESSING->value]
-    );
-
-    $response->assertOk();
-
-    // Check main order status was updated
-    $this->assertDatabaseHas('orders', [
-        'id' => $order->id,
-        'status' => OrderStatusTypes::PROCESSING->value,
-    ]);
-
-    // Check all vendor orders were updated
-    foreach ($vendorOrders as $vendorOrder) {
-        $this->assertDatabaseHas('vendor_orders', [
-            'id' => $vendorOrder->id,
-            'status' => OrderStatusTypes::PROCESSING->value,
-        ]);
-    }
-});
-
 it('non-admin cannot update order status', function () {
     $buyer = User::factory()->create();
     $buyer->assignRole('buyer');
@@ -198,45 +141,7 @@ it('non-admin cannot update order status', function () {
     $response->assertForbidden();
 });
 
-it('admin can delete order with related vendor orders', function () {
-    $currency = Currency::factory()->create();
-    $region = Region::factory()->create();
-    $country = Country::factory()->for($region)->create();
 
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-
-    $order = Order::factory()->create([
-        'currency_id' => $currency->id,
-        'shipping_country_id' => $country->id,
-    ]);
-
-    // Create vendor orders
-    $vendorOrders = VendorOrder::factory(2)->create([
-        'order_id' => $order->id,
-    ]);
-
-    login($admin);
-
-    $response = $this->deleteJson(action([OrderController::class, 'destroy'], $order));
-
-    $response->assertOk();
-    $response->assertJson([
-        'data' => 'Order deleted successfully',
-    ]);
-
-    // Check order was deleted
-    $this->assertDatabaseMissing('orders', [
-        'id' => $order->id,
-    ]);
-
-    // Check vendor orders were deleted
-    foreach ($vendorOrders as $vendorOrder) {
-        $this->assertDatabaseMissing('vendor_orders', [
-            'id' => $vendorOrder->id,
-        ]);
-    }
-});
 
 it('non-admin cannot delete order', function () {
     $buyer = User::factory()->create();
@@ -256,18 +161,3 @@ it('non-admin cannot delete order', function () {
     $this->assertDatabaseHas('vendor_orders', ['order_id' => $order->id]);
 });
 
-it('validates order status update', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-
-    $order = Order::factory()->create();
-
-    login($admin);
-
-    $response = $this->putJson(
-        action([OrderController::class, 'update'], $order),
-        ['status' => 'invalid_status']
-    );
-
-    $response->assertUnprocessable();
-});

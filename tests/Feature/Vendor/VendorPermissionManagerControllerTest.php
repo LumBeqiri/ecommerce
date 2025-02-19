@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\Vendor\VendorPermissionManagerController;
-use App\Models\Country;
-use App\Models\Region;
-use App\Models\Staff;
-use App\Models\TaxProvider;
 use App\Models\User;
+use App\Models\Staff;
+use App\Models\Region;
 use App\Models\Vendor;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\RoleAndPermissionSeeder;
+use App\Models\Country;
+use App\Models\TaxProvider;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Notification;
+use Database\Seeders\CurrencySeeder;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleAndPermissionSeeder;
+use App\Http\Controllers\User\Vendor\VendorPermissionManagerController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);

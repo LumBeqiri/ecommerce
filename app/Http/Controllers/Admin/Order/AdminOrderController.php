@@ -18,7 +18,7 @@ class AdminOrderController extends ApiController
      */
     public function index(): JsonResponse
     {
-        return $this->showAll(new OrderResource(Order::all()));
+        return $this->showAll(OrderResource::collection(Order::paginate($this->paginate_count)));
     }
 
     /**
@@ -50,6 +50,7 @@ class AdminOrderController extends ApiController
         DB::begintransaction();
         try {
             $order->order_items()->delete();
+            $order->vendor_orders()->delete();
             $order->delete();
             DB::commit();
         } catch (Exception $ex) {
