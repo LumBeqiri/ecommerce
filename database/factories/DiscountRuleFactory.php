@@ -8,6 +8,7 @@ use App\Models\Region;
 use App\values\DiscountRuleTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\Product;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Discount>
@@ -52,6 +53,14 @@ class DiscountRuleFactory extends Factory
         }
 
         return 0;
+    }
+
+    public function withProducts(int $count = 1)
+    {
+        return $this->has(
+            Product::factory()->count($count),
+            'products'
+        );
     }
 
     // public function configure()

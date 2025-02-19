@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $productsQuantity = 50;
+        $productsQuantity = 20;
         Product::factory()->create(['ulid' => '01J82QPEESBETHRAGX6VPZ3X04']);
         Product::factory()->create(['ulid' => '01J82QPKZ74SCXJV3A9MP93VF4']);
         Product::factory()->create(['ulid' => '01J82QPRFASD7ADMKEE92JCCBT']);

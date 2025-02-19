@@ -22,10 +22,10 @@ class DiscountFactory extends Factory
         return [
             'ulid' => Str::ulid(),
             'code' => $this->faker->word,
-            'vendor_id' => Vendor::all()->random()->id,
+            'vendor_id' => Vendor::factory(),
             'is_dynamic' => $this->faker->boolean(60),
             'is_disabled' => $this->faker->boolean(60),
-            'discount_rule_id' => DiscountRule::all()->random()->id,
+            'discount_rule_id' => DiscountRule::factory(),
             'starts_at' => $this->faker->dateTime(),
             'ends_at' => $this->faker->dateTime(),
             'usage_limit' => $this->faker->numberBetween(2, 20),
