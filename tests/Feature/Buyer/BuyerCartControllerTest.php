@@ -1,24 +1,24 @@
 <?php
 
-use App\Http\Controllers\Buyer\BuyerCartController;
-use App\Models\Buyer;
 use App\Models\Cart;
-use App\Models\CartItem;
+use App\Models\User;
+use App\Models\Buyer;
+use App\Models\Region;
+use App\Models\Vendor;
 use App\Models\Country;
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\CartItem;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\DiscountRule;
-use App\Models\Product;
-use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\User;
-use App\Models\Variant;
+use App\Models\DiscountRule;
 use App\Models\VariantPrice;
-use App\Models\Vendor;
-use App\values\DiscountAllocationTypes;
 use App\values\DiscountRuleTypes;
 use Illuminate\Support\Facades\Bus;
+use App\values\DiscountAllocationTypes;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\Cart\CartController;
 
 beforeEach(function () {
     Notification::fake();
@@ -52,7 +52,7 @@ it('can add an item to the cart', function () {
         ],
     ];
 
-    $response = $this->postJson(action([BuyerCartController::class, 'add_to_cart']), [
+    $response = $this->postJson(action([CartController::class, 'add_to_cart']), [
         'items' => $items_json,
     ]);
 
@@ -82,7 +82,7 @@ it('can remove an item from the cart', function () {
 
     CartItem::factory()->for($cart)->create(['variant_id' => $variant->id, 'quantity' => $inCart]);
 
-    $response = $this->postJson(action([BuyerCartController::class, 'remove_from_cart']), [
+    $response = $this->postJson(action([CartController::class, 'remove_from_cart']), [
         'variant_id' => $variant->ulid,
         'quantity' => $toRemove,
     ]);
@@ -159,7 +159,7 @@ it('can apply discount', function () {
 
     $this->assertEquals(30000, $cart->total_cart_price);
 
-    $response = $this->postJson(action([BuyerCartController::class, 'apply_discount']), [
+    $response = $this->postJson(action([CartController::class, 'apply_discount']), [
         'code' => $discount->code,
     ]);
 
@@ -228,7 +228,7 @@ it('can apply discount with non-cents currency', function () {
 
     $this->assertEquals(30000, $cart->total_cart_price);
 
-    $response = $this->postJson(action([BuyerCartController::class, 'apply_discount']), [
+    $response = $this->postJson(action([CartController::class, 'apply_discount']), [
         'code' => $discount->code,
     ]);
 

@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Buyer\BuyerCartController;
 use App\Http\Controllers\Buyer\CheckoutController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Category\CategoryProductController;
@@ -75,15 +74,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('carts/{cart}', [CartController::class, 'show']);
         Route::delete('carts/{cart}', [CartController::class, 'destroy']);
 
+        Route::post('carts/add', [CartController::class, 'add_to_cart']);
+        Route::post('carts/remove', [CartController::class, 'remove_from_cart']);
+        Route::post('carts/apply-discount', [CartController::class, 'apply_discount']);
+
         Route::post('customer-groups', [CustomerGroupController::class, 'store']);
         Route::get('customer-groups', [CustomerGroupController::class, 'index']);
         Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
         Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
 
-        Route::get('cart', [BuyerCartController::class, 'index']);
-        Route::post('cart/add', [BuyerCartController::class, 'add_to_cart']);
-        Route::post('cart/remove', [BuyerCartController::class, 'remove_from_cart']);
-        Route::post('cart/apply-discount', [BuyerCartController::class, 'apply_discount']);
+
 
         Route::post('checkout', [CheckoutController::class, 'store']);
         Route::get('orders', [OrderController::class, 'index']);

@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Data\CartItemData;
-use App\Exceptions\DiscountException;
-use App\Http\Controllers\ApiController;
-use App\Http\Requests\Cart\UpdateCartRequest;
-use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\User;
-use App\Services\CartService;
-use App\Services\DiscountService;
 use App\values\Roles;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
+use App\Data\CartItemData;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\CartService;
+use App\Exceptions\CartException;
+use App\Services\DiscountService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\CartResource;
+use App\Exceptions\DiscountException;
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\Cart\CartRequest;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\Cart\CartItemRequest;
+use App\Http\Requests\Cart\UpdateCartRequest;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class CartController extends ApiController
 {
@@ -89,12 +92,15 @@ class CartController extends ApiController
         return new CartResource($cart);
     }
 
+
     protected function userCartQueryForRole(User $user): Builder
     {
+        $cartQuery = Cart::with('cart_items');
+
         return match (true) {
-            $user->hasRole(Roles::BUYER) => Cart::where('buyer_id', $user->buyer->id),
-            $user->hasRole(Roles::VENDOR) => Cart::where('vendor_id', $user->vendor->id),
-            $user->hasRole(Roles::STAFF) => Cart::where('vendor_id', $user->staff?->vendor_id),
+            $user->hasRole(Roles::BUYER) => $cartQuery->where('buyer_id', $user->buyer->id),
+            $user->hasRole(Roles::VENDOR) => $cartQuery->where('vendor_id', $user->vendor->id),
+            $user->hasRole(Roles::STAFF) => $cartQuery->where('vendor_id', $user->staff?->vendor_id),
             default => Cart::query(),
         };
     }
@@ -120,5 +126,46 @@ class CartController extends ApiController
 
         return new CartResource($cart->load('cart_items'));
 
+    }
+
+    public function add_to_cart(CartRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        /**
+         * @var array<int, array{variant_id: string, quantity: int}> $items
+         */
+        $items = $data['items'];
+
+        $cartItemsDTO = collect($items)
+            ->map(fn (array $item): CartItemData => new CartItemData(
+                variant_id: $item['variant_id'],
+                quantity: $item['quantity']
+            ))
+            ->all();
+
+        try {
+            $cart = CartService::saveItemsToCart($cartItemsDTO);
+            CartService::calculateCartPrice($cart);
+        } catch (CartException $ex) {
+            return $this->showError($ex->getMessage(), $ex->getCode());
+        }
+
+        return $this->showOne(new CartResource($cart));
+    }
+
+    public function remove_from_cart(CartItemRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        try {
+            $cart = CartService::removeItemFromCart($data);
+        } catch (CartException $ex) {
+            return $this->showError($ex->getMessage(), $ex->getCode());
+        } catch (\Exception $ex) {
+            return $this->showError('An unexpected error occurred', 500);
+        }
+
+        return $this->showOne(new CartResource($cart));
     }
 }
