@@ -13,7 +13,7 @@ use App\Models\Region;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class DiscountController extends ApiController
+class AdminDiscountController extends ApiController
 {
     public function index(): JsonResponse
     {

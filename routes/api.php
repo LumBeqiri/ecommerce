@@ -16,6 +16,7 @@ use App\Http\Controllers\User\Checkout\CheckoutController;
 use App\Http\Controllers\Auth\Buyer\RegisterBuyerController;
 use App\Http\Controllers\User\Products\UserProductController;
 use App\Http\Controllers\User\Variants\UserVariantController;
+use App\Http\Controllers\User\Discount\UserDiscountController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
 use App\Http\Controllers\Public\Product\ProductCategoryController;
 use App\Http\Controllers\User\Variants\UserVariantMediaController;
@@ -78,10 +79,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('carts/remove', [CartController::class, 'remove_from_cart']);
         Route::post('carts/apply-discount', [CartController::class, 'apply_discount']);
 
-        Route::post('customer-groups', [CustomerGroupController::class, 'store']);
-        Route::get('customer-groups', [CustomerGroupController::class, 'index']);
-        Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
-        Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
+        Route::post('discounts', [UserDiscountController::class, 'store']);
+        Route::get('discounts', [UserDiscountController::class, 'index']);
+        Route::get('discounts/{discount}', [UserDiscountController::class, 'show']);
+        Route::put('discounts/{discount}', [UserDiscountController::class, 'update']);
+        Route::delete('discounts/{discount}', [UserDiscountController::class, 'destroy']);
+
+        // Route::post('customer-groups', [CustomerGroupController::class, 'store']);
+        // Route::get('customer-groups', [CustomerGroupController::class, 'index']);
+        // Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
+        // Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
 
         Route::post('checkout', [CheckoutController::class, 'store']);
         Route::get('orders', [OrderController::class, 'index']);

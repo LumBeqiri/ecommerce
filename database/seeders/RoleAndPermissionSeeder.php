@@ -24,6 +24,11 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'update-products', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-products', 'guard_name' => 'api']);
 
+        Permission::create(['name' => 'view-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'create-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'update-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-discounts', 'guard_name' => 'api']);
+
         Permission::create(['name' => 'create-variants', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-variants', 'guard_name' => 'api']);
         Permission::create(['name' => 'update-variants', 'guard_name' => 'api']);
@@ -45,9 +50,6 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-carts', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-carts', 'guard_name' => 'api']);
 
-        Permission::create(['name' => 'create-discounts', 'guard_name' => 'api']);
-        Permission::create(['name' => 'edit-discounts', 'guard_name' => 'api']);
-        Permission::create(['name' => 'delete-discounts', 'guard_name' => 'api']);
 
         Permission::create(['name' => 'create-orders', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-orders', 'guard_name' => 'api']);
