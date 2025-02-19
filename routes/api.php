@@ -70,7 +70,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::get('carts', [CartController::class, 'index']);
         Route::put('carts/{cart}', [CartController::class, 'update']);
-        Route::post('carts/{cart}/discount', [CartController::class, 'apply_discount']);
         Route::post('sync-cart', [CartController::class, 'syncCart']);
         Route::get('carts/{cart}', [CartController::class, 'show']);
         Route::delete('carts/{cart}', [CartController::class, 'destroy']);
@@ -91,7 +90,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('orders/{order}', [OrderController::class, 'destroy']);
 
         Route::get('products/{product}/categories', [ProductCategoryController::class, 'index']);
-        Route::resource('users', UserController::class);
+        Route::get('users/{user}', [UserController::class, 'show']);
+        Route::post('users', [UserController::class, 'store']);
+        Route::delete('users/{user}', [UserController::class, 'destroy']);
     });
 
 });
