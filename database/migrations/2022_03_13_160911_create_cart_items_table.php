@@ -19,7 +19,7 @@ class CreateCartItemsTable extends Migration
             $table->foreignId('cart_id')->constrained('carts')->cascadeOnDelete();
             $table->foreignId('variant_id')->constrained('variants')->cascadeOnDelete();
             $table->integer('quantity');
-            $table->foreignId('variant_price_id')->constrained('variant_prices');   
+            $table->foreignId('variant_price_id')->constrained('variant_prices');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
 
             $table->integer('price');

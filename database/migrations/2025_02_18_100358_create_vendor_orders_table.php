@@ -26,9 +26,8 @@ return new class extends Migration
             // Order total in cents
             $table->unsignedBigInteger('total');
             $table->foreignId('currency_id')->constrained('currencies');
-            $table->string('status')->default('pending'); 
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
-
 };

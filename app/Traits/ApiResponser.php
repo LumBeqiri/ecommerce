@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 trait ApiResponser
 {
+    protected int $paginate_count = 10;
     /**
      * @param  mixed  $data
      * @param  mixed  $code

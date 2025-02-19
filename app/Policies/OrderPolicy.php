@@ -70,4 +70,4 @@ class OrderPolicy
 
         return Response::deny('You do not have permission to delete orders.');
     }
-} 
+}

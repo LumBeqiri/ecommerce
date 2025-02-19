@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\Product\AdminVariantPriceController;
 use App\Http\Controllers\Admin\Region\AdminRegionController;
 use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
 use App\Http\Controllers\Admin\Users\AdminUserController;
-use App\Http\Controllers\Product\ProductThumbnailController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -26,9 +25,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('products/{product}', [AdminProductController::class, 'show']);
     Route::put('products/{product}', [AdminProductController::class, 'update']);
     Route::delete('products/{product}', [AdminProductController::class, 'destroy']);
-
-    Route::post('products/{product}/thumbnail', [ProductThumbnailController::class, 'store']);
-    Route::delete('products/{product}/thumbnail', [ProductThumbnailController::class, 'destroy']);
 
     Route::get('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'show']);
     Route::post('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'store']);

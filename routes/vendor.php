@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\Staff\RegisterStaffController;
-use App\Http\Controllers\Vendor\VendorPermissionManagerController;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Auth\Staff\RegisterStaffController;
+use App\Http\Controllers\User\Vendor\VendorPermissionManagerController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 

@@ -13,5 +13,5 @@ enum OrderStatusTypes: string
     case ON_HOLD = 'on_hold';
     case COMPLETED = 'completed'; // Order is fulfilled successfully
     case RETURN_REQUESTED = 'return_requested'; // Customer requested a return
-    case RETURNED = 'returned'; 
+    case RETURNED = 'returned';
 }

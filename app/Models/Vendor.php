@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Traits\HasUlids;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vendor extends Model
 {
@@ -55,5 +55,4 @@ class Vendor extends Model
     {
         return $this->hasManyThrough(OrderItem::class, VendorOrder::class, 'vendor_id', 'vendor_order_id');
     }
-    
 }
