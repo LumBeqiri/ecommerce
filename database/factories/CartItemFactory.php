@@ -3,11 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Cart;
-use App\Models\Vendor;
 use App\Models\Variant;
-use Illuminate\Support\Str;
 use App\Models\VariantPrice;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CartItem>

@@ -25,7 +25,7 @@ class RegionFactory extends Factory
             'currency_id' => Currency::factory(),
             'tax_rate' => $this->faker->randomDigit(4, 30),
             'tax_code' => $this->faker->randomElement(['TEST110', 'TEST2002']),
-            'tax_provider_id' => TaxProvider::factory()
+            'tax_provider_id' => TaxProvider::factory(),
         ];
     }
 }

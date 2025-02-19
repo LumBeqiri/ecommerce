@@ -10,6 +10,7 @@ use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\CustomerGroup\CustomerGroupController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -21,7 +22,6 @@ use App\Http\Controllers\User\Variants\UserVariantController;
 use App\Http\Controllers\User\Variants\UserVariantMediaController;
 use App\Http\Controllers\User\Variants\UserVariantPriceController;
 use App\Http\Controllers\Variant\VariantController;
-use App\Http\Controllers\Order\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
@@ -82,8 +82,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('customer-groups', [CustomerGroupController::class, 'index']);
         Route::get('customer-groups/{customerGroup}', [CustomerGroupController::class, 'show']);
         Route::delete('customer-groups/{customerGroup}', [CustomerGroupController::class, 'destroy']);
-
-
 
         Route::post('checkout', [CheckoutController::class, 'store']);
         Route::get('orders', [OrderController::class, 'index']);

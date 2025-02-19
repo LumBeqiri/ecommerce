@@ -34,13 +34,13 @@ class CheckoutController extends ApiController
         $cart = Cart::with([
             'cart_items.variant.variant_prices' => function ($query) use ($region_id) {
                 $query->where('region_id', $region_id);
-            }, 
+            },
             'cart_items.variant.product.vendor',
-            'region:id,currency_id', 
-            'region.currency:id,name'
+            'region:id,currency_id',
+            'region.currency:id,name',
         ])
-        ->where('buyer_id', $this->user->buyer->id)
-        ->first();
+            ->where('buyer_id', $this->user->buyer->id)
+            ->first();
 
         DB::beginTransaction();
         try {
@@ -97,7 +97,7 @@ class CheckoutController extends ApiController
                 foreach ($items as $item) {
                     $variant = $item->variant;
                     $variant_price = $variant->variant_prices->firstWhere('region_id', $region_id);
-                    
+
                     OrderItem::create([
                         'order_id' => $order->id,
                         'variant_id' => $variant->id,
@@ -116,6 +116,7 @@ class CheckoutController extends ApiController
             );
         } catch (\Exception $e) {
             DB::rollBack();
+
             return $this->errorResponse($e->getMessage(), 500);
         }
     }

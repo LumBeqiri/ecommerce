@@ -88,7 +88,7 @@ it('can create an order from cart', function () {
         'shipping_name' => 'John Doe',
         'shipping_address' => '123 Test St',
         'shipping_city' => 'Test City',
-        'shipping_country_id' =>  $country->id,
+        'shipping_country_id' => $country->id,
         'total' => 3000,
         'tax_rate' => 10,
     ]);

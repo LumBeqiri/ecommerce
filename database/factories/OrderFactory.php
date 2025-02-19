@@ -2,15 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Buyer;
-use App\Models\Order;
 use App\Models\Country;
-use App\Models\Payment;
 use App\Models\Currency;
-use Illuminate\Support\Str;
+use App\Models\Order;
+use App\Models\Payment;
 use App\values\OrderStatusTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class OrderFactory extends Factory
 {

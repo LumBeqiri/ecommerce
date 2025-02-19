@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Order;
 
-use Exception;
-use App\Models\User;
-use App\Models\Order;
-use Illuminate\Http\Request;
-use App\values\OrderStatusTypes;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Resources\OrderResource;
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\OrderResource;
+use App\Models\Order;
+use App\Models\User;
+use App\values\OrderStatusTypes;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends ApiController
 {
@@ -54,26 +54,27 @@ class OrderController extends ApiController
         $this->authorize('update', $order);
 
         $request->validate([
-            'status' => 'required|string|in:' . implode(',', array_column(OrderStatusTypes::cases(), 'value')),
-        ]);        
+            'status' => 'required|string|in:'.implode(',', array_column(OrderStatusTypes::cases(), 'value')),
+        ]);
 
         DB::beginTransaction();
-        try{
+        try {
             $order->update([
                 'status' => $request->input('status'),
             ]);
-    
+
             $order->vendor_orders()->update([
                 'status' => $request->input('status'),
             ]);
-            
+
             DB::commit();
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
+
             return $this->showMessage($ex->getMessage());
         }
 
-        // TODO: 
+        // TODO:
         // send email to customer with new order status
         // make sure its not send if transaction above fails
 
@@ -84,18 +85,18 @@ class OrderController extends ApiController
     {
         $this->authorize('delete', $order);
 
-
         DB::beginTransaction();
-        try{
+        try {
             $order->vendor_orders()->delete();
             $order->delete();
-            
+
             DB::commit();
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             DB::rollBack();
+
             return $this->showMessage($ex->getMessage());
         }
 
         return $this->showMessage('Order deleted successfully');
     }
-} 
+}

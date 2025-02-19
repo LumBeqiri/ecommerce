@@ -1,52 +1,52 @@
 <?php
 
-use App\Models\User;
+use App\Http\Controllers\Order\OrderController;
 use App\Models\Buyer;
-use App\Models\Order;
-use App\Models\Region;
-use App\Models\Vendor;
 use App\Models\Country;
-use App\Models\Product;
-use App\Models\Variant;
 use App\Models\Currency;
+use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
+use App\Models\Variant;
+use App\Models\Vendor;
 use App\Models\VendorOrder;
 use App\values\OrderStatusTypes;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Order\OrderController;
 
 beforeEach(function () {
     Notification::fake();
     Bus::fake();
     $this->seed(RoleAndPermissionSeeder::class);
     TaxProvider::factory()->create();
-    
+
 });
 
 it('buyer can view their own orders', function () {
     $currency = Currency::factory()->create();
     $region = Region::factory()->create();
     $country = Country::factory()->for($region)->create();
-    
+
     $buyerUser = User::factory()->create(['region_id' => $region->id]);
     $buyerUser->assignRole('buyer');
     $buyer = Buyer::factory()->create(['user_id' => $buyerUser->id]);
-    
+
     // Create orders for the buyer
     $orders = Order::factory(3)->create([
         'buyer_id' => $buyer->id,
         'currency_id' => $currency->id,
         'shipping_country_id' => $country->id,
     ]);
-    
+
     foreach ($orders as $order) {
         $variant = Variant::factory()->create();
         OrderItem::factory()->create([
             'order_id' => $order->id,
-            'variant_id' => $variant->id
+            'variant_id' => $variant->id,
         ]);
     }
 
@@ -165,7 +165,6 @@ it('admin can update order status', function () {
         ['status' => OrderStatusTypes::PROCESSING->value]
     );
 
-
     $response->assertOk();
 
     // Check main order status was updated
@@ -223,7 +222,7 @@ it('admin can delete order with related vendor orders', function () {
 
     $response->assertOk();
     $response->assertJson([
-        'data' => 'Order deleted successfully'
+        'data' => 'Order deleted successfully',
     ]);
 
     // Check order was deleted
@@ -271,4 +270,4 @@ it('validates order status update', function () {
     );
 
     $response->assertUnprocessable();
-}); 
+});
