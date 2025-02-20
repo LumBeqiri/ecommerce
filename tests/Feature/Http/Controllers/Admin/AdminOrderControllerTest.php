@@ -2,20 +2,20 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
+use App\Http\Controllers\Admin\Order\AdminOrderController;
 use App\Models\Buyer;
-use App\Models\Order;
-use App\Models\Region;
 use App\Models\Country;
-use App\Models\Payment;
 use App\Models\Currency;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Region;
 use App\Models\TaxProvider;
+use App\Models\User;
 use App\Models\VendorOrder;
 use App\values\OrderStatusTypes;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Order\AdminOrderController;
 
 beforeEach(function () {
     User::flushEventListeners();
@@ -124,7 +124,6 @@ it('validates order status update', function () {
     $response->assertUnprocessable();
 })->todo('admin should be able to update the order status in AdminOrderController');
 
-
 it('admin can update order status', function () {
     $currency = Currency::factory()->create();
     $region = Region::factory()->create();
@@ -168,7 +167,6 @@ it('admin can update order status', function () {
         ]);
     }
 })->todo('admin should be able to update the order status in AdminOrderController');
-
 
 it('admin can view all orders', function () {
     $admin = User::factory()->create();

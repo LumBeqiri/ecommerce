@@ -20,7 +20,7 @@ class DiscountResource extends JsonResource
             'is_dynamic' => $this->is_dynamic,
             'is_disabled' => $this->is_disabled,
             'discount_rule' => new DiscountRuleResource($this->whenLoaded('discount_rule')),
-            'parent_id' => new DiscountResource($this->parent),
+            'parent_id' => new DiscountResource($this->whenLoaded('parent')),
             'starts_at' => $this->starts_at,
             'ends_at' => $this->ends_at,
             'usage_limit' => $this->usage_limit,

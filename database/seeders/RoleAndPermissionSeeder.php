@@ -24,6 +24,11 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'update-products', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-products', 'guard_name' => 'api']);
 
+        Permission::create(['name' => 'view-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'create-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'update-discounts', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete-discounts', 'guard_name' => 'api']);
+
         Permission::create(['name' => 'create-variants', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-variants', 'guard_name' => 'api']);
         Permission::create(['name' => 'update-variants', 'guard_name' => 'api']);
@@ -45,17 +50,17 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-carts', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-carts', 'guard_name' => 'api']);
 
-        Permission::create(['name' => 'create-discounts', 'guard_name' => 'api']);
-        Permission::create(['name' => 'edit-discounts', 'guard_name' => 'api']);
-        Permission::create(['name' => 'delete-discounts', 'guard_name' => 'api']);
-
         Permission::create(['name' => 'create-orders', 'guard_name' => 'api']);
         Permission::create(['name' => 'edit-orders', 'guard_name' => 'api']);
         Permission::create(['name' => 'delete-orders', 'guard_name' => 'api']);
 
         $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'api']);
 
-        Role::create(['name' => 'vendor', 'guard_name' => 'api']);
+        $vendorRole = Role::create(['name' => 'vendor', 'guard_name' => 'api']);
+        $vendorRole->givePermissionTo('create-discounts');
+        $vendorRole->givePermissionTo('view-discounts');
+        $vendorRole->givePermissionTo('update-discounts');
+        $vendorRole->givePermissionTo('delete-discounts');
         Role::create(['name' => 'manager', 'guard_name' => 'api']);
         Role::create(['name' => 'staff', 'guard_name' => 'api']);
         Role::create(['name' => 'buyer', 'guard_name' => 'api']);

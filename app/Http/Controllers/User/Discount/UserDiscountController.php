@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Discount;
+namespace App\Http\Controllers\User\Discount;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Discount\DiscountRequest;
@@ -10,28 +10,39 @@ use App\Models\Discount;
 use App\Models\DiscountRule;
 use App\Models\Product;
 use App\Models\Region;
+use App\Models\User;
+use App\values\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class DiscountController extends ApiController
+class UserDiscountController extends ApiController
 {
+    protected User $user;
+
+    public function __construct()
+    {
+        $user = auth()->user();
+    }
+
     public function index(): JsonResponse
     {
-        $discounts = Discount::with(['discount_rule.products', 'discount_rule.customer_groups'])->get();
+        $this->authorize('viewAny', Discount::class);
+        $discounts = Discount::with(['discount_rule.products'])->get();
 
         return $this->showAll(DiscountResource::collection($discounts));
     }
 
     public function store(DiscountRequest $request): JsonResponse
     {
+        $this->authorize('create', Discount::class);
         $request->validated();
 
-        if ($this->validate_code($request->code)) {
+        if (! $this->is_discount_code_available($request->code)) {
             return $this->showError('Code '.$request->code.' is already taken!', 422);
         }
 
         $newDiscount = DB::transaction(function () use ($request) {
-            $region = Region::where('ulid', $request->region)->firstOrFail();
+            $region = Region::where('ulid', $request->region_id)->firstOrFail();
             $discountRule = DiscountRule::create(
                 ['value' => $request->value, 'region_id' => $region->id]
                 +
@@ -46,7 +57,7 @@ class DiscountController extends ApiController
 
             $discount = $discountRule->discount()->create(
                 [
-                    'seller_id' => auth()->id(),
+                    'vendor_id' => $this->getVendorId(),
                     'starts_at' => now(),
                 ]
                 +
@@ -62,13 +73,11 @@ class DiscountController extends ApiController
             );
 
             if ($request->conditions) {
-
                 if ($request->has('products')) {
                     $products = Product::whereIn('ulid', $request->products)->pluck('id');
+                    Product::whereIn('id', $products)->update(['discount_id' => $discount->id]);
                 }
-                if ($request->has('customer_group')) {
-                    $products = Product::whereIn('ulid', $request->products)->pluck('id');
-                }
+                // customer groups
             }
 
             return $discount;
@@ -79,17 +88,20 @@ class DiscountController extends ApiController
 
     public function show(Discount $discount): JsonResponse
     {
+        $this->authorize('view', $discount);
+
         return $this->showOne(new DiscountResource($discount->load('discount_rule')));
     }
 
     public function update(UpdateDiscountRequest $request, Discount $discount): JsonResponse
     {
+        $this->authorize('update', $discount);
         $request->validated();
 
         DB::transaction(function () use ($request, $discount) {
-            $region = Region::where('ulid', $request->region)->firstOrFail();
+            $region = Region::where('ulid', $request->region_id)->firstOrFail();
             if ($request->has('code')) {
-                if ($this->validate_code($request->code)) {
+                if (! $this->is_discount_code_available($request->code)) {
                     return $this->showError('Code '.$request->code.' is already taken!', 422);
                 }
             }
@@ -120,17 +132,31 @@ class DiscountController extends ApiController
 
     public function destroy(Discount $discount): JsonResponse
     {
+        $this->authorize('delete', $discount);
         $discount->delete();
 
         return $this->showMessage('Discount deleted successfully!');
     }
 
-    private function validate_code(string $code): bool
+    private function is_discount_code_available(string $code): bool
     {
-        $code_availabilty = Discount::where('code', $code)
-            ->where('seller_id', auth()->id())
-            ->get();
+        return ! Discount::where('code', $code)
+            ->where('vendor_id', $this->getVendorId())
+            ->exists();
 
-        return count($code_availabilty) > 0;
+    }
+
+    private function getVendorId(): ?int
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(Roles::VENDOR)) {
+            return $user->vendor->id;
+        }
+
+        if ($user->hasRole(Roles::STAFF)) {
+            return $user->staff->vendor_id;
+        }
+
     }
 }

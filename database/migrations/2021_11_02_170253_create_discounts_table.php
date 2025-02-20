@@ -21,7 +21,7 @@ class CreateDiscountsTable extends Migration
             $table->string('code');
             $table->boolean('is_dynamic')->nullable();
             $table->boolean('is_disabled')->default(false)->nullable();
-            $table->foreignId('discount_rule_id')->constrained('discount_rules')->cascadeOnDelete();
+            $table->foreignId('discount_rule_id')->constrained('discount_rules');
             $table->foreignId('parent_id')->nullable()->constrained('discounts');
             $table->timestamp('starts_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('ends_at')->nullable();

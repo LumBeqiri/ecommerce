@@ -180,7 +180,8 @@ test('admin can not update variant with negative stock value', function () {
         'stock' => $updated,
     ]);
 
-    $response->assertStatus(422);
+    $this->assertEquals(422, $response->status());
+
 });
 
 test('admin can delete variant', function () {
