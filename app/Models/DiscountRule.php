@@ -22,11 +22,6 @@ class DiscountRule extends Model
         return $this->hasOne(Discount::class);
     }
 
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
-
     /**
      * Get the region associated with the discount rule.
      *

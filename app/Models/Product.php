@@ -40,13 +40,6 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Discount::class);
     }
 
-    /**
-     * @return BelongsToMany<\App\Models\DiscountRule, $this>
-     */
-    public function discount_rules(): BelongsToMany
-    {
-        return $this->belongsToMany(DiscountRule::class);
-    }
 
     /**
      * @return BelongsToMany<\App\Models\Category, $this>
