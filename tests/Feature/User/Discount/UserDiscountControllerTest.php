@@ -1,20 +1,19 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Vendor;
+use App\Http\Controllers\User\Discount\UserDiscountController;
 use App\Models\Country;
-use App\Models\Product;
 use App\Models\Currency;
 use App\Models\Discount;
-use App\Models\TaxProvider;
 use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\TaxProvider;
+use App\Models\Vendor;
 use App\values\DiscountRuleTypes;
+use Carbon\Carbon;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\User\Discount\UserDiscountController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -112,13 +111,11 @@ it('can update percentage discount', function () {
     $vendor = Vendor::factory()->create();
     $vendor->user->assignRole('vendor');
 
-  
-
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
 
     $discount = Discount::factory()->create([
-        'vendor_id' => $vendor->id
+        'vendor_id' => $vendor->id,
     ]);
     $usage_limit = $this->faker()->randomDigit();
     $code = $this->faker()->word();
@@ -128,9 +125,8 @@ it('can update percentage discount', function () {
     $ends_at = Carbon::create(2023, 3, 23, 23, 59)->format('Y-m-d H:i:s');
     $starts_at = Carbon::now()->format('Y-m-d H:i:s');
     $region = Region::factory()->create();
-    
-    login($vendor->user);
 
+    login($vendor->user);
 
     $response = $this->putJson(action([UserDiscountController::class, 'update'], $discount->ulid),
         [
@@ -155,7 +151,7 @@ it('can update percentage discount', function () {
     expect($response->json('starts_at'))
         ->not()->toBeNull();
     expect($response->json('ends_at'))
-         ->not()->toBeNull();
+        ->not()->toBeNull();
     expect($response->json('is_dynamic'))
         ->toBe($is_dynamic);
 });
@@ -166,13 +162,12 @@ it('can delete discount', function () {
 
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
-    
+
     $discount = Discount::factory()->create([
-        'vendor_id' => $vendor->id
+        'vendor_id' => $vendor->id,
     ]);
-    
+
     login($vendor->user);
-    
 
     $response = $this->deleteJson(action([UserDiscountController::class, 'destroy'], $discount->ulid));
 

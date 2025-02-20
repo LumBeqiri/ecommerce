@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\User\Discount;
 
-use App\Models\User;
-use App\values\Roles;
-use App\Models\Region;
-use App\Models\Product;
-use App\Models\Discount;
-use App\Models\DiscountRule;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\DiscountResource;
 use App\Http\Requests\Discount\DiscountRequest;
 use App\Http\Requests\Discount\UpdateDiscountRequest;
+use App\Http\Resources\DiscountResource;
+use App\Models\Discount;
+use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\Region;
+use App\Models\User;
+use App\values\Roles;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class UserDiscountController extends ApiController
 {
     protected User $user;
-    
+
     public function __construct()
     {
         $user = auth()->user();
     }
+
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', Discount::class);
@@ -88,6 +89,7 @@ class UserDiscountController extends ApiController
     public function show(Discount $discount): JsonResponse
     {
         $this->authorize('view', $discount);
+
         return $this->showOne(new DiscountResource($discount->load('discount_rule')));
     }
 
@@ -99,7 +101,7 @@ class UserDiscountController extends ApiController
         DB::transaction(function () use ($request, $discount) {
             $region = Region::where('ulid', $request->region_id)->firstOrFail();
             if ($request->has('code')) {
-                if (!$this->is_discount_code_available($request->code)) {
+                if (! $this->is_discount_code_available($request->code)) {
                     return $this->showError('Code '.$request->code.' is already taken!', 422);
                 }
             }
@@ -147,14 +149,14 @@ class UserDiscountController extends ApiController
     private function getVendorId(): ?int
     {
         $user = auth()->user();
-        
+
         if ($user->hasRole(Roles::VENDOR)) {
             return $user->vendor->id;
         }
-        
+
         if ($user->hasRole(Roles::STAFF)) {
             return $user->staff->vendor_id;
         }
-       
+
     }
 }

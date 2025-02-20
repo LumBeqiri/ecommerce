@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Vendor;
-use App\Models\Product;
-use Illuminate\Support\Str;
 use App\Models\DiscountRule;
+use App\Models\Product;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Discount>
@@ -43,5 +43,4 @@ class DiscountFactory extends Factory
             'products'
         );
     }
-
 }

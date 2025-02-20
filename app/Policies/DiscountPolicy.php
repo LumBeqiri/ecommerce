@@ -35,8 +35,8 @@ class DiscountPolicy
             return Response::allow();
         }
 
-        if ($user->hasRole('staff') && 
-            $user->hasPermissionTo('view-discounts') && 
+        if ($user->hasRole('staff') &&
+            $user->hasPermissionTo('view-discounts') &&
             $user->staff->vendor_id === $discount->vendor_id
         ) {
             return Response::allow();
@@ -72,8 +72,8 @@ class DiscountPolicy
             return Response::allow();
         }
 
-        if ($user->hasRole('staff') && 
-            $user->hasPermissionTo('update-discounts') && 
+        if ($user->hasRole('staff') &&
+            $user->hasPermissionTo('update-discounts') &&
             $user->staff->vendor_id === $discount->vendor_id
         ) {
             return Response::allow();
@@ -92,8 +92,8 @@ class DiscountPolicy
             return Response::allow();
         }
 
-        if ($user->hasRole('staff') && 
-            $user->hasPermissionTo('delete-discounts') && 
+        if ($user->hasRole('staff') &&
+            $user->hasPermissionTo('delete-discounts') &&
             $user->staff->vendor_id === $discount->vendor_id
         ) {
             return Response::allow();
@@ -101,4 +101,4 @@ class DiscountPolicy
 
         return Response::deny('You do not have permission to delete this discount.');
     }
-} 
+}

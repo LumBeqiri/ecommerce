@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Public\Product;
 
-use App\Models\Region;
-use App\Models\Product;
-use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
+use App\Models\Region;
+use Illuminate\Http\JsonResponse;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends ApiController
 {
     public function index(): JsonResponse
     {
-        
+
         $region_id = Region::first()->id;
 
         $products = Product::whereHas('variant_prices', function ($query) use ($region_id) {

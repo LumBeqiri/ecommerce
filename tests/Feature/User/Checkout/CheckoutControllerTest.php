@@ -1,24 +1,23 @@
 <?php
 
-
-use App\Models\Cart;
-use App\Models\User;
+use App\Http\Controllers\User\Checkout\CheckoutController;
 use App\Models\Buyer;
-use App\Models\Order;
-use App\Models\Region;
-use App\Models\Vendor;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Country;
 use App\Models\Currency;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Region;
 use App\Models\TaxProvider;
-use App\Models\VendorOrder;
+use App\Models\User;
+use App\Models\Variant;
 use App\Models\VariantPrice;
+use App\Models\Vendor;
+use App\Models\VendorOrder;
 use App\values\OrderStatusTypes;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use App\Http\Controllers\User\Checkout\CheckoutController;
 
 beforeEach(function () {
     Notification::fake();

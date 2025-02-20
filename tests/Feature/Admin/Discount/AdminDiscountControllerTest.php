@@ -2,21 +2,14 @@
 
 namespace Tests\Feature\Admin\Discount;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Region;
-use App\Models\Country;
-use App\Models\Product;
-use App\Models\Currency;
+use App\Http\Controllers\Admin\Discount\AdminDiscountController;
 use App\Models\Discount;
-use App\Models\TaxProvider;
 use App\Models\DiscountRule;
-use App\values\DiscountRuleTypes;
+use App\Models\Region;
+use App\Models\User;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Database\Seeders\RoleAndPermissionSeeder;
-use App\Http\Controllers\Admin\Discount\DiscountController;
-use App\Http\Controllers\Admin\Discount\AdminDiscountController;
 
 beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
@@ -54,10 +47,10 @@ it('can update discount', function () {
     $discountRule = DiscountRule::factory()
         ->create();
     $discount = Discount::factory()
-    ->withProducts(2)
-    ->create([
-        'discount_rule_id' => $discountRule->id
-    ]);
+        ->withProducts(2)
+        ->create([
+            'discount_rule_id' => $discountRule->id,
+        ]);
 
     $response = $this->putJson(
         action([AdminDiscountController::class, 'update'], $discount),
@@ -74,7 +67,7 @@ it('can update discount', function () {
     );
 
     $response->assertOk();
-    
+
     $this->assertDatabaseHas('discounts', [
         'id' => $discount->id,
         'code' => 'UPDATED50',
@@ -88,7 +81,6 @@ it('can update discount', function () {
     ]);
 });
 
-
 it('can delete discount', function () {
     $admin = User::factory()->create();
     $admin->assignRole('admin');
@@ -97,10 +89,10 @@ it('can delete discount', function () {
     $discountRule = DiscountRule::factory()
         ->create();
     $discount = Discount::factory()
-    ->withProducts(2)
-    ->create([
-        'discount_rule_id' => $discountRule->id
-    ]);
+        ->withProducts(2)
+        ->create([
+            'discount_rule_id' => $discountRule->id,
+        ]);
 
     $response = $this->deleteJson(
         action([AdminDiscountController::class, 'destroy'], $discount)
@@ -108,7 +100,7 @@ it('can delete discount', function () {
 
     $response->assertOk();
     $response->assertJsonFragment([
-        'data' => 'Discount deleted successfully!'
+        'data' => 'Discount deleted successfully!',
     ]);
 
     $this->assertDatabaseMissing('discounts', ['id' => $discount->id]);
@@ -123,10 +115,10 @@ it('can show discount details', function () {
     $discountRule = DiscountRule::factory()
         ->create();
     $discount = Discount::factory()
-    ->withProducts(2)
-    ->create([
-        'discount_rule_id' => $discountRule->id
-    ]);
+        ->withProducts(2)
+        ->create([
+            'discount_rule_id' => $discountRule->id,
+        ]);
 
     $response = $this->getJson(
         action([AdminDiscountController::class, 'show'], $discount)
@@ -141,7 +133,7 @@ it('can show discount details', function () {
         'discount_rule' => [
             'description',
             'discount_type',
-            'value'
-        ]
+            'value',
+        ],
     ]);
-}); 
+});

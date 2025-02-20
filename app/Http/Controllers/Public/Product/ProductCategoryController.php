@@ -15,5 +15,4 @@ class ProductCategoryController extends ApiController
 
         return $this->showAll(CategoryResource::collection($categories));
     }
-
 }

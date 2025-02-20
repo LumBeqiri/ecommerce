@@ -60,8 +60,7 @@ class AdminDiscountController extends ApiController
     {
         $discount->discount_rule->delete();
         $discount->delete();
-        
+
         return $this->showMessage('Discount deleted successfully!');
     }
-
 }

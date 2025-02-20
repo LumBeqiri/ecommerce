@@ -54,7 +54,6 @@ class DiscountRuleFactory extends Factory
         return 0;
     }
 
-
     // public function configure()
     // {
     //     return $this->afterCreating(function (DiscountRule $discount_rule) {

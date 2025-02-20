@@ -40,7 +40,6 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Discount::class);
     }
 
-
     /**
      * @return BelongsToMany<\App\Models\Category, $this>
      */
