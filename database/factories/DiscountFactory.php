@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\DiscountRule;
 use App\Models\Vendor;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\DiscountRule;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Discount>
@@ -34,4 +35,13 @@ class DiscountFactory extends Factory
             'parent_id' => null,
         ];
     }
+
+    public function withProducts(int $count = 1)
+    {
+        return $this->has(
+            Product::factory()->count($count),
+            'products'
+        );
+    }
+
 }

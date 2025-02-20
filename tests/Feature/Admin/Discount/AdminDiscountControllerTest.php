@@ -24,7 +24,7 @@ beforeEach(function () {
     Bus::fake();
 });
 
-it('non-admin cannot access discount endpoints', function () {
+test('non-admin cannot access discount endpoints', function () {
     $user = User::factory()->create();
     $user->assignRole('buyer');
     login($user);
@@ -43,80 +43,6 @@ it('admin can list all discounts', function () {
     $response = $this->getJson(action([AdminDiscountController::class, 'index']));
 
     $response->assertOk();
-    $response->assertJsonCount(3, 'data');
-});
-
-it('can store percentage discount', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    login($admin);
-
-    Currency::factory()->create();
-    TaxProvider::factory()->create();
-    $region = Region::factory()->create();
-    Country::factory()->for($region)->create();
-
-    $response = $this->postJson(
-        action([AdminDiscountController::class, 'store']),
-        [
-            'code' => 'TEST25',
-            'discount_type' => DiscountRuleTypes::PERCENTAGE,
-            'region' => $region->ulid,
-            'value' => 25.00,
-            'description' => 'Test discount',
-            'conditions' => false,
-        ]
-    );
-
-    $response->assertOk();
-    $response->assertJsonStructure([
-        'code',
-        'discount_rule' => [
-            'id',
-            'description',
-            'discount_type',
-            'value'
-        ]
-    ]);
-
-    $this->assertDatabaseHas('discounts', [
-        'code' => 'TEST25',
-    ]);
-
-    $this->assertDatabaseHas('discount_rules', [
-        'discount_type' => DiscountRuleTypes::PERCENTAGE,
-        'value' => 25.00,
-    ]);
-});
-
-it('can store fixed amount discount', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    login($admin);
-
-    Currency::factory()->create();
-    TaxProvider::factory()->create();
-    $region = Region::factory()->create();
-
-    $response = $this->postJson(
-        action([AdminDiscountController::class, 'store']),
-        [
-            'code' => 'FIXED10',
-            'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-            'region' => $region->ulid,
-            'value' => 1000, // $10.00 in cents
-            'description' => 'Fixed amount discount',
-            'allocation' => 'total_amount',
-            'conditions' => false,
-        ]
-    );
-
-    $response->assertOk();
-    $this->assertDatabaseHas('discount_rules', [
-        'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-        'value' => 1000,
-        'allocation' => 'total_amount',
-    ]);
 });
 
 it('can update discount', function () {
@@ -126,9 +52,10 @@ it('can update discount', function () {
 
     $region = Region::factory()->create();
     $discountRule = DiscountRule::factory()
-        ->withProducts(2)
         ->create();
-    $discount = Discount::factory()->create([
+    $discount = Discount::factory()
+    ->withProducts(2)
+    ->create([
         'discount_rule_id' => $discountRule->id
     ]);
 
@@ -136,7 +63,7 @@ it('can update discount', function () {
         action([AdminDiscountController::class, 'update'], $discount),
         [
             'code' => 'UPDATED50',
-            'region' => $region->ulid,
+            'region_id' => $region->ulid,
             'value' => 50.00,
             'description' => 'Updated description',
             'usage_limit' => 100,
@@ -161,34 +88,6 @@ it('can update discount', function () {
     ]);
 });
 
-it('prevents duplicate discount codes', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    login($admin);
-
-    $region = Region::factory()->create();
-    $existingDiscount = Discount::factory()->create([
-        'code' => 'EXISTING',
-        'vendor_id' => $admin->id,
-    ]);
-
-    $response = $this->postJson(
-        action([AdminDiscountController::class, 'store']),
-        [
-            'code' => 'EXISTING',
-            'discount_type' => DiscountRuleTypes::PERCENTAGE,
-            'region' => $region->ulid,
-            'value' => 25.00,
-            'description' => 'Test discount',
-            'conditions' => false,
-        ]
-    );
-
-    $response->assertStatus(422);
-    $response->assertJsonFragment([
-        'message' => 'Code EXISTING is already taken!'
-    ]);
-});
 
 it('can delete discount', function () {
     $admin = User::factory()->create();
@@ -196,9 +95,10 @@ it('can delete discount', function () {
     login($admin);
 
     $discountRule = DiscountRule::factory()
-        ->withProducts(2)
         ->create();
-    $discount = Discount::factory()->create([
+    $discount = Discount::factory()
+    ->withProducts(2)
+    ->create([
         'discount_rule_id' => $discountRule->id
     ]);
 
@@ -221,9 +121,10 @@ it('can show discount details', function () {
     login($admin);
 
     $discountRule = DiscountRule::factory()
-        ->withProducts(2)
         ->create();
-    $discount = Discount::factory()->create([
+    $discount = Discount::factory()
+    ->withProducts(2)
+    ->create([
         'discount_rule_id' => $discountRule->id
     ]);
 

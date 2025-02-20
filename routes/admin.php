@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
-use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Cart\AdminCartController;
-use App\Http\Controllers\Admin\Category\AdminCategoryController;
-use App\Http\Controllers\Admin\Discount\DiscountController;
+use App\Http\Controllers\Admin\Users\AdminUserController;
+use App\Http\Controllers\Admin\Buyer\AdminBuyerController;
 use App\Http\Controllers\Admin\Order\AdminOrderController;
+use App\Http\Controllers\Admin\Discount\DiscountController;
+use App\Http\Controllers\Admin\Region\AdminRegionController;
 use App\Http\Controllers\Admin\Product\AdminProductController;
-use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
 use App\Http\Controllers\Admin\Product\AdminVariantController;
+use App\Http\Controllers\Admin\Category\AdminCategoryController;
+use App\Http\Controllers\Admin\Discount\AdminDiscountController;
+use App\Http\Controllers\Admin\Attributes\AdminAttributeController;
 use App\Http\Controllers\Admin\Product\AdminVariantMediaController;
 use App\Http\Controllers\Admin\Product\AdminVariantPriceController;
-use App\Http\Controllers\Admin\Region\AdminRegionController;
 use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
-use App\Http\Controllers\Admin\Users\AdminUserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Product\AdminVariantAttributeController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -59,9 +60,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('orders/{order}', [AdminOrderController::class, 'update']);
     Route::delete('orders/{order}', [AdminOrderController::class, 'destroy']);
 
-    Route::get('discounts', [DiscountController::class, 'index']);
-    Route::post('discounts', [DiscountController::class, 'store']);
-    Route::get('discounts/{discount}', [DiscountController::class, 'show']);
-    Route::put('discounts/{discount}', [DiscountController::class, 'update']);
-    Route::delete('discounts/{discount}', [DiscountController::class, 'destroy']);
+    Route::get('discounts', [AdminDiscountController::class, 'index']);
+    Route::post('discounts', [AdminDiscountController::class, 'store']);
+    Route::get('discounts/{discount}', [AdminDiscountController::class, 'show']);
+    Route::put('discounts/{discount}', [AdminDiscountController::class, 'update']);
+    Route::delete('discounts/{discount}', [AdminDiscountController::class, 'destroy']);
 });

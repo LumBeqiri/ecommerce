@@ -20,9 +20,9 @@ class Discount extends Model
 
     protected $guarded = [];
 
-    public function product(): HasMany
+    public function products(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->HasMany(Product::class);
     }
 
     /**

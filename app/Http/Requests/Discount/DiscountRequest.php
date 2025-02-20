@@ -30,7 +30,7 @@ class DiscountRequest extends FormRequest
             'discount_type' => 'required|in:'.DiscountRuleTypes::FIXED_AMOUNT.','.DiscountRuleTypes::FREE_SHIPPING.','.DiscountRuleTypes::PERCENTAGE,
             'allocation' => 'required_if:discount_type,'.DiscountRuleTypes::FIXED_AMOUNT.'|in:'.DiscountAllocationTypes::ITEM_SPICIFIC.','.DiscountAllocationTypes::TOTAL_AMOUNT,
             'value' => 'required|numeric',
-            'region' => 'exists:regions,ulid',
+            'region_id' => 'required|exists:regions,ulid',
             'code' => 'required|string',
             'description' => 'required|string|max:255',
             'is_dynamic' => 'nullable|boolean',

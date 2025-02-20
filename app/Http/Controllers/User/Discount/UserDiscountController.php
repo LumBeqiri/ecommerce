@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Discount;
 
 use App\Models\User;
+use App\values\Roles;
 use App\Models\Region;
 use App\Models\Product;
 use App\Models\Discount;
@@ -35,12 +36,12 @@ class UserDiscountController extends ApiController
         $this->authorize('create', Discount::class);
         $request->validated();
 
-        if ($this->validate_code($request->code)) {
+        if (! $this->is_discount_code_available($request->code)) {
             return $this->showError('Code '.$request->code.' is already taken!', 422);
         }
 
         $newDiscount = DB::transaction(function () use ($request) {
-            $region = Region::where('ulid', $request->region)->firstOrFail();
+            $region = Region::where('ulid', $request->region_id)->firstOrFail();
             $discountRule = DiscountRule::create(
                 ['value' => $request->value, 'region_id' => $region->id]
                 +
@@ -55,7 +56,7 @@ class UserDiscountController extends ApiController
 
             $discount = $discountRule->discount()->create(
                 [
-                    'vendor_id' => $this->user->vendor->id,
+                    'vendor_id' => $this->getVendorId(),
                     'starts_at' => now(),
                 ]
                 +
@@ -96,9 +97,9 @@ class UserDiscountController extends ApiController
         $request->validated();
 
         DB::transaction(function () use ($request, $discount) {
-            $region = Region::where('ulid', $request->region)->firstOrFail();
+            $region = Region::where('ulid', $request->region_id)->firstOrFail();
             if ($request->has('code')) {
-                if ($this->validate_code($request->code)) {
+                if (!$this->is_discount_code_available($request->code)) {
                     return $this->showError('Code '.$request->code.' is already taken!', 422);
                 }
             }
@@ -135,12 +136,25 @@ class UserDiscountController extends ApiController
         return $this->showMessage('Discount deleted successfully!');
     }
 
-    private function validate_code(string $code): bool
+    private function is_discount_code_available(string $code): bool
     {
-        $code_availabilty = Discount::where('code', $code)
-            ->where('seller_id', auth()->id())
-            ->get();
+        return ! Discount::where('code', $code)
+            ->where('vendor_id', $this->getVendorId())
+            ->exists();
 
-        return count($code_availabilty) > 0;
+    }
+
+    private function getVendorId(): ?int
+    {
+        $user = auth()->user();
+        
+        if ($user->hasRole(Roles::VENDOR)) {
+            return $user->vendor->id;
+        }
+        
+        if ($user->hasRole(Roles::STAFF)) {
+            return $user->staff->vendor_id;
+        }
+       
     }
 }

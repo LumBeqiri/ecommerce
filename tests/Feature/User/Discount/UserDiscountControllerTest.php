@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Region;
+use App\Models\Vendor;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Currency;
@@ -25,17 +26,17 @@ beforeEach(function () {
 });
 
 it('can store percentage discount without conditions ', function () {
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    Currency::factory()->count(5)->create();
+    $vendor = Vendor::factory()->create();
+    $vendor->user->assignRole('vendor');
+    Currency::factory()->create();
     TaxProvider::factory()->create();
-    login($user);
+    login($vendor->user);
 
     $response = $this->postJson(action([UserDiscountController::class, 'store']),
         [
             'code' => 'LCX',
             'discount_type' => 'percentage',
-            'region' => Region::first()->ulid,
+            'region_id' => Region::first()->ulid,
             'value' => 23.2,
             'description' => 'hello',
             'conditions' => 0,
@@ -52,16 +53,16 @@ it('can store percentage discount without conditions ', function () {
 });
 
 it('can store fixed discount without conditions ', function ($allocation) {
-    $user = User::factory()->create();
-    $user->assignRole('admin');
+    $vendor = Vendor::factory()->create();
+    $vendor->user->assignRole('vendor');
 
-    login($user);
+    login($vendor->user);
 
     $response = $this->postJson(action([UserDiscountController::class, 'store']),
         [
             'code' => 'LCX',
             'discount_type' => DiscountRuleTypes::FIXED_AMOUNT,
-            'region' => Region::first()->ulid,
+            'region_id' => Region::first()->ulid,
             'value' => 23.2,
             'allocation' => $allocation,
             'description' => 'hello',
@@ -82,17 +83,17 @@ it('can store fixed discount without conditions ', function ($allocation) {
 ]);
 
 it('can store free shipping discount without conditions ', function () {
-    $user = User::factory()->create();
-    $user->assignRole('admin');
+    $vendor = Vendor::factory()->create();
+    $vendor->user->assignRole('vendor');
 
-    login($user);
+    login($vendor->user);
 
     $response = $this->postJson(action([UserDiscountController::class, 'store']),
         [
             'code' => 'LCX',
             'discount_type' => 'free_shipping',
             'value' => 0,
-            'region' => Region::first()->ulid,
+            'region_id' => Region::first()->ulid,
             'description' => 'hello',
             'conditions' => 0,
         ]
@@ -108,13 +109,17 @@ it('can store free shipping discount without conditions ', function () {
 });
 
 it('can update percentage discount', function () {
-    $user = User::factory()->create();
-    $user->assignRole('admin');
+    $vendor = Vendor::factory()->create();
+    $vendor->user->assignRole('vendor');
+
+  
 
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
 
-    $discount = Discount::factory()->create();
+    $discount = Discount::factory()->create([
+        'vendor_id' => $vendor->id
+    ]);
     $usage_limit = $this->faker()->randomDigit();
     $code = $this->faker()->word();
     $description = $this->faker()->paragraph(1);
@@ -123,14 +128,15 @@ it('can update percentage discount', function () {
     $ends_at = Carbon::create(2023, 3, 23, 23, 59)->format('Y-m-d H:i:s');
     $starts_at = Carbon::now()->format('Y-m-d H:i:s');
     $region = Region::factory()->create();
+    
+    login($vendor->user);
 
-    login($user);
 
     $response = $this->putJson(action([UserDiscountController::class, 'update'], $discount->ulid),
         [
             'code' => $code,
             'discount_type' => 'percentage',
-            'region' => $region->ulid,
+            'region_id' => $region->ulid,
             'value' => $value,
             'description' => $description,
             'usage_limit' => $usage_limit,
@@ -155,15 +161,18 @@ it('can update percentage discount', function () {
 });
 
 it('can delete discount', function () {
-    $user = User::factory()->create();
-    $user->assignRole('admin');
+    $vendor = Vendor::factory()->create();
+    $vendor->user->assignRole('vendor');
 
     Product::factory()->count(5)->create();
     DiscountRule::factory()->create();
-
-    $discount = Discount::factory()->create();
-
-    login($user);
+    
+    $discount = Discount::factory()->create([
+        'vendor_id' => $vendor->id
+    ]);
+    
+    login($vendor->user);
+    
 
     $response = $this->deleteJson(action([UserDiscountController::class, 'destroy'], $discount->ulid));
 
