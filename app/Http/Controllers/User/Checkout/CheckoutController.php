@@ -19,11 +19,13 @@ use Illuminate\Support\Str;
 
 class CheckoutController extends ApiController
 {
+    /**
+     * The currently authenticated user.
+     */
     protected User $user;
 
     public function __construct()
     {
-        /*** @var $user User*/
         $this->user = auth()->user();
     }
 
@@ -52,7 +54,7 @@ class CheckoutController extends ApiController
                 $order_data['shipping_country_id'] = $request->input('shipping_country_id');
                 $order_data['shipping_address'] = $request->input('shipping_address');
             } else {
-                $order_data['shipping_name'] = $this->user->name;
+                $order_data['shipping_name'] = null;
                 $order_data['shipping_city'] = $this->user->user_settings->city;
                 $order_data['shipping_country_id'] = $this->user->user_settings->country->id;
                 $order_data['shipping_address'] = $this->user->buyer->shipping_address;

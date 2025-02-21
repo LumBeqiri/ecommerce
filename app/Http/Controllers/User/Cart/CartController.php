@@ -161,8 +161,6 @@ class CartController extends ApiController
             $cart = CartService::removeItemFromCart($data);
         } catch (CartException $ex) {
             return $this->showError($ex->getMessage(), $ex->getCode());
-        } catch (\Exception $ex) {
-            return $this->showError('An unexpected error occurred', 500);
         }
 
         return $this->showOne(new CartResource($cart));
