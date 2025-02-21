@@ -64,6 +64,9 @@ class UserDiscountController extends ApiController
                     )
                 );
 
+                /**
+                 * @var Discount $discount
+                 */
                 $discount = $discountRule->discount()->create(
                     array_merge(
                         ['vendor_id' => $this->getVendorId(), 'starts_at' => now()],
