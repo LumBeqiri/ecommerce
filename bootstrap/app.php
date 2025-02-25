@@ -22,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         Route::middleware(['api', 'VendorAuthorization'])
             ->prefix('api/vendor')
             ->group(base_path('routes/vendor.php'));
+
+        Route::middleware('web')
+        ->group(base_path('routes/web.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
