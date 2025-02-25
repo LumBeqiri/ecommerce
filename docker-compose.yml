@@ -1,0 +1,70 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    container_name: ecommerce
+    ports:
+      - "9000:9000"
+    networks:
+    - app-network
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION:-mysql}
+      DB_HOST: db
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-laravel}
+      DB_USERNAME: ${DB_USERNAME:-laravel}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  webserver:
+    image: nginx:alpine
+    container_name: ecommerce_nginx
+    networks:
+    - app-network
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: ecommerce_mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+    - app-network
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-ecommerce}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-secret}
+      MYSQL_USER: ${DB_USERNAME:-ecommerce}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  dbdata:
+networks:
+  app-network:
+    driver: bridge
