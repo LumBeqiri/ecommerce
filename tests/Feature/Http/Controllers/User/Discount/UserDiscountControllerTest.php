@@ -42,6 +42,7 @@ it('can store percentage discount without conditions ', function () {
         ]
     );
 
+
     $response->assertStatus(200);
 
     $discount_rule_ulid = $response->json('discount_rule.id');
@@ -68,6 +69,7 @@ it('can store fixed discount without conditions ', function ($allocation) {
             'conditions' => 0,
         ]
     );
+
 
     $response->assertStatus(200);
 

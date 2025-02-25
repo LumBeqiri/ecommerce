@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ use Laravel\Sanctum\Sanctum;
 */
 
 pest()->extend(Tests\TestCase::class)
-    ->use(LazilyRefreshDatabase::class, WithFaker::class)
+->use(LazilyRefreshDatabase::class, WithFaker::class)
     ->in('Feature');
 
 /*

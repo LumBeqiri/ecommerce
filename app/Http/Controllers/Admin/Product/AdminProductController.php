@@ -40,7 +40,6 @@ class AdminProductController extends ApiController
     public function update(UpdateProductRequest $request, Product $product, ProductService $productService): JsonResponse
     {
 
-        $this->authorize('update', $product);
         $productUpdateData = ProductData::from(array_merge($product->toArray(), $request->validated()));
 
         $product = $productService->updateProduct($product, $productUpdateData);

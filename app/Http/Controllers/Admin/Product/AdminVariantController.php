@@ -50,8 +50,6 @@ class AdminVariantController extends ApiController
 
     public function update(UpdateVariantRequest $request, Variant $variant): JsonResponse
     {
-        $this->authorize('update', $variant);
-
         $updateVariantData = $request->validated();
 
         $variant->fill(Arr::except($updateVariantData, 'product_id'));
@@ -62,7 +60,6 @@ class AdminVariantController extends ApiController
 
     public function destroy(Variant $variant): JsonResponse
     {
-        $this->authorize('delete', $variant);
 
         $variant->delete();
 

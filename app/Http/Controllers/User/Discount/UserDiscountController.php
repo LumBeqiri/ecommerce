@@ -35,9 +35,9 @@ class UserDiscountController extends ApiController
         return $this->showAll(DiscountResource::collection($discounts));
     }
 
-    public function store(DiscountRequest $request): JsonResponse
-    {
-        $this->authorize('create', Discount::class);
+        public function store(DiscountRequest $request): JsonResponse
+        {
+            $this->authorize('create', Discount::class);
 
         $request->validated();
 
