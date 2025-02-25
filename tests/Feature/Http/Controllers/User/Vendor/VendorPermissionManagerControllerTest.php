@@ -23,7 +23,7 @@ beforeEach(function () {
     Country::factory()->create();
 });
 
-it('vendor can create a permission for user', function () {
+it('vendor can assign a permission for user', function () {
 
     $vendorUser = User::factory()->create();
     $vendor = Vendor::factory()->create(['user_id' => $vendorUser->id]);
@@ -46,7 +46,7 @@ it('vendor can create a permission for user', function () {
 
 });
 
-it('vendor can not create a permission for user not part of vendor', function () {
+it('vendor can not assign a permission for user not part of vendor', function () {
 
     $vendorUser = User::factory()->create();
     Vendor::factory()->create(['user_id' => $vendorUser->id]);
