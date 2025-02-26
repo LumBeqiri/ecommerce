@@ -9,22 +9,22 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
-        using: function(){
+        using: function () {
             Route::middleware(['api'])
-            ->prefix('api')
-            ->group(base_path('routes/api.php'));
+                ->prefix('api')
+                ->group(base_path('routes/api.php'));
 
-        Route::middleware(['api', 'admin'])
-            ->prefix('api/admin')
-            ->group(base_path('routes/admin.php'));
+            Route::middleware(['api', 'admin'])
+                ->prefix('api/admin')
+                ->group(base_path('routes/admin.php'));
 
-        // Vendor routes
-        Route::middleware(['api', 'VendorAuthorization'])
-            ->prefix('api/vendor')
-            ->group(base_path('routes/vendor.php'));
+            // Vendor routes
+            Route::middleware(['api', 'VendorAuthorization'])
+                ->prefix('api/vendor')
+                ->group(base_path('routes/vendor.php'));
 
-        Route::middleware('web')
-        ->group(base_path('routes/web.php'));
+            Route::middleware('web')
+                ->group(base_path('routes/web.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
