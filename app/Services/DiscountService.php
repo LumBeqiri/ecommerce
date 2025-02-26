@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Variant;
 use App\values\DiscountAllocationTypes;
 use App\values\DiscountRuleTypes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
 class DiscountService
@@ -144,7 +145,7 @@ class DiscountService
         Region $discount_region
     ): array {
         $variants = Variant::whereHas('product', function ($query) {
-            $query->whereHas('discount', function ($discountQuery) {
+            $query->whereHas('discount', function (Builder $discountQuery) {
                 $discountQuery->whereHas('discount_rule', function ($ruleQuery) {
                     $ruleQuery->where('operator', 'in');
                 });
