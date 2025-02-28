@@ -21,7 +21,7 @@ class ProductController extends ApiController
         })
             ->with([
                 'vendor.user',
-                'variants.medias',
+                'variants.media',
                 'variant_prices' => function ($query) use ($region_id) {
                     $query->where('region_id', $region_id)->with(['currency', 'region']);
                 },
