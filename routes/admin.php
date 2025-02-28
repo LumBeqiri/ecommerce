@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\Product\AdminVariantPriceController;
 use App\Http\Controllers\Admin\Region\AdminRegionController;
 use App\Http\Controllers\Admin\TaxProvider\AdminTaxProviderController;
 use App\Http\Controllers\Admin\Users\AdminUserController;
-use App\Http\Controllers\User\Products\AdminProductThumbnailController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
