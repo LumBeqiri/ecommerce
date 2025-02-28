@@ -22,7 +22,6 @@ class ProductResource extends JsonResource
             // use spatie media to get the thumbnail
             'thumbnail' => $this->getMedia('thumbnails'),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
-            'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
             'variants' => VariantResource::collection($this->whenLoaded('variants')),
             'publish_status' => $this->publish_status,
         ];

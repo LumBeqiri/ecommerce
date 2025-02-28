@@ -23,8 +23,8 @@ class VariantResource extends JsonResource
             'variant_long_description' => $this->variant_long_description,
             'stock' => $this->stock,
             'status' => $this->status,
-            'price' => VariantPriceResource::collection($this->whenLoaded('variant_prices')),
-            'medias' => MediaResource::collection($this->getMedia()),
+            'price' => VariantPriceResource::collection($this->variant_prices),
+            // 'medias' => MediaResource::collection($this->getMedia()),
             'attributes' => AttributeResource::collection($this->whenLoaded('attributes')),
         ];
     }

@@ -18,7 +18,6 @@ use App\Http\Controllers\User\Products\AdminProductThumbnailController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
     Route::resource('users', AdminUserController::class);
     Route::put('buyers/{buyer}', [AdminBuyerController::class, 'update']);
     Route::get('products', [AdminProductController::class, 'index']);
@@ -26,7 +25,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('products/{product}', [AdminProductController::class, 'show']);
     Route::put('products/{product}', [AdminProductController::class, 'update']);
     Route::delete('products/{product}', [AdminProductController::class, 'destroy']);
-    Route::delete('products/{product}/thumbnail', [AdminProductThumbnailController::class, 'destroy']);
 
     Route::get('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'show']);
     Route::post('variants/{variant}/attributes', [AdminVariantAttributeController::class, 'store']);
